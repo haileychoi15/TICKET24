@@ -111,11 +111,16 @@
     background-color: bisque;
 }
 
+.card-image img{
+    width: 100%;
+    height: auto;
+}
+
 
 @media screen and (min-width: 768px){
 
     .common-section{
-        padding: 0 50px;
+        padding: 0 120px;
     }
 
     /* Header */
