@@ -66,9 +66,21 @@
 }
 
 .header-menu h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 16px;
     font-size: 22px;
     line-height: 1.33333;
+}
+
+.header-menu h1::before{
+    content: "\f0c9";
+    font-family: "Font Awesome 5 Free";
+    font-size: 1em;
+    display: inline-block;
+    padding-top: 1px;
+    margin-right: 10px;
 }
 
 .header-category{
@@ -93,6 +105,24 @@
     height: 3px;
     background-color: #ec7d2c;
     transition: width 150ms ease-in;
+}
+
+.header-category-item .category-detail{
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    font-size: 15px;
+    color: #777;
+}
+
+.header-category-item:hover .category-detail { /* js로 처리할 것 */
+    display: flex;
+    justify-content: flex-start;
+}
+
+.header-category-item .category-detail-item{
+    margin-right: 18px;
 }
 
 .header-category-item.selected::after{
@@ -505,8 +535,8 @@
     }
 
     .header-menu .search-group a {
-        display: inline-block;
-        width: 40px;
+        display: block;
+        width: 45px;
         height: 30px;
     }
 
@@ -526,7 +556,6 @@
     }
 
     .search-group .icon-desc{
-        display: block;
         color: #fff;
         font-size: 12px;
         font-weight: 300;
