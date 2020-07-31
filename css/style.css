@@ -1,6 +1,9 @@
 .section-title{
     height: 100px;
     padding: 40px 0 0;
+    font-size: 26px;
+    font-weight: 900;
+    color: #333;
 }
 
 .common-detail{
@@ -195,6 +198,7 @@
 /* Ranking - ranking area */
 .ranking{
     padding: 40px 0;
+    color: #333;
     background-color: #F6F6F6;
 }
 
@@ -379,6 +383,7 @@
 .footer{
     padding: 30px 0;
     text-align: center;
+    color: #333;
     background-color: #f6f6f6;
 }
 
@@ -414,6 +419,31 @@
 .footer-notice{
     font-size: 12px;
     color: #999;
+}
+
+.return-top-button{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background-color: #999;
+    opacity: 70%;
+    cursor: pointer;
+}
+
+.return-top-button img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+}
+
+.return-top-button:hover{
+    background-color: #ec7d2c;
+    opacity: 100%;
 }
 
 
@@ -567,11 +597,24 @@
     }
 
     .footer .row{
-        margin-bottom: 25px;
+        margin: 0 0 25px;
+    }
+
+    .footer .row .col-12:first-child{
+        padding-left: 0;
+    }
+
+    .footer .row .col-md-3:last-child{
+        padding-right: 0;
     }
 
     .footer .row:first-child{
         border-bottom: 1px solid #ddd;
+    }
+
+    .footer .row:last-child .col-12:last-child{
+        display: flex;
+        justify-content: flex-end;
     }
 
     .footer-category-item{
