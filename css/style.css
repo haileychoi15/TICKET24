@@ -52,6 +52,10 @@
     transition: width 150ms ease-in;
 }
 
+.header-category-item.selected::after{
+    width: 100%;
+}
+
 .header-category-item:hover::after{
     width: 100%;
 }
@@ -60,7 +64,6 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-bottom: 16px;
 }
 
 .header-menu .search-group input{
@@ -72,9 +75,15 @@
     margin-right: 26px;
 }
 
-.header-menu .search-group .search-form::after{
-    content: "12";
-    background-color: #0066ff;
+.header-menu .search-group .search-form button{
+    background-color: #fff;
+}
+
+.header-menu .search-group .search-form button::after{
+    content: "\f002";
+    font-family: "Font Awesome 5 Free";
+    font-size: 1.4em;
+    font-weight: 900;
 }
 
 .header-menu .search-group a{
@@ -93,35 +102,147 @@
 
 .card-list{
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
-
-.card-list:last-child{
-    display: none;
-}
-
 .card{
-    border: solid 1px black;
-    background-color: #0066ff;
+    max-width: 250px;
+}
+
+.card:first-child{
+    margin-right: 15px;
 }
 
 .card-image{
-    width: 100%;
-    height: 300px;
-    background-color: bisque;
+    position: relative;
+    margin-bottom: 20px;
 }
 
 .card-image img{
     width: 100%;
     height: auto;
+    transition: transform 250ms ease-in-out;
+}
+
+.card-image img:hover{
+    transform: scale(1.1);
+}
+
+.notice-sticker{
+    position: absolute;
+    bottom: -18px;
+    left: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 4px solid white;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 65px;
+    color: #fff;
+    background-color: #ec7d2c;
+}
+
+.card-title{
+    font-size: 14px;
+    font-weight: 400;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.card-content{
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    margin-bottom: 12px;
+}
+
+/* Ranking */
+.ranking-area{
+    background-color: #d1ffe6;
+    max-width: 600px;
+    padding: 50px;
+}
+
+.ranking-area .ranking-header{
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #000;
+}
+
+.ranking-area .ranking-title{
+    font-size: 26px;
+    font-weight: 900;
+    margin-right: 10px;
+}
+
+.ranking-area .more-ranking-button{
+    width: 80px;
+    height: 34px;
+    font-size: 14px;
+}
+
+.ranking-item{
+    padding: 14px 0;
+    border-bottom: 1px solid #999;
+}
+
+.ranking-item:last-child{
+    border-bottom: 1px solid #000;
+}
+
+.ranking-item dl{
+    display: flex;
+    justify-items: flex-start;
+    align-items: flex-start;
+}
+
+.ranking-item .ranking-item-ranking{
+    min-width: 24px;
+    margin: 0 15px 0 10px;
+    font-size: 15px;
+}
+
+.ranking-area .ranking-item-image{
+    margin-right: 10px;
+}
+
+.ranking-area .ranking-item-image img{
+    width: 80px;
+    height: 112px;
+}
+
+.ranking-item .ranking-item-title{
+    display: block;
+    font-weight: 500;
+}
+
+.ranking-item .ranking-item-desc{
+    font-size: 13px;
+    color: #999;
+}
+
+.ranking-area .ranking-item .hide{
+    display: none;
+}
+
+.ranking-area .ranking-item:hover .hide{
+    display: block;
+}
+
+.ranking-area .ranking-item:hover .ranking-item-title{
+    margin-bottom: 12px;
 }
 
 
 @media screen and (min-width: 768px){
-
-    .common-section{
-        padding: 0 120px;
-    }
 
     /* Header */
     .header-top{
@@ -149,23 +270,46 @@
         font-size: 18px;
     }
 
-    .header-menu .search-group .search-form{
+    .search-group .search-form{
         flex-shrink: 0;
     }
 
-    .header-menu .search-group{
+    .search-group{
         margin-bottom: 0;
     }
 
     .header-menu .search-group a {
         display: inline-block;
-        width: 50px;
+        width: 40px;
         height: 30px;
-        background-color: yellow;
     }
 
-    .header-menu .search-group a strong{
-        font-size: 10px;
+    .search-group a::before{
+        content: "\f007";
+        font-family: "Font Awesome 5 Free";
+        display: block;
+        font-size: 1.5em;
+        font-weight: 400;
+        margin-bottom: 5px;
+    }
+
+    .search-group a:last-child::before{
+        content: "\f0ac";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
+
+    .search-group .icon-desc{
+        display: block;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 300;
+        letter-spacing: -0.05em;
+        transition: color 250ms ease-in-out;
+    }
+
+    .search-group a:hover .icon-desc{
+        color: #000;
     }
 
     /* Product */
@@ -175,28 +319,25 @@
     }
 
     .card-list{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
         margin-bottom: 50px;
     }
 
-    .card-list:last-child{
-        display: flex;
-    }
-
-    .card{
-        width: 21%;
-        max-width: 216px;
-        height: auto;
-        max-height: 400px;
+    .card:first-child{
+        margin-right: 30px;
     }
 
     .card-image{
-        width: 100%;
-        background-color: orange;
+        margin-bottom: 25px;
     }
 
+    .card-title{
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .card-content{
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
 
 }
