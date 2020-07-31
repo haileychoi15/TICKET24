@@ -1,3 +1,29 @@
+.section-title{
+    height: 100px;
+    padding: 40px 0 0;
+}
+
+.common-detail{
+    font-size: 13px;
+    color: #999;
+}
+
+.common-image{
+    margin-bottom: 20px;
+}
+
+.common-title{
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.common-content{
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
 
 /* Header */
 .header-top{
@@ -91,11 +117,6 @@
 }
 
 /* Product */
-.section-title{
-    height: 100px;
-    padding: 40px 0 0;
-}
-
 .product{
     text-align: center;
 }
@@ -103,11 +124,12 @@
 .card-list{
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
 }
+
 .card{
     max-width: 250px;
+    margin: 0 1px;
 }
 
 .card:first-child{
@@ -116,7 +138,6 @@
 
 .card-image{
     position: relative;
-    margin-bottom: 20px;
 }
 
 .card-image img{
@@ -147,46 +168,44 @@
     background-color: #ec7d2c;
 }
 
-.card-title{
-    font-size: 14px;
-    font-weight: 400;
+.product .card-title{
     color: #888;
-    margin-bottom: 10px;
 }
 
-.card-content{
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
+.product .card-content{
     color: #000;
-    margin-bottom: 12px;
 }
 
-/* Ranking */
-.ranking-area{
-    background-color: #d1ffe6;
-    max-width: 600px;
-    padding: 50px;
+/* Ranking - ranking area */
+.ranking{
+    padding: 40px 0;
+    background-color: #F6F6F6;
 }
 
 .ranking-area .ranking-header{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     justify-items: center;
     padding-bottom: 15px;
-    border-bottom: 3px solid #000;
+    border-bottom: 2px solid #000;
 }
 
-.ranking-area .ranking-title{
+.ranking-area .area-title{
     font-size: 26px;
     font-weight: 900;
     margin-right: 10px;
 }
 
 .ranking-area .more-ranking-button{
+    display: none;
     width: 80px;
     height: 34px;
     font-size: 14px;
+}
+
+.ranking-area .more-ranking-button:hover{
+    cursor: pointer;
+    box-shadow: 0 1px 2px 0 rgba(125, 125, 125, 0.35);
 }
 
 .ranking-item{
@@ -200,8 +219,6 @@
 
 .ranking-item dl{
     display: flex;
-    justify-items: flex-start;
-    align-items: flex-start;
 }
 
 .ranking-item .ranking-item-ranking{
@@ -224,25 +241,147 @@
     font-weight: 500;
 }
 
-.ranking-item .ranking-item-desc{
-    font-size: 13px;
-    color: #999;
-}
-
 .ranking-area .ranking-item .hide{
     display: none;
+}
+
+.ranking-area .ranking-item:first-child .hide{/* js로 처리하기*/
+    display: block;
+}
+.ranking-area .ranking-item:first-child .ranking-item-title{/* js로 처리하기*/
+    margin-bottom: 12px;
 }
 
 .ranking-area .ranking-item:hover .hide{
     display: block;
 }
 
+.ranking-area .ranking-item:hover .ranking-item-ranking{
+    font-weight: 900;
+}
+
 .ranking-area .ranking-item:hover .ranking-item-title{
     margin-bottom: 12px;
+    font-weight: 700;
+}
+
+/* Ranking - place area */
+.ranking .row .col-12:first-child{
+    margin-bottom: 40px;
+}
+
+.place-area{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.place-item-group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.place-area .place-item{
+    max-width: 161px;
+}
+
+.place-area .area-title{
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.place-area .area-title::after{
+    content:"\f3c5";
+    font-family: "Font Awesome 5 Free";
+    font-size: 0.95em;
+    font-weight: 900;
+    margin-left: 10px;
+    color: #ec7d2c;
+}
+
+.place-area .place-item-image{
+    position: relative;
+    margin: 0 2px 14px;
+    overflow: hidden;
+}
+
+.place-area .place-item-image img{
+    width: 100%;
+    height: auto;
+    transition: transform 250ms ease-in-out;
+}
+
+.place-area .place-item:hover .place-item-image img{
+    transform: scale(1.1);
+    filter: brightness(80%);
+}
+
+.place-area .place-item-image .place-sticker{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #ec7d2c;
+}
+
+.place-area .place-item-title{
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+/* Recommendation */
+.recommendation{
+    text-align: center;
+}
+
+.recommendation .recommendation-item-group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recommendation .card{
+    border: 1px solid #999;
+}
+
+.recommendation .card-image{
+    overflow: hidden;
 }
 
 
+
+
+
+
+
+
+
 @media screen and (min-width: 768px){
+
+    .common-image{
+        margin-bottom: 25px;
+    }
+
+    .common-title{
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .common-content{
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
 
     /* Header */
     .header-top{
@@ -326,18 +465,40 @@
         margin-right: 30px;
     }
 
-    .card-image{
-        margin-bottom: 25px;
+    /* Ranking */
+    .ranking{
+        padding: 80px 0;
     }
 
-    .card-title{
-        font-size: 16px;
-        margin-bottom: 12px;
+    .ranking .row .col-12:first-child{
+        margin-bottom: 0;
     }
 
-    .card-content{
-        font-size: 16px;
-        margin-bottom: 15px;
+    .area{
+        height: 500px;
+        border: 1px solid #bbb;
+        background-color: #fff;
     }
 
+    .ranking-area{
+        max-width: 480px;
+        padding: 50px;
+    }
+
+    .place-area{
+        max-width: 690px;
+        padding: 50px;
+    }
+
+    .ranking-area .ranking-header{
+        justify-content: space-between;
+    }
+
+    .ranking-area .more-ranking-button{
+        display: inline-block;
+    }
+
+    .ranking-item{
+        padding: 12px 0;
+    }
 }
