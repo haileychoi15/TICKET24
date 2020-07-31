@@ -25,6 +25,15 @@
     margin-bottom: 12px;
 }
 
+.image-transition img{
+    transition: all 250ms ease-in-out;
+}
+
+.image-transition:hover img{
+    transform: scale(1.1);
+    filter: brightness(80%);
+}
+
 /* Header */
 .header-top{
     padding: 9px 0;
@@ -136,6 +145,10 @@
     margin-right: 15px;
 }
 
+.card-desc{
+    padding: 0 10px;
+}
+
 .card-image{
     position: relative;
 }
@@ -200,7 +213,9 @@
     display: none;
     width: 80px;
     height: 34px;
+    border: 1px solid #ddd;
     font-size: 14px;
+    background-color: #fff;
 }
 
 .ranking-area .more-ranking-button:hover{
@@ -310,12 +325,6 @@
 .place-area .place-item-image img{
     width: 100%;
     height: auto;
-    transition: transform 250ms ease-in-out;
-}
-
-.place-area .place-item:hover .place-item-image img{
-    transform: scale(1.1);
-    filter: brightness(80%);
 }
 
 .place-area .place-item-image .place-sticker{
@@ -352,11 +361,23 @@
 }
 
 .recommendation .card{
-    border: 1px solid #999;
+    border: 1px solid #ddd;
+}
+
+.recommendation .card:hover{
+    border: 1px solid #ec7d2c;
 }
 
 .recommendation .card-image{
     overflow: hidden;
+}
+
+.recommendation .card-title{
+    color: #000;
+}
+
+.recommendation .card-place{
+    color: #888;
 }
 
 
@@ -476,7 +497,7 @@
 
     .area{
         height: 500px;
-        border: 1px solid #bbb;
+        border: 1px solid #ddd;
         background-color: #fff;
     }
 
@@ -501,4 +522,5 @@
     .ranking-item{
         padding: 12px 0;
     }
+
 }
