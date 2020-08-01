@@ -107,7 +107,7 @@
     transition: width 150ms ease-in;
 }
 
-.header-category-item .category-detail{
+.header-category-item .header-sub-category{
     display: none;
     position: absolute;
     top: 50px;
@@ -116,12 +116,12 @@
     color: #777;
 }
 
-.header-category-item:hover .category-detail { /* js로 처리할 것 */
+.header-category-item:hover .header-sub-category { /* js로 처리할 것 */
     display: flex;
     justify-content: flex-start;
 }
 
-.header-category-item .category-detail-item{
+.header-category-item .header-sub-category-item{
     margin-right: 18px;
 }
 
@@ -163,6 +163,15 @@
     display: none;
 }
 
+.side-menu{
+    position: fixed;
+    top:20px;
+    left: 0;
+    color: #fff;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 1;
+}
+
 /* Product */
 .product{
     text-align: center;
@@ -195,7 +204,7 @@
     transition: transform 250ms ease-in-out;
 }
 
-.card-image img:hover{
+.card:hover .card-image img{
     transform: scale(1.1);
 }
 
