@@ -11,7 +11,6 @@ function styleRanking() {
 
     // 제목이 길면 잘라서 보여주기
 
-
     // item hover 시 자세한 내용 보여주기
     rankingGroup.addEventListener('mouseover', (event) => {
 
@@ -38,33 +37,30 @@ function styleRanking() {
 function styleCategory() {
 
     // 카테고리 hover 할 때 sub-category 보여주기
-
     let headerMenu = document.querySelector('.header-menu');
     let headerCategory = headerMenu.querySelector('.header-category');
-    let list = headerCategory.querySelectorAll('.header-category-item');
+    let list = headerCategory.querySelectorAll('.header-category-item > a');
     // list 같이 쓰려고 위로 올림
     headerCategory.addEventListener('mouseover', (event) => {
 
+        event.stopPropagation();
         let target = event.target;
-        if(target.tagName === 'LI') {
 
-            let selectedCategory = target.querySelector('.header-category-item > a').innerText;
-            console.log('selectedCategory', selectedCategory);
+        let selectedCategory = target.innerText;
 
-            //let list = document.querySelectorAll('.header-category-item');
+        if(target.className == 'category-link') {
+
             list.forEach((item) => {
 
-                let category = item.querySelector('a').innerText;
-                console.log('a tag category name : ',category);
+                let category = item.innerText;
+                let parent = item.closest('.header-category-item');
 
-                if(category === selectedCategory){
-                    item.classList.add('active');
-                    headerMenu.style.paddingBottom = '71px';
+                if (category === selectedCategory) {
+                    parent.classList.add('on');
+                    headerMenu.style.paddingBottom = '75px';
+                } else {
+                    parent.classList.remove('on');
                 }
-                else{
-                    item.classList.remove('active');
-                }
-
             });
         }
     });
@@ -73,11 +69,30 @@ function styleCategory() {
 
         let currentTarget = event.currentTarget;
         list.forEach((item) => {
-            item.classList.remove('active');
-            currentTarget.style.paddingBottom = '31px';
+
+            let parent = item.closest('.header-category-item');
+            parent.classList.remove('on');
+            currentTarget.style.paddingBottom = '35px';
 
         });
 
     });
+
+    headerCategory.addEventListener('click', (event) => {
+
+        let ul = event.currentTarget;
+        let list = ul.querySelectorAll('.header-category-item');
+        console.log('list', list);
+
+        list.forEach((item) => {
+            item.classList.remove('active');
+        });
+
+        let target = event.target;
+        let parent = target.closest('.header-category-item');
+        parent.classList.add('active');
+
+    });
+
 
 }
