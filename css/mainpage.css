@@ -164,6 +164,7 @@
 }
 
 .side-menu{
+    display: none;
     position: fixed;
     top:20px;
     left: 0;
@@ -270,7 +271,7 @@
 }
 
 .ranking-item{
-    padding: 14px 0;
+    padding: 14px 10px;
     border-bottom: 1px solid #999;
 }
 
@@ -284,7 +285,7 @@
 
 .ranking-item .ranking-item-ranking{
     min-width: 24px;
-    margin: 0 15px 0 10px;
+    margin-right: 15px;
     font-size: 15px;
 }
 
@@ -306,22 +307,15 @@
     display: none;
 }
 
-.ranking-area .ranking-item:first-child .hide{/* js로 처리하기*/
-    display: block;
-}
-.ranking-area .ranking-item:first-child .ranking-item-title{/* js로 처리하기*/
-    margin-bottom: 12px;
-}
-
-.ranking-area .ranking-item:hover .hide{
+.ranking-area .ranking-item.on .hide{
     display: block;
 }
 
-.ranking-area .ranking-item:hover .ranking-item-ranking{
+.ranking-area .ranking-item.on .ranking-item-ranking{
     font-weight: 900;
 }
 
-.ranking-area .ranking-item:hover .ranking-item-title{
+.ranking-area .ranking-item.on .ranking-item-title{
     margin-bottom: 12px;
     font-weight: 700;
 }
@@ -624,7 +618,7 @@
     }
 
     .ranking-item{
-        padding: 12px 0;
+        padding: 12px 10px;
     }
 
     /* Footer */
