@@ -93,7 +93,7 @@
 .header-category-item{
     position: relative;
     display: inline-block;
-    padding: 8px 0;
+    padding: 8px 5px;
 }
 
 .header-category-item::after{
@@ -104,19 +104,19 @@
     width: 0;
     height: 3px;
     background-color: #ec7d2c;
-    transition: width 150ms ease-in;
+    transition: width 150ms ease-out;
 }
 
 .header-category-item .header-sub-category{
     display: none;
     position: absolute;
-    top: 50px;
-    left: 0;
+    top: 55px;
+    left: 5px;
     font-size: 15px;
     color: #777;
 }
 
-.header-category-item:hover .header-sub-category { /* js로 처리할 것 */
+.header-category-item.active .header-sub-category {
     display: flex;
     justify-content: flex-start;
 }
@@ -125,13 +125,14 @@
     margin-right: 18px;
 }
 
-.header-category-item.selected::after{
-    width: 100%;
+.header-category-item.active::after{
+    width: 80%;
+    margin-left: 5px;
 }
 
-.header-category-item:hover::after{
+/*.header-category-item:hover::after{
     width: 100%;
-}
+}*/
 
 .header-menu .search-group{
     display: flex;
@@ -512,10 +513,11 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 100px;
         border-bottom: 1px solid #bdbdbd;
-        padding: 0 30px;
+        padding: 31px 30px;
         margin-bottom: 0;
+        transition: padding-bottom 150ms ease-out;
+        z-index: 1;
     }
 
     .header-menu h1{
