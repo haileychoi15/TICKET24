@@ -74,6 +74,8 @@ function styleCategory() {
             parent.classList.remove('on');
             currentTarget.style.paddingBottom = '35px';
 
+            // 모바일 버전일때는 0px !!!!!
+
         });
 
     });
