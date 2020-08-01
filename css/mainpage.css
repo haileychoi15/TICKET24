@@ -45,7 +45,7 @@
 /* Header */
 .header-top{
     padding: 9px 0;
-    margin-bottom: 16px;
+    margin-bottom: 30px;
     font-size: 12px;
     line-height: 1.4;
     color: #bdbdbd;
@@ -62,81 +62,84 @@
 }
 
 .header-menu{
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .header-menu h1{
     display: flex;
     justify-content: center;
     align-items: center;
+    order: 1;
     margin-bottom: 16px;
     font-size: 22px;
     line-height: 1.33333;
-}
-
-.header-menu h1::before{
-    content: "\f0c9";
-    font-family: "Font Awesome 5 Free";
-    font-size: 1em;
-    display: inline-block;
-    padding-top: 1px;
-    margin-right: 10px;
 }
 
 .header-category{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-bottom: 16px;
+    order: 3;
+    padding: 0 10px;
+    margin-bottom: 20px;
 }
 
 .header-category-item{
     position: relative;
     display: inline-block;
-    padding: 8px 0;
 }
 
-.header-category-item::after{
+.header-category-item > a::after{
     content: "";
     position: absolute;
     bottom: 0;
     left: 0;
     width: 0;
     height: 3px;
+    display: block;
+    margin-bottom: -8px;
     background-color: #ec7d2c;
-    transition: width 150ms ease-in;
+    transition: width 150ms ease-out;
 }
 
-.header-category-item .category-detail{
+.header-category-item .header-sub-category{
     display: none;
+    min-width: 120px;
     position: absolute;
-    top: 50px;
+    top: 35px;
     left: 0;
-    font-size: 15px;
+    font-size: 12px;
     color: #777;
 }
 
-.header-category-item:hover .category-detail { /* js로 처리할 것 */
+.header-category-item.on > a::after,
+.header-category-item.active > a::after{
+    width: 100%;
+}
+
+.header-category-item.on .header-sub-category {
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
+    align-items: flex-start;
 }
 
-.header-category-item .category-detail-item{
-    margin-right: 18px;
+.header-category-item .header-sub-category-item{
+    margin: 0 18px 10px 0;
 }
 
-.header-category-item.selected::after{
-    width: 100%;
-}
-
-.header-category-item:hover::after{
-    width: 100%;
+.header-category-item .header-sub-category-item a:hover{
+    color: #333;
 }
 
 .header-menu .search-group{
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
+    order: 2;
+    transform: translateX(5%);
 }
 
 .header-menu .search-group input{
@@ -145,7 +148,7 @@
 }
 
 .header-menu .search-group .search-form{
-    margin-right: 26px;
+    margin: 0 26px 30px 0;
 }
 
 .header-menu .search-group .search-form button{
@@ -161,6 +164,16 @@
 
 .header-menu .search-group a{
     display: none;
+}
+
+.side-menu{
+    display: none;
+    position: fixed;
+    top:20px;
+    left: 0;
+    color: #fff;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 1;
 }
 
 /* Product */
@@ -195,7 +208,7 @@
     transition: transform 250ms ease-in-out;
 }
 
-.card-image img:hover{
+.card:hover .card-image img{
     transform: scale(1.1);
 }
 
@@ -261,7 +274,7 @@
 }
 
 .ranking-item{
-    padding: 14px 0;
+    padding: 14px 10px;
     border-bottom: 1px solid #999;
 }
 
@@ -275,7 +288,7 @@
 
 .ranking-item .ranking-item-ranking{
     min-width: 24px;
-    margin: 0 15px 0 10px;
+    margin-right: 15px;
     font-size: 15px;
 }
 
@@ -297,22 +310,15 @@
     display: none;
 }
 
-.ranking-area .ranking-item:first-child .hide{/* js로 처리하기*/
-    display: block;
-}
-.ranking-area .ranking-item:first-child .ranking-item-title{/* js로 처리하기*/
-    margin-bottom: 12px;
-}
-
-.ranking-area .ranking-item:hover .hide{
+.ranking-area .ranking-item.on .hide{
     display: block;
 }
 
-.ranking-area .ranking-item:hover .ranking-item-ranking{
+.ranking-area .ranking-item.on .ranking-item-ranking{
     font-weight: 900;
 }
 
-.ranking-area .ranking-item:hover .ranking-item-title{
+.ranking-area .ranking-item.on .ranking-item-title{
     margin-bottom: 12px;
     font-weight: 700;
 }
@@ -506,18 +512,27 @@
     }
 
     .header-menu{
-        display: flex;
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        height: 100px;
         border-bottom: 1px solid #bdbdbd;
-        padding: 0 30px;
+        padding: 35px 30px;
         margin-bottom: 0;
+        transition: padding-bottom 150ms ease-out;
     }
 
     .header-menu h1{
         flex-shrink: 0;
         margin-bottom: 0;
+    }
+
+    .header-menu h1::before{
+        content: "\f0c9";
+        font-family: "Font Awesome 5 Free";
+        font-size: 1em;
+        display: inline-block;
+        padding-top: 1px;
+        margin-right: 10px;
     }
 
     .header-menu ul{
@@ -526,12 +541,32 @@
         font-size: 18px;
     }
 
-    .search-group .search-form{
-        flex-shrink: 0;
+    .header-category{
+        order: 2;
+        padding: 0;
     }
 
-    .search-group{
+    .header-category-item .header-sub-category{
+        top: 50px;
+        font-size: 15px;
+    }
+
+    .header-category-item.on .header-sub-category {
+        flex-direction: row;
+    }
+
+    .header-category-item .header-sub-category-item{
         margin-bottom: 0;
+    }
+
+    .header-menu .search-group{
+        order: 3;
+        margin-bottom: 0;
+    }
+
+    .header-menu .search-group .search-form{
+        margin-bottom: 0;
+        flex-shrink: 0;
     }
 
     .header-menu .search-group a {
@@ -540,7 +575,7 @@
         height: 30px;
     }
 
-    .search-group a::before{
+    .header-menu .search-group a::before{
         content: "\f007";
         font-family: "Font Awesome 5 Free";
         display: block;
@@ -549,13 +584,13 @@
         margin-bottom: 5px;
     }
 
-    .search-group a:last-child::before{
+    .header-menu .search-group a:last-child::before{
         content: "\f0ac";
         font-family: "Font Awesome 5 Free";
         font-weight: 900;
     }
 
-    .search-group .icon-desc{
+    .header-menu .search-group .icon-desc{
         color: #fff;
         font-size: 12px;
         font-weight: 300;
@@ -615,7 +650,7 @@
     }
 
     .ranking-item{
-        padding: 12px 0;
+        padding: 12px 10px;
     }
 
     /* Footer */
