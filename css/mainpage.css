@@ -43,6 +43,7 @@
 }
 
 /* Header */
+
 .header-top{
     padding: 9px 0;
     margin-bottom: 30px;
@@ -176,6 +177,81 @@
     z-index: 1;
 }
 
+/* Promotion */
+.promotion{
+    margin-top: 20px; /* header 스크롤 어느정도되면 fixed로 바꾸는거 js로 처리하기 */
+}
+
+.promotion-area{
+    position: relative;
+}
+
+.promotion h1{
+    display: none;
+}
+
+.promotion-item{
+    position: relative;
+    margin: 0 15px;
+    text-align: center;
+}
+
+.promotion-item-image{
+    width: 450px;
+    height: 405px;
+}
+
+.promotion-item-image img{
+    width: 100%;
+    height: auto;
+}
+
+.promotion-item .promotion-item-content{
+    position: absolute;
+    top: 78%;
+    width: 100%;
+    color: #fff;
+}
+
+.promotion-item:nth-child(2) .promotion-item-content h3,
+.promotion-item:nth-child(2) .promotion-item-content p{
+    /*color: #000;*/
+}
+
+.promotion-item .promotion-item-content h3{
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.promotion-item .promotion-item-content p{
+    margin-bottom: 30px;
+    font-size: 12px;
+    color: #fff;
+}
+
+.promotion-area .prev-button,
+.promotion-area .next-button{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 60px;
+    color: #999;
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+
+.promotion-area .prev-button{
+    left: 20px;
+    background-image: url("http://tkfile.yes24.com/imgNew/common/slide-dir-prev.png");
+}
+
+.promotion-area .next-button{
+    right: 20px;
+    background-image: url("http://tkfile.yes24.com/imgNew/common/slide-dir-next.png");
+}
+
 /* Product */
 .product{
     text-align: center;
@@ -236,6 +312,95 @@
 
 .product .card-content{
     color: #000;
+}
+
+/* Musical Only */
+.musical-only{
+    display: none;
+    width: 100%;
+    height: 300px;
+    color: #fff;
+    background-color: #000;
+}
+
+.musical-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding-left: 8%;
+    margin-right: 50px;
+}
+
+.musical-content h3{
+    font-size: 26px;
+}
+
+.musical-content h3,
+.musical-content .musical-content-desc strong{
+    font-weight: 500;
+}
+
+.musical-content h3,
+.musical-content .musical-content-desc{
+    margin-bottom: 20px;
+}
+
+.musical-content .musical-content-desc{
+    font-size: 14px;
+}
+
+.musical-content .musical-content-desc strong::before{
+    content: "#";
+}
+
+.musical-content .info-box{
+    max-width: 300px;
+    height: 120px;
+    padding: 16px 0;
+    margin-bottom: 40px;
+    border-top: 1px solid rgb(102, 102, 102);
+    border-bottom: 1px solid rgb(102, 102, 102);
+}
+
+.musical-content .info-box a{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.musical-content .info-box-image{
+    width: 86px;
+    height: 86px;
+    margin-right: 10px;
+    background-image: url("http://tkfile.yes24.com/Upload2/Display/202006/20200612/thumb2.jpg/dims/quality/70/");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.musical-content .info-box-desc p{
+    font-size: 12px;
+}
+
+.musical-content .info-box-desc p:first-child{
+    margin-bottom: 12px;
+}
+
+.musical-video{
+    display: none;
+}
+
+.musical-video .musical-video-content{
+    max-width: 711px;
+    height: 400px;
+}
+
+.musical-video iframe{
+    width: 100%;
+    height: 100%;
 }
 
 /* Ranking - ranking area */
@@ -449,6 +614,7 @@
 }
 
 .footer-copyright{
+    margin-bottom: 15px;
     font-size: 13px;
 }
 
@@ -457,12 +623,16 @@
     color: #999;
 }
 
+.footer .row:last-child .col-12:last-child{
+    display: flex;
+    justify-content: center;
+}
+
 .return-top-button{
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 50px;
-    height: 50px;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
     background-color: #999;
     opacity: 70%;
     cursor: pointer;
@@ -507,6 +677,17 @@
     }
 
     /* Header */
+    html{
+        position: relative;
+    }
+
+    .header{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
     .header-top{
         margin-bottom: 0;
     }
@@ -602,6 +783,11 @@
         color: #000;
     }
 
+    /* Promotion */
+    .promotion{
+        margin-top: 202px;
+    }
+
     /* Product */
     .section-title{
         height: 152px;
@@ -614,6 +800,39 @@
 
     .card:first-child{
         margin-right: 30px;
+    }
+
+    /* Musical Only */
+    .musical-only{
+        height: 400px;
+    }
+
+    .musical-content{
+        align-items: flex-start;
+        width: 42%;
+    }
+
+    .musical-content h3{
+        margin-bottom: 25px;
+        font-size: 40px;
+    }
+
+    .musical-content .musical-content-desc,
+    .musical-content .info-box{
+        margin-bottom: 40px;
+    }
+
+    .musical-content .musical-content-desc strong{
+        font-size: 18px;
+    }
+
+    .musical-content .info-box-desc p{
+        font-size: 14px;
+    }
+
+    .musical-video{
+        display: block;
+        width: 58%;
     }
 
     /* Ranking */
@@ -677,8 +896,11 @@
     }
 
     .footer .row:last-child .col-12:last-child{
-        display: flex;
         justify-content: flex-end;
+    }
+
+    .footer-category{
+        max-width: 620px;
     }
 
     .footer-category-item{
@@ -699,12 +921,22 @@
     }
 
     .footer-copyright{
+        margin-bottom: 0;
         color: #000;
     }
 
     .footer-logo,
     .footer-notice{
         display: block;
+    }
+
+    .return-top-button{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 50px;
+        height: 50px;
+        border-radius: 0;
     }
 
 
