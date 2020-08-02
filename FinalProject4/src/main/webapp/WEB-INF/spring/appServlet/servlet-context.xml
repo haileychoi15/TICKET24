@@ -142,7 +142,7 @@
 	<!-- ==== #18. bean으로 등록될 @Component 클래스가 위치하는 패키지명 지정하기 ====  -->
 	<!-- <context:component-scan base-package="com.sping.board" /> -->
 	
-	<context:component-scan base-package="com.spring.*" name-generator="com.spring.common.FullBeanNameGenerator"/>
+    <context:component-scan base-package="com.spring.*"/>
 	<!-- 앞으로 생성할 모든 컨트롤러, 서비스단, Aspect 등  모든 클래스들(*.java)은
 	         항상 com.test.* 패키지 안에서 생성되어져야만 스프링컨테이너에 의해 스캔되어 자동적으로 bean 으로 등록되어진다.
 	     bean 으로 등록되어진 객체들만이 스프링컨테이너에 의해 의존객체주입(Dependency Injection)되는 등 
