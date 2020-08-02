@@ -290,6 +290,93 @@
     color: #000;
 }
 
+/* Musical Only */
+.musical-only{
+    display: none;
+    width: 100%;
+    height: 400px;
+    color: #fff;
+    background-color: #000;
+}
+
+.musical-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 42%;
+    padding-left: 8%;
+    margin-right: 50px;
+}
+
+.musical-content h3{
+    font-size: 40px;
+    margin-bottom: 25px;
+}
+
+.musical-content h3,
+.musical-content .musical-content-desc strong{
+    font-weight: 500;
+}
+
+.musical-content .musical-content-desc{
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+.musical-content .musical-content-desc strong::before{
+    content: "#";
+}
+
+.musical-content .info-box{
+    max-width: 300px;
+    height: 120px;
+    padding: 16px 0;
+    margin-bottom: 40px;
+    border-top: 1px solid rgb(102, 102, 102);
+    border-bottom: 1px solid rgb(102, 102, 102);
+}
+
+.musical-content .info-box a{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.musical-content .info-box-image{
+    width: 86px;
+    height: 86px;
+    margin-right: 10px;
+    background-image: url("http://tkfile.yes24.com/Upload2/Display/202006/20200612/thumb2.jpg/dims/quality/70/");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.musical-content .info-box-desc p{
+    font-size: 14px;
+}
+
+.musical-content .info-box-desc p:first-child{
+    margin-bottom: 12px;
+}
+
+.musical-video{
+    width: 58%;
+}
+
+.musical-video .musical-video-content{
+    max-width: 711px;
+    height: 400px;
+}
+
+.musical-video iframe{
+    width: 100%;
+    height: 100%;
+}
+
+
+
 /* Ranking - ranking area */
 .ranking{
     padding: 40px 0;
@@ -689,6 +776,11 @@
         margin-right: 30px;
     }
 
+    /* Musical Only */
+    .musical-only{
+        display: flex;
+    }
+
     /* Ranking */
     .ranking{
         padding: 80px 0;
@@ -751,6 +843,10 @@
 
     .footer .row:last-child .col-12:last-child{
         justify-content: flex-end;
+    }
+
+    .footer-category{
+        max-width: 620px;
     }
 
     .footer-category-item{
