@@ -187,33 +187,31 @@
 }
 
 .promotion-item{
-    margin: 0 12px;
+    position: relative;
+    margin: 0 15px;
+    text-align: center;
+}
+
+.promotion-item-image{
+    width: 450px;
+    height: 405px;
+}
+
+.promotion-item-image img{
+    width: 100%;
+    height: auto;
 }
 
 .promotion-item .promotion-item-content{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    width: 450px;
-    height: 405px;
+    position: absolute;
+    top: 78%;
+    width: 100%;
     color: #fff;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
 }
 
-.promotion-item:first-child .promotion-item-content,
-.promotion-item:last-child .promotion-item-content{
-    background-image: url("http://tkfile.yes24.com/Upload2/Display/202007/20200721/genre_big_gmf2020.jpg/dims/quality/70/");
-}
-
-.promotion-item:nth-child(2) .promotion-item-content{
-    background-image: url("http://tkfile.yes24.com/Upload2/Display/201910/20191029/gmain_top_trot.jpg/dims/quality/70/");
-}
-
-.promotion-item:nth-child(3) .promotion-item-content{
-    background-image: url("http://tkfile.yes24.com/Upload2/Display/202007/20200716/gmain_top_36995.jpg/dims/quality/70/");
+.promotion-item:nth-child(2) .promotion-item-content h3,
+.promotion-item:nth-child(2) .promotion-item-content p{
+    /*color: #000;*/
 }
 
 .promotion-item .promotion-item-content h3{
