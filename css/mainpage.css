@@ -182,6 +182,10 @@
     margin-top: 20px; /* header 스크롤 어느정도되면 fixed로 바꾸는거 js로 처리하기 */
 }
 
+.promotion-area{
+    position: relative;
+}
+
 .promotion h1{
     display: none;
 }
@@ -224,6 +228,28 @@
     margin-bottom: 30px;
     font-size: 12px;
     color: #fff;
+}
+
+.promotion-area .prev-button,
+.promotion-area .next-button{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 60px;
+    color: #999;
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+
+.promotion-area .prev-button{
+    left: 20px;
+    background-image: url("http://tkfile.yes24.com/imgNew/common/slide-dir-prev.png");
+}
+
+.promotion-area .next-button{
+    right: 20px;
+    background-image: url("http://tkfile.yes24.com/imgNew/common/slide-dir-next.png");
 }
 
 /* Product */

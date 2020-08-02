@@ -4,6 +4,12 @@ window.addEventListener('DOMContentLoaded', () => {
     styleCategory();
     slidePromotion();
 
+    let returnTopButton = document.querySelector('.return-top-button');
+    returnTopButton.addEventListener('click', () => {
+
+        window.scrollTo({top:0, left:0, behavior:'smooth'});
+    });
+
 });
 
 function slidePromotion() {
@@ -42,10 +48,10 @@ function slidePromotion() {
                 promotionGroup.style.transition = '0ms';
                 promotionGroup.style.transform = 'translate3d(0px, 0px, 0px)';
 
-            },201);
+            },251);
             count = 0;
         }
-    },2000);
+    },5000);
 }
 
 function styleRanking() {
