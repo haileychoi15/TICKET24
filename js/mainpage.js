@@ -57,13 +57,23 @@ function styleCategory() {
 
                 if (category === selectedCategory) {
                     parent.classList.add('on');
-                    headerMenu.style.paddingBottom = '75px';
+
+                    let body = document.querySelector('body');
+                    let width = Number(window.getComputedStyle(body).width.replace("px",""));
+
+                    if(width >= 768){ // 데스크탑 버전
+                        headerMenu.style.paddingBottom = '75px';
+                    }
+                    else{ // 모바일 버전
+                        headerMenu.style.paddingBottom = '100px';
+                    }
                 } else {
                     parent.classList.remove('on');
                 }
             });
         }
     });
+
 
     headerMenu.addEventListener('mouseleave', (event) => {
 
@@ -72,9 +82,16 @@ function styleCategory() {
 
             let parent = item.closest('.header-category-item');
             parent.classList.remove('on');
-            currentTarget.style.paddingBottom = '35px';
 
-            // 모바일 버전일때는 0px !!!!!
+            let body = document.querySelector('body');
+            let width = Number(window.getComputedStyle(body).width.replace("px",""));
+
+            if(width >= 768){ // 데스크탑 버전
+                currentTarget.style.paddingBottom = '35px';
+            }
+            else{ // 모바일 버전
+                currentTarget.style.paddingBottom = '0';
+            }
 
         });
 

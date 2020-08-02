@@ -43,6 +43,7 @@
 }
 
 /* Header */
+
 .header-top{
     padding: 9px 0;
     margin-bottom: 30px;
@@ -174,6 +175,57 @@
     color: #fff;
     background-color: rgba(0,0,0,0.8);
     z-index: 1;
+}
+
+/* Promotion */
+.promotion{
+    margin-top: 20px; /* header 스크롤 어느정도되면 fixed로 바꾸는거 js로 처리하기 */
+}
+
+.promotion h1{
+    display: none;
+}
+
+.promotion-item{
+    margin: 0 12px;
+}
+
+.promotion-item .promotion-item-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 450px;
+    height: 405px;
+    color: #fff;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.promotion-item:first-child .promotion-item-content,
+.promotion-item:last-child .promotion-item-content{
+    background-image: url("http://tkfile.yes24.com/Upload2/Display/202007/20200721/genre_big_gmf2020.jpg/dims/quality/70/");
+}
+
+.promotion-item:nth-child(2) .promotion-item-content{
+    background-image: url("http://tkfile.yes24.com/Upload2/Display/201910/20191029/gmain_top_trot.jpg/dims/quality/70/");
+}
+
+.promotion-item:nth-child(3) .promotion-item-content{
+    background-image: url("http://tkfile.yes24.com/Upload2/Display/202007/20200716/gmain_top_36995.jpg/dims/quality/70/");
+}
+
+.promotion-item .promotion-item-content h3{
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.promotion-item .promotion-item-content p{
+    margin-bottom: 30px;
+    font-size: 12px;
+    color: #fff;
 }
 
 /* Product */
@@ -449,6 +501,7 @@
 }
 
 .footer-copyright{
+    margin-bottom: 15px;
     font-size: 13px;
 }
 
@@ -457,12 +510,16 @@
     color: #999;
 }
 
+.footer .row:last-child .col-12:last-child{
+    display: flex;
+    justify-content: center;
+}
+
 .return-top-button{
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 50px;
-    height: 50px;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
     background-color: #999;
     opacity: 70%;
     cursor: pointer;
@@ -507,6 +564,17 @@
     }
 
     /* Header */
+    html{
+        position: relative;
+    }
+
+    .header{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
     .header-top{
         margin-bottom: 0;
     }
@@ -602,6 +670,11 @@
         color: #000;
     }
 
+    /* Promotion */
+    .promotion{
+        margin-top: 202px;
+    }
+
     /* Product */
     .section-title{
         height: 152px;
@@ -677,7 +750,6 @@
     }
 
     .footer .row:last-child .col-12:last-child{
-        display: flex;
         justify-content: flex-end;
     }
 
@@ -699,12 +771,22 @@
     }
 
     .footer-copyright{
+        margin-bottom: 0;
         color: #000;
     }
 
     .footer-logo,
     .footer-notice{
         display: block;
+    }
+
+    .return-top-button{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 50px;
+        height: 50px;
+        border-radius: 0;
     }
 
 
