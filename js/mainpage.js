@@ -101,15 +101,22 @@ function styleCategory() {
 
         let ul = event.currentTarget;
         let list = ul.querySelectorAll('.header-category-item');
-        console.log('list', list);
+
+        // 뮤지컬 카테고리 클릭 했을 때만 musicalOnly 나타나게 하기
+        let musicalOnly = document.querySelector('.musical-only');
 
         list.forEach((item) => {
             item.classList.remove('active');
+            musicalOnly.style.display = 'none';
         });
 
         let target = event.target;
         let parent = target.closest('.header-category-item');
         parent.classList.add('active');
+
+        if(target.innerText === '뮤지컬'){
+            musicalOnly.style.display = 'flex';
+        }
 
     });
 

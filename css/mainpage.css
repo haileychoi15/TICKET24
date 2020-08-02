@@ -294,7 +294,7 @@
 .musical-only{
     display: none;
     width: 100%;
-    height: 400px;
+    height: 300px;
     color: #fff;
     background-color: #000;
 }
@@ -303,14 +303,14 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    width: 42%;
+    align-items: center;
+    width: 100%;
     padding-left: 8%;
     margin-right: 50px;
 }
 
 .musical-content h3{
-    font-size: 40px;
-    margin-bottom: 25px;
+    font-size: 26px;
 }
 
 .musical-content h3,
@@ -318,9 +318,13 @@
     font-weight: 500;
 }
 
+.musical-content h3,
 .musical-content .musical-content-desc{
-    margin-bottom: 40px;
-    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.musical-content .musical-content-desc{
+    font-size: 14px;
 }
 
 .musical-content .musical-content-desc strong::before{
@@ -354,7 +358,7 @@
 }
 
 .musical-content .info-box-desc p{
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .musical-content .info-box-desc p:first-child{
@@ -362,7 +366,7 @@
 }
 
 .musical-video{
-    width: 58%;
+    display: none;
 }
 
 .musical-video .musical-video-content{
@@ -374,8 +378,6 @@
     width: 100%;
     height: 100%;
 }
-
-
 
 /* Ranking - ranking area */
 .ranking{
@@ -778,7 +780,35 @@
 
     /* Musical Only */
     .musical-only{
-        display: flex;
+        height: 400px;
+    }
+
+    .musical-content{
+        align-items: flex-start;
+        width: 42%;
+    }
+
+    .musical-content h3{
+        margin-bottom: 25px;
+        font-size: 40px;
+    }
+
+    .musical-content .musical-content-desc,
+    .musical-content .info-box{
+        margin-bottom: 40px;
+    }
+
+    .musical-content .musical-content-desc strong{
+        font-size: 18px;
+    }
+
+    .musical-content .info-box-desc p{
+        font-size: 14px;
+    }
+
+    .musical-video{
+        display: block;
+        width: 58%;
     }
 
     /* Ranking */
