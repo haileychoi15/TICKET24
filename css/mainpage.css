@@ -415,6 +415,14 @@
     margin-right: 3px;
 }
 
+.musical-content .info-box-desc p:last-child::after{
+    content: "\f0da";
+    font-family: "Font Awesome 5 Free";
+    font-size: 0.8em;
+    font-weight: 900;
+    margin-left: 3px;
+}
+
 .musical-video{
     display: none;
 }

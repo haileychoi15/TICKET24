@@ -1,0 +1,98 @@
+/* Category */
+.category .row:first-child {
+    text-align: center;
+}
+
+.category .main-category{
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.category .main-category,
+.category .sub-category button{
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.category .main-category:after,
+.category .sub-category button:after{
+    font-family: "Font Awesome 5 Free";
+    font-size: 0.8em;
+    font-weight: 900;
+    margin: 0 10px;
+}
+
+.category .main-category:after{
+    display: none;
+    content: "\f054";
+    color: #ddd;
+}
+
+.category .sub-category button{
+    display: none;
+}
+
+.category .sub-category button:after{
+    content: "\f078";
+}
+
+.category .sub-category-box ul{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.category .sub-category-box-item{
+    padding: 2% 3%;
+    border: 1px solid #ec7d2c;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+}
+
+
+
+
+
+
+@media screen and (min-width: 768px){
+    .category .main-category{
+        margin-bottom: 0;
+    }
+
+    .category .main-category:after{
+        display: block;
+        content: "\f054";
+        color: #ddd;
+    }
+
+    .category .main-category,
+    .category .sub-category button{
+        font-size: 45px;
+        font-weight: 600;
+    }
+
+    .category .sub-category{
+        position: relative;
+    }
+
+    .category .sub-category button{
+        display: inline-block;
+        padding-left: 10%;
+        color: #ec7d2c;
+        background-color: rgba(0,0,0,0);
+        cursor: pointer;
+    }
+
+    .category .sub-category-box{
+        position: absolute;
+        top: 65px;
+        left: 0;
+        max-width: 388px;
+        max-height: 236px;
+        font-size: 24px;
+    }
+
+}
