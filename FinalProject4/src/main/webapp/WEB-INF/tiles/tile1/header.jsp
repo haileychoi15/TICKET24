@@ -27,6 +27,13 @@
 	//System.out.println("serverName : " + serverName);
 	//serverName : http://192.168.50.65:9090 
 %>
+<script>
+	function payPopUp() {
+		var url = "<%=ctxPath%>/payPopUp.action";
+		var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, status = no";
+		window.open(url, "", option);
+	}
+</script>
 <div align="center">
 	<ul class="nav nav-tabs mynav">
 		<li class="dropdown"><a class="dropdown-toggle"
@@ -83,6 +90,7 @@
 			data-toggle="dropdown" href="#">제품정보 <span class="caret"></span></a>
 			<ul class="dropdown-menu">
 				<li><a href="<%=ctxPath%>/product/listProduct.action">제품목록</a></li>
+				<li><span onclick="javascript:payPopUp();" style="cursor: pointer;">결제창</span></li>
 			</ul>
 		</li>
 	
