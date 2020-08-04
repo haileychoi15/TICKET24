@@ -55,6 +55,12 @@
 	<definition name="*.notiles" extends="layout-notiles">
 		<put-attribute name="content" value="/WEB-INF/views/notiles/{1}.jsp"/>
 	</definition>
+	<definition name="*/*.notiles" extends="layout-notiles">
+		<put-attribute name="content" value="/WEB-INF/views/notiles/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="*/*/*.notiles" extends="layout-notiles">
+		<put-attribute name="content" value="/WEB-INF/views/notiles/{1}/{2}/{3}.jsp"/>
+	</definition>
 	<!-- ==== tiles 를 사용하지 않는 레이아웃 설정 끝 ==== -->
 	
 </tiles-definitions>

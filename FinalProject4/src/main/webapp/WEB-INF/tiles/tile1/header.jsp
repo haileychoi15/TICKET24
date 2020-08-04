@@ -28,8 +28,8 @@
 	//serverName : http://192.168.50.65:9090 
 %>
 <script>
-	function payPopUp() {
-		var url = "<%=ctxPath%>/payPopUp.action";
+	function reservePopUp() {
+		var url = "<%=ctxPath%>/reservePopUp.action";
 		var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, status = no";
 		window.open(url, "", option);
 	}
