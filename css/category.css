@@ -15,7 +15,7 @@
     align-items: center;
 }
 
-.sub-category button{
+.sub-category > button{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,7 +38,7 @@
     border-radius: 50%;
 }
 
-.sub-category button .fas{
+.sub-category > button .fas{
     font-size: 0.9em;
 }
 
@@ -61,8 +61,13 @@
     padding: 5px 0;
 }
 
-.sub-category-box-item.active,
-.sub-category-box-item:hover{
+.sub-category-box-item button{
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.sub-category-box-item.active button,
+.sub-category-box-item:hover button{
     color: #ec7d2c;
 }
 
