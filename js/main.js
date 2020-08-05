@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
     styleRanking();
     styleCategory();
     slidePromotion();
+    styleUserBox();
 
     let returnTopButton = document.querySelector('.return-top-button');
     returnTopButton.addEventListener('click', () => {
@@ -11,6 +12,26 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+function styleUserBox() {
+
+    let userButton = document.querySelector('.user-button');
+    userButton.addEventListener('click',(event) => {
+
+        let userBox = event.currentTarget.querySelector('.user-box');
+
+        if(userBox.classList.contains('hide')){
+
+            userBox.style.display = 'flex';
+            userBox.classList.replace('hide','show');
+        }
+        else{
+            userBox.style.display = 'none';
+            userBox.classList.replace('show','hide');
+        }
+
+    });
+}
 
 function slidePromotion() {
 

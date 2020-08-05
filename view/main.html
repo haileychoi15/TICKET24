@@ -22,10 +22,8 @@
                 <a href="https://yes24livehall.com/" target="_blank">예스24라이브홀</a>
                 <a href="https://yes24stage.com/" target="_blank">예스24스테이지</a>
             </div>
-            <div class="header-login-group">
-                <a href="#">로그인</a>
-                <a href="#">마이페이지</a>
-                <a href="#">고객센터</a>
+            <div class="header-global">
+                GLOBAL
             </div>
         </div>
         <nav class="header-menu">
@@ -139,14 +137,38 @@
             <div class="search-group">
                 <form action="#" method="GET" class="search-form">
                     <input type="text" placeholder="">
-                    <button type="submit">검색</button>
+                    <button type="submit" aria-label="Search"></button>
                 </form>
-                <a href="#">
-                    <strong class="icon-desc">MY 티켓</strong>
-                </a>
-                <a href="#">
-                    <strong class="icon-desc">GLOBAL</strong>
-                </a>
+                <button type="button" class="user-button" aria-label="User account">
+                    <span></span>
+                    <ul class="user-box hide">
+                        <li class="user-box-item">
+                            <a href="">
+                                회원가입
+                            </a>
+                        </li>
+                        <li class="user-box-item">
+                            <a href="">
+                                로그인
+                            </a>
+                        </li>
+                        <li class="user-box-item">
+                            <a href="">
+                                마이티켓
+                            </a>
+                        </li>
+                        <li class="user-box-item">
+                            <a href="">
+                                마이페이지
+                            </a>
+                        </li>
+                        <li class="user-box-item">
+                            <a href="">
+                                고객센터
+                            </a>
+                        </li>
+                    </ul>
+                </button>
             </div>
         </nav>
     </header>
