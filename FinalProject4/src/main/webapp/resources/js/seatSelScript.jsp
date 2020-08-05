@@ -1,15 +1,17 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<script>
 window.resizeTo(850, 617);
 
 
 window.onload = function () {
-
-	alert("${payMap.date}");
 	
     // 상단 관람일/회차 변경
     let changeDate = document.getElementById('changeDate');
     let changeRound = document.getElementById('changeRound');
 
-    changeDate.innerHTML += '<option></option>';
+    
+   	changeDate.innerHTML += '<option>${payMap.date}</option>';
     changeRound.innerHTML += '<option>[1회] 16시 00분</option>';
 
     // 숫자 형식
@@ -94,10 +96,10 @@ window.onload = function () {
     let showLocation = document.getElementById('showLocation');
     let showGrade = document.getElementById('showGrade');
     let showTime = document.getElementById('showTime');
-    showName.innerHTML = '뮤지컬 ＜오페라의 유령＞ 월드투어－대구 （The Phantom of the Opera)';
+    showName.innerHTML = '${showvo.prod_title}';
     showLocation.innerHTML = '인터파크홀';
-    showGrade.innerHTML = '만 13세 이상';
-    showTime.innerHTML = '120분';
+    showGrade.innerHTML = '만 ${showvo.info_grade}';
+    showTime.innerHTML = '${showvo.info_run_time}';
 
     // 좌석 클릭 이벤트
     for(let i=0; i<eachSeat.length; i++) {
@@ -266,3 +268,4 @@ function payment() {
     else
         alert('취소 수수료/취소 기한 및 제 3자 정보 제공 내용에 동의하셔야만 \n결제가 가능합니다.');
 }
+</script>

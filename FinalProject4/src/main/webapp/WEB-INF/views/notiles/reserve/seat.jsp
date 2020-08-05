@@ -281,7 +281,7 @@
                         <td rowspan="2">
                             <img src='http://tkfile.yes24.com/upload2/PerfBlog/202006/20200625/20200625-37085_1.jpg' width='75px' height='105px'>
                         </td>
-                        <td><h4>뮤지컬 ＜오페라의 유령＞ 월드투어－대구 （The Phantom of the Opera)</h4></td>
+                        <td><h4>${showvo.prod_title}</h4></td>
                     </tr>
                     <tr>
                         <td>2020.08.20 ~ 2020.09.10<br>블루스퀘어 인터파크홀</td>
@@ -357,6 +357,7 @@
             <button id="nextStep" onclick="payment()">다음 단계</button>
         </div>
     </div>
+    <!-- <script src="resources/js/seatSelScript2.js"></script> -->
+    <jsp:include page="../../../../resources/js/seatSelScript.jsp"/>
 </body>
-<script src="resources/js/seatSelScript2.js"></script>
 </html>
