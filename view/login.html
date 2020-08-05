@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./grid.min.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-image"></div>
+        <h1>TICKET24 <br/> 로그인</h1>
+    </header>
+    <section class="login">
+        <div class="login-area">
+            <form class="login-form">
+                <label for="id" >아이디</label>
+                <input name="userID" id="id" type="text" maxlength="20" />
+                <label for="password" >비밀번호</label>
+                <input name="userPW" id="password" type="text" maxlength="20" />
+                <div class="checkbox-group">
+                    <input id="keep-login" type="checkbox" value="로그인상태유지">
+                    <label for="keep-login">로그인 상태 유지</label>
+                    <input id="save-login" type="checkbox" value="아이디 저장">
+                    <label for="save-login">아이디 저장</label>
+                </div>
+                <button type="submit" class="login-button">로그인</button>
+            </form>
+            <div class="find-id">
+                <a href="">아이디 찾기</a>
+                <a href="">비밀번호 찾기</a>
+            </div>
+            <div class="other-login">
+                <button type="button">
+                    <span class="logo-icon naver-logo-icon"></span>
+                    <span>네이버 아이디로 로그인</span>
+                </button>
+                <button type="button">
+                    <span class="logo-icon kakao-logo-icon"></span>
+                    <span>카카오 아이디로 로그인</span>
+                </button>
+            </div>
+        </div>
+        <button type="button" class="register-button">회원가입</button>
+    </section>
+    <footer class="footer">Copyright © YES24 Corp. All Rights Reserved.</footer>
+
+</body>
+</html>
