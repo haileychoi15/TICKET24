@@ -28,6 +28,7 @@ button{
 
 .header h1{
     font-size: 18px;
+    font-weight: 600;
     margin-bottom: 24px;
 }
 
@@ -63,7 +64,12 @@ button{
 
 .login .login-area .login-form .checkbox-group label{
     margin: 0 7px 0 3px;
-    font-size: 13px;
+    font-size: 12px;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"]{
+    width: 13px;
+    height: 13px;
 }
 
 .login .login-area .login-form .login-button{
@@ -72,13 +78,13 @@ button{
     border: 1px solid #d96f1c;
     border-radius: 6px;
     margin-bottom: 15px;
-    font-size: 15px;
+    font-size: 14px;
     color: #fff;
     background-color: #ec7d2c;
 }
 
 .login .login-area .find-id{
-    font-size: 13px;
+    font-size: 12px;
     margin-bottom: 20px;
 }
 
@@ -121,22 +127,38 @@ button{
 }
 
 .login .login-area .other-login button .kakao-logo-icon{
-    border: 1px solid rgb(255, 216, 26);
+    border-right: 1px solid rgb(255, 216, 26);
     border-radius: 3px;
     background-image: url("../img/kakao-logo.png");
 }
 
-.login .register-button{
+.login .register-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 308px;
     height: 53px;
     border: 1px solid rgb(216, 222, 226);
     border-radius: 5px;
     margin-bottom: 50px;
-    font-size: 15px;
+    font-size: 13px;
     background-color: rgb(249, 249, 249);
 }
 
+.login .register-box strong{
+    font-weight: 500;
+}
+
+.login .register-box a{
+    color: #d96f1c;
+}
+
+.login .register-box a:hover{
+    text-decoration: #d96f1c underline;
+}
+
 .footer{
+    margin-bottom: 15px;
     font-size: 12px;
     color: #999;
 }
