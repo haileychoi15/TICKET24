@@ -27,7 +27,7 @@ button{
 }
 
 .header h1{
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     margin-bottom: 24px;
 }
@@ -41,7 +41,8 @@ button{
     background-color: #fff;
 }
 
-.login .login-area .login-form input[type="text"]{
+.login .login-area .login-form input[type="text"],
+.login .login-area .login-form input[type="password"]{
     display: block;
     width: 100%;
     height: 32px;
@@ -57,9 +58,8 @@ button{
 }
 
 .login .login-area .login-form .checkbox-group{
-    display: flex;
+    position: relative;
     margin-bottom: 20px;
-    align-items: center;
 }
 
 .login .login-area .login-form .checkbox-group label{
@@ -68,17 +68,68 @@ button{
 }
 
 .login .login-area .login-form .checkbox-group input[type="checkbox"]{
-    width: 13px;
-    height: 13px;
+    display: none;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"] + label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    background-color: #fff;
+    cursor: pointer;
+    float: left;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"] + label::before{
+    content: "\f00c";
+    font-family: "Font Awesome 5 Free";
+    font-size: 0.8em;
+    font-weight: 900;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    margin: 1px 0 0 1px; /* 로그인 상태 유지 체크박스 */
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"]:checked + label{
+    border: 1px solid #d96f1c;
+    background-color: #d96f1c;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"] + label span{
+    position: absolute;
+    top: 0;
+    left: 127px; /* 아이디 저장 */
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"]:first-child + label{
+    margin-right: 90px; /* 아이디 저장 체크박스 */
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"]:first-child + label span{
+    left: 20px; /* 로그인 상태 유지 */
+}
+
+
+
+.login .login-area .login-form .checkbox-group::after{
+    content: "";
+    display: block;
+    clear: both;
 }
 
 .login .login-area .login-form .login-button{
     width: 100%;
-    height: 32px;
+    height: 40px;
     border: 1px solid #d96f1c;
     border-radius: 6px;
     margin-bottom: 15px;
     font-size: 14px;
+    font-weight: 600;
     color: #fff;
     background-color: #ec7d2c;
 }
@@ -98,7 +149,7 @@ button{
     display: flex;
     align-items: center;
     width: 100%;
-    height: 32px;
+    height: 35px;
     border: 1px solid rgb(216, 222, 226);
     border-radius: 6px;
     padding: 0;
@@ -114,8 +165,8 @@ button{
 
 .login .login-area .other-login button .logo-icon{
     display: inline-block;
-    width: 32px;
-    height: 32px;
+    width: 35px;
+    height: 35px;
     margin-right: 40px;
     background-repeat: no-repeat;
     background-size: cover;
