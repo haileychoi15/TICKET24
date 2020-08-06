@@ -4,6 +4,7 @@ body{
     flex-direction: column;
     align-items: center;
     background-color: rgb(249, 249, 249);
+
 }
 
 button{
@@ -194,7 +195,7 @@ button{
     background-image: url("../img/kakao-logo.png");
 }
 
-.login .register-box{
+.join-box{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -207,15 +208,15 @@ button{
     background-color: rgb(249, 249, 249);
 }
 
-.login .register-box strong{
+.join-box strong{
     font-weight: 500;
 }
 
-.login .register-box a{
+.join-box a{
     color: #d96f1c;
 }
 
-.login .register-box a:hover{
+.join-box a:hover{
     text-decoration: #d96f1c underline;
 }
 
