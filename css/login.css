@@ -102,6 +102,11 @@ button{
 }
 
 .login .login-area .login-form .checkbox-group input[type="checkbox"]:checked + label{
+    border: 1px solid #f17311;
+    background-color: #f17311;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"]:checked + label:hover{
     border: 1px solid #d96f1c;
     background-color: #d96f1c;
 }
