@@ -19,6 +19,14 @@ window.addEventListener('DOMContentLoaded',() => {
 
     });
 
+    //  동의 버튼 눌렀을 때 이벤트
+    agreeButton.addEventListener('click', ()=> {
+
+        document.querySelector('section.agree').style.display = 'none';
+        document.querySelector('main.join').style.display = 'block';
+
+    });
+
 });
 
 function CheckEveryBox(target, agreeAllBox, agreeButton) {
@@ -41,15 +49,15 @@ function CheckEveryBox(target, agreeAllBox, agreeButton) {
 
         if(count === agreeBoxes.length){ // 체크박스가 다 선택되면
             agreeAllBox.checked = true; // 전체동의 체크
-            agreeButton.style.backgroundColor = '#d96f1c'; // 버튼 able
+            agreeButton.disabled = false; // 버튼 able
         }
         else{ // 체크박스가 하나라도 덜 선택되면
             agreeAllBox.checked = false; // 전체동의 미체크
 
             if(mustCount === 3){ // 그런데 필수 항목 다 체크했으면
-                agreeButton.style.backgroundColor = '#d96f1c'; //버튼 able
+                agreeButton.disabled = false; //버튼 able
             }else{ // 필수 항목 다 체크 안했으면
-                agreeButton.style.backgroundColor = '#ddd'; // 버튼 disable
+                agreeButton.disabled = 'disabled'; // 버튼 disable
             }
         }
 
@@ -65,10 +73,10 @@ function ChangeOtherBoxStatus(status,agreeButton) {
     });
 
     if(status){
-        agreeButton.style.backgroundColor = '#d96f1c';
+        agreeButton.disabled = false;
     }
     else{
-        agreeButton.style.backgroundColor = '#ddd';
+        agreeButton.disabled = 'disabled';
     }
 
 }

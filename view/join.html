@@ -68,18 +68,14 @@
                 <p>14세 미만 청소년은 가입 불가합니다.</p>
             </li>
             <li class="notice">
-                <p>LINE WORKS의 약관을 제공받고 그 내용을 충분히 숙지하였음을 확인하고 개설을 신청합니다.</p>
+                <p>TICKET24의 약관을 제공받고 그 내용을 충분히 숙지하였음을 확인하고 계정을 생성합니다.</p>
             </li>
         </ul>
-        <button type="button" class="agree-button">
-            <a href="#">
-                동의합니다.
-            </a>
-        </button>
+        <button type="button" class="agree-button" disabled="disabled">동의합니다.</button>
     </section>
     <main class="join">
         <div class="join-area">
-            <form class="join-from">
+            <form class="join-form">
                 <div class="input-group id-group">
                     <label for="userid">아이디</label>
                     <input name="userID" id="userid" type="text" />
@@ -98,12 +94,14 @@
                     <input name="email" id="email" type="email" />
                 </div>
                 <div class="input-group mobile-group">
-                    <label for="mobile1">연락처</label>
-                    <input name="mobile" id="mobile1" type="mobile" />
-                    <span aria-label="Dash">—</span>
-                    <input name="mobile" id="mobile2" type="mobile" />
-                    <span aria-label="Dash">—</span>
-                    <input name="mobile" id="mobile3" type="mobile" />
+                        <label for="mobile1">연락처</label>
+                    <div class="mobile-input-group">
+                        <input name="mobile" id="mobile1" type="mobile" />
+                        <span aria-label="Dash">—</span>
+                        <input name="mobile" id="mobile2" type="mobile" />
+                        <span aria-label="Dash">—</span>
+                        <input name="mobile" id="mobile3" type="mobile" />
+                    </div>
                 </div>
                 <div class="input-group postcode-group">
                     <label for="postcode">우편번호</label>
@@ -118,18 +116,11 @@
                     <label for="address-detail">상세주소</label>
                     <input name="address-detail" id="address-detail" type="text"/>
                 </div>
-                <div class="checkbox-group">
-                    <input name="is-sms" id="is-sms" type="checkbox" value="1" checked />
-                    <label for="is-sms">sms 수신동의</label>
-                    <input name="is-email" id="is-email" type="checkbox" value="1" checked />
-                    <label for="is-email">email 수신동의</label>
-                    <button class="checkbox-group-help" aria-label="More information about marketing policy">
-                    </button>
-                </div>
                 <button type="submit" class="join-button">회원가입</button>
             </form>
         </div>
     </main>
+    <footer class="footer">Copyright © WORKS MOBILE Corp. All Rights Reserved.</footer>
     <script src="../js/join.js"></script>
     <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
     <!-- autoload=false 자동으로 로딩되는 것을 막는다.-->
