@@ -1,4 +1,5 @@
 body{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -58,20 +59,25 @@ button{
 }
 
 .login .login-area .login-form .checkbox-group{
-    position: relative;
     margin-bottom: 20px;
 }
 
 .login .login-area .login-form .checkbox-group label{
     margin: 0 7px 0 3px;
-    font-size: 12px;
 }
 
 .login .login-area .login-form .checkbox-group input[type="checkbox"]{
-    display: none;
+    position: absolute;
+    display: block;
+    top: 100px;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1000;
 }
 
 .login .login-area .login-form .checkbox-group input[type="checkbox"] + label{
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -87,12 +93,12 @@ button{
 .login .login-area .login-form .checkbox-group input[type="checkbox"] + label::before{
     content: "\f00c";
     font-family: "Font Awesome 5 Free";
-    font-size: 0.8em;
+    font-size: 0.6em;
     font-weight: 900;
     width: 100%;
     height: 100%;
     color: #fff;
-    margin: 1px 0 0 1px; /* 로그인 상태 유지 체크박스 */
+    margin: 1px 0 0 1px; /* 체크박스 안의 체크 위치 */
 }
 
 .login .login-area .login-form .checkbox-group input[type="checkbox"]:checked + label{
@@ -102,19 +108,15 @@ button{
 
 .login .login-area .login-form .checkbox-group input[type="checkbox"] + label span{
     position: absolute;
+    width: 90px;
     top: 0;
-    left: 127px; /* 아이디 저장 */
+    left: 17px; /* 체크박스 라벨명 */
+    font-size: 12px;
 }
 
 .login .login-area .login-form .checkbox-group input[type="checkbox"]:first-child + label{
-    margin-right: 90px; /* 아이디 저장 체크박스 */
+    margin-right: 95px; /* 아이디 저장 체크박스 */
 }
-
-.login .login-area .login-form .checkbox-group input[type="checkbox"]:first-child + label span{
-    left: 20px; /* 로그인 상태 유지 */
-}
-
-
 
 .login .login-area .login-form .checkbox-group::after{
     content: "";
@@ -154,9 +156,13 @@ button{
     border-radius: 6px;
     padding: 0;
     margin-bottom: 5px;
-    font-size: 14px;
     background-color: #fff;
     overflow: hidden;
+}
+
+.login .login-area .other-login button strong{
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .login .login-area .other-login button:last-child{
