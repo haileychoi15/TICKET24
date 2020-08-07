@@ -41,12 +41,28 @@ public class PayController {
 		mav.addObject("loginuser", loginuser);
 		
 		String showNum = request.getAttribute("showNum");
+		ShowVO show = service.getShowRsvInfo(showNum); // 공연 전체 정보를 집어넣을 필요 있을까? reserveShowVO 따로 만들어도 될듯함.
+		
+		mav.addObject("show", show);
 */
+		HashMap<String, String> payMap = new HashMap<>();
+		
+		String date = "2020. 08. 04. 화요일";
+		String time = "1회차 9시공연";
+		String userid = "leess";
+		String passwd = "qwer1234$";
+		
+		payMap.put("date", date);
+		payMap.put("time", time);
+		payMap.put("userid", userid);
+		payMap.put("passwd", passwd);
+		
+		mav.addObject("payMap", payMap);
 		
 		String showNum = "1";
-		HashMap<String, String> revShowInfo = new HashMap<>();
-		revShowInfo = service.revShowInfo(showNum);
-		mav.addObject("revShowInfo", revShowInfo);
+		ShowVO showvo = service.getShowRsvInfo(showNum);
+		
+		mav.addObject("showvo", showvo);
 		
 		mav.setViewName("reserve/seat.notiles");
 		return mav;
