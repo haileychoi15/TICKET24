@@ -3,4 +3,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="finalproject4">
+
+	<resultMap type="HashMap" id="resShowInfo">
+		<result property="prod_id"			column="prod_id"		javaType="String"/>
+		<result property="prod_img"			column="prod_img"		javaType="String"/>
+		<result property="prod_title"		column="prod_title"		javaType="String"/>
+		<result property="info_grade"		column="info_grade"		javaType="String"/>
+		<result property="info_run_time"	column="info_run_time"		javaType="String"/>
+		<result property="date_showday"		column="date_showday"		javaType="String"/>
+		<result property="date_showtime"	column="date_showtime"		javaType="String"/>
+		<result property="map_name"			column="map_name"		javaType="String"/>
+	</resultMap>
+	<select id="getShowRsvInfo" resultMap="resShowInfo" parameterType="String">
+		select P.prod_id, P.prod_img, P.prod_title, P.info_grade, P.info_run_time, D.date_showday, D.date_showtime, M.map_name 
+		from view_rev_showInfo
+		where prod_id = #{showNum}
+	</select>
+
 </mapper>
