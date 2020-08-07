@@ -3,18 +3,31 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: rgb(249, 249, 249);;
 }
 
 .header{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 90%;
+    padding: 0 20px;
+}
+
+.header .header-top{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    margin: 30px 0;
 }
 
 .header .logo-image{
-    width: 60px;
-    height: 60px;
-    margin: 32px 20px 24px 0;
+    display: none;
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
     background-image: url("../img/ticket.png");
     background-repeat: no-repeat;
     background-size: contain;
@@ -28,12 +41,91 @@ body{
     font-weight: 600;
 }
 
+.header .step-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-bottom: 20px;
+}
+
+.header .step-group .agree-step{
+    position: relative;
+    margin-right: 40px;
+
+}
+.header .step-group .agree-step::after{
+    content: "\f0a9";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 25px;
+    left: 62px;
+    margin: 0 10px;
+    color: #ddd;
+}
+
+.header .step-group span{
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+}
+
+.header .step-group span::after{
+    font-family: "Font Awesome 5 Free";
+    font-size: 2em;
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ddd;
+}
+
+.header .step-group .agree-step span::after{
+    content: "\f15c";
+}
+
+.header .step-group .join-step span::after{
+    content: "\f4ff";
+    margin-left: 3px;
+}
+
+.header .step-group.step1 .agree-step span::after{
+    color: #d96f1c;
+}
+
+.header .step-group.step1 .join-step span::after{
+    color: #ddd;
+}
+
+.header .step-group.step2 .agree-step span::after{
+    color: #ddd;
+}
+
+.header .step-group.step2 .join-step span::after{
+    color: #d96f1c;
+}
+
+
+.header .step-group strong{
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
 .agree,
 .join{
     width: 90%;
-    /*border: 1px solid #000;*/
-    padding: 20px;
+    border: 1px solid rgb(216, 222, 226);
+    border-radius: 8px;
+    padding: 30px;
     margin-bottom: 50px;
+    background-color: #fff;
 }
 
 /* Agree */
@@ -111,7 +203,6 @@ body{
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    margin-right: 10px;
     color: #ddd;
     background-color: #fff;
 }
@@ -187,6 +278,20 @@ body{
     padding-left: 10px;
 }
 
+.join .join-area .join-form .input-group input::placeholder{
+    font-size: 12px;
+    color: #a3a3a3;
+}
+
+.join .join-area .join-form .input-group input:focus{
+    border: 1px solid #000;
+}
+
+.join .join-area .join-form .postcode-group input:focus,
+.join .join-area .join-form .address-group input:focus{
+    border: 1px solid rgb(216, 222, 226);
+}
+
 .join .join-area .join-form .input-group label{
     position: relative;
     display: block;
@@ -256,18 +361,26 @@ body{
     font-weight: 900;
 }
 
-.join .join-area .join-form .address-button{
-    height: 30px;
+.join .join-area .join-form .postcode-group{
+    position: relative;
+    margin-top: 30px;
+}
+
+.join .join-area .join-form .postcode-group .address-button{
+    position: absolute;
+    top: -5px;
+    right: 0;
+    height: 25px;
     border: 1px solid #000;
     border-radius: 20px;
     padding: 0 10px;
     margin: 0 0 10px 10px;
-    font-size: 13px;
+    font-size: 12px;
     color: #000;
     background-color: #ffffff;
 }
 
-.join .join-area .join-form .address-button:hover{
+.join .join-area .join-form .postcode-group .address-button:hover{
     background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -290,10 +403,8 @@ body{
 @media screen and (min-width: 768px){
 
     /* Agree */
-    .agree{
-        width: 520px;
-    }
-
+    .header,
+    .agree,
     .join{
         width: 520px;
     }

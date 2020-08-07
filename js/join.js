@@ -19,11 +19,29 @@ window.addEventListener('DOMContentLoaded',() => {
 
     });
 
-    //  동의 버튼 눌렀을 때 이벤트
+    // 동의 버튼 눌렀을 때 이벤트
     agreeButton.addEventListener('click', ()=> {
 
+        // header step 색깔 변경
+        let stepGroup = document.querySelector('.step-group');
+        stepGroup.classList.replace('step1', 'step2');
+
+        // 마케팅 수신 동의 여부 value 값 가져 오기
+        let isSms = false, isEmail = false;
+        let agreeBoxes = document.querySelectorAll('.agree-box');
+        agreeBoxes.forEach((item) => {
+
+            if(item.id === 'agree-sms' && item.checked) isSms = true;
+            if(item.id === 'agree-email' && item.checked) isEmail = true;
+        });
+
+        // agree 필드가 사라지고 join 필드가 생긴다.
         document.querySelector('section.agree').style.display = 'none';
         document.querySelector('main.join').style.display = 'block';
+
+        // join 필드가 랜더링 된 이후에 받아온 마케팅 동의 값을 넣어 준다.
+        document.querySelector('.is-sms').checked = isSms;
+        document.querySelector('.is-email').checked = isEmail;
 
     });
 
