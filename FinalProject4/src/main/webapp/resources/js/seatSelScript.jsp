@@ -3,15 +3,13 @@
 <script>
 window.resizeTo(850, 617);
 
-
 window.onload = function () {
-	
+
     // 상단 관람일/회차 변경
     let changeDate = document.getElementById('changeDate');
     let changeRound = document.getElementById('changeRound');
 
-    
-   	changeDate.innerHTML += '<option>${payMap.date}</option>';
+    changeDate.innerHTML += '<option>2020.08.22 토요일</option>';
     changeRound.innerHTML += '<option>[1회] 16시 00분</option>';
 
     // 숫자 형식
@@ -26,19 +24,19 @@ window.onload = function () {
     // 1층 1~9열
     for(var j=0; j<9; j++) {
         for(var i=0; i<37; i++) {
-            var top = 204 + 12*j;
+            var top = 162 + 12*j;
             if(i<8) {
-                var left = 80 + 11*i;
+                var left = 71 + 11*i;
                 var area = "A";
                 var no = i+1;
             }
             else if(i<29) {
-                left = 188.5 + 11*(i-8);
+                left = 180 + 11*(i-8);
                 area = "B";
                 no = (i+1) - 8;
             }
             else {
-                left = 440 + 11*(i-29);
+                left = 433 + 11*(i-29);
                 area = "C";
                 no = (i+1) - 29;
             }
@@ -49,41 +47,41 @@ window.onload = function () {
     // 1층 10열
     for(var i=0; i<37; i++) {
         if(i<8) {
-            left = 80 + 11*i;
+            left = 71 + 11*i;
             area = "A";
             no = i+1;
         }
         else if(i<11 || (i>25 && i<29)) {
-            left = 188.5 + 11*(i-8);
+            left = 180 + 11*(i-8);
             area = "B";
             no = (i+1) - 8;
         }
         else if(i>28) {
-            left = 440 + 11*(i-29);
+            left = 433 + 11*(i-29);
             area = "C";
             no = (i+1) - 29;
         }
 
         if(i<11 || i>25)
-            seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: 324px'></div>";
+            seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: 281px'></div>";
     }
 
     // 2층
     for(let y=0; y<6; y++) {
         for(let x=0; x<35; x++) {
-            top = 389 + 12*y;
+            top = 346 + 12*y;
             if(x<10) {
-                left = 91 + 11*x;
+                left = 83 + 11*x;
                 area = "A";
                 no = x+1;
             }
             else if(x<25) {
-                left = 199 + 11*(x-8);
+                left = 191 + 11*(x-8);
                 area = "B";
                 no = (x+1) - 10;
             }
             else {
-                left = 384 + 11*(x-23);
+                left = 376 + 11*(x-23);
                 area = "C";
                 no = (x+1) - 25;
             }
@@ -92,14 +90,17 @@ window.onload = function () {
     }
 
     // 공연 정보 불러오기
-    let showName = document.getElementById('showName');
+    let showName = document.getElementsByClassName('showName');
     let showLocation = document.getElementById('showLocation');
     let showGrade = document.getElementById('showGrade');
     let showTime = document.getElementById('showTime');
-    showName.innerHTML = '${showvo.prod_title}';
+
+    for(let i=0; i<showName.length; i++) {
+        showName[i].innerHTML = '뮤지컬 ＜오페라의 유령＞ 월드투어－대구 （The Phantom of the Opera)';
+    }
     showLocation.innerHTML = '인터파크홀';
-    showGrade.innerHTML = '만 ${showvo.info_grade}';
-    showTime.innerHTML = '${showvo.info_run_time}';
+    showGrade.innerHTML = '만 13세 이상';
+    showTime.innerHTML = '120분';
 
     // 좌석 클릭 이벤트
     for(let i=0; i<eachSeat.length; i++) {
@@ -161,10 +162,6 @@ function reset() {
 
 // 좌석 선택 완료 여부
 function seatSelComplete() {
-    let seat = document.getElementById('step1');
-    let sale = document.getElementById('step2');
-    let sideBar = document.getElementById('bookingInfo');
-
     let selSeat = document.getElementsByClassName('selSeat');
     if(selSeat.length === 0)
         alert("좌석을 선택해주세요.");
@@ -176,16 +173,18 @@ function seatSelComplete() {
 // 화면 전환
 function change(step) {
     let step1 = document.getElementById('step1');
+    let fromStep2 = document.getElementById('fromStep2');
     let step2 = document.getElementById('step2');
     let step3 = document.getElementById('step3');
     let step4 = document.getElementById('step4');
-    let sideBar = document.getElementById('bookingInfo');
+    let sideBar = document.getElementById('sideBar');
 
     let prevStep = document.getElementById('prevStep');
     let nextStep = document.getElementById('nextStep');
 
     if(step === step1) {
         step1.style.display = 'block';
+        fromStep2.style.display = 'none';
         step2.style.display = 'none';
         step3.style.display = 'none';
         step4.style.display = 'none';
@@ -193,6 +192,7 @@ function change(step) {
     }
     else if(step === step2) {
         step1.style.display = 'none';
+        fromStep2.style.display = 'block';
         step2.style.display = 'block';
         step3.style.display = 'none';
         step4.style.display = 'none';
@@ -201,7 +201,7 @@ function change(step) {
         let seat = document.getElementById('seat');
         let seatCount = seat.childElementCount;
         let ticketLength = document.getElementById('ticketLength');
-        ticketLength.innerHTML = seatCount + "매";
+        ticketLength.innerHTML = seatCount;
 
         prevStep.setAttribute('onclick', 'change(step1)');
         nextStep.innerHTML = '다음 단계';
@@ -209,6 +209,7 @@ function change(step) {
     }
     else if(step === step3) {
         step1.style.display = 'none';
+        fromStep2.style.display = 'block';
         step2.style.display = 'none';
         step3.style.display = 'block';
         step4.style.display = 'none';
@@ -220,6 +221,7 @@ function change(step) {
     }
     else if(step === step4) {
         step1.style.display = 'none';
+        fromStep2.style.display = 'block';
         step2.style.display = 'none';
         step3.style.display = 'none';
         step4.style.display = 'block';
@@ -246,8 +248,18 @@ function deliverySel() {
         deliveryInfo.style.display = 'block';
 }
 
+// 배송 주의사항
+function deliveryCaution() {
+    let caution = document.getElementById('caution');
+    caution.style.display = 'block';
+}
+function deliveryCautionEnd() {
+    let caution = document.getElementById('caution');
+    caution.style.display = 'none';
+}
+
 // 돈 콤마 찍기
-function money(money) {
+function money(돈) {
     return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 

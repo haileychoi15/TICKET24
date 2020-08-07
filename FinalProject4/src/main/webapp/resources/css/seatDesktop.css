@@ -1,0 +1,715 @@
+#container {
+    width: 820px;
+    height: 535px;
+    font-size: 12px;
+    color: #525252;
+}
+
+/* grid */
+#step1Grid {
+    display: grid;
+    grid-template-columns: 600px 220px;
+    grid-template-rows: 35px 500px;
+}
+#step1Top {
+    background-color: #fafafa;
+    line-height: 33px;
+    font-size: 13px;
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+#seatBox {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+#seatInfo {
+    padding: 10px;
+    background-color: #fafafa;
+    grid-column: 2/3;
+    grid-row: 1/3;
+}
+
+#fromStep2Grid {
+    display: grid;
+    grid-template-columns: 600px 220px;
+    grid-template-rows: 50px 485px;
+}
+.nStep {
+    background-color: #fafafa;
+    line-height: 50px;
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+.content {
+    width: 580px;
+    height: 465px;
+    padding: 10px;
+    grid-column: 1/2;
+    grid-row: 2/3;
+    overflow: auto;
+}
+#logo {
+    background-color: #fafafa;
+    line-height: 50px;
+    grid-column: 2/3;
+    grid-row: 1/2;
+}
+#sideInfo {
+    height: 465px;
+    padding: 10px;
+    background-color: #fafafa;
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+
+/* 좌석 선택 */
+#changeArea {
+    padding-left: 25px;
+}
+
+#changeArea span {
+    margin: auto 10px auto 30px;
+    line-height: 33px;
+}
+
+#changeArea select {
+    width: 150px;
+    height: 19px;
+    border: solid 1px #eee;
+    font-size: 12px;
+    line-height: 33px;
+}
+
+#mobileTitle {
+    display: none;
+}
+
+#seatArea {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-image: url("/finalproject4/resources/images/stageImg.png");
+    background-color: #f4f4f4;
+    background-position-y: 40px;
+    background-repeat: no-repeat;
+}
+
+.eachSeat {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background-color: #d6c7da;
+    
+    display: inline-block;
+    margin: 1px;
+    border-radius: 20%;
+}
+
+.selSeat {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    display: inline-block;
+    margin: 1px;
+    background-image: url("http://tkfile.yes24.com/images/ticket_new/ic_seat_on.gif");
+}
+
+#seatInfo h3 {
+    margin: 5px 10px;
+}
+
+#showName, #seatInfo > p, #selectedSeatBox > p {
+    margin: 10px 15px 5px 15px;
+}
+
+#showInfo {
+    width: 200px;
+    height: 100px;
+    margin: 0 auto;
+    padding: 10px 0;
+    background-color: white;
+    border: solid 1px #eeeeee;
+    font-size: 13px;
+    text-align: left;
+}
+
+#showInfo th {
+    width: 70px;
+    padding-left: 10px;
+}
+
+#seatPrice {
+    width: 200px;
+    height: 88px;
+    margin: 0 auto;
+    background-color: white;
+    border: solid 1px #eeeeee;
+}
+
+#seatPrice p {
+    margin: 0;
+}
+
+#selectedSeat {
+    width: 200px;
+    height: 88px;
+    margin: 0 auto 10px auto;
+    background-color: white;
+    border: solid 1px #eeeeee;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    overflow: auto;
+}
+
+#selectedSeat::-webkit-scrollbar {
+    width: 8px;
+}
+
+#selectedSeat::-webkit-scrollbar-thumb {
+    background-color: #b4b4b4;
+    border-radius: 6px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+
+#selectedSeat::-webkit-scrollbar-track {
+    background-color:  white;
+}
+
+.gradeCol {
+    width: 10px;
+    height: 10px;
+    margin-top: 3px;
+}
+
+.seatPriceItem {
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 0 0 10px;
+}
+
+#selectedSeat p {
+    margin: 5px 0 0 10px;
+}
+
+#btnBox {
+    margin: 0 auto;
+}
+
+#reset, #next {
+    width: 200px;
+    font-size: 12px;
+}
+
+#reset {
+    height: 25px;
+    margin-bottom: 4px;
+    background-color: #ffffff;
+    border: solid 1px #d8d8d8;
+}
+
+#reset::before {
+    margin-right: 5px;
+    content: "\f2f1";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    color: #525252;
+}
+
+#next {
+    height: 35px;
+    background-color: #ec7d2c;
+    border: solid 1px #ec7d2c;
+    color: white;
+    font-size: 14px;
+}
+
+/* 할인 및 쿠폰 */
+.nStepDiv {
+    text-align: center;
+}
+.nStepDiv div {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+}
+.nStepDiv span {
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: normal;
+    color: white;
+}
+.nStepDiv img {
+    width: 20px;
+    vertical-align: middle;
+    margin-bottom: 3px;
+}
+
+.gray {
+    color: #bfbfbf;
+}
+.gray span {
+    background-color: #d5d5d5;
+}
+.color span {
+    background-color: #ec7d2c;
+}
+
+#discount {
+    height: 50%;
+}
+
+#coupon {
+    height: 40%;
+}
+
+.content h3 {
+    padding-left: 25px;
+    margin: 10px 0 0 0;
+}
+
+#discountTbl, #couponTbl {
+    width: 95%;
+    height: 40%;
+    margin: 0 auto;
+    padding-top: 10px;
+    overflow: auto;
+}
+
+#couponTbl {
+    height: 30%;
+}
+
+#discountTbl table, #couponTbl table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+#saleArea thead tr {
+    background-color: #f4f4f4;
+}
+
+#saleArea tr {
+    height: 25px;
+}
+
+#saleArea p {
+    margin-bottom: 0;
+}
+
+#discountTbl .row1 {
+    width: 55%;
+}
+
+#discountTbl .row2 {
+    width: 20%;
+}
+
+#discountTbl .row3 {
+    width: 25%
+}
+
+#couponTbl .row1 {
+    width: 65%
+}
+
+#couponTbl .row2 {
+    width: 20%
+}
+
+#couponTbl .row3 {
+    width: 15%
+}
+
+#saleArea tbody tr {
+    border-bottom: solid 1px #e7e6e6;
+}
+
+#saleArea tbody td.row1 {
+    padding-left: 15px;
+}
+
+#saleArea tbody td.row2, #saleArea tbody td.row3 {
+    text-align: center;
+}
+
+#saleArea p {
+    margin-left: 15px;
+    font-size: 11px;
+}
+
+#saleArea em {
+    font-style: normal;
+    font-weight: bold;
+    color: red;
+}
+
+/* 수령 방법 */
+#deliveryArea .selectInfo {
+    position: relative;
+}
+
+#deliveryArea table {
+    text-align: left;
+}
+
+#radioDiv {
+    margin: 15px 25px;
+    font-size: 13px;
+}
+
+#radioDiv input {
+    position: relative;
+    top: 1.5px;
+}
+
+#radioDiv label {
+    position: relative;
+    top: -1px;
+}
+
+#ordererInfo, #deliveryInfo, #paymentDiv {
+    width: 90%;
+    background-color: #fafafa;
+    margin: 0 auto;
+}
+
+#ordererInfo, #deliveryInfo {
+    width: 83%;
+    padding: 10px 20px;
+}
+
+.infoTitle {
+    height: 30px;
+    padding-bottom: 15px;
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+}
+
+#ordererInfo input, #deliveryInfo input {
+    border: solid 1px lightgray;
+}
+
+.ordererRow1, .ordererRow2, .deliveryRow1, .deliveryRow2 {
+    display: inline-block;
+    height: 25px;
+}
+
+.ordererRow1, .deliveryRow1 {
+    width: 75px;
+    padding-left: 10px;
+}
+
+#exclamation {
+    width: 11px;
+    height: 11px;
+    margin-left: 5px;
+    line-height: 11px;
+    text-align: center;
+    color: #525252;
+    font-size: 11px;
+    display: inline-block;
+    border: solid 1px #525252;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+#exclamation:hover {
+    cursor: pointer;
+}
+
+#deliveryRadio {
+    width: 365px;
+    font-size: 12px;
+    text-align: right;
+    height: 20px;
+    line-height: 20px;
+}
+
+#same, #latest, #new {
+    position: relative;
+    top: 2px;
+}
+
+.btn {
+    font-size: 12px;
+    position: relative;
+    top: 1px;
+    border: solid 1px lightgray;
+    color: #525252;
+}
+
+#caution {
+    top: -92px;
+    left: 137px;
+    padding: 20px;
+    position: absolute;
+    font-size: 11px;
+    background-color: #fff4eb;
+}
+
+#caution em {
+    font-style: normal;
+    color: red;
+}
+
+/* 결제 방법 */
+.content::-webkit-scrollbar {
+    width: 16px;
+    height: 10px;
+}
+.content::-webkit-scrollbar-thumb {
+    height: 10px;
+    width: 16px;
+    background: #e1e1e1;
+}
+.content::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+#paymentDiv {
+    margin: 10px auto 20px auto;
+    height: 80px;
+}
+
+.paymentCol1, .paymentCol2 {
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+}
+.paymentCol1 {
+    width: 80px;
+    float: left;
+    padding-left: 10px;
+}
+.paymentCol2 {
+    width: 410px;
+    float: left;
+}
+
+.paymentRow1 input {
+    border: solid 1px lightgray;
+}
+
+#allSel, .paymentRow2 input {
+    margin: 0;
+    position: relative;
+    top: 2px;
+}
+
+#bank {
+    font-size: 12px;
+    position: relative;
+    top: 2px;
+    border: solid 1px lightgray;
+}
+
+#refundAgree {
+    width: 90%;
+    margin: 10px auto 0 auto;
+    padding-top: 10px;
+    border-top: solid 1px #dddddd;
+}
+
+#refundAgree input, .agree input {
+    position: relative;
+    top: 2px;
+}
+
+#refundFee {
+    width: 95%;
+    margin: 10px auto 5px auto;
+    border-collapse: collapse;
+    background-color: #fafafa;
+    text-align: center;
+    color: #888;
+}
+
+#refundFee tr, #refundFee td {
+    height: 25px;
+}
+
+.refundCol1 {
+    border-bottom: solid 1px #eee;
+}
+
+#remarks {
+    width: 90%;
+    margin: 0 auto 10px auto;
+    color: #888;
+}
+
+.agree {
+    width: 90%;
+    height: 20px;
+    margin: 0 auto;
+    padding: 10px 0;
+    border-top: solid 1px #dddddd;
+}
+
+/* side bar */
+#logo {
+    text-align: center;
+}
+
+#logo img {
+    position: relative;
+    top: 10px;
+}
+
+#logo h2 {
+    margin: 0;
+    line-height: 50px;
+    display: inline-block;
+    text-align: center;
+}
+
+#sideInfo .showName {
+    height:20px;
+    margin-bottom: 10px;
+    padding: 0 5px;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#bkgShowInfoTitle {
+    display: none;
+}
+
+#bkgShowInfo, #paymentStmt {
+    margin: 0 auto;
+    padding: 10px;
+    width: 85%;
+    border: solid 1px #eeeeee;
+    background-color: white;
+}
+
+#seatNum {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: solid 1px #eeeeee;
+}
+
+#seat {
+    height: 30px;
+    overflow: auto;
+}
+#seat::-webkit-scrollbar {
+    width: 2px;
+}
+#seat::-webkit-scrollbar-thumb {
+    background-color: #b4b4b4;
+    border-radius: 2px;
+}
+
+#paymentTitle {
+    height: 20px;
+    margin: 20px auto 10px auto;
+    padding-left: 5px;
+    font-size: 15px;
+}
+
+#paymentStmt {
+    padding-bottom: 0;
+    margin-bottom: 7px;
+}
+
+#paymentStmt table {
+    width: 100%;
+    color: #888888;
+}
+
+.stmtRow1 {
+    text-align: left;
+}
+
+.stmtRow2 {
+    text-align: right;
+}
+
+.plusPrice {
+    color: #525252;
+    font-size: 14px;
+}
+
+#totalPriceDiv {
+    width: 100%;
+    height: 45px;
+    margin-top: 10px;
+    border-top: solid 1px #eeeeee;
+}
+
+#totalPriceRow1 {
+    float: left;
+    line-height: 45px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#total {
+    margin-left: 25px;
+    float: right;
+    line-height: 45px;
+}
+
+#totalPrice {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#refundDeadline {
+    width: 92%;
+    margin: 0 auto 7px auto;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#refundDeadline div {
+    display: inline-block;
+    height: 35px;
+}
+
+#refundDeadlineTitle {
+    width: 35%;
+    line-height: 35px;
+}
+
+#deadline {
+    width: 64%;
+    padding-left: 10px;
+    color: #ec7d2c;
+    text-align: center;
+}
+
+#sideBarBtn {
+    width: 100%;
+    text-align: center;
+}
+
+#prevStep, #nextStep {
+    width: 47%;
+    height: 35px;
+}
+
+#prevStep {
+    background-color: #ffffff;
+    border: solid 1px #d8d8d8;
+}
+
+#nextStep {
+    background-color: #ec7d2c;
+    color: white;
+    border: solid 1px #ec7d2c;
+}
+
+button {
+    cursor: pointer;
+}
+
