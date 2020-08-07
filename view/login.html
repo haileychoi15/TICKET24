@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./grid.min.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="header">
+        <a href="#">
+            <div class="logo-image" role="img" aria-label="Ticket24 icon image"></div>
+        </a>
+        <h1>TICKET24 로그인</h1>
+    </header>
+    <section class="login">
+        <div class="login-area">
+            <form class="login-form">
+                <label for="user-id" >아이디</label>
+                <input name="userID" id="user-id" type="text" maxlength="20" />
+                <label for="user-pw" >비밀번호</label>
+                <input name="userPW" id="user-pw" type="password" maxlength="20" />
+                <div class="checkbox-group">
+                    <input name="keepLogin" id="keep-login" type="checkbox" value="1">
+                    <label for="keep-login">
+                        <span>로그인 상태 유지</span>
+                    </label>
+                    <input name="saveID" id="save-id" type="checkbox" value="1">
+                    <label for="save-id">
+                        <span>아이디 저장</span>
+                    </label>
+                </div>
+                <button type="submit" class="login-button">로그인</button>
+            </form>
+            <div class="find-id">
+                <a href="">아이디 찾기</a>
+                <a href="">비밀번호 찾기</a>
+            </div>
+            <div class="other-login">
+                <button type="button">
+                    <span class="logo-icon naver-logo-icon" role="img" aria-label="Naver icon image"></span>
+                    <span>네이버 아이디로 로그인</span>
+                </button>
+                <button type="button">
+                    <span class="logo-icon kakao-logo-icon" role="img" aria-label="Kakao icon image"></span>
+                    <span>카카오 아이디로 로그인</span>
+                </button>
+            </div>
+        </div>
+        <div class="register-box">
+            <strong>티켓24 계정이 없으세요? <a href="#">회원가입</a></strong>
+        </div>
+    </section>
+    <footer class="footer">Copyright © YES24 Corp. All Rights Reserved.</footer>
+
+</body>
+</html>

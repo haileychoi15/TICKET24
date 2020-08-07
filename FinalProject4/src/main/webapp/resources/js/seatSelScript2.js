@@ -1,15 +1,12 @@
 window.resizeTo(850, 617);
 
-
 window.onload = function () {
 
-	alert("${payMap.date}");
-	
     // 상단 관람일/회차 변경
     let changeDate = document.getElementById('changeDate');
     let changeRound = document.getElementById('changeRound');
 
-    changeDate.innerHTML += '<option></option>';
+    changeDate.innerHTML += '<option>2020.08.22 토요일</option>';
     changeRound.innerHTML += '<option>[1회] 16시 00분</option>';
 
     // 숫자 형식
