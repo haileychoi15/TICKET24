@@ -1,23 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main page</title>
+    <title>YES24 티켓</title>
+    <link rel="shortcut icon" href="http://tkfile.yes24.com/img/favicon.ico?ver=150825a" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./grid.min.css">
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/mainpage.css">
+    <link rel="stylesheet" href="resources/css/grid.min.css">
+    <link rel="stylesheet" href="resources/css/reset.css">
+    <link rel="stylesheet" href="resources/css/main.css">
     <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
+    <script>
+	    function reservePopUp() {
+			var url = "<%= request.getContextPath()%>/reservePopUp.action";
+			var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, status = no";
+			window.open(url, "", option);
+		}
+    </script>
 </head>
 <body>
     <header class="header">
         <div class="header-top">
-            <a href="#">로그인</a>
-            <a href="#">마이페이지</a>
-            <a href="#">고객센터</a>
+            <div class="header-site-group">
+                <a href="http://www.yes24.com/Main/default.aspx" target="_blank">YES24</a>
+                <a href="https://movie.yes24.com/" target="_blank">영화</a>
+                <a href="http://www.yes24.com/Mall/Main/Music/003?CategoryNumber=003" target="_blank">CD/LP</a>
+                <a href="http://www.yes24.com/Mall/Main/Dvd/004?CategoryNumber=004" target="_blank">DVD/BD</a>
+                <span>|</span>
+                <a href="https://yes24livehall.com/" target="_blank">예스24라이브홀</a>
+                <a href="https://yes24stage.com/" target="_blank">예스24스테이지</a>
+            </div>
+            <div class="header-login-group">
+                <a href="#">로그인</a>
+                <a href="#">마이페이지</a>
+                <a href="#">고객센터</a>
+            </div>
         </div>
-        <div class="header-menu">
+        <nav class="header-menu">
             <h1>
                 <a href="#">YES24 티켓</a>
             </h1>
@@ -34,7 +55,7 @@
                         <li class="header-sub-category-item">
                             <a href="#">해외뮤지션</a>
                         </li>
-                        <li class="header-sub-category-item">
+                        <li class="header-sub-category-item" onclick="javascript:reservePopUp();">
                             <a href="#">페스티벌</a>
                         </li>
                     </ul>
@@ -128,7 +149,7 @@
             <div class="search-group">
                 <form action="#" method="GET" class="search-form">
                     <input type="text" placeholder="">
-                    <button type="submit"></button>
+                    <button type="submit">검색</button>
                 </form>
                 <a href="#">
                     <strong class="icon-desc">MY 티켓</strong>
@@ -137,113 +158,7 @@
                     <strong class="icon-desc">GLOBAL</strong>
                 </a>
             </div>
-            <!--<div class="side-menu">
-                <ul class="side-category">
-                    <li class="side-category-item">
-                        <a href="#">콘서트</a>
-                        <ul class="side-sub-category">
-                            <li class="side-sub-category-item">
-                                <a href="">전체보기</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">국내뮤지션</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">해외뮤지션</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">페스티벌</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="side-category-item">
-                        <a href="#">뮤지컬</a>
-                        <ul class="side-sub-category">
-                            <li class="side-sub-category-item">
-                                <a href="">전체보기</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">라이센스</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">오리지널</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">창작</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">넌버벌 퍼포먼스</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="side-category-item">
-                        <a href="#">연극</a>
-                        <ul class="side-sub-category">
-                            <li class="side-sub-category-item">
-                                <a href="">전체보기</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">대학로</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">기타지역</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="side-category-item">
-                        <a href="#">클래식</a>
-                        <ul class="side-sub-category">
-                            <li class="side-sub-category-item">
-                                <a href="">전체보기</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">클래식</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">발레/무용</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">국악</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="side-category-item">
-                        <a href="#">전시</a>
-                        <ul class="side-sub-category">
-                            <li class="side-sub-category-item">
-                                <a href="">전체보기</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">전시</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">체험/행사</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">워터파크/스파</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="side-category-item">
-                        <a href="#">아동</a>
-                        <ul class="side-sub-category">
-                            <li class="side-sub-category-item">
-                                <a href="">전체보기</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">뮤지컬</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">연극</a>
-                            </li>
-                            <li class="side-sub-category-item">
-                                <a href="">기타</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>-->
-        </div>
+        </nav>
     </header>
     <section class="promotion">
         <h1>프로모션 공연</h1>
@@ -252,7 +167,7 @@
                 <li class="promotion-item">
                     <a href>
                         <div class="promotion-item-image">
-                            <img src="http://tkfile.yes24.com/Upload2/Display/202007/20200721/genre_big_gmf2020.jpg/dims/quality/70/" alt="">
+                            <img src="http://tkfile.yes24.com/Upload2/Display/202007/20200721/genre_big_gmf2020.jpg/dims/quality/70/" alt="그랜드민트 페스티벌 2020">
                         </div>
                         <div class="promotion-item-content">
                             <h3>그랜드민트 페스티벌 2020</h3>
@@ -263,7 +178,7 @@
                 <li class="promotion-item">
                     <a href>
                         <div class="promotion-item-image">
-                            <img src="http://tkfile.yes24.com/Upload2/Display/202006/20200630/gmain_top_Werther.jpg/dims/quality/70/" alt="">
+                            <img src="http://tkfile.yes24.com/Upload2/Display/202006/20200630/gmain_top_Werther.jpg/dims/quality/70/" alt="뮤지컬 &lt;베르테르&gt;">
                         </div>
                         <div class="promotion-item-content">
                             <h3>뮤지컬 &lt;베르테르&gt;</h3>
@@ -274,7 +189,7 @@
                 <li class="promotion-item">
                     <a href>
                         <div class="promotion-item-image">
-                            <img src="http://tkfile.yes24.com/Upload2/Display/201910/20191029/gmain_top_trot.jpg/dims/quality/70/" alt="">
+                            <img src="http://tkfile.yes24.com/Upload2/Display/201910/20191029/gmain_top_trot.jpg/dims/quality/70/" alt="내일은 미스트롯">
                         </div>
                         <div class="promotion-item-content">
                             <h3>내일은 미스트롯</h3>
@@ -285,7 +200,7 @@
                 <li class="promotion-item">
                     <a href>
                         <div class="promotion-item-image">
-                            <img src="http://tkfile.yes24.com/Upload2/Display/202007/20200716/gmain_top_36995.jpg/dims/quality/70/" alt="">
+                            <img src="http://tkfile.yes24.com/Upload2/Display/202007/20200716/gmain_top_36995.jpg/dims/quality/70/" alt="뻔하지않은듯뻔한페스티벌">
                         </div>
                         <div class="promotion-item-content">
                             <h3>뻔하지않은듯뻔한페스티벌</h3>
@@ -294,8 +209,8 @@
                     </a>
                 </li>
             </ul>
-            <button type="button" class="prev-button"></button>
-            <button type="button" class="next-button"></button>
+            <button type="button" class="prev-button" aria-label="Previous slide"></button>
+            <button type="button" class="next-button" aria-label="Next slide"></button>
         </div>
     </section>
     <section class="product">
@@ -311,7 +226,7 @@
                         <li class="card">
                             <a href="">
                                 <div class="card-image common-image">
-                                    <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200722/20200722-37219_1.jpg/dims/quality/70/" alt="" />
+                                    <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200722/20200722-37219_1.jpg/dims/quality/70/" alt="겨울방학 정규 4집 발매 기념 공연" />
                                 </div>
                                 <div class="card-desc">
                                     <h3 class="card-title common-title">겨울방학 정규 4집 발매 기념 공연</h3>
@@ -322,8 +237,9 @@
                         <li class="card">
                             <a href="">
                                 <div class="card-image common-image">
-                                    <img src="http://tkfile.yes24.com/upload2/perfblog/202005/20200525/20200525-36897_1.jpg/dims/quality/70/" alt="" />
-                                    <span class="notice-sticker">단독</span>
+                                    <img src="http://tkfile.yes24.com/upload2/perfblog/202005/20200525/20200525-36897_1.jpg/dims/quality/70/" alt="서울 숲재즈 페스티벌 2020" />
+                                    <span class="sr-only">Discount rate</span>
+                                    <strong class="notice-sticker">30%</strong>
                                 </div>
                                 <div class="card-desc">
                                     <h3 class="card-title common-title">서울 숲재즈 페스티벌 2020</h3>
@@ -376,7 +292,8 @@
                             <a href="">
                                 <div class="card-image common-image">
                                     <img src="http://tkfile.yes24.com/upload2/perfblog/202005/20200525/20200525-36897_1.jpg/dims/quality/70/" alt="" />
-                                    <span class="notice-sticker">단독</span>
+                                    <span class="sr-only">Discount rate</span>
+                                    <strong class="notice-sticker">30%</strong>
                                 </div>
                                 <div class="card-desc">
                                     <h3 class="card-title common-title">서울 숲재즈 페스티벌 2020</h3>
@@ -428,9 +345,9 @@
             </div>
             <div class="info-box">
                 <a href="#">
-                    <div class="info-box-image"></div>
+                    <div class="info-box-image" role="img" aria-label="뮤지컬 오페라의 공연 이미지"></div>
                     <div class="info-box-desc">
-                        <p>(+) 관련 공연</p>
+                        <p>관련 공연</p>
                         <p>뮤지컬 </br>오페라의 공연</p>
                     </div>
                 </a>
@@ -438,7 +355,7 @@
         </div>
         <div class="musical-video">
             <div class="musical-video-content">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/knh13N7k-TY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/knh13N7k-TY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen aria-label="뮤지컬 오페라의 공연 트레일러"></iframe>
             </div>
         </div>
     </section>
@@ -450,7 +367,7 @@
                         <header class="ranking-header">
                             <h3 class="area-title">WEEKLY RANKING</h3>
                             <a href="#">
-                                <button class="more-ranking-button" type="button">더보기 +</button>
+                                <button class="more-ranking-button" type="button">더보기</button>
                             </a>
                         </header>
                         <ol class="ranking-item-group">
@@ -459,7 +376,7 @@
                                     <dl>
                                         <dt class="ranking-item-ranking">1위</dt>
                                         <dd class="ranking-item-image hide">
-                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202006/20200625/20200625-37085_1.jpg" alt="">
+                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202006/20200625/20200625-37085_1.jpg" alt="[부산]팬텀싱어">
                                         </dd>
                                         <dd class="ranking-item-content">
                                             <strong class="ranking-item-title">[부산]팬텀싱어</strong>
@@ -474,7 +391,7 @@
                                     <dl>
                                         <dt class="ranking-item-ranking">2위</dt>
                                         <dd class="ranking-item-image hide">
-                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200722/20200722-37256_1.jpg" alt="">
+                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200722/20200722-37256_1.jpg" alt="2020 DMZPOP DRIVE IN CONCERT in CHEOLWON［무료공연]">
                                         </dd>
                                         <dd class="ranking-item-content">
                                             <strong class="ranking-item-title">2020 DMZPOP DRIVE IN CONCERT in CHEOLWON［무료공연]</strong>
@@ -489,7 +406,7 @@
                                     <dl>
                                         <dt class="ranking-item-ranking">3위</dt>
                                         <dd class="ranking-item-image hide">
-                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200730/20200730-37311_11.jpg" alt="">
+                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200730/20200730-37311_11.jpg" alt="Someday Festival 2020 공식티켓">
                                         </dd>
                                         <dd class="ranking-item-content">
                                             <strong class="ranking-item-title">Someday Festival 2020 공식티켓</strong>
@@ -504,7 +421,7 @@
                                     <dl>
                                         <dt class="ranking-item-ranking">4위</dt>
                                         <dd class="ranking-item-image hide">
-                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202006/20200625/20200625-37085_1.jpg" alt="">
+                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202006/20200625/20200625-37085_1.jpg" alt="[부산]팬텀싱어">
                                         </dd>
                                         <dd class="ranking-item-content">
                                             <strong class="ranking-item-title">[부산]팬텀싱어</strong>
@@ -519,7 +436,7 @@
                                     <dl>
                                         <dt class="ranking-item-ranking">5위</dt>
                                         <dd class="ranking-item-image hide">
-                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200730/20200730-37311_11.jpg" alt="">
+                                            <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200730/20200730-37311_11.jpg" alt="Someday Festival 2020 공식티켓">
                                         </dd>
                                         <dd class="ranking-item-content">
                                             <strong class="ranking-item-title">Someday Festival 2020 공식티켓</strong>
@@ -539,7 +456,7 @@
                             <li class="place-item image-transition">
                                 <a href="">
                                     <div class="place-item-image">
-                                        <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200727/20200727-37268_12.jpg/dims/quality/70/" alt="">
+                                        <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200727/20200727-37268_12.jpg/dims/quality/70/" alt="2020 울산 서머 페스티벌">
                                         <strong class="place-sticker">울산</strong>
                                     </div>
                                     <strong class="place-item-title">2020 울산 서머 페스티벌</strong>
@@ -550,7 +467,7 @@
                             <li class="place-item image-transition">
                                 <a href="">
                                     <div class="place-item-image">
-                                        <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200727/20200727-37268_12.jpg/dims/quality/70/" alt="">
+                                        <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200727/20200727-37268_12.jpg/dims/quality/70/" alt="2020 울산 서머 페스티벌">
                                         <strong class="place-sticker">광주</strong>
                                     </div>
                                     <strong class="place-item-title">2020 울산 서머 페스티벌</strong>
@@ -561,7 +478,7 @@
                             <li class="place-item image-transition">
                                 <a href="">
                                     <div class="place-item-image">
-                                        <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200727/20200727-37268_12.jpg/dims/quality/70/" alt="">
+                                        <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200727/20200727-37268_12.jpg/dims/quality/70/" alt="2020 울산 서머 페스티벌">
                                         <strong class="place-sticker">부산</strong>
                                     </div>
                                     <strong class="place-item-title">2020 울산 서머 페스티벌</strong>
@@ -588,10 +505,10 @@
                         <li class="card image-transition">
                             <a href="#">
                                 <div class="card-image common-image">
-                                    <img src="http://tkfile.yes24.com/upload2/PerfBlog/202006/20200604/20200604-36820_011.jpg" alt="">
+                                    <img src="http://tkfile.yes24.com/upload2/PerfBlog/202006/20200604/20200604-36820_011.jpg" alt="2020 빅3 &quot;행복한 만남&quot;(진성,김용임,강진)">
                                 </div>
                                 <div class="card-desc">
-                                    <h3 class="card-title common-title">2020 빅3 "행복한 만남"(진성,김용임,강진)</h3>
+                                    <h3 class="card-title common-title">2020 빅3 &quot;행복한 만남&quot;(진성,김용임,강진)</h3>
                                     <p class="card-place common-content">KBS부산홀</p>
                                 </div>
                             </a>
@@ -599,7 +516,7 @@
                         <li class="card image-transition">
                             <a href="#">
                                 <div class="card-image common-image">
-                                    <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200708/20200708-37126_1.jpg" alt="">
+                                    <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200708/20200708-37126_1.jpg" alt="그린플러그드 경주 2020">
                                 </div>
                                 <div class="card-desc">
                                     <h3 class="card-title common-title">그린플러그드 경주 2020</h3>
@@ -654,7 +571,7 @@
                         <li class="footer-category-item">
                             <a href="#">개인정보처리방침</a>
                         </li>
-                        <span class="category-border">|</span>
+                        <span class="category-border style-border">|</span>
                         <li class="footer-category-item">
                             <a href="#">청소년보호정책</a>
                         </li>
@@ -671,7 +588,9 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-2">
-                    <strong class="footer-logo">YES24 티켓</strong>
+                    <strong class="footer-logo">
+                        <a href="#">YES24 티켓</a>
+                    </strong>
                 </div>
                 <div class="col-12 col-md-7">
                     <strong class="footer-title">예스이십사(주)</strong>
@@ -691,13 +610,13 @@
                         저희 쇼핑몰에서 가입한 구매안전서비스를 </br>
                         이용하실 수 있습니다.
                     </p>
-                    <div class="return-top-button">
-                        <img src="../img/arrow-icon.png" alt="return-top">
-                    </div>
+                    <button type="button" class="return-top-button" aria-label="Back to top">
+                        <img src="resources/images/arrow-icon.png" alt="">
+                    </button>
                 </div>
             </div>
         </div>
     </footer>
-    <script src="../js/mainpage.js"></script>
+    <script src="resources/js/main.js"></script>
 </body>
 </html>

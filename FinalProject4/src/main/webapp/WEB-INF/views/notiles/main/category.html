@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./grid.min.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/category.css">
+    <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header></header>
+    <section class="category">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <h1 class="main-category">콘서트</h1>
+                </div>
+                <div class="col-12 col-md-6">
+                    <h2 class="sub-category">
+                        <button type="button">
+                            <span>국내뮤지션</span>
+                            <span class="button-icon"></span>
+                        </button>
+                        <ul class="sub-category-box hide">
+                            <li class="sub-category-box-item active">
+                                <button type="button">
+                                    전체보기
+                                </button>
+                            </li>
+                            <li class="sub-category-box-item">
+                                <button type="button">
+                                    국내뮤지션
+                                </button>
+                            </li>
+                            <li class="sub-category-box-item">
+                                <button type="button">
+                                    해외뮤지션
+                                </button>
+                            </li>
+                            <li class="sub-category-box-item">
+                                <button type="button">
+                                    페스티벌
+                                </button>
+                            </li>
+                        </ul>
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="order-group">
+                        <button type="button" class="active">
+                            주간랭킹순
+                        </button>
+                        <button type="button">
+                            신상품순
+                        </button>
+                        <button type="button">
+                            종료임박순
+                        </button>
+                        <button type="button">
+                            상품명순
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="../js/category.js"></script>
+</body>
+</html>
