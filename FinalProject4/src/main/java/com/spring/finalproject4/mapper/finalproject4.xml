@@ -3,12 +3,4 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="finalproject4">
-
-	<select id="getShowRsvInfo" resultType="com.spring.model.ShowVO" parameterType="String">
-		select prod_id, fk_category_id, fk_category_detail_id, prod_title,prod_img, prod_detail_img,info_open_date,
-		info_close_date,info_rev_status,info_grade,info_run_time,info_qnty
-		from prod
-		where prod_id = #{showNum}
-	</select>
-
 </mapper>
