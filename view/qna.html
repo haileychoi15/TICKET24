@@ -86,11 +86,9 @@
             </div>
             <div class="col-12">
                 <button type="button" class="qna-button">
-                    <a href="#" target="_blank">
-                        <p>
-                            찾으시는 답변이 없나요? <strong>1:1문의하기</strong>
-                        </p>
-                    </a>
+                    <p>
+                        찾으시는 답변이 없나요? <strong>1:1문의하기</strong>
+                    </p>
                 </button>
             </div>
         </div>
@@ -103,10 +101,10 @@
             </header>
             <div class="modal-content">
                 <form class="modal-form">
-                    <table>
-                        <tr>
-                            <th>구분</th>
-                            <td>
+                    <div class="modal-table">
+                        <div class="row sort">
+                            <div class="table-title">구분</div>
+                            <div class="table-content">
                                 <div class="modal-input-group">
                                     <input name="qna-category" id="category1" type="radio" value="1"/>
                                     <label for="category1">예매/결제</label>
@@ -117,39 +115,39 @@
                                     <input name="qna-category" id="category4" type="radio" value="4"/>
                                     <label for="category4">기타</label>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>공연</th>
-                            <td>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="table-title">공연</div>
+                            <div class="table-content">
                                 <select>
                                     <option>오페라의 유령</option>
                                     <option>엄마를 부탁해</option>
                                     <option selected>해당사항 없음</option>
                                 </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>성명</th>
-                            <td>최유영</td>
-                        </tr>
-                        <tr>
-                            <th>아이디</th>
-                            <td>imdud0612</td>
-                        </tr>
-                        <tr>
-                            <th>제목</th>
-                            <td>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="table-title">성명</div>
+                            <div class="table-content">최유영</div>
+                        </div>
+                        <div class="row">
+                            <div class="table-title">아이디</div>
+                            <div class="table-content">imdud0612</div>
+                        </div>
+                        <div class="row title">
+                            <div class="table-title">제목</div>
+                            <div class="table-content">
                                 <input name="qna-title" type="text" placeholder="제목을 입력해주세요."/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>내용</th>
-                            <td>
+                            </div>
+                        </div>
+                        <div class="row content">
+                            <div class="table-title">내용</div>
+                            <div class="table-content">
                                 <textarea name="qna-content" maxlength="300" cols="30" rows="4" placeholder="최대 300자까지 입력가능합니다."></textarea>
-                            </td>
-                        </tr>
-                    </table>
+                            </div>
+                        </div>
+                    </div>
                     <button type="submit" class="qna-ok-button">등록하기</button>
                 </form>
             </div>

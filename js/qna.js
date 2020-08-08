@@ -9,6 +9,20 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    let qnaButton = document.querySelector('.qna-button');
+    let modal = document.querySelector('.modal');
+    qnaButton.addEventListener('click',(event) => {
+
+        modal.style.display = 'flex';
+    });
+
+    let closeButton = modal.querySelector('.close-button');
+    closeButton.addEventListener('click',() => {
+
+        modal.style.display = 'none';
+    });
+
+
 });
 
 function showContent(target) {
