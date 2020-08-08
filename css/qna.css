@@ -184,11 +184,6 @@ body{
     background-color: #fff;
 }
 
-/*.qna-button a{
-    width: 100%;
-    height: 100%;
-}*/
-
 .qna-button p{
     font-size: 14px;
 }
@@ -228,7 +223,7 @@ body{
     align-items: center;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.3);
     z-index: 100;
 }
 
@@ -275,6 +270,7 @@ body{
 
 .modal .modal-form .modal-table{
     width: 100%;
+    height: 80%;
 }
 
 .modal .modal-form .modal-table .row{
@@ -287,6 +283,7 @@ body{
 
 .modal .modal-form .modal-table .row:last-child{
     border-bottom: none;
+    margin-bottom: 0;
 }
 
 .modal .modal-form .modal-table .table-title{
@@ -313,24 +310,37 @@ body{
 
 .modal .modal-form .modal-table .table-content select{
     width: 100%;
-    height: 30px;
+    height: 25px;
 }
 
 .modal .modal-form .modal-table .table-content input[type="text"],
 .modal .modal-form .modal-table .table-content textarea{
     width: 100%;
-    padding: 10px;
+    padding: 5px 10px;
     border: 1px solid rgb(216, 222, 226);
     border-radius: 6px;
+    font-size: 14px;
+}
+
+.modal .modal-form .modal-table .table-content input[type="text"]:focus,
+.modal .modal-form .modal-table .table-content textarea:focus{
+    border: 1px solid #000;
 }
 
 .modal .modal-form .qna-ok-button{
     width: 100%;
     height: 40px;
-    border: 1px solid #000;
     border-radius: 6px;
-    margin-bottom: 20px;
-    font-size: 14px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #ec7d2c;
+    transition: box-shadow 150ms ease-in-out;
+}
+
+.modal .modal-form .qna-ok-button:hover{
+    box-shadow: 0 2px 4px 0 rgba(236, 125, 44, 0.4);
 }
 
 
@@ -406,6 +416,7 @@ body{
     /* Modal */
     .modal .modal-group{
         width: 568px;
+        height: 560px;
     }
 
     .modal .modal-content{
@@ -418,6 +429,10 @@ body{
         border-bottom: none;
     }
 
+    .modal .modal-form .modal-table .row:last-child{
+        margin-bottom: 15px;
+    }
+
     .modal .modal-form .modal-table .sort .table-content{
         margin-bottom: 15px;
     }
@@ -428,6 +443,16 @@ body{
 
     .modal .modal-form .modal-table .table-content{
         width: 85%;
+    }
+
+    .modal .modal-form .modal-table .table-content select{
+        height: 30px;
+    }
+
+    .modal .modal-form .modal-table .table-content input[type="text"],
+    .modal .modal-form .modal-table .table-content textarea{
+        padding: 10px;
+        font-size: 16px;
     }
 
     .modal .modal-form .qna-ok-button{
