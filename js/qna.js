@@ -1,5 +1,30 @@
 window.addEventListener('DOMContentLoaded', () => {
 
+    // 카테고리 누를 때 이벤트 발생
+    let categoryGroup = document.querySelector('.category-group');
+    categoryGroup.addEventListener('click', (event) => {
+
+        let target = event.target;
+        if(target.nodeName == 'BUTTON'){
+
+            //ajax
+
+            // 색깔 변경
+            console.log(target,event.currentTarget );
+            let buttons = event.currentTarget.querySelectorAll('button');
+            buttons.forEach((value) => {
+                value.classList.remove('selected');
+            });
+
+            target.classList.add('selected');
+        }
+
+    });
+
+
+
+
+    // 글 제목 누르면 내용 보이기
     let tbody = document.querySelector('.tbody');
     tbody.addEventListener('click', (event) => {
 

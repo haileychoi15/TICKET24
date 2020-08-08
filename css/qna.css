@@ -18,6 +18,11 @@ body{
     width: 90%;
     height: 100%;
     padding-top: 40px;
+    background-image: url("../img/qna.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: right;
+    background-position-y: bottom;
 }
 
 .search h1{
@@ -95,7 +100,7 @@ body{
 }
 
 .qna .category .category-group button{
-    border: 1px solid #000;
+    border: 1px solid rgb(216, 222, 226);
     border-radius: 20px;
     padding: 7px 12px;
     background-color: #fff;
@@ -108,8 +113,7 @@ body{
 }
 
 .qna .category .category-group button.selected{
-    color: #fff;
-    background-color: #000;
+    border: 1px solid #000;
 }
 
 .table{
