@@ -22,8 +22,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 
-
-
     // 글 제목 누르면 내용 보이기
     let tbody = document.querySelector('.tbody');
     tbody.addEventListener('click', (event) => {
@@ -44,52 +42,57 @@ window.addEventListener('DOMContentLoaded', () => {
     let closeButton = modal.querySelector('.close-button');
     closeButton.addEventListener('click',() => {
 
+        // 작성했던 내용 없애기
+        let radioInputs = document.querySelectorAll('.modal-input-group input[type=radio]');
+        let product = document.querySelector('.qna-product-default');
+        let title = document.querySelector('.qna-title');
+        let content = document.querySelector('.qna-content');
+
+        radioInputs.forEach((item) => {
+            item.checked = false;
+        });
+
+        product.selected = true;
+        title.value = '';
+        content.value = '';
+
         modal.style.display = 'none';
     });
 
-
-    // 폼 유효성 검사
-    validateForm(modal);
-
 });
 
-function validateForm(modal) {
+function validateForm() {
 
-    let qnaOkButton = modal.querySelector('.qna-ok-button');
-    qnaOkButton.addEventListener('click', (event) => {
+    let radioInputs = document.querySelectorAll('.modal-input-group input[type=radio]');
+    let title = document.querySelector('.qna-title');
+    let content = document.querySelector('.qna-content');
 
-        //event.preventDefault();
+    let flag = false;
+    radioInputs.forEach((item) => {
 
-        let flag = false;
-        let inputs = modal.querySelectorAll('.modal-input-group input');
-        inputs.forEach(value => {
-            if(value.checked){
-                flag = true;
-            }
-        });
-
-        if(!flag) {
-            alert('문의 종류를 선택해 주세요.');
-            return false;
+        if(item.checked){
+            flag = true;
         }
-
-        let title = modal.querySelector('.qna-title');
-        if(title.value.trim() === ''){
-
-            return false;
-        }
-
-        let content = modal.querySelector('.qna-content');
-        if(content.value.trim() === ''){
-
-            return false;
-        }
-
-
-
-
-
     });
+
+    if(!flag){
+        alert('문의 구분을 선택해주세요.');
+        return false;
+    }
+
+    if(title.value.trim() === ''){
+        alert('문의 제목을 입력해주세요.');
+        return false;
+    }
+
+
+    if(content.value.trim() === ''){
+        alert('문의 내용을 입력해주세요.');
+        return false;
+    }
+
+    alert('1:1문의가 등록되었습니다. 문의내역은 마이페이지에서 확인하실 수 있습니다.');
+    return true;
 }
 
 function showContent(target) {

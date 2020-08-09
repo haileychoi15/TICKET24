@@ -100,7 +100,7 @@
                 <h1>1:1 문의쓰기</h1>
             </header>
             <div class="modal-content">
-                <form class="modal-form">
+                <form class="modal-form" onsubmit="return validateForm();">
                     <div class="modal-table">
                         <div class="row sort">
                             <div class="table-title">구분</div>
@@ -120,10 +120,10 @@
                         <div class="row">
                             <div class="table-title">공연</div>
                             <div class="table-content">
-                                <select>
-                                    <option>오페라의 유령</option>
-                                    <option>엄마를 부탁해</option>
-                                    <option selected>해당사항 없음</option>
+                                <select name="qna-product">
+                                    <option value="0" class="qna-product-default" selected>해당사항 없음</option>
+                                    <option value="">오페라의 유령</option>
+                                    <option value="">엄마를 부탁해</option>
                                 </select>
                             </div>
                         </div>
