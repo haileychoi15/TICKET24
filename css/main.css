@@ -62,7 +62,7 @@
     align-items: center;
     width: 150px;
     order: 1;
-    margin : 0 auto 16px;
+    margin : 0 auto 30px;
     font-size: 22px;
     line-height: 1.33333;
 }
@@ -784,13 +784,6 @@
     background-color: #ec7d2c;
     opacity: 100%;
 }
-
-
-
-
-
-
-
 
 
 @media screen and (min-width: 768px){
