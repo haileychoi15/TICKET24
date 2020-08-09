@@ -7,18 +7,17 @@
     height: 240px;
     margin-bottom: 50px;
     color: #fff;
-    background-color: #f3b300;
+    background-color: #bf90ce;
 }
 
 .search .search-group{
     width: 90%;
     height: 100%;
     padding-top: 40px;
-    background-image: url("../img/notice.png");
+    background-image: url("../img/notice2.png");
     background-repeat: no-repeat;
     background-size: contain;
-    background-position-x: right;
-    background-position-y: bottom;
+    background-position : right;
 }
 
 .search h1{
@@ -47,11 +46,11 @@
 .search button{
     width: 25%;
     color: #fff;
-    background-color: #d96f1c;
+    background-color: #9764a9;
 }
 
 .search button:hover{
-    box-shadow: 0 2px 4px rgba(236, 125, 44, 0.8);
+    box-shadow: 0 2px 4px rgba(151, 100, 169, 0.8);
 }
 
 /* QNA */
