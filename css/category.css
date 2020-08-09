@@ -45,10 +45,30 @@
 .main-category{
     margin: 20px 0;
     font-weight: 500;
+    color: #fff;
 }
 
 .sub-category .category-box-button{
     position: relative;
+    padding: 5px 10px;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.sub-category .category-box-button::after{
+    position: relative;
+    content: "\f0dd";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    top: -3px;
+    color: #fff;
+}
+
+.sub-category .category-box-button.on::after{
+    content: "\f0de";
+    top: 3px;
 }
 
 .sub-category-box{
@@ -59,23 +79,19 @@
     flex-direction: column;
     justify-content: center;
     width: 240px;
-    height: 243px;
+    height: 180px;
     border: 1px solid #ddd;
     border-radius: 12px;
     background-color: #fff;
+    z-index: 100;
 }
 
 .sub-category-box .sub-category-box-item{
     width: 100%;
     padding-bottom: 0;
     font-size: 14px;
+    color: #000;
     text-align: left;
-}
-
-.sub-category-box .sub-category-box-item:nth-child(2){
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
 }
 
 .sub-category-box .sub-category-box-item span{
@@ -89,11 +105,6 @@
 .sub-category-box .sub-category-box-item span:hover {
     background-color: rgba(0, 0, 0, 0.04);
 }
-
-
-
-
-
 
 .order{
     margin-bottom: 30px;
@@ -200,9 +211,6 @@
     color: #000;
 }
 
-
-
-
 @media screen and (min-width: 768px){
 
     .common-image{
@@ -223,15 +231,33 @@
     .category-header{
         flex-direction: row;
         justify-content: center;
+        padding: 50px 0;
         margin-bottom: 50px;
     }
 
     .main-category{
-        margin: 0;
+        margin: 0 20px 0 0;
         font-weight: 500;
         text-align: right;
     }
 
+    .main-category::after{
+        content: "\f054";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        margin-left: 50px;
+        color: #fff;
+    }
+
+    .sub-category{
+        margin: 0 0 0 30px;
+    }
+
+    .sub-category-box{
+        position: absolute;
+        top: 40px;
+        left: 0;
+    }
 
     .order{
         margin-bottom: 50px;
