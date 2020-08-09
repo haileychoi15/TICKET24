@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>YES24 공연 예매</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="http://tkfile.yes24.com/img/favicon.ico?ver=150825a" type="image/x-icon">
     <link rel="stylesheet" type="text/css" media="(max-width: 767px)" href="resources/css/seatMobile.css">
     <link rel="stylesheet" type="text/css" media="(min-width:768px)" href="resources/css/seatDesktop.css">
     <script src="https://kit.fontawesome.com/c3eca5a54c.js" crossorigin="anonymous"></script>

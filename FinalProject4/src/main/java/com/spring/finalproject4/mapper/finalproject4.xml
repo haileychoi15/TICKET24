@@ -9,15 +9,31 @@
 		<result property="prod_img"			column="prod_img"		javaType="String"/>
 		<result property="prod_title"		column="prod_title"		javaType="String"/>
 		<result property="info_grade"		column="info_grade"		javaType="String"/>
-		<result property="info_run_time"	column="info_run_time"		javaType="String"/>
-		<result property="date_showday"		column="date_showday"		javaType="String"/>
-		<result property="date_showtime"	column="date_showtime"		javaType="String"/>
+		<result property="info_run_time"	column="info_run_time"	javaType="String"/>
 		<result property="map_name"			column="map_name"		javaType="String"/>
 	</resultMap>
 	<select id="getShowRsvInfo" resultMap="resShowInfo" parameterType="String">
-		select prod_id, prod_img, prod_title, info_grade, info_run_time, date_showday, date_showtime, map_name 
+		select prod_id, prod_img, prod_title, info_grade, info_run_time, map_name 
 		from view_rev_showInfo
 		where prod_id = #{showNum}
+	</select>
+	
+	<resultMap type="HashMap" id="resShowTime">
+		<result property="date_showday"		column="date_showday"	javaType="String"/>
+		<result property="date_showtime"	column="date_showtime"	javaType="String"/>
+	</resultMap>
+	<select id="getShowTime" resultMap="resShowTime" parameterType="String">
+		select prod_id, to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday, date_showtime
+		from yes_show_date
+		where prod_id = #{showNum}
+		order by date_showday, date_showtime
+	</select>
+	
+	<select id="getShowDay" resultType="String" parameterType="String">
+		select distinct to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday
+		from yes_show_date
+		where prod_id = #{showNum}
+		order by date_showday
 	</select>
 
 </mapper>

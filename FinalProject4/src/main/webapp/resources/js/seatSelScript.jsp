@@ -1,17 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<script type="text/javascript" src="<%= request.getContextPath()%>/resources/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
 window.resizeTo(850, 617);
 
-window.onload = function () {
-
+$(document).ready(function(){
     // 상단 관람일/회차 변경
     let changeDate = document.getElementById('changeDate');
     let changeRound = document.getElementById('changeRound');
 
-    changeDate.innerHTML += '<option>2020.08.22 토요일</option>';
-    changeRound.innerHTML += '<option>[1회] 16시 00분</option>';
-
+    <c:forEach var="item" items="${getShowDay}">
+    	changeDate.innerHTML += '<option>${item}</option>';
+    </c:forEach>
+    
+    $("#changeDate").change(function(){
+    	var round = $(this).val();
+    	changeRound.innerHTML = '';
+    	changeRound.innerHTML += '<option>회차 선택</option>';
+    	roundChange(round);
+    });
+    
+    $("#changeRound").change(function(){
+    	var showDate = $("#changeDate").val();
+    	var round = $(this).val();
+    	console.log(showDate + "일자선택한값");
+    	console.log(round + "회차선택한값");
+    });
+    
     // 숫자 형식
     function numberPad(n, width) {
         n = n + '';
@@ -51,7 +69,7 @@ window.onload = function () {
             area = "A";
             no = i+1;
         }
-        else if(i<11 || (i>25 && i<29)) {
+        else if( i<11 || (i>25 && i<29) ) {
             left = 180 + 11*(i-8);
             area = "B";
             no = (i+1) - 8;
@@ -96,11 +114,11 @@ window.onload = function () {
     let showTime = document.getElementById('showTime');
 
     for(let i=0; i<showName.length; i++) {
-        showName[i].innerHTML = '뮤지컬 ＜오페라의 유령＞ 월드투어－대구 （The Phantom of the Opera)';
+        showName[i].innerHTML = '${getShowRsvInfo.prod_title}';
     }
-    showLocation.innerHTML = '인터파크홀';
-    showGrade.innerHTML = '만 13세 이상';
-    showTime.innerHTML = '120분';
+    showLocation.innerHTML = '${getShowRsvInfo.map_name}';
+    showGrade.innerHTML = '만 ' + '${getShowRsvInfo.info_grade}';
+    showTime.innerHTML = '${getShowRsvInfo.info_run_time}';
 
     // 좌석 클릭 이벤트
     for(let i=0; i<eachSeat.length; i++) {
@@ -146,7 +164,7 @@ window.onload = function () {
     let totalPrice = document.getElementById('totalPrice');
     totalPrice.innerHTML = sum - minus;
 
-}
+});
 
 // 좌석 선택 리셋
 function reset() {
@@ -280,4 +298,18 @@ function payment() {
     else
         alert('취소 수수료/취소 기한 및 제 3자 정보 제공 내용에 동의하셔야만 \n결제가 가능합니다.');
 }
+
+function roundChange(round) {
+	<c:forEach var="item" items="${getShowTime}">
+		var showday1 = String(round);
+		// var showday = '${item.date_showday}';
+		<c:set var="showday" item="${item.date_showday}" />
+		<c:if test="${showday1 eq showday}">
+			console.log(round + "  비교1");
+			console.log(showday + "  비교2");
+			changeRound.innerHTML += '<option>${item.date_showtime}</option>';
+		</c:if>
+	</c:forEach>
+}
+
 </script>

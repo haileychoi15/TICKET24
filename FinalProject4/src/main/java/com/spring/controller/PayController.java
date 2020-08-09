@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hpsf.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -45,8 +47,18 @@ public class PayController {
 		String showNum = "1";
 		HashMap<String, String> getShowRsvInfo = new HashMap<>();
 		getShowRsvInfo = service.getShowRsvInfo(showNum);
-		
 		mav.addObject("getShowRsvInfo", getShowRsvInfo);
+		
+		List<String> getShowDay = new ArrayList<>();
+		getShowDay = service.getShowDay(showNum);
+		mav.addObject("getShowDay", getShowDay);
+		
+		List<HashMap<String, String>> getShowTime = new ArrayList<>();
+		getShowTime = service.getShowTime(showNum);
+		mav.addObject("getShowTime", getShowTime);
+//		for(int i=0; i<getShowTime.size(); i++) {
+//			System.out.println(getShowTime.get(i).get("date_showday"));
+//		}
 		
 		mav.setViewName("reserve/seat.notiles");
 		return mav;

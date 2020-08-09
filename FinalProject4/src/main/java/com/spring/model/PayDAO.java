@@ -1,6 +1,7 @@
 package com.spring.model;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -20,4 +21,18 @@ public class PayDAO implements InterPayDAO {
 		return getShowRsvInfo;
 	}
 	
+	// == 예매하기, 공연 날짜정보 == //
+	@Override
+	public List<String> getShowDay(String showNum) {
+		List<String> getShowDay = sqlsession.selectList("finalproject4.getShowDay", showNum);
+		return getShowDay;
+	}
+
+	// == 예매하기 창, 공연 시간정보 == //
+	@Override
+	public List<HashMap<String, String>> getShowTime(String showNum) {
+		List<HashMap<String, String>> getShowTime = sqlsession.selectList("finalproject4.getShowTime", showNum);
+		return getShowTime;
+	}
+
 }
