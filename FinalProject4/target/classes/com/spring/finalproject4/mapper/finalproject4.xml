@@ -3,4 +3,88 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="finalproject4">
+
+	<!-- === #47. 로그인 처리하기 === -->
+	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.model.MemberVO">
+		select idx, userid, name, email
+		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
+			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
+		from yes_member 
+		where status = 1 and 
+		      userid = #{userid} and 
+		      pwd = #{pwd}
+	</select>
+	<update id="setLastLoginDate" parameterType="HashMap">
+		update yes_member set lastLoginDate = sysdate 
+		where userid = #{userid}
+	</update>
+
+
+	
+	<!-- 카카오 회원으로 등록이 되어있는지 확인 -->
+	<select id="kakaoMember" resultType="com.spring.model.MemberVO" parameterType="HashMap">
+		select idx, userid, name
+		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
+		     , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
+		from yes_member 
+		where status = 1 and 
+		      email = #{email} 
+	</select>
+
+	<!-- 아이디 중복 유무 -->
+	<select id="idDuplicateCheck" resultType="String" parameterType="String">
+		select userid 
+		from yes_member
+		where userid = #{userid}
+	</select>
+
+	<!-- 카카오 회원가입 -->
+	<insert id="kakaoRegister" parameterType="com.spring.model.MemberVO" >
+		insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
+		values(seq_member.nextval, #{userid}, #{name}, #{pwd}, #{email} , #{hp1}, #{hp2}, #{hp3}, #{postcode}, #{address}, #{detailAddress}, #{extraAddress}, #{gender}, #{birthyyyy}||#{birthmm}||#{birthdd}, default, default, default, default, default, default, #{clientip}, '1', default)
+	</insert>
+	
+	
+	<!-- 일반 회원 가입 -->
+	<insert id="register" parameterType="com.spring.model.MemberVO">
+		insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
+		values(seq_member.nextval, #{userid}, #{name}, #{pwd}, #{email} , #{hp1}, #{hp2}, #{hp3}, #{postcode}, #{address}, #{detailAddress}, #{extraAddress}, #{gender}, #{birthyyyy}||#{birthmm}||#{birthdd}, default, default, default, default, default, default, #{clientip}, default, default)
+	</insert>
+	
+	<!-- 이메일 중복 유무 -->
+	<select id="emailDuplicateCheck" resultType="String" parameterType="String">
+		select userid
+		from yes_member 
+		where (status = 1 and 
+		      email = #{email} and 
+		      kakaoStatus = '1')
+		      or
+		      (status = 1 and 
+		      email = #{email} and 
+		      naverStatus = '1')	
+	
+	</select>
+
+	<!-- 카카오 상태 변경 -->
+	<update id="kakaoStatus" parameterType="String">
+		update yes_member
+		set kakaoStatus = '1'
+		where email = #{email}
+	</update>
+
+	<!-- 네이버 상태 변경 -->
+	<update id="naverStatus" parameterType="String">
+		update final_member_test
+		set naverStatus = '1'
+		where email = #{email}
+	</update>
+	
+	<!-- 네이버 회원가입 -->
+	<insert id="naverRegister" parameterType="com.spring.model.MemberVO" >
+			insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
+			values(seq_member.nextval, #{userid}, #{name}, #{pwd}, #{email} , #{hp1}, #{hp2}, #{hp3}, #{postcode}, #{address}, #{detailAddress}, #{extraAddress}, #{gender}, #{birthyyyy}||#{birthmm}||#{birthdd}, default, default, default, default, default, default, #{clientip}, default, '1')
+	</insert>
+	
+
+
 </mapper>

@@ -1,0 +1,518 @@
+#container {
+    /* width: 1000px; */
+    height: 535px;
+    font-size: 12px;
+    color: #525252;
+}
+
+/*좌석 선택*/
+#step1Grid {
+    display: grid;
+    grid-template-columns: 600px 220px;
+    grid-template-rows: 35px 500px;
+}
+
+#seatInfo {
+    grid-column: 2/3;
+    grid-row: 1/3;
+    border-left: solid 1px lightgray;
+}
+
+#top {
+    background-color: #ec7d2c;
+    color: white;
+    font-weight: bold;
+    line-height: 33px;
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+
+#changeArea {
+    padding-left: 25px;
+}
+
+#changeArea span {
+    margin: auto 10px auto 30px;
+    line-height: 33px;
+}
+
+#changeArea select {
+    width: 150px;
+    height: 19px;
+    font-size: 12px;
+    line-height: 33px;
+}
+
+#seatArea {
+    margin: 40px 0;
+    background-image: url('http://tkfile.yes24.com/upload2/hallimg/8000/8229/8229b_0_8229_0.jpg');
+    background-repeat: no-repeat;
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+.eachSeat {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background-color: #d6c7da;
+    display: inline-block;
+    margin: 1px;
+    border-radius: 20%;
+}
+
+.selSeat {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    display: inline-block;
+    margin: 1px;
+    background-image: url("http://tkfile.yes24.com/images/ticket_new/ic_seat_on.gif");
+}
+
+#showName, #seatInfo > p {
+    margin: 10px 15px 5px 15px;
+}
+
+#showInfo {
+    width: 200px;
+    height: 100px;
+    margin: 0 auto;
+    padding: 10px 0;
+    border: solid 1px gray;
+    border-radius: 2px;
+    font-size: 13px;
+    text-align: left;
+}
+
+#showInfo th {
+    width: 70px;
+    padding-left: 10px;
+}
+
+#seatPrice, #selectedSeat {
+    width: 200px;
+    height: 88px;
+    margin: 0 auto;
+    border: solid 1px gray;
+    border-radius: 2px;
+}
+
+#seatPrice p {
+    margin: 0;
+}
+
+#selectedSeat {
+    margin-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    overflow: auto;
+}
+
+.gradeCol {
+    width: 10px;
+    height: 10px;
+    margin-top: 3px;
+}
+
+.seatPriceItem {
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 0 0 10px;
+}
+
+#selectedSeat p {
+    margin: 5px 0 0 10px;
+}
+
+#reset, #next {
+    width: 200px;
+    margin: 2px 12.5px;
+    font-size: 12px;
+}
+
+#reset {
+    height: 25px;
+    background-color: #ffe3cc;
+    border: solid 1px #ffe3cc;
+}
+
+#next {
+    height: 35px;
+    background-color: #ec7d2c;
+    border: solid 1px #ec7d2c;
+    border-radius: 2px;
+    color: white;
+    font-size: 14px;
+}
+
+/*할인 및 쿠폰*/
+.receiptArea {
+    width: 600px;
+    height: 515px;
+    padding-top: 20px;
+    float: left;
+}
+
+#discount {
+    height: 60%;
+}
+
+#coupon {
+    height: 40%;
+}
+
+.part {
+    width: 560px;
+    height: 30px;
+    margin: 0 auto;
+    background-color: #ec7d2c;
+}
+
+.part h3 {
+    margin: 0 auto;
+    padding: 5px 10px;
+    color: white;
+}
+
+#discountTbl {
+    width: 540px;
+    height: 255px;
+    margin: 0 auto;
+    padding-top: 10px;
+    overflow: auto;
+}
+
+#couponTbl {
+    width: 540px;
+    height: 130px;
+    margin: 0 auto;
+    padding-top: 10px;
+    overflow: auto;
+}
+
+#discountTbl table, #couponTbl table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+#saleArea thead tr {
+    background-color: #ffe3cc;
+}
+
+#saleArea tr {
+    height: 25px;
+}
+
+#discountTbl .row1 {
+    width: 55%;
+}
+
+#discountTbl .row2 {
+    width: 20%;
+}
+
+#discountTbl .row3 {
+    width: 25%
+}
+
+#couponTbl .row1 {
+    width: 65%
+}
+
+#couponTbl .row2 {
+    width: 20%
+}
+
+#couponTbl .row3 {
+    width: 15%
+}
+
+#saleArea tbody tr {
+    border-bottom: solid 1px lightgray;
+}
+
+#saleArea tbody td.row1 {
+    padding-left: 15px;
+}
+
+#saleArea tbody td.row2, #saleArea tbody td.row3 {
+    text-align: center;
+}
+
+#coupon p {
+    margin-left: 15px;
+    font-size: 11px;
+}
+
+#coupon em {
+    font-style: normal;
+    font-weight: bold;
+    color: red;
+}
+
+/*수령 방법*/
+.selectInfo {
+    width: 520px;
+    height: 445px;
+    margin: 0 auto;
+    padding: 20px 20px 0 20px;
+}
+
+#deliveryArea table {
+    text-align: left;
+}
+
+.deliveryRow1 {
+    width: 100px;
+}
+.deliveryRow2 {
+    width: 415px;
+}
+
+.deliveryCol1 {
+    height: 30px;
+    padding-left: 5px;
+}
+.deliveryCol2 {
+    height: 25px;
+}
+.tdBlank {
+    height: 5px;
+}
+
+.tdInterval {
+    padding-left: 15px;
+}
+
+#receiveMethod {
+    background-color: #ffebdb;
+}
+
+.underLine {
+    height: 20px;
+    border-bottom: solid 1px lightgray;
+}
+
+.radioHeight input {
+    position: relative;
+    top: 1.5px;
+}
+.radioHeight label {
+    position: relative;
+    top: -1px;
+}
+
+#same, #latest, #new {
+    position: relative;
+    top: 2px;
+}
+
+.btn {
+    font-size: 12px;
+    position: relative;
+    top: 1px;
+}
+
+#caution {
+    margin-top: 5px;
+    padding: 5px;
+    font-size: 11px;
+    background-color: #fff4eb;
+    border: solid 1px lightgray;
+}
+
+#caution em {
+    font-style: normal;
+    color: red;
+}
+
+/*결제 방법*/
+.paymentCol1, .paymentCol2 {
+    display: block;
+    height: 40px;
+    line-height: 40px;
+}
+.paymentCol1 {
+    width: 100px;
+    float: left;
+    padding-left: 10px;
+}
+.paymentCol2 {
+    width: 410px;
+    float: left;
+}
+
+.paymentRow2 {
+    border-top: dashed 1px lightgray;
+    border-bottom: dashed 1px lightgray;
+}
+
+#allSel, .paymentRow2 input {
+    margin: 0;
+    position: relative;
+    top: 2px;
+}
+
+#bank {
+    font-size: 12px;
+    position: relative;
+    top: 2px;
+}
+
+#refundTime {
+    width: 500px;
+    height: 40px;
+    line-height: 40px;
+    margin: 20px auto 40px auto;
+    padding-left: 20px;
+    float: left;
+    background-color: #fff4eb;
+    border: solid 1px lightgray;
+}
+
+#refundFee {
+    font-size: 11px;
+    border-collapse: collapse;
+    border-top: solid 2px lightslategray;
+    text-align: center;
+}
+
+#refundFee tr, #refundFee td, #refundFee th {
+    height: 25px;
+    border-bottom: solid 1px lightgray;
+}
+
+.refundCol1 {
+    background-color: #ffebdb;
+}
+
+.refundRow1 {
+    width: 190px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.refundRow2 {
+    width: 135px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.refundRow3 {
+    width: 160px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-left: solid 1px lightgray;
+    text-align: left;
+}
+
+#agree {
+    padding-top: 40px;
+    font-size: 10px;
+    float: right;
+}
+
+#agree input {
+    position: relative;
+    top: 2px;
+}
+
+/*side bar*/
+#bookingInfo {
+    width: 199px;
+    height: 515px;
+    padding: 10px;
+    float: left;
+    font-size: 10px;
+    border-left: solid 1px lightgray;
+}
+
+#bkgShowInfo h4 {
+    margin: 0;
+}
+
+#selectStmt {
+    height: 145px;
+}
+
+#selectStmt table, #paymentStmt table {
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.stmt {
+    height: 25px;
+    line-height: 25px;
+    margin-top: 5px;
+    border-top: dashed 1px gray;
+    border-bottom: dashed 1px gray;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.stmtCol4 {
+    height: 45px;
+}
+
+.stmtRow1 {
+    text-align: left;
+}
+
+.stmtRow2 {
+    text-align: right;
+}
+
+.seatNum {
+    height: 40px;
+    overflow: auto;
+}
+
+#totalPriceDiv {
+    width: 100%;
+    height: 30px;
+    margin: 5px 0 10px 0;
+    border-top: dashed 1px gray;
+    border-bottom: dashed 1px gray;
+
+}
+
+#totalPriceRow1 {
+    width: 50%;
+    float: left;
+    line-height: 30px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#total {
+    margin-left: 25px;
+    float: left;
+    line-height: 30px;
+}
+
+#totalPrice {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#prevStep, #nextStep {
+    width: 49%;
+    height: 35px;
+}
+
+#prevStep {
+    background-color: #ffe3cc;
+    border: solid 1px #ffe3cc;
+}
+
+#nextStep {
+    background-color: #ec7d2c;
+    color: white;
+    border: solid 1px #ec7d2c;
+}
+
+button {
+    cursor: pointer;
+}
+

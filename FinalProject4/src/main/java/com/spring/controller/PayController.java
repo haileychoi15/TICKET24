@@ -60,9 +60,9 @@ public class PayController {
 		mav.addObject("payMap", payMap);
 		
 		String showNum = "1";
-		ShowVO showvo = service.getShowRsvInfo(showNum);
+		//ShowVO showvo = service.getShowRsvInfo(showNum);
 		
-		mav.addObject("showvo", showvo);
+		//mav.addObject("showvo", showvo);
 		
 		mav.setViewName("reserve/seat.notiles");
 		return mav;

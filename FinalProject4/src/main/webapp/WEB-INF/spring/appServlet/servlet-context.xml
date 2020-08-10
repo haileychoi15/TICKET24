@@ -65,6 +65,9 @@
             </beans:list>
         </beans:property>
     </beans:bean>
+    
+    <!-- 네이버 아이디 로그인 -->
+	<beans:bean class="com.spring.naver.NaverLoginBO" id="naverLoginBO"/>
 	
 	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
