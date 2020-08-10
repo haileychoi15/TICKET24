@@ -4,8 +4,70 @@
 
 <mapper namespace="finalproject4">
 
-
+	<resultMap type="HashMap" id="resShowInfo">
+		<result property="prod_id"			column="prod_id"		javaType="String"/>
+		<result property="prod_img"			column="prod_img"		javaType="String"/>
+		<result property="prod_title"		column="prod_title"		javaType="String"/>
+		<result property="info_grade"		column="info_grade"		javaType="String"/>
+		<result property="info_run_time"	column="info_run_time"	javaType="String"/>
+		<result property="map_name"			column="map_name"		javaType="String"/>
+	</resultMap>
+	<select id="getShowRsvInfo" resultMap="resShowInfo" parameterType="String">
+		select prod_id, prod_img, prod_title, info_grade, info_run_time, map_name 
+		from view_rev_showInfo
+		where prod_id = #{showNum}
+	</select>
 	
+	<resultMap type="HashMap" id="resShowTime">
+		<result property="date_showday"		column="date_showday"	javaType="String"/>
+		<result property="date_showtime"	column="date_showtime"	javaType="String"/>
+	</resultMap>
+	<select id="getShowTime" resultMap="resShowTime" parameterType="String">
+		select prod_id, to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday, date_showtime
+		from yes_show_date
+		where prod_id = #{showNum}
+		order by date_showday, date_showtime
+	</select>
+	
+	<select id="getShowDay" resultType="String" parameterType="String">
+		select distinct to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday
+		from yes_show_date
+		where prod_id = #{showNum}
+		order by date_showday
+	</select>
+	
+	<resultMap type="HashMap" id="seatStatus">
+		<result property="date_id"			column="date_id"		javaType="String"/>
+		<result property="prod_id"			column="prod_id"		javaType="String"/>
+		<result property="seattype_id"		column="seattype_id"	javaType="String"/>
+		<result property="seat_type"		column="seat_type"		javaType="String"/>
+		<result property="seat_name"		column="seat_name"		javaType="String"/>
+		<result property="seat_price"		column="seat_price"		javaType="String"/>
+		<result property="seat_status"		column="seat_status"	javaType="String"/>
+		<result property="date_id"			column="date_id"		javaType="String"/>
+	</resultMap>
+	<select id="getSeatStatus" parameterType="String" resultMap="seatStatus">
+		select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id
+		from view_seat_info
+		where prod_id = #{showNum}
+	</select>
+	
+	<resultMap type="HashMap" id="seatType">
+		<result property="seat_type"		column="seat_type"	javaType="String"/>
+		<result property="seat_price"		column="seat_price"	javaType="String"/>
+		<result property="seat_color"		column="seat_color"	javaType="String"/>
+	</resultMap>
+	<select id="getSeatType" resultMap="seatType" parameterType="String">
+		select seat_type, seat_price, seat_color
+		from yes_seat_type
+		where prod_id = #{showNum}
+	</select>
+	
+	<select id="getDateId" parameterType="HashMap" resultType="String">
+		select date_id
+		from yes_show_date
+		where prod_id = #{showNum} and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') = #{showDay} and date_showtime = #{showRound}
+	</select>
 	
 	<!-- =====  ===== -->
 	<select id="faqList" parameterType="HashMap" resultType="com.spring.model.FaqVO">
