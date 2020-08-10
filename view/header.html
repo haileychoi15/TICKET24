@@ -1,28 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="java.net.InetAddress"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<%-- ======= #27. tile1 중 header 페이지 만들기  ======= --%>
-<%
-	String ctxPath = request.getContextPath();
-%>
-
-
-<script>
-	function reservePopUp() {
-		var url = "<%=ctxPath%>/reservePopUp.action";
-		var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, status = no";
-		window.open(url, "", option);
-	}
-</script>
 <header class="header">
+    <div class="header-top">
+        <div class="header-site-group">
+            <a href="http://www.yes24.com/Main/default.aspx" target="_blank">YES24</a>
+            <a href="https://movie.yes24.com/" target="_blank">영화</a>
+            <a href="http://www.yes24.com/Mall/Main/Music/003?CategoryNumber=003" target="_blank">CD/LP</a>
+            <a href="http://www.yes24.com/Mall/Main/Dvd/004?CategoryNumber=004" target="_blank">DVD/BD</a>
+            <span>|</span>
+            <a href="https://yes24livehall.com/" target="_blank">예스24라이브홀</a>
+            <a href="https://yes24stage.com/" target="_blank">예스24스테이지</a>
+        </div>
+        <div class="header-global">
+            GLOBAL
+        </div>
+    </div>
     <nav class="header-menu">
         <h1>
-            <a href="#">
-                TICKET24
-            </a>
+            <a href="#">YES24 티켓</a>
         </h1>
         <ul class="header-category list-group">
             <li class="header-category-item active">
@@ -166,12 +159,3 @@
         </div>
     </nav>
 </header>
-	
-	
-	<!-- === #49. 로그인이 성공되어지면 로그인되어진 사용자의 이메일 주소를 출력하기 === -->
-	<c:if test="${sessionScope.loginuser != null}">
-		<div style="float: right; margin-top: 0.5%; border: solid 0px red;">
-		  <span style="color: navy; font-weight: bold; font-size: 10pt;">${sessionScope.loginuser.email}</span> 님 로그인중.. 
-		</div>
-	</c:if>
-	
