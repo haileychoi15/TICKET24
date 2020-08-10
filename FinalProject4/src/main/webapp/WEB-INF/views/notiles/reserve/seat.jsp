@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,18 +51,12 @@
                     </table>
                     <p id="seatPriceTitle">▾좌석 등급/가격</p>
                     <div id="seatPrice">
-                        <div class="seatPriceItem">
-                            <div class="gradeCol" style="background-color: indianred"></div>
-                            <p>&nbsp;VIP석 120,000원</p><br>
-                        </div>
-                        <div class="seatPriceItem">
-                            <div class="gradeCol" style="background-color: darkslateblue"></div>
-                            <p>&nbsp;R석 100,000원</p><br>
-                        </div>
-                        <div class="seatPriceItem">
-                            <div class="gradeCol" style="background-color: mediumpurple"></div>
-                            <p>&nbsp;S석 80,000원</p>
-                        </div>
+                        <c:forEach var="seatType" items="${getSeatType}">
+                        	<div class="seatPriceItem">
+	                            <div class="gradeCol" style="background-color: ${seatType.seat_color}"></div>
+	                            <p>&nbsp;${seatType.seat_type}석 ${seatType.seat_price}원</p>
+                        	</div>
+                        </c:forEach>
                     </div>
                     <div id="selectedSeatBox">
                         <p id="selectedSeatTitle">▾선택한 좌석</p>
@@ -103,9 +98,9 @@
                                         <td class="row1">국가유공자할인 (본인만)</td>
                                         <td class="row2">28,000원</td>
                                         <td class="row3">
-                                            <select style="font-size: 12px">
-                                                <option value="0">0매</option>
-                                                <option value="1">1매</option>
+                                            <select style="font-size: 12px" id="dcCnt">
+                                            	<option value="0">0매</option>
+                                            	<option value="1">1매</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -318,11 +313,11 @@
                                 <table>
                                     <tr>
                                         <td class="stmtRow1 plusPrice">티켓금액</td>
-                                        <td class="stmtRow2 plusPrice" id="ticketPrice">140000</td>
+                                        <td class="stmtRow2 plusPrice" id="ticketPrice"></td>
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1">가격할인</td>
-                                        <td class="stmtRow2" id="dcPrice">0</td>
+                                        <td class="stmtRow2" id="dcPrice"></td>
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1">쿠폰할인</td>
@@ -330,15 +325,15 @@
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1">적립금</td>
-                                        <td class="stmtRow2" id="dcPoint">0</td>
+                                        <td class="stmtRow2" id="dcPoint"></td>
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1 plusPrice">예매수수료</td>
-                                        <td class="stmtRow2 plusPrice" id="ticketCommission">0</td>
+                                        <td class="stmtRow2 plusPrice" id="ticketCommission"></td>
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1 plusPrice">배송료</td>
-                                        <td class="stmtRow2 plusPrice" id="deliveryFee">0</td>
+                                        <td class="stmtRow2 plusPrice" id="deliveryFee"></td>
                                     </tr>
                                 </table>
                                 <div id="totalPriceDiv">

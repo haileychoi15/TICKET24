@@ -9,10 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.poi.hpsf.Array;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.model.ShowVO;
@@ -45,6 +49,8 @@ public class PayController {
 		String showNum = request.getAttribute("showNum");
 */
 		String showNum = "1";
+		mav.addObject("showNum", showNum);
+		
 		HashMap<String, String> getShowRsvInfo = new HashMap<>();
 		getShowRsvInfo = service.getShowRsvInfo(showNum);
 		mav.addObject("getShowRsvInfo", getShowRsvInfo);
@@ -60,24 +66,53 @@ public class PayController {
 //			System.out.println(getShowTime.get(i).get("date_showday"));
 //		}
 		
+		// 좌석타입종류
+		List<HashMap<String, String>> getSeatType = new ArrayList<>();
+		getSeatType = service.getSeatType(showNum);
+		mav.addObject("getSeatType", getSeatType);
+		
 		mav.setViewName("reserve/seat.notiles");
 		return mav;
 	}
+	
+	// == 시간, 회차에 따른 좌석상태 ajax == //
+	@ResponseBody
+	@RequestMapping(value="/seatStatus.action", method= {RequestMethod.POST})
+	public String requiredLogin_seatStatus(HttpServletRequest request, HttpServletResponse response) {
+	
+		String jsonStr = "";
+		String showDay = request.getParameter("showDay");
+		String showRound = request.getParameter("showRound");
+		String showNum = request.getParameter("prodID");
+		HashMap<String, String> seatMap = new HashMap<>();
+		seatMap.put("showDay", showDay);
+		seatMap.put("showRound", showRound);
+		seatMap.put("showNum", showNum);
+		String dateID = service.getDateId(seatMap);
 		
+		JSONArray jsonArr = new JSONArray();
 		
-	// == 회원 수정 페이지 비밀번호 확인 == //
-	@RequestMapping(value="/Member/MyPage_reconfirm.action")
-	public ModelAndView requiredLogin_reconfirm(ModelAndView mav) {
-		return mav;
+		List<HashMap<String, String>> getSeatStatus = service.getSeatStatus(dateID);
+		
+		if(getSeatStatus != null) {
+			for(HashMap<String, String> seatStatus : getSeatStatus ) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("date_id", seatStatus.get("date_id"));
+				jsonObj.put("prod_id", seatStatus.get("prod_id"));
+				jsonObj.put("seattype_id", seatStatus.get("seattype_id"));
+				jsonObj.put("seat_type", seatStatus.get("seat_type"));
+				jsonObj.put("seat_name", seatStatus.get("seat_name"));
+				jsonObj.put("seat_price", seatStatus.get("seat_price"));
+				jsonObj.put("seat_status", seatStatus.get("seat_status"));
+				jsonObj.put("date_id", seatStatus.get("date_id"));
+				
+				jsonArr.put(jsonObj);
+			}
+		}
+		
+		return jsonArr.toString();
 	}
-	
-	
-	// == 회원 수정 페이지 == //
-	@RequestMapping(value="/Member/userInfoUpt.action")
-	public ModelAndView requiredLogin_userInfoUpt(ModelAndView mav) {
-		return mav;
-	}
-	
+		
 	
 	
 	// == 결제 실행 API 띄우기 == //
@@ -115,5 +150,18 @@ public class PayController {
 		return mav;
 	}
 	
+	// == 회원 수정 페이지 비밀번호 확인 == //
+	@RequestMapping(value="/Member/MyPage_reconfirm.action")
+	public ModelAndView requiredLogin_reconfirm(ModelAndView mav) {
+		return mav;
+	}
+	
+	
+	// == 회원 수정 페이지 == //
+	@RequestMapping(value="/Member/userInfoUpt.action")
+	public ModelAndView requiredLogin_userInfoUpt(ModelAndView mav) {
+		return mav;
+	}
+		
 	
 }

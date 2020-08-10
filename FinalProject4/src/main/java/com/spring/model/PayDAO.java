@@ -35,4 +35,25 @@ public class PayDAO implements InterPayDAO {
 		return getShowTime;
 	}
 
+	// == 시간, 회차에 따른 좌석상태 ajax == //
+	@Override
+	public List<HashMap<String, String>> getSeatStatus(String dateID) {
+		List<HashMap<String, String>> getSeatStatus = sqlsession.selectList("finalproject4.getSeatStatus", dateID);
+		return getSeatStatus;
+	}
+
+	// == 좌석 타입 정보 == //
+	@Override
+	public List<HashMap<String, String>> getSeatType(String showNum) {
+		List<HashMap<String, String>> getSeatType = sqlsession.selectList("finalproject4.getSeatType", showNum);
+		return getSeatType;
+	}
+
+	// == 공연 일시 코드 가져오기 == //
+	@Override
+	public String getDateId(HashMap<String, String> seatMap) {
+		String dateId = sqlsession.selectOne("finalproject4.getDateId", seatMap);
+		return dateId;
+	}
+
 }

@@ -517,6 +517,7 @@ insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
 values(seq_show_date.nextval, 1, to_date('2020/09/02','yyyy/mm/dd'), '1회차 9시');
 insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
 values(seq_show_date.nextval, 1, to_date('2020/09/02','yyyy/mm/dd'), '2회차 11시');
+commit;
 
 -- 공연장소 테이블
 drop table yes_show_map;
