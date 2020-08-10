@@ -41,6 +41,9 @@ window.addEventListener('DOMContentLoaded', () => {
     qnaButton.addEventListener('click',(event) => {
 
         modal.style.display = 'flex';
+        let userid = modal.querySelector('.modal-form .userid');
+        console.log('userid',userid);
+        ajaxProduct(userid);
     });
 
     let closeButton = modal.querySelector('.close-button');
@@ -65,24 +68,99 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
+function ajaxProduct(userid) {
+
+    let httpRequest = new XMLHttpRequest();
+    makeRequest('/finalproject4/qna.action',category);
+
+    function makeRequest(url, category) {
+
+        httpRequest.onreadystatechange = getResponse;
+        httpRequest.open('GET', url);
+        httpRequest.send('userid=' + encodeURIComponent(userid));
+    }
+
+    function getResponse() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                alert(response.computedString);
+
+                //ajax 성공시 코드
+
+                let selectElement = document.querySelector('.qna-product');
+                let html = '';
+                response.forEach((item) => {
+
+                        html += `<option value="">${item}</option>`;
+                });
+
+                selectElement.insertAdjacentElement('beforeend', html);
+
+
+            } else {
+                alert('There was a problem with the request.');
+            }
+        }
+    }
+
+}
+
+function getBoardTemplate(category, title, content) {
+
+    let template = `<div class="row">
+                    <span class="table-category">
+                        ${category}
+                    </span>
+                    <span class="table-title">
+                        ${title}
+                    </span>
+                    <div class="table-content">
+                        ${content}
+                    </div>
+                </div>`;
+
+    return template;
+}
+
 function ajaxBoard(category) {
 
-    let oReg = new XMLHttpRequest();
-    oReg.addEventListener("readystatechange", function () {
+    //let searchWord = document.querySelector('.search-form input').value;
 
-        if(this.readyState == 4 && this.status == 200) {
-            let response = this.responseText;
-            console.log(typeof response); // string
-            let jsonObj = JSON.parse(response); // json 형태로 파싱, type은 object
-            console.log(jsonobj.title); // key값으로 출력가능
+    let httpRequest = new XMLHttpRequest();
+    makeRequest('/finalproject4/faq.action',category);
 
+    function makeRequest(url, category) {
+
+        httpRequest.onreadystatechange = getResponse;
+        httpRequest.open('GET', url);
+        //httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send('category=' + encodeURIComponent(category));
+    }
+
+    function getResponse() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                alert(response.computedString);
+
+                //ajax 성공시 코드
+/*
+                let html = '';
+                response.forEach((item) => {
+
+                    html += getBoardTemplate(item.category, item.title, item.content);
+                });
+
+                let tbody = document.querySelector('.qna .table .tbody');
+                tbody.insertAdjacentElement('beforeend', html);
+*/
+
+            } else {
+                alert('There was a problem with the request.');
+            }
         }
-
-    });
-
-    oReg.open("POST","/finalproject4/");
-    oReg.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    oReg.send();
+    }
 }
 
 function validateForm() {
