@@ -1,93 +1,124 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<script type="text/javascript" src="<%= request.getContextPath()%>/resources/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
 window.resizeTo(850, 617);
 
-window.onload = function () {
-
+$(document).ready(function(){
     // 상단 관람일/회차 변경
     let changeDate = document.getElementById('changeDate');
     let changeRound = document.getElementById('changeRound');
+    let seatArea = document.getElementById('seatArea');
+    let eachSeat = document.getElementsByClassName('eachSeat');
 
-    changeDate.innerHTML += '<option>2020.08.22 토요일</option>';
-    changeRound.innerHTML += '<option>[1회] 16시 00분</option>';
+    <c:forEach var="item" items="${getShowDay}">
+    	changeDate.innerHTML += '<option>${item}</option>';
+    </c:forEach>
+    
+    $("#changeDate").change(function(){
+    	var round = $(this).val();
+    	changeRound.innerHTML = '';
+    	changeRound.innerHTML += '<option>회차 선택</option>';
+    	roundChange(round);
+    });
+    
+    $("#changeRound").change(function(){
+    	var day = $("#changeDate").val();
+    	var round = $(this).val();
+    	
+    	// 좌석 정보 받아오기
+    	$.ajax({
+			url:"<%= request.getContextPath()%>/seatStatus.action",
+			type:"POST",
+			data:{"showDay":day
+				 ,"showRound":round
+				 ,"prodID":"${showNum}"},
+			dataType:"JSON",
+			success:function(json){
+			    // 1층 1~9열
+			    for(var j=0; j<9; j++) {
+			        for(var i=0; i<37; i++) {
+			            var top = 162 + 12*j;
+			            if(i<8) {
+			                var left = 71 + 11*i;
+			                var area = "A";
+			                var no = i+1;
+			            }
+			            else if(i<29) {
+			                left = 180 + 11*(i-8);
+			                area = "B";
+			                no = (i+1) - 8;
+			            }
+			            else {
+			                left = 433 + 11*(i-29);
+			                area = "C";
+			                no = (i+1) - 29;
+			            }
+			            seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 0"+(j+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px'></div>";
+			        }
+			    }
 
+			    // 1층 10열
+			    for(var i=0; i<37; i++) {
+			        if(i<8) {
+			            left = 71 + 11*i;
+			            area = "A";
+			            no = i+1;
+			        }
+			        else if( i<11 || (i>25 && i<29) ) {
+			            left = 180 + 11*(i-8);
+			            area = "B";
+			            no = (i+1) - 8;
+			        }
+			        else if(i>28) {
+			            left = 433 + 11*(i-29);
+			            area = "C";
+			            no = (i+1) - 29;
+			        }
+
+			        if(i<11 || i>25)
+			            seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: 281px'></div>";
+			    }
+
+			    // 2층
+			    for(let y=0; y<6; y++) {
+			        for(let x=0; x<35; x++) {
+			            top = 346 + 12*y;
+			            if(x<10) {
+			                left = 83 + 11*x;
+			                area = "A";
+			                no = x+1;
+			            }
+			            else if(x<25) {
+			                left = 191 + 11*(x-8);
+			                area = "B";
+			                no = (x+1) - 10;
+			            }
+			            else {
+			                left = 376 + 11*(x-23);
+			                area = "C";
+			                no = (x+1) - 25;
+			            }
+			            seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' title='2층 "+area+"구역 0"+(y+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px'></div>";
+			        }
+			    }
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+		});
+    });
+    
     // 숫자 형식
     function numberPad(n, width) {
         n = n + '';
         return n.length >= width ? n:new Array(width - n.length + 1).join('0') + n;
     }
 
-    let seatArea = document.getElementById('seatArea');
-    let eachSeat = document.getElementsByClassName('eachSeat');
-
-    // 1층 1~9열
-    for(var j=0; j<9; j++) {
-        for(var i=0; i<37; i++) {
-            var top = 162 + 12*j;
-            if(i<8) {
-                var left = 71 + 11*i;
-                var area = "A";
-                var no = i+1;
-            }
-            else if(i<29) {
-                left = 180 + 11*(i-8);
-                area = "B";
-                no = (i+1) - 8;
-            }
-            else {
-                left = 433 + 11*(i-29);
-                area = "C";
-                no = (i+1) - 29;
-            }
-            seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 0"+(j+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px'></div>";
-        }
-    }
-
-    // 1층 10열
-    for(var i=0; i<37; i++) {
-        if(i<8) {
-            left = 71 + 11*i;
-            area = "A";
-            no = i+1;
-        }
-        else if(i<11 || (i>25 && i<29)) {
-            left = 180 + 11*(i-8);
-            area = "B";
-            no = (i+1) - 8;
-        }
-        else if(i>28) {
-            left = 433 + 11*(i-29);
-            area = "C";
-            no = (i+1) - 29;
-        }
-
-        if(i<11 || i>25)
-            seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: 281px'></div>";
-    }
-
-    // 2층
-    for(let y=0; y<6; y++) {
-        for(let x=0; x<35; x++) {
-            top = 346 + 12*y;
-            if(x<10) {
-                left = 83 + 11*x;
-                area = "A";
-                no = x+1;
-            }
-            else if(x<25) {
-                left = 191 + 11*(x-8);
-                area = "B";
-                no = (x+1) - 10;
-            }
-            else {
-                left = 376 + 11*(x-23);
-                area = "C";
-                no = (x+1) - 25;
-            }
-            seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' title='2층 "+area+"구역 0"+(y+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px'></div>";
-        }
-    }
+    
 
     // 공연 정보 불러오기
     let showName = document.getElementsByClassName('showName');
@@ -96,16 +127,21 @@ window.onload = function () {
     let showTime = document.getElementById('showTime');
 
     for(let i=0; i<showName.length; i++) {
-        showName[i].innerHTML = '뮤지컬 ＜오페라의 유령＞ 월드투어－대구 （The Phantom of the Opera)';
+        showName[i].innerHTML = '${getShowRsvInfo.prod_title}';
     }
-    showLocation.innerHTML = '인터파크홀';
-    showGrade.innerHTML = '만 13세 이상';
-    showTime.innerHTML = '120분';
+    showLocation.innerHTML = '${getShowRsvInfo.map_name}';
+    showGrade.innerHTML = '만 ' + '${getShowRsvInfo.info_grade}';
+    showTime.innerHTML = '${getShowRsvInfo.info_run_time}';
 
     // 좌석 클릭 이벤트
     for(let i=0; i<eachSeat.length; i++) {
         eachSeat[i].addEventListener('click', function () {
-            this.className === 'eachSeat'? this.className = 'selSeat' : this.className = 'eachSeat';
+        	if($("#changeRound").val() == "회차 선택") {
+        		alert("일자 / 시간을 선택해주세요.");
+        		return false;
+        	}
+
+        	this.className === 'eachSeat'? this.className = 'selSeat' : this.className = 'eachSeat';
 
             let title = this.getAttribute('title');
             let selectedSeat = document.getElementById('selectedSeat');
@@ -120,7 +156,7 @@ window.onload = function () {
                 spanTag.parentNode.removeChild(spanTag);
             }
             else {
-                selectedSeat.innerHTML += '<p id=p'+pTagID+'>'+title+'</p>';
+                selectedSeat.innerHTML += '<p id=p'+pTagID+' class="selseatCnt">'+title+'</p>';
                 seat.innerHTML += '<span id=span'+pTagID+' style="display: block">'+title+'</span>'
             }
         });
@@ -132,7 +168,7 @@ window.onload = function () {
     let deliveryFee = document.getElementById('deliveryFee').innerText;
     let sum = Number(ticketPrice) + Number(ticketCommission) + Number(deliveryFee);
 
-    let totalTicketPrice = document.getElementById('totalTicketPrice');
+    let totalTicketPrice = document.getElementById('totalPrice');
     totalTicketPrice.innerHTML = sum;
 
     let dcPrice = document.getElementById('dcPrice').innerText;
@@ -140,12 +176,21 @@ window.onload = function () {
     let dcPoint = document.getElementById('dcPoint').innerText;
     let minus = Number(dcPrice) + Number(dcCoupon) + Number(dcPoint);
 
-    let totalDiscount = document.getElementById('totalDiscount');
-    totalDiscount.innerHTML = minus;
+    /* let totalDiscount = document.getElementById('totalDiscount');
+    totalDiscount.innerHTML = minus; */
 
     let totalPrice = document.getElementById('totalPrice');
     totalPrice.innerHTML = sum - minus;
 
+});
+
+function roundChange(round) {
+	<c:forEach var="item" items="${getShowTime}">
+		var showday = '${item.date_showday}';
+		if(round == showday) {
+			document.getElementById('changeRound').innerHTML += '<option>${item.date_showtime}</option>';
+		}
+	</c:forEach>
 }
 
 // 좌석 선택 리셋
@@ -206,6 +251,8 @@ function change(step) {
         prevStep.setAttribute('onclick', 'change(step1)');
         nextStep.innerHTML = '다음 단계';
         nextStep.setAttribute('onclick', 'change(step3)');
+        
+        
     }
     else if(step === step3) {
         step1.style.display = 'none';
@@ -280,4 +327,6 @@ function payment() {
     else
         alert('취소 수수료/취소 기한 및 제 3자 정보 제공 내용에 동의하셔야만 \n결제가 가능합니다.');
 }
+
+
 </script>
