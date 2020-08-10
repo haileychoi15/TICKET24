@@ -7,7 +7,11 @@ window.addEventListener('DOMContentLoaded', () => {
         let target = event.target;
         if(target.nodeName == 'BUTTON'){
 
+            let category = target.value;
+            console.log(category);
+
             //ajax
+            ajaxBoard(category);
 
             // 색깔 변경
             console.log(target,event.currentTarget );
@@ -60,6 +64,26 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+function ajaxBoard(category) {
+
+    let oReg = new XMLHttpRequest();
+    oReg.addEventListener("readystatechange", function () {
+
+        if(this.readyState == 4 && this.status == 200) {
+            let response = this.responseText;
+            console.log(typeof response); // string
+            let jsonObj = JSON.parse(response); // json 형태로 파싱, type은 object
+            console.log(jsonobj.title); // key값으로 출력가능
+
+        }
+
+    });
+
+    oReg.open("POST","/finalproject4/");
+    oReg.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    oReg.send();
+}
 
 function validateForm() {
 
