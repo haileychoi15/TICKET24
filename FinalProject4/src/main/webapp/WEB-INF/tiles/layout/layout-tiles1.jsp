@@ -21,6 +21,10 @@
   <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
   <script type="text/javascript" src="<%= request.getContextPath() %>/resources/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 
+<link rel="stylesheet" href="resources/css/header.css">
+<script src="resources/js/header.js"></script>
+
+
 </head>
 <body>
 	<div id="mycontainer">
