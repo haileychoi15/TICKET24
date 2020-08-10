@@ -125,17 +125,17 @@ function getBoardTemplate(category, title, content) {
 
 function ajaxBoard(category) {
 
-    //let searchWord = document.querySelector('.search-form input').value;
+    let searchWord = document.querySelector('.search-word').value.trim();
 
     let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/qna.action',category);
+    makeRequest('/finalproject4/faq.action',category);
 
     function makeRequest(url, category) {
 
         httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('GET', url);
-        //httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        httpRequest.send('category=' + encodeURIComponent(category));
+        httpRequest.open('POST', url);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send('category=' + encodeURIComponent(category) + '&searchWord=' + encodeURIComponent(searchWord));
     }
 
     function getResponse() {
@@ -149,11 +149,11 @@ function ajaxBoard(category) {
                 let html = '';
                 response.forEach((item) => {
 
-                    html += getBoardTemplate(item.category, item.title, item.content);
+                    html += getBoardTemplate(item.category, item.subject, item.content);
                 });
 
                 let tbody = document.querySelector('.qna .table .tbody');
-                tbody.insertAdjacentElement('beforeend', html);
+                tbody.innerHTML = html;
 
 
             } else {

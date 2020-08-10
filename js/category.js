@@ -62,3 +62,50 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 });
+
+function getProductTemplate() {
+
+}
+
+function ajaxProduct() {
+
+    let subCategory = document.querySelector('.sub-category-title').value;
+    let order = document.querySelector('.order-group button.selected').value;
+
+    let httpRequest = new XMLHttpRequest();
+    makeRequest('/finalproject4/category.action', subCategory, order);
+
+    function makeRequest(url, subCategory, order) {
+
+        httpRequest.onreadystatechange = getResponse;
+        httpRequest.open('POST', url);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send('category=' + encodeURIComponent(subCategory) + '&searchWord=' + encodeURIComponent(order));
+    }
+
+    function getResponse() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                alert(response.computedString);
+
+                //ajax 성공시 코드
+
+                let html = '';
+                response.forEach((item) => {
+
+                    html += getProductTemplate(item.title, item.image, item.content);
+                });
+
+                let tbody = document.querySelector('.product-group');
+                tbody.innerHTML = html;
+
+
+            } else {
+                alert('There was a problem with the request.');
+            }
+        }
+
+    }
+
+}
