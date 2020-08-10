@@ -1,3 +1,8 @@
+window.onload = function(){
+	ajaxBoard("0");
+}
+
+
 window.addEventListener('DOMContentLoaded', () => {
 
     // 카테고리 누를 때 이벤트 발생
@@ -150,19 +155,19 @@ function ajaxBoard(category) {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 let response = JSON.parse(httpRequest.responseText);
-                alert(response.computedString);
+              //  alert(response.computedString);
 
                 //ajax 성공시 코드
-/*
+
                 let html = '';
                 response.forEach((item) => {
 
-                    html += getBoardTemplate(item.category, item.title, item.content);
+                    html += getBoardTemplate(item.category, item.subject, item.content);
                 });
 
                 let tbody = document.querySelector('.qna .table .tbody');
-                tbody.insertAdjacentElement('beforeend', html);
-*/
+                tbody.innerHTML = html;
+
 
             } else {
                 alert('There was a problem with the request.');

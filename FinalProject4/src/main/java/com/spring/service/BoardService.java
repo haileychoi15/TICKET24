@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.common.AES256;
 import com.spring.mail.GoogleMail;
+import com.spring.model.FaqVO;
 import com.spring.model.InterBoardDAO;
 
 @Service
@@ -40,8 +41,8 @@ public class BoardService implements InterBoardService {
 
 
 	@Override
-	public List<HashMap<String, String>> faqList(HashMap<String, String> paraMap) {
-		List<HashMap<String, String>> faqList = dao.faqList(paraMap);
+	public List<FaqVO> faqList(HashMap<String, String> paraMap) {
+		List<FaqVO> faqList = dao.faqList(paraMap);
 		return faqList;
 	}
 	

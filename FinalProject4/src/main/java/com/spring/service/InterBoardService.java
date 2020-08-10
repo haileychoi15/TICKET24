@@ -3,8 +3,10 @@ package com.spring.service;
 import java.util.HashMap;
 import java.util.List;
 
+import com.spring.model.FaqVO;
+
 public interface InterBoardService {
 
-	List<HashMap<String, String>> faqList(HashMap<String, String> paraMap);
+	List<FaqVO> faqList(HashMap<String, String> paraMap);
 
 }

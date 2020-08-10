@@ -15,8 +15,8 @@ public class BoardDAO implements InterBoardDAO {
 	private SqlSessionTemplate sqlsession;
 
 	@Override
-	public List<HashMap<String, String>> faqList(HashMap<String, String> paraMap) {
-		List<HashMap<String, String>> faqList = sqlsession.selectList("board.faqList", paraMap);
+	public List<FaqVO> faqList(HashMap<String, String> paraMap) {
+		List<FaqVO> faqList = sqlsession.selectList("finalproject4.faqList", paraMap);
 		return faqList;
 	}
 	

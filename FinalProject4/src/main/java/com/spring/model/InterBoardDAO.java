@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface InterBoardDAO {
 
-	List<HashMap<String, String>> faqList(HashMap<String, String> paraMap);
+	List<FaqVO> faqList(HashMap<String, String> paraMap);
 
 }

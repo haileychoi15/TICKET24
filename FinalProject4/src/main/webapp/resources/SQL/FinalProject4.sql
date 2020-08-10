@@ -673,3 +673,369 @@ select distinct to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday
 from yes_show_date
 where prod_id = 1
 order by date_showday;
+
+
+
+
+
+
+----------------------------------- QNA 게시판 테이블 -----------------------------------
+
+drop table yes_qna purge;
+
+create table yes_qna
+(qna_id         number                not null   -- 글번호
+,fk_userid      varchar2(20)          not null   -- 사용자ID
+,name           Nvarchar2(20)         not null   -- 글쓴이
+,category       varchar2(20)          not null   -- 카테고리
+,fk_rev_id      number(10)
+,subject        Nvarchar2(200)        not null   -- 글제목
+,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
+,pw             varchar2(20)          not null   -- 글암호
+,readCount      number default 0      not null   -- 글조회수
+,regDate        date default sysdate  not null   -- 글쓴시간
+,secret         number(1) default 0   not null   -- 비밀글여부  1:비밀글, 0:공개글
+,adminread      number(1) default 0
+,adminans       number(1) default 0
+,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
+,groupno        number                not null   -- 답변글쓰기에 있어서 그룹번호 
+                                                 -- 원글(부모글)과 답변글은 동일한 groupno 를 가진다.
+                                                 -- 답변글이 아닌 원글(부모글)인 경우 groupno 의 값은 groupno 컬럼의 최대값(max)+1 로 한다.
+,fk_seq         number default 0      not null   -- 답변글쓰기에 있어서 답변글이라면 fk_seq 컬럼의 값은 
+                                                 -- 원글(부모글)의 seq 컬럼의 값을 가지게 되며,
+                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
+,depthno        number default 0       not null  -- 답변글쓰기에 있어서 답변글 이라면
+                                                 -- 원글(부모글)의 depthno + 1 을 가지게 되며,
+                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
+,constraint  PK_qna_id primary key(qna_id)
+,constraint  FK_qna_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint  FK_qna_fk_rev_id foreign key(fk_rev_id) references yes_reserve(rev_id)
+,constraint  CK_qna_status check( status in(0,1) )
+,constraint  CK_qna_secret check( secret in (0,1) )
+,constraint  CK_qna_adminread check( adminread in (0,1) )
+,constraint  CK_qna_adminans check( adminans in (0,1) )
+);
+
+
+
+drop sequence qnaSeq;
+
+create sequence qnaSeq
+start with 1
+increment by 1
+nomaxvalue 
+nominvalue
+nocycle
+nocache;
+
+
+
+----------------------------------- 공지 게시판 테이블 -----------------------------------
+
+
+
+drop table yes_notice purge;
+
+create table yes_notice
+(notice_id      number                not null   -- 글번호
+,fk_userid      varchar2(20)          not null   -- 사용자ID
+,name           Nvarchar2(20)         not null   -- 글쓴이
+,category       varchar2(20)          not null   -- 카테고리
+,ticketopenday  varchar2(100)         
+,subject        Nvarchar2(200)        not null   -- 글제목
+,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
+,pw             varchar2(20)          not null   -- 글암호
+,readCount      number default 0      not null   -- 글조회수
+,regDate        date default sysdate  not null   -- 글쓴시간
+,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
+,fileName       varchar2(255)                    -- WAS(톰캣)에 저장될 파일명(20190725092715353243254235235234.png)                                       
+,orgFilename    varchar2(255)                    -- 진짜 파일명(강아지.png)  // 사용자가 파일을 업로드 하거나 파일을 다운로드 할때 사용되어지는 파일명 
+,fileSize       number                           -- 파일크기  
+,constraint  PK_notice_id primary key(notice_id)
+,constraint  FK_notice_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint  CK_notice_status check( status in(0,1) )
+);
+
+
+
+drop sequence noticeSeq;
+
+create sequence noticeSeq
+start with 1
+increment by 1
+nomaxvalue 
+nominvalue
+nocycle
+nocache;
+
+
+
+----------------------------------- 공지 카테고리 테이블 -----------------------------------
+
+
+drop table yes_notice_cate purge;
+
+create table yes_notice_cate
+(no_cate_id    number(8)     not null  -- 카테고리 대분류 번호
+,no_cate_code    varchar2(20)  not null  -- 카테고리 코드
+,no_cate_name   varchar2(100) not null  -- 카테고리명
+,constraint PK_no_cate_cnum primary key(no_cate_id)
+,constraint UQ_no_cate_code unique(no_cate_code)
+);
+
+drop sequence noticeCateSeq;
+
+create sequence noticeCateSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+insert into yes_notice_cate values(noticeCateSeq.nextval, '100000', '티켓오픈');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '200000', '서비스점검');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '300000', '변경/취소');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '400000', '기타');
+commit;
+
+select * 
+from yes_notice_cate;
+
+
+----------------------------------- QNA 카테고리 테이블 -----------------------------------
+
+
+drop table yes_qna_cate purge;
+
+create table yes_qna_cate
+(qna_cate_id    number(8)     not null  -- 카테고리 대분류 번호
+,qna_cate_code  varchar2(20)  not null  -- 카테고리 코드
+,qna_cate_name  varchar2(100) not null  -- 카테고리명
+,constraint PK_qna_cate_cnum primary key(qna_cate_id)
+,constraint UQ_qna_cate_code unique(qna_cate_code)
+);
+
+drop sequence qnaCateSeq;
+
+create sequence qnaCateSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+insert into yes_qna_cate values(qnaCateSeq.nextval, '100000', '주문');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '200000', '배송');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '300000', '취소/교환/환불');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '400000', '회원');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '500000', '공연/예매');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '600000', '기타');
+commit;
+
+select * 
+from yes_qna_cate;
+
+
+----------------------------------- 리뷰 테이블 -----------------------------------
+
+create table yes_review
+(review_id     number               not null   -- 리뷰번호
+,fk_userid     varchar2(20)         not null   -- 사용자ID
+,name          varchar2(20)         not null   -- 성명
+,content       varchar2(1000)       not null   -- 리뷰내용
+,star          number(1) default 5  not null   -- 별점
+,regDate       date default sysdate not null   -- 작성일자
+,parentProdId  number               not null   -- 원게시물 글번호(공연ID)
+,fk_rev_status number default 0     not null   -- 예매상태
+,fk_rev_date   date                            -- 예매일자
+,status        number(1) default 1  not null   -- 글삭제여부
+                                               -- 1 : 사용가능한 글,  0 : 삭제된 글
+                                               -- 댓글은 원글이 삭제되면 자동적으로 삭제되어야 한다.
+,constraint PK_review_id primary key(review_id)
+,constraint FK_review_fk_userid foreign key(fk_userid)
+                                references yes_member(userid)
+,constraint FK_review_parentProdId foreign key(parentProdId) 
+                                   references prod(prod_id) on delete cascade
+,constraint FK_review_fk_rev_date foreign key(fk_rev_date)
+                               references yes_reserve(rev_date)
+,constraint CK_review_star check( star in (1,2,3,4,5) )
+,constraint CK_review_status check( status in(1,0) ) 
+);
+
+
+
+
+drop sequence reviewSeq;
+
+create sequence reviewSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+select *
+from yes_review;
+
+
+----------------------------------- 리뷰 테이블 -----------------------------------
+
+
+drop table like_review purge;
+
+create table like_review
+(seq          number          not null    -- 시퀀스
+,fk_userid          varchar2(20)	not null    -- 사용자ID
+,fk_parentReviewId  number          not null    -- 리뷰ID
+,fk_parentProdId    number          not null    -- 공연ID
+,constraint	PK_like_rev primary key(fk_userid, fk_parentReviewId) -- 복합 primary key
+,constraint FK_like_rev_userid foreign key(fk_userid) references yes_member(userid)
+,constraint FK_like_rev_parentReviewId foreign key(fk_parentReviewId) references yes_review(review_id)
+,constraint FK_like_rev_parentProdId foreign key(fk_parentProdId) references prod(prod_id) on delete cascade
+);
+
+drop sequence likeReviewSeq;
+
+create sequence likeReviewSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+----------------------------------- 관심공연 테이블 -----------------------------------
+
+
+drop table like_prod purge;
+
+create table like_prod
+(seq                number          not null    -- 시퀀스
+,fk_userid          varchar2(20)	not null    -- 사용자ID
+,fk_parentProdId    number          not null    -- 공연ID
+,constraint FK_like_prod_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint FK_like_prod_fk_parentProdId foreign key(fk_parentProdId) references prod(prod_id) on delete cascade
+);
+
+drop sequence likeProdSeq;
+
+create sequence likeProdSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+
+
+----------------------------------- 고객센터질문(FAQ) 테이블 -----------------------------------
+
+drop table yes_faq purge;
+
+create table yes_faq
+(faq_id         number                not null   -- 글번호
+,fk_userid      varchar2(20)          not null   -- 사용자ID
+,fk_category    varchar2(20)          not null   -- 카테고리
+,subject        Nvarchar2(200)        not null   -- 글제목
+,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
+,regDate        date default sysdate  not null   -- 글쓴시간
+,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
+,constraint  PK_faq_id primary key(faq_id)
+,constraint  FK_faq_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint  FK_faq_fk_category foreign key(fk_category) references yes_faq_cate(faq_cate_code)
+,constraint  CK_faq_status check( status in(0,1) )
+);
+
+
+
+drop sequence faqSeq;
+
+create sequence faqSeq
+start with 1
+increment by 1
+nomaxvalue 
+nominvalue
+nocycle
+nocache;
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '비회원도 공연 예매를 할 수 있나요?', '비회원 및 간편 가입 회원은 예매를 하실 수가 없습니다. 
+예매 서비스 이용을 위해서는 휴대폰 또는 I-PIN 본인 인증을 해주시기 바랍니다. ');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '법인회원도 공연 예매를 할 수 있나요?', '법인회원도 공연예매 가능합니다.
+현장에서 티켓 수령을 위해 사업자등록증 사본, 명함 또는 사원증, 예매내역서, 신분증 등을 지참해주시기 바랍니다. ');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '2', '환불 계좌 정보를 잘못 입력해서 환불 받지 못했어요!', '환불 계좌 정보를 잘못 입력하여 환불이 되지 않은 경우 환불 계좌 수정이 가능합니다. 
+MY티켓>예매확인/취소>결제내역 의 환불진행상태에서 [수정] 버튼을 클릭하시어 환불 계좌 정보를 입력해주세요. 
+단, PC 에서만, 평일 오전 10시 ~ 오후 3시 에 가능합니다. ');
+
+commit;
+
+----------------------------------- FAQ 카테고리 테이블 -----------------------------------
+
+
+drop table yes_faq_cate purge;
+
+create table yes_faq_cate
+(faq_cate_id     number(8)     not null  -- 카테고리 대분류 번호
+,faq_cate_code   varchar2(20)  not null  -- 카테고리 코드
+,faq_cate_name   varchar2(100) not null  -- 카테고리명
+,constraint PK_faq_cate_cnum primary key(faq_cate_id)
+,constraint UQ_faq_cate_code unique(faq_cate_code)
+);
+
+drop sequence faqCateSeq;
+
+create sequence faqCateSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+insert into yes_faq_cate values(faqCateSeq.nextval, '1', '예매/결제');
+insert into yes_faq_cate values(faqCateSeq.nextval, '2', '취소/환불');
+insert into yes_faq_cate values(faqCateSeq.nextval, '3', '티켓수령');
+insert into yes_faq_cate values(faqCateSeq.nextval, '4', '기타');
+commit;
+
+select * 
+from yes_faq_cate;
+
+
+select faq_id, fk_userid, fk_category, subject, content, regDate, status
+from yes_faq
+where fk_category = '1';
+
+select faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
+from 
+(
+select faq_id, fk_userid, C.faq_cate_name, fk_category, subject, content, regDate, status
+from yes_faq F join yes_faq_cate C
+on F.fk_category = C.faq_cate_code
+) T
+where fk_category = '1';
+-- 카테고리 1인 예매/결제 카테고리의 FAQ 글들 가져오기
+
+
+select faq_id, fk_userid, subject, content, regDate, status, C.faq_cate_name, fk_category
+from yes_faq F join yes_faq_cate C
+on F.fk_category = C.faq_cate_code;
+-- FAQ join 테이블
+
+select faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
+from 
+(
+select faq_id, fk_userid, C.faq_cate_name, fk_category, subject, content, regDate, status
+from yes_faq F join yes_faq_cate C
+on F.fk_category = C.faq_cate_code
+) T
+where 1=1 and fk_category = '1' and subject like '%회원%';
