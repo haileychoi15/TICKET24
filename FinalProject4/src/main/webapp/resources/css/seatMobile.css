@@ -1,0 +1,639 @@
+#container {
+    width: 100%;
+    height: 535px;
+    font-size: 12px;
+    color: #525252;
+}
+#container::-webkit-scrollbar {
+    width: 16px;
+    height: 10px;
+}
+#container::-webkit-scrollbar-thumb {
+    height: 10px;
+    width: 16px;
+    background: #e1e1e1;
+}
+#container::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+.content::-webkit-scrollbar {
+    width: 16px;
+    height: 10px;
+}
+.content::-webkit-scrollbar-thumb {
+    height: 10px;
+    width: 16px;
+    background: #e1e1e1;
+}
+.content::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+#changeArea, #seatInfo h3, #showInfo, #showInfoTitle, #seatPrice, #seatPriceTitle,
+#logo, .gray, #sideInfo .showName, #saleArea p, #seatNum {
+    display: none;
+}
+
+/* grid */
+#step1Grid {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 50px 500px 130px;
+}
+#step1Top {
+    background-color: #fafafa;
+    font-weight: bold;
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+#seatBox {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+#seatInfo {
+    grid-column: 1/2;
+    grid-row: 3/4;
+    background-color: #fafafa;
+}
+
+#fromStep2Grid {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 50px 400px 500px;
+}
+.nStep {
+    background-color: #fafafa;
+    line-height: 50px;
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+.content {
+    width: 100%;
+    height: 390px;
+    padding-top: 10px;
+    grid-column: 1/2;
+    grid-row: 2/3;
+    overflow: auto;
+}
+#sideBar {
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+
+/* 좌석 선택 */
+#mobileTitle {
+    height: 35px;
+    padding: 0 15px;
+    line-height: 35px;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+#seatBox {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    overflow: auto;
+}
+#seatBox::-webkit-scrollbar {
+    height: 8px;
+}
+#seatBox::-webkit-scrollbar-thumb {
+    background-color: #b4b4b4;
+    border-radius: 8px;
+}
+#seatBox::-webkit-scrollbar-track {
+    background-color:  #fafafa;
+}
+
+#seatArea {
+    width: 600px;
+    height: 480px;
+    position: relative;
+    background-image: url("/finalproject4/resources/images/stageImg.png");
+    background-color: #f4f4f4;
+    background-position-y: 40px;
+    background-repeat: no-repeat;
+}
+
+.eachSeat {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background-color: #d6c7da;
+    display: inline-block;
+    margin: 1px;
+    border-radius: 20%;
+}
+.selSeat {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    display: inline-block;
+    margin: 1px;
+    background-image: url("http://tkfile.yes24.com/images/ticket_new/ic_seat_on.gif");
+}
+
+#selectedSeatBox {
+    width: 92%;
+    margin: 5px 4%;
+}
+
+#selectedSeatTitle {
+    width: 90%;
+    margin: 5px auto;
+}
+
+#selectedSeat {
+    width: 90%;
+    height: 38px;
+    background-color: white;
+    border: solid 1px gray;
+    border-radius: 2px;
+    margin: 0 auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    overflow: auto;
+    border: solid 1px #eeeeee;
+}
+#selectedSeat::-webkit-scrollbar {
+    width: 6px;
+}
+#selectedSeat::-webkit-scrollbar-thumb {
+    background-color: #b4b4b4;
+    border-radius: 6px;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+}
+#selectedSeat::-webkit-scrollbar-track {
+    background-color:  white;
+}
+
+#selectedSeat p {
+    margin: 3px 0 3px 10px;
+}
+
+#btnBox {
+    margin: 0 3%;
+    text-align: center;
+}
+
+#reset, #next {
+    width: 49%;
+    height: 30px;
+    min-width: 110px;
+    margin-top: 5px;
+    display: inline-block;
+    font-size: 12px;
+}
+
+#reset {
+    background-color: #ffffff;
+    border: solid 1px #d8d8d8;
+}
+
+#next {
+    background-color: #ec7d2c;
+    border: solid 1px #ec7d2c;
+    color: white;
+}
+
+/* 할인 및 쿠폰 */
+.nStepDiv {
+    height: 50px;
+    text-align: center;
+}
+.nStepDiv div {
+    font-size: 14px;
+    font-weight: bold;
+}
+.nStepDiv span {
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: normal;
+    color: white;
+}
+.nStepDiv img {
+    width: 20px;
+    vertical-align: middle;
+    margin-bottom: 3px;
+}
+
+.color {
+   width : 100%;
+}
+.color span {
+    background-color: #ec7d2c;
+}
+
+#discount {
+    height: 180px;
+}
+
+#coupon {
+    height: 160px;
+}
+
+.content h3 {
+    padding-left: 25px;
+    margin: 10px 0 0 0;
+}
+
+#discountTbl, #couponTbl {
+    width: 95%;
+    height: 80%;
+    margin: 0 auto;
+    padding-top: 10px;
+    overflow: auto;
+}
+
+#discountTbl table, #couponTbl table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+#saleArea thead tr {
+    background-color: #f4f4f4;
+}
+
+#saleArea tr {
+    height: 25px;
+}
+
+#saleArea p {
+    margin-bottom: 0;
+}
+
+#discountTbl .row1 {
+    width: 55%;
+}
+
+#discountTbl .row2 {
+    width: 20%;
+}
+
+#discountTbl .row3 {
+    width: 25%
+}
+
+#couponTbl .row1 {
+    width: 65%
+}
+
+#couponTbl .row2 {
+    width: 20%
+}
+
+#couponTbl .row3 {
+    width: 15%
+}
+
+#saleArea tbody tr {
+    border-bottom: solid 1px #e7e6e6;
+}
+
+#saleArea tbody td.row1 {
+    padding-left: 15px;
+}
+
+#saleArea tbody td.row2, #saleArea tbody td.row3 {
+    text-align: center;
+}
+
+/* 수령 방법 */
+#deliveryArea .selectInfo {
+    position: relative;
+}
+
+#deliveryArea table {
+    text-align: left;
+}
+
+#radioDiv {
+    margin: 15px 25px;
+    font-size: 13px;
+}
+
+#radioDiv label {
+    position: relative;
+    top: -1px;
+}
+
+#ordererInfo, #deliveryInfo, #paymentDiv {
+    width: 83%;
+    background-color: #fafafa;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+.infoTitle, .paymentCol1 {
+    height: 30px;
+    line-height: 30px;
+    padding-bottom: 10px;
+    font-size: 14px;
+}
+
+#ordererInfo input, #deliveryInfo input {
+    border: solid 1px lightgray;
+}
+
+.ordererRow1, .deliveryRow1 {
+    padding-left: 10px;
+}
+
+.ordererRow2, .deliveryRow2 {
+    padding: 10px 0 10px 20px;
+}
+
+#ordererName input, #deliveryName input {
+    width: 50%;
+}
+#ordererCall input, #deliveryCall input {
+    width: 25%;
+}
+#ordererEmail input {
+    width: 40%;
+}
+#postNo {
+    width: 40%;
+}
+#address {
+    width: 60%;
+    margin: 5px 0;
+}
+#detailAddress {
+    width: 70%;
+}
+
+#deliveryInfo .infoTitle {
+    height: 55px;
+}
+
+#exclamation {
+    width: 11px;
+    height: 11px;
+    margin-left: 5px;
+    line-height: 11px;
+    text-align: center;
+    color: #525252;
+    font-size: 11px;
+    display: inline-block;
+    border: solid 1px #525252;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+#exclamation:hover {
+    cursor: pointer;
+}
+
+#deliveryRadio {
+    width: 90%;
+    margin: 0 auto;
+    line-height: 20px;
+    font-size: 10px;
+    text-align: center;
+}
+
+#same, #latest, #new {
+    position: relative;
+    top: 2px;
+}
+
+.btn {
+    font-size: 12px;
+    border: solid 1px lightgray;
+    color: #525252;
+}
+
+#caution {
+    top: -92px;
+    left: 137px;
+    padding: 20px;
+    position: absolute;
+    font-size: 11px;
+    background-color: #fff4eb;
+}
+
+#caution em {
+    font-style: normal;
+    color: red;
+}
+
+/* 결제 방법 */
+#paymentDiv {
+    margin: 10px auto 20px auto;
+    height: 135px;
+}
+
+.paymentCol1 {
+    padding-bottom: 0;
+}
+
+.paymentCol2 {
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+
+.paymentRow1 input {
+    border: solid 1px lightgray;
+}
+
+#allSel, .paymentRow2 input {
+    margin: 0;
+    position: relative;
+    top: 2px;
+}
+
+#bank {
+    font-size: 12px;
+    position: relative;
+    top: 2px;
+    border: solid 1px lightgray;
+}
+
+#refundAgree {
+    width: 90%;
+    margin: 10px auto 0 auto;
+    padding-top: 10px;
+    border-top: solid 1px #dddddd;
+}
+
+#refundAgree  input, .agree input {
+    position: relative;
+    top: 2px;
+}
+
+#refundAgreeDiv {
+    width: 90%;
+    margin: 0 auto;
+}
+
+#refundFee {
+    width: 95%;
+    margin: 10px auto 5px auto;
+    border-collapse: collapse;
+    background-color: #fafafa;
+    text-align: center;
+    color: #888;
+}
+
+#refundFee tr, #refundFee td {
+    height: 25px;
+}
+
+.refundCol1 {
+    border-bottom: solid 1px #eee;
+}
+
+#remarks {
+    width: 90%;
+    margin: 0 auto 10px auto;
+    color: #888;
+}
+
+.agree {
+    width: 90%;
+    height: 35px;
+    margin: 0 auto;
+    padding: 10px 0;
+    border-top: solid 1px #dddddd;
+}
+
+/* side bar */
+#bkgShowInfo, #paymentStmt {
+    margin: 0 auto;
+    padding: 10px;
+    width: 85%;
+    border: solid 1px #eeeeee;
+    background-color: white;
+}
+
+#bkgShowInfo {
+    font-size: 13px;
+    text-align: center;
+}
+
+#showDate {
+    height: 15px;
+    line-height: 15px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: solid 1px #eeeeee;
+}
+
+#seat {
+    height: 35px;
+    overflow: auto;
+}
+#seat::-webkit-scrollbar {
+    width: 2px;
+}
+#seat::-webkit-scrollbar-thumb {
+    background-color: #b4b4b4;
+    border-radius: 2px;
+}
+
+#paymentTitle, #bkgShowInfoTitle {
+    height: 20px;
+    margin: 20px auto 10px auto;
+    padding-left: 15px;
+    font-size: 14px;
+}
+
+#paymentStmt {
+    padding-bottom: 0;
+    margin-bottom: 7px;
+}
+
+#paymentStmt table {
+    width: 100%;
+    color: #888888;
+}
+
+.stmtRow1 {
+    text-align: left;
+}
+
+.stmtRow2 {
+    text-align: right;
+}
+
+.plusPrice {
+    color: #525252;
+    font-size: 14px;
+}
+
+#totalPriceDiv {
+    width: 100%;
+    height: 45px;
+    margin-top: 10px;
+    border-top: solid 1px #eeeeee;
+}
+
+#totalPriceRow1 {
+    float: left;
+    line-height: 45px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#total {
+    margin-left: 25px;
+    float: right;
+    line-height: 45px;
+}
+
+#totalPrice {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#refundDeadline {
+    width: 90%;
+    margin: 0 auto 7px auto;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+}
+
+#refundDeadline div {
+    display: inline-block;
+    height: 35px;
+    line-height: 35px;
+    font-size: 14px;
+}
+
+#deadline {
+    color: #ec7d2c;
+}
+
+#sideBarBtn {
+    width: 100%;
+    text-align: center;
+}
+
+#prevStep, #nextStep {
+    width: 47%;
+    height: 35px;
+}
+
+#prevStep {
+    background-color: #ffffff;
+    border: solid 1px #d8d8d8;
+}
+
+#nextStep {
+    background-color: #ec7d2c;
+    color: white;
+    border: solid 1px #ec7d2c;
+}
+
+button {
+    cursor: pointer;
+}
