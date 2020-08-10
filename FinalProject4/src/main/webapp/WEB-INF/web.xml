@@ -31,21 +31,7 @@
 		<url-pattern>*.action</url-pattern>
 	</servlet-mapping>
 	
-   <!-- === #14. POST 방식으로 요청시 데이터 인코딩처리(UTF-8)를 위한 필터추가 -->
-   <filter>
-      <filter-name>encodingFilter</filter-name>
-      <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-      <init-param>
-         <param-name>encoding</param-name>
-         <param-value>UTF-8</param-value>      
-      </init-param>
-   </filter> 
-   
-   <filter-mapping>
-      <filter-name>encodingFilter</filter-name>
-      <url-pattern>*</url-pattern>
-   </filter-mapping>
-
+	
 <!-- === #14. POST 방식으로 요청시 데이터 인코딩처리(UTF-8)를 위한 필터추가 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>

@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,19 +35,27 @@ public class BoardController {
 	
 	// FAQ 
 	@ResponseBody
-	@RequestMapping(value = "/faq.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
+	@RequestMapping(value = "/faq.action", produces="text/plain;charset=UTF-8")
+//	@RequestMapping(value = "/faq.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
 	public String qna(HttpServletRequest request) {
 		
 		String category = request.getParameter("category");
+		String searchWord = request.getParameter("searchWord");
 		
 		System.out.println(category +"category");
+		System.out.println(searchWord +"searchWord");
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("category", category);
+		paraMap.put("searchWord", searchWord);
+		
+		List<HashMap<String, String>> faqList = service.faqList(paraMap);
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("n", "1");
+		
 		return jsonObj.toString();
 		
-	//	return jsonArr.toString();
-
 		/*List<TestVO> testvoList = service.ajaxtest_select();
 
 		// ajax 결과물 n을 JSON 형식으로 만들어서 뷰단에 돌려주어야 한다.

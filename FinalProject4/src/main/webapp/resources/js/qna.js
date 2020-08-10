@@ -12,6 +12,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
             //ajax
             ajaxBoard(category);
+            
+            let searchWord = document.querySelector('.search-word').value;
+            console.log(searchWord + "searchWord1");
 
             // 색깔 변경
             console.log(target,event.currentTarget );
@@ -125,17 +128,22 @@ function getBoardTemplate(category, title, content) {
 
 function ajaxBoard(category) {
 
-    //let searchWord = document.querySelector('.search-form input').value;
-
+	
+    let searchWord = document.querySelector('.search-word').value;
+    console.log(searchWord + "searchWord2");
+    
     let httpRequest = new XMLHttpRequest();
     makeRequest('/finalproject4/faq.action',category);
 
     function makeRequest(url, category) {
 
+    	console.log(url + ":url");
+    	console.log(category + ":category")
         httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('GET', url);
-        //httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        httpRequest.send('category=' + encodeURIComponent(category));
+        httpRequest.open('POST', url);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send('category=' + encodeURIComponent(category)+ '&searchWord=' + encodeURIComponent(searchWord));
+        
     }
 
     function getResponse() {
