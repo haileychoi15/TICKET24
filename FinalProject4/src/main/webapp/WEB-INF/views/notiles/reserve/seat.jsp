@@ -187,7 +187,7 @@
                                     <div class="deliveryRow2">
                                         <input id="postNo" type="text" size="5">&nbsp;
                                         <input id="address" type="text" size="25">&nbsp;
-                                        <button class="btn">우편번호검색</button>
+                                        <button class="btn" onclick="setAddress();">우편번호검색</button>
                                     </div>
                                 </div>
                                 <div id="deliveryDetailAddress">
@@ -301,7 +301,7 @@
                         <div id="bkgShowInfoTitle">예매 정보</div>
                         <div id="bkgShowInfo">
                             <div id="showDate">
-                                <span id="showDate1">2020.08.20(목)</span>&nbsp;<span id="showDate2">20시 00분</span>
+                                <span id="showDate1"></span>&nbsp;<span id="showDate2"></span>
                             </div>
                             <div id="seatNum">총 <span id="ticketLength"></span>석 선택</div>
                             <div id="seat"></div>
