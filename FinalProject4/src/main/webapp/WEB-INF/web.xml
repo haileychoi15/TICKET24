@@ -31,7 +31,6 @@
 		<url-pattern>*.action</url-pattern>
 	</servlet-mapping>
 	
-	
 <!-- === #14. POST 방식으로 요청시 데이터 인코딩처리(UTF-8)를 위한 필터추가 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -46,7 +45,6 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>*</url-pattern>
 	</filter-mapping>
-	
 	
 	<!--  ===== #14. 시작 웹페이지 등록하기 ===== -->
 	<welcome-file-list>
