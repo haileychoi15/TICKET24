@@ -95,12 +95,32 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td class="row1">국가유공자할인 (본인만)</td>
-                                        <td class="row2">28,000원</td>
+                                        <td class="row1">국가유공자할인 (본인만)<em>[배송불가]</em></td>
+                                        <td class="row2" id="dc1">5000</td>
                                         <td class="row3">
-                                            <select style="font-size: 12px" id="dcCnt">
-                                            	<option value="0">0매</option>
-                                            	<option value="1">1매</option>
+                                            <select id="dcSel1" style="font-size: 12px" onchange="changeDC()">
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="row1">복지할인 (중증, 1~3급, 1인 2매)<em>[배송불가]</em></td>
+                                        <td class="row2" id="dc2">4000</td>
+                                        <td class="row3">
+                                            <select id="dcSel2" style="font-size: 12px" onchange="changeDC()">
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="row1">복지할인 (경증, 4~6급, 본인만)<em>[배송불가]</em></td>
+                                        <td class="row2" id="dc3">3000</td>
+                                        <td class="row3">
+                                            <select id="dcSel3" style="font-size: 12px" onchange="changeDC()">
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -122,9 +142,9 @@
                                     <tbody>
                                     <tr>
                                         <td class="row1">[YES마니아] 예매수수료 면제쿠폰 (예매수수료 면제)</td>
-                                        <td class="row2">0원</td>
+                                        <td class="row2">1000</td>
                                         <td class="row3">
-                                            <input type="checkbox">
+                                            <input type="checkbox" id="couponCheck1" value="1000" onclick="changeCoupon()">
                                         </td>
                                     </tr>
                                     </tbody>
@@ -317,23 +337,23 @@
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1">가격할인</td>
-                                        <td class="stmtRow2" id="dcPrice"></td>
+                                        <td class="stmtRow2" id="dcPrice">0</td>
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1">쿠폰할인</td>
-                                        <td class="stmtRow2" id="dcCoupon"></td>
+                                        <td class="stmtRow2" id="dcCoupon">0</td>
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1">적립금</td>
-                                        <td class="stmtRow2" id="dcPoint"></td>
+                                        <td class="stmtRow2" id="dcPoint">0</td>
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1 plusPrice">예매수수료</td>
-                                        <td class="stmtRow2 plusPrice" id="ticketCommission"></td>
+                                        <td class="stmtRow2 plusPrice" id="ticketCommission">1000</td>
                                     </tr>
                                     <tr>
                                         <td class="stmtRow1 plusPrice">배송료</td>
-                                        <td class="stmtRow2 plusPrice" id="deliveryFee"></td>
+                                        <td class="stmtRow2 plusPrice" id="deliveryFee">0</td>
                                     </tr>
                                 </table>
                                 <div id="totalPriceDiv">
