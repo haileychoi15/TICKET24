@@ -1,32 +1,113 @@
 window.addEventListener('DOMContentLoaded', () => {
 
-    let tbody = document.querySelector('.tbody');
-    tbody.addEventListener('click', (event) => {
+    ajaxBoard(1);
 
-        let target = event.target;
-        showContent(target);
+    let searchButton = document.querySelector('.search-button');
+    searchButton.addEventListener('click',() => {
 
+        setFirstPage();
+        ajaxBoard(1);
     });
 
+    let pageGroup = document.querySelector('.page-group');
+    pageGroup.addEventListener('click', (event) => {
+
+        let target = event.target;
+        if(target.nodeName === 'BUTTON'){
+
+            let page = target.innerText;
+            ajaxBoard(page);
+            removePageColor();
+            target.classList.add('selected');
+        }
+    });
 
 });
 
-function showContent(target) {
+function enterSearchButton() {
 
-    if(target.classList.contains('table-title')){
+    if(window.event.keyCode == 13) {
+        ajaxBoard(1);
+        setFirstPage();
+    }
+}
 
-        console.log('title');
-        let row = target.closest('.row');
+function removePageColor() {
 
-        console.log('row', row);
+    let buttons = document.querySelectorAll('.page-button'); //  색깔 변경
+    buttons.forEach((item) => {
+        item.classList.remove('selected');
+    });
+}
 
-        if(row.classList.contains('on')){
-            row.classList.remove('on');
-        }
-        else{
-            row.classList.add('on');
-        }
+function setFirstPage() {
 
+    removePageColor();
+    document.querySelector('.page-button:first-child').classList.add('selected');
+}
+
+function getBoardTemplate(id, category, title, date, view, file) {
+
+    let template = `<div class="row">
+                    <span class="table-category">
+                        ${category}
+                    </span>
+                    <span class="table-title">
+                        <a href="#${id}">
+                            ${title}
+                        </a>
+                    </span>
+                    <span class="table-date">
+                        ${date}
+                    </span>
+                    <span class="table-view">
+                        ${view}
+                    </span>
+                    <span class="table-file">
+                        ${file}
+                    </span>
+                </div>`;
+
+    return template;
+}
+
+function ajaxBoard(page) {
+
+    let searchWord = document.querySelector('.search-word').value.trim();
+    console.log("searchWord : ",searchWord, ", page : ",page); //확인용
+
+    let httpRequest = new XMLHttpRequest();
+    /*makeRequest('/finalproject4/notice.action',searchWord);
+
+    function makeRequest(url, searchWord) {
+
+        httpRequest.onreadystatechange = getResponse;
+        httpRequest.open('POST', url);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send('category=' + encodeURIComponent(searchWord)+'?page=' + encodeURIComponent(page));
     }
 
+    function getResponse() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+
+                console.log(response.computedString);
+
+                //ajax 성공시 코드
+                let html = '';
+                response.forEach((item) => {
+
+                    html += getBoardTemplate(item.id, item.category, item.subject, item.regDate, item.readCount ,item.fileName);
+                });
+
+                let tbody = document.querySelector('.qna .table .tbody');
+                tbody.innerHTML = html;
+
+
+            } else {
+                alert('There was a problem with the request.');
+            }
+        }
+    }*/
 }
