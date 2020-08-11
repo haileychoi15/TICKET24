@@ -77,6 +77,11 @@ nocache;
 insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
 values(seq_member.nextval, 'kimjy', '김진영', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
 
+insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
+values(seq_member.nextval, 'admin', '관리자', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
+
+commit;
+
 -- 로그인 테이블 삭제
 drop table yes_login cascade constraints;
 
@@ -121,6 +126,13 @@ values(5,'전시');
 insert into yes_show_category(category_id, category_name)
 values(6,'아동');
 commit;
+
+
+select * 
+from yes_show_category;
+
+select *
+from yes_show_category_detail;
 
 -- 세부 카테고리 테이블
 drop table yes_show_category_detail cascade constraints purge;
@@ -231,8 +243,14 @@ nocache;
 
 select prod_id, fk_category_id, fk_category_detail_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty
-from yes_show
+from prod
 where prod_id = '1';
+
+select prod_id, C.category_name, fk_category_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty
+from prod P join  yes_show_category C
+on P. fk_category_id = C.category_id;
+-- 공연 테이블 임시
 
 insert into prod(prod_id, fk_category_id, fk_category_detail_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
@@ -602,7 +620,7 @@ create table yes_reserve
 ,constraint FK_prod_id_rev foreign key(prod_id) references prod(prod_id) on delete cascade
 ,constraint FK_user_id_rev foreign key(user_id) references yes_member(idx) on delete cascade
 ,constraint FK_seat_id_rev foreign key(seat_id) references yes_show_seat(seat_id) on delete cascade
-,constraint FK_status_id_rev foreign key(status_id) references yes_status(status_id) on delete cascade
+--,constraint FK_status_id_rev foreign key(status_id) references yes_rev_status(status_id) on delete cascade
 );
 
 drop sequence seq_reserve;
@@ -618,7 +636,7 @@ select *
 from yes_reserve;
 
 insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
-values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, default, 50000, 0, 0, 0);
 
 -- 상태 테이블
 drop table yes_rev_status;
@@ -644,9 +662,9 @@ select *
 from yes_rev_status;
 
 insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
-values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, default, 50000, 0, 0, 0);
 
-
+commit;
 
 -----------------------------------------------------------------------------
 -- 예매 시, 공연 정보가져올 view
