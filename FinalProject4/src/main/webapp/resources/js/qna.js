@@ -7,6 +7,18 @@ window.addEventListener('DOMContentLoaded', () => {
 	
 	// 검색 버튼 눌렀을 때 이벤트
 	let searchButton = document.querySelector('.search-button');
+	
+	
+	// 검색입력하고 엔터쳤을 때 이벤트
+	searchButton.addEventListener('keydown', (event) => {
+		
+		if(event.keyCode == 13) {
+			let category = document.querySelector('.category-group .selected').value;
+			ajaxBoard(category);
+		}		
+		
+	});
+
 	searchButton.addEventListener('click', () => {
 		
 		let category = document.querySelector('.category-group .selected').value;

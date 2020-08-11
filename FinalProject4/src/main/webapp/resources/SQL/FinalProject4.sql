@@ -960,7 +960,7 @@ drop table yes_faq purge;
 create table yes_faq
 (faq_id         number                not null   -- 글번호
 ,fk_userid      varchar2(20)          not null   -- 사용자ID
-,fk_category    varchar2(20)          not null   -- 카테고리
+,fk_category    varchar2(20)          not null   -- 카테고리  
 ,subject        Nvarchar2(200)        not null   -- 글제목
 ,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
 ,regDate        date default sysdate  not null   -- 글쓴시간
@@ -984,15 +984,92 @@ nocycle
 nocache;
 
 insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
-values(faqSeq.nextval, 'admin', '1', '비회원도 공연 예매를 할 수 있나요?', '비회원 및 간편 가입 회원은 예매를 하실 수가 없습니다. 
+values(faqSeq.nextval, 'admin', '1', '비회원도 공연 예매를 할 수 있나요?', '비회원 및 간편 가입 회원은 예매를 하실 수가 없습니다. <br/>
 예매 서비스 이용을 위해서는 휴대폰 또는 I-PIN 본인 인증을 해주시기 바랍니다. ');
 insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
-values(faqSeq.nextval, 'admin', '1', '법인회원도 공연 예매를 할 수 있나요?', '법인회원도 공연예매 가능합니다.
+values(faqSeq.nextval, 'admin', '1', '법인회원도 공연 예매를 할 수 있나요?', '법인회원도 공연예매 가능합니다. <br/>
 현장에서 티켓 수령을 위해 사업자등록증 사본, 명함 또는 사원증, 예매내역서, 신분증 등을 지참해주시기 바랍니다. ');
 insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
-values(faqSeq.nextval, 'admin', '2', '환불 계좌 정보를 잘못 입력해서 환불 받지 못했어요!', '환불 계좌 정보를 잘못 입력하여 환불이 되지 않은 경우 환불 계좌 수정이 가능합니다. 
-MY티켓>예매확인/취소>결제내역 의 환불진행상태에서 [수정] 버튼을 클릭하시어 환불 계좌 정보를 입력해주세요. 
-단, PC 에서만, 평일 오전 10시 ~ 오후 3시 에 가능합니다. ');
+values(faqSeq.nextval, 'admin', '2', '환불 계좌 정보를 잘못 입력해서 환불 받지 못했어요!', '환불 계좌 정보를 잘못 입력하여 환불이 되지 않은 경우 환불 계좌 수정이 가능합니다. <br/>
+MY티켓>예매확인/취소>결제내역 의 환불진행상태에서 [수정] 버튼을 클릭하시어 환불 계좌 정보를 입력해주세요. <br/>
+단, PC 에서만, 평일 오전 10시 ~ 오후 3시 에 가능합니다. <br/>');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '4', '예매한 이후 회원정보를 변경했어요. 예매 정보에도 자동으로 반경되나요?', '아닙니다. 회원 정보 수정 후 기존 로그인 상태를 유지할 경우 변경된 회원 정보는 예매 정보에 반영이 되지 않습니다. <br/>
+번거로우시겠지만 반드시 로그아웃 후 재 로그인을 하셔야 반영되므로, 최신 회원 정보 반영을 위해서는 재로그인해주시기 바랍니다. <br/>');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '결제수단을 여러 개 이용하여 예매한 경우 취소는 어떻게 하나요?', '결제수단을 여러 개 이용하여 예매한 경우 취소는 어떻게 하나요? <br/>
+여러 결제 수단을 이용 해 예매한 경우 부분 취소는 불가하며, 전체 취소만 가능합니다. <br/>
+부분 취소를 원하시는 경우 고객센터(T.1544-6399)로 문의해주시기 바랍니다. <br/>
+단, 취소 마감 시간 전까지만 가능합니다.');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '예매 취소는 언제까지 할 수 있나요?', '예매 취소는 취소 마감 시간까지만 가능하며, 취소 일자에 따라 수수료가 부과됩니다. <br/>
+<span style="color: red;">[예매취소 마감일]</span> <br/>
+* 공연관람일이 일요일~월요일 → 토요일 오전 11시<br/>
+* 공연관람일이 화요일~토요일 → 전날 오후 5시<br/>
+* 공연관람일이 공휴일 및 공휴일 다음날<br/>
+  → 공휴일 전날이 평일인 경우 오후 5시 <br/>
+  → 공휴일 전날이 토요일, 일요일인 경우 토요일 오전 11시<br/>
+  → 공휴일이 긴 경우에는 공휴일 첫날 기준 (평일 - 오후 5시 이전 / 일, 월 - 오전 11시 이전)<br/><br/>
+단, 각 상품 정책에 따라 취소 마감 시간이 다를 수 있으며, 이 경우 해당 상품 정책이 우선 적용되오니 예매 시 상품 상세 정보 내 안내 사항을 참고해주시기 바랍니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '예매취소시 취소수수료가 부과되나요?', '취소 일자에 따라 취소수수료가 다르게 부과됩니다. ');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '배송 받은 티켓을 취소하고 싶습니다.', '배송 받은 티켓은 웹/모바일 취소가 불가하며, 취소 마감 시간 전까지 예스24 고객센터로 반송되어야 취소 가능합니다. <br/>
+단, 고객센터 운영시간에 한하며, 티켓이 고객센터에 도착한 날짜를 기준으로 취소수수료가 적용됩니다. <br/>');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '공연 관람 당일 취소가 가능한가요 ?', '기본적으로 <span style="color: red;">공연 관람 당일 취소는 불가</span>합니다. <br/>
+(관람일 당일 취소가 가능한 일부 공연의 경우 티켓 금액의 90%가 취소수수료로 부과됩니다.) <br/>
+공연의 특성에 따라 취소마감시간/취소수수료 정책이 달라질 수 있으니 예매 시 반드시 각 공연 상세 정보를 확인해주시기 바랍니다.<br/>');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '예매 취소 시 환불은 어떻게 받나요?', '결제 수단에 따라 아래의 방법과 같이 환불 됩니다.<br/>
+신용카드<br/>- 일반적으로 취소완료 4~5일(토, 공휴일 제외) 후 카드 승인 취소가 확인됩니다.<br/>
+무통장입금<br/>- 예매 취소 시 반드시 환불 받으실 은행명과 계좌번호를 입력해주세요.<br/>
+YES상품권<br/>- 정상적으로 예매를 취소하는 경우 취소 시 바로 복원됩니다.<br/>
+YES머니, 예치금<br/>- 정상적으로 예매를 취소하는 경우 취소 시 바로 복원됩니다.<br/>
+쿠폰<br/>- 예매 취소시 쿠폰은 자동 복원됩니다.(쿠폰 사용 기간이 종료된 경우 복원되지 않습니다.)<br/>
+* 단, 쿠폰에 따라 복원되지 않는 경우도 있으니 쿠폰 유의사항을 확인해주시기 바랍니다.');
+
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '공연 예매 시 몇 장까지 예매할 수 있나요?', '일반적으로 1회 예매 시 최대 10장까지 예매 가능합니다. <br/>
+단, 공연에 따라 ID당 또는 회차당 예매 매수 제한이 있을 수 있으니, 각 상품 상세 정보를 확인해주시기 바랍니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '예매한 티켓의 관람일시 또는 좌석을 변경할 수 있나요?', '예매 건의 날짜, 시간, 좌석 등의 일부 변경을 원하실 경우 재예매 하신 후 기존 예매를 취소해주셔야 합니다. <br/>
+단, 취소 마감시간 전까지만 가능하며, 취소 시점에 따라 예매수수료가 환불되지 않으며 취소수수료가 부과될 수있습니다. <br/>
+* 재예매하시고 결제 완료 후 기존 예매 건의 취소 마감 시간 내에 고객센터(1544-6399)로 전화주시면 동일한 공연, 1회에 한해 100% 취소처리 해드립니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '공연 예매 시에도 YES포인트 적립이 되나요?', '일반적으로 공연 예매 시에는 YES포인트가 적립되지 않습니다. <br/> 
+(간혹 이벤트 진행 시 특정 기간 동안 일부 상품에 한해 적립되는 경우가 있으며, 이 경우 YES포인트 적립 상품은 해당 상품 상세 정보에 별도 표기됩니다.) ');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '예매(예약) 건의 결제 수단을 변경할 수 있나요?', ' "무통장입금"을 선택하여 예매한 경우 입금 완료 전 신용카드로 결제 수단을 변경할 수 있습니다. <br/>
+PC>MY공연>예매확인/취소 상세에서 직접 변경하시거나 <br/>
+고객센터 전화(1544-6399) 또는 일대일문의를 남겨주시면 처리 가능합니다. <br/>
+단, 신용카드로 결제한 경우 다른 카드로 변경 또는 할부 개월 수 변경 등은 하실 수 없으니 카드 결제 시 유의해 주시기 바랍니다. ');
+
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '4', '본인인증된 ID 로만 예매할 수 있나요?', '<span style="color: red;">공연 예매는 본인 인증된 ID로만 예매 가능합니다. </span><br/>
+비회원 또는 간편 가입 회원 예매는 불가하오니, 예매 전 휴대폰 또는 I-PIN 으로 본인 인증을 하신 후 재로그인 해주시기 바랍니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '4', 'YES마니아에게는 어떤 공연 예매 혜택이 있나요?', '매월 예매수수료 면제쿠폰 1장이 지급되며, 일부 공연에 한해 YES마니아 전용 할인이 제공됩니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '2', '티켓 수령 방법은 어떤 것이 있나요?', '[현장수령]<br/>- 공연 관람 당일 공연장에서 예매 내역 확인 후 티켓을 수령하실 수 있습니다.><br/>
+- 티켓 수령을 위해 예매자 본인 신분증과 예매내역서를 지참해주시기 바랍니다. <br/><br/>[배송]<br/>- 예매완료(결제익일) 기준 5~7일 이내에 배송됩니다. (주말, 공휴일 제외한 영업일 기준) <br/>
+- 배송료는 2,800원이며 공연일 14일 전 예매 건에 한해 배송 접수 가능합니다. <br/>');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '2', '배송지 정보를 변경할 수 있나요?', '티켓 배송이 시작되기 전(발송대기 상태)에는 MY티켓>예매상세내역 에서 직접 변경할 수 있습니다. <br/>
+배송이 시작된 이후에는 고객님께서 직접 배송 업체로 문의 및 변경 요청해주셔야 하며, <br/>
+경우에 따라 배송지 변경이 불가할 수 있습니다. <br/>');
 
 commit;
 
