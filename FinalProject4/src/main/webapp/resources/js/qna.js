@@ -4,6 +4,14 @@ window.onload = function(){
 
 
 window.addEventListener('DOMContentLoaded', () => {
+	
+	// 검색 버튼 눌렀을 때 이벤트
+	let searchButton = document.querySelector('.search-button');
+	searchButton.addEventListener('click', () => {
+		
+		let category = document.querySelector('.category-group .selected').value;
+		ajaxBoard(category);		
+	});
 
     // 카테고리 누를 때 이벤트 발생
     let categoryGroup = document.querySelector('.category-group');
@@ -13,13 +21,9 @@ window.addEventListener('DOMContentLoaded', () => {
         if(target.nodeName == 'BUTTON'){
 
             let category = target.value;
-            console.log(category);
 
             //ajax
             ajaxBoard(category);
-            
-            let searchWord = document.querySelector('.search-word').value;
-            console.log(searchWord + "searchWord1");
 
             // 색깔 변경
             console.log(target,event.currentTarget );
@@ -132,10 +136,8 @@ function getBoardTemplate(category, title, content) {
 }
 
 function ajaxBoard(category) {
-
 	
     let searchWord = document.querySelector('.search-word').value;
-    console.log(searchWord + "searchWord2");
     
     let httpRequest = new XMLHttpRequest();
     makeRequest('/finalproject4/faq.action',category);

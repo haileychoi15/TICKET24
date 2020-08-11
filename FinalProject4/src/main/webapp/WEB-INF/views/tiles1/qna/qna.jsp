@@ -23,7 +23,7 @@
             </p>
             <form class="search-form">
                 <input name="search-word" class="search-word" type="text">
-                <button type="submit">검색</button>
+                <button type="button" class="search-button">검색</button>
             </form>
         </div>
     </section>
