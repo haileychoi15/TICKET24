@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +18,7 @@
             <h1>공지사항</h1>
             <p>
                 TICKET24의 업데이트 정보(서비스, 약관), 점검 공지 등 <br />
-                다양한 소식들을 알려드립니다.${totalPage}
+                다양한 소식들을 알려드립니다.
             </p>
             <form class="search-form">
                 <input name="search-word" type="text" class="search-word">
@@ -32,16 +30,6 @@
         <div class="container">
             <div class="col-12">
                 <h1>자주찾는 FAQ</h1>
-            </div>
-            <div class="col-12">
-                <h1>자주찾는 FAQ</h1>
-                <div class="category">
-                    <div class="category-group">
-                        <button type="button" value="1" class="selected">등록순</button>
-                        <button type="button" value="2" >티켓오픈데이</button>
-                        <button type="button" value="3" >조회수</button>
-                    </div>
-                </div>
             </div>
             <div class="col-12">
                 <div class="table">
@@ -153,6 +141,5 @@
             </div>
         </div>
     </section>
-    <script src="resources/js/notice.js"></script>
 </body>
 </html>

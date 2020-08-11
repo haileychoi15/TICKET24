@@ -964,9 +964,22 @@ values(noticeSeq.nextval, 'admin', '1', '2020.07.28(화) 오후 14:00', '2020 �
 [출연진]<br/>임한별<br/>', '2020-07-13');
 
 
+begin
+    for i in 1..100 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '3', default, '뮤지컬 투란도트2 - 공식 '||i||'차 티켓 취소 안내', 
+        '안녕하세요. 뮤지컬 <투란도트> - 인천 공연 주최·주관사 인천문화예술회관, (주)하늘이엔티, (주)공연마루 입니다. <br/>
+        먼저 뮤지컬〈투란도트〉 공연을 기다려주신 많은 분들께 진심으로 사과의 말씀드립니다. <br/>
+        최근 산발적으로 지역 내 코로나-19 재 확산이 이루어지며, 지역사회 확산세가 계속됨에 따라, 확진자가 다시 증가세를 보여 2차 확산이 우려되는 상황으로 추가적 확산을 방지하고, 관객 및 아티스트 보호 차원에서 불가피하게 본 일정을 취소하기로 결정하게 되었습니다. <br/>
+        본 공연을 기다려 주셨던 관객 여러분, 그리고 한차례 연기됨으로 인해 예약 회차 변경의 수고를 마다하지 않고 공연을 예매해 주셨던 관객 여러분께 다시 한번 머리 숙여 사과의 말씀을 드립니다. <br/>
+        예매 티켓은 결제금액 전액 환불 조치되며, 환불 절차에 불편함이 없도록 최선을 다하겠습니다. ', sysdate - 15);
+    end loop;
+end;
+
+
 commit;
 
-select sysdate - 130 from dual;
+select sysdate - 20 from dual;
 select to_char(sysdate-130, 'dy') from dual;
 select sysdate - 130+10 from dual;
 select to_char(sysdate-130+10, 'dy') from dual;
@@ -978,6 +991,39 @@ select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount
 from yes_notice N join yes_notice_cate C
 on N.category = C.no_cate_code
 order by notice_id;
+
+select count(*) 
+from yes_notice;
+-- 총 공지글 개수
+
+select count(*) 
+from yes_notice
+where 1=1 and subject like '%오픈%';
+-- 검색어가 있는 총 공지글 개수
+
+select count(*) 
+from yes_notice
+where category='1';
+-- 카테고리별 총 공지글 개수
+
+
+
+select notice_id, fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
+    from
+    (
+        select row_number() over(order by notice_id desc) AS rno, notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
+        from
+        (
+            select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
+            from yes_notice N join yes_notice_cate C
+            on N.category = C.no_cate_code
+        )
+        where status = 1 and subject like '%%'
+    )V
+where rno between 1 and 10;
+
+
+
 
 ----------------------------------- 공지 카테고리 테이블 -----------------------------------
 
