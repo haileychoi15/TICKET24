@@ -69,5 +69,23 @@
 		from yes_show_date
 		where prod_id = #{showNum} and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') = #{showDay} and date_showtime = #{showRound}
 	</select>
+	
+	<!-- =====  ===== -->
+	<select id="faqList" parameterType="HashMap" resultType="com.spring.model.FaqVO">
+		select faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
+		from 
+		(
+		select faq_id, fk_userid, C.faq_cate_name, fk_category, subject, content, regDate, status
+		from yes_faq F join yes_faq_cate C
+		on F.fk_category = C.faq_cate_code
+		) T
+		where 1=1 
+		<if test='category != ""'>
+		and fk_category = #{category} 
+		</if>
+		<if test='searchWord != ""'>
+		and subject like '%' || #{searchWord} || '%'
+		</if>
+	</select>
 
 </mapper>

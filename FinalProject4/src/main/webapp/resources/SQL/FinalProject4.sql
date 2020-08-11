@@ -77,6 +77,11 @@ nocache;
 insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
 values(seq_member.nextval, 'kimjy', '김진영', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
 
+insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
+values(seq_member.nextval, 'admin', '관리자', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
+
+commit;
+
 -- 로그인 테이블 삭제
 drop table yes_login cascade constraints;
 
@@ -121,6 +126,13 @@ values(5,'전시');
 insert into yes_show_category(category_id, category_name)
 values(6,'아동');
 commit;
+
+
+select * 
+from yes_show_category;
+
+select *
+from yes_show_category_detail;
 
 -- 세부 카테고리 테이블
 drop table yes_show_category_detail cascade constraints purge;
@@ -231,8 +243,14 @@ nocache;
 
 select prod_id, fk_category_id, fk_category_detail_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty
-from yes_show
+from prod
 where prod_id = '1';
+
+select prod_id, C.category_name, fk_category_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty
+from prod P join  yes_show_category C
+on P. fk_category_id = C.category_id;
+-- 공연 테이블 임시
 
 insert into prod(prod_id, fk_category_id, fk_category_detail_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
@@ -1199,7 +1217,7 @@ create table yes_reserve
 ,constraint FK_prod_id_rev foreign key(prod_id) references prod(prod_id) on delete cascade
 ,constraint FK_user_id_rev foreign key(user_id) references yes_member(idx) on delete cascade
 ,constraint FK_seat_id_rev foreign key(seat_id) references yes_show_seat(seat_id) on delete cascade
-,constraint FK_status_id_rev foreign key(status_id) references yes_status(status_id) on delete cascade
+--,constraint FK_status_id_rev foreign key(status_id) references yes_rev_status(status_id) on delete cascade
 );
 
 drop sequence seq_reserve;
@@ -1215,7 +1233,7 @@ select *
 from yes_reserve;
 
 insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
-values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, default, 50000, 0, 0, 0);
 
 -- 상태 테이블
 drop table yes_rev_status;
@@ -1241,9 +1259,9 @@ select *
 from yes_rev_status;
 
 insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
-values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, default, 50000, 0, 0, 0);
 
-
+commit;
 
 -----------------------------------------------------------------------------
 -- 예매 시, 공연 정보가져올 view
@@ -1271,18 +1289,631 @@ from yes_show_date
 where prod_id = 1
 order by date_showday;
 
-drop view view_seat_info;
-create or replace view view_seat_info
-AS
-select S.seattype_id, S.seat_name, S.seat_status, T.prod_id, T.seat_type, T.seat_price, S.date_id
-from yes_show_seat S
-join yes_seat_type T
-on S.seattype_id = T.seattype_id;
+----------------------------------- QNA 게시판 테이블 -----------------------------------
 
-select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id
-from view_seat_info
-where prod_id = 1;
+drop table yes_qna purge;
 
-select date_id
-from yes_show_date
-where prod_id=1 and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day')='20/09/01 화요일' and date_showtime = '1회차 9시';
+create table yes_qna
+(qna_id         number                not null   -- 글번호
+,fk_userid      varchar2(20)          not null   -- 사용자ID
+,name           Nvarchar2(20)         not null   -- 글쓴이
+,category       varchar2(20)          not null   -- 카테고리
+,fk_rev_id      number(10)
+,subject        Nvarchar2(200)        not null   -- 글제목
+,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
+,pw             varchar2(20)          not null   -- 글암호
+,readCount      number default 0      not null   -- 글조회수
+,regDate        date default sysdate  not null   -- 글쓴시간
+,secret         number(1) default 0   not null   -- 비밀글여부  1:비밀글, 0:공개글
+,adminread      number(1) default 0
+,adminans       number(1) default 0
+,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
+,groupno        number                not null   -- 답변글쓰기에 있어서 그룹번호 
+                                                 -- 원글(부모글)과 답변글은 동일한 groupno 를 가진다.
+                                                 -- 답변글이 아닌 원글(부모글)인 경우 groupno 의 값은 groupno 컬럼의 최대값(max)+1 로 한다.
+,fk_seq         number default 0      not null   -- 답변글쓰기에 있어서 답변글이라면 fk_seq 컬럼의 값은 
+                                                 -- 원글(부모글)의 seq 컬럼의 값을 가지게 되며,
+                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
+,depthno        number default 0       not null  -- 답변글쓰기에 있어서 답변글 이라면
+                                                 -- 원글(부모글)의 depthno + 1 을 가지게 되며,
+                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
+,constraint  PK_qna_id primary key(qna_id)
+,constraint  FK_qna_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint  FK_qna_fk_rev_id foreign key(fk_rev_id) references yes_reserve(rev_id)
+,constraint  CK_qna_status check( status in(0,1) )
+,constraint  CK_qna_secret check( secret in (0,1) )
+,constraint  CK_qna_adminread check( adminread in (0,1) )
+,constraint  CK_qna_adminans check( adminans in (0,1) )
+);
+
+
+
+drop sequence qnaSeq;
+
+create sequence qnaSeq
+start with 1
+increment by 1
+nomaxvalue 
+nominvalue
+nocycle
+nocache;
+
+select * from yes_qna;
+
+
+
+----------------------------------- 공지 게시판 테이블 -----------------------------------
+
+
+
+drop table yes_notice purge;
+
+create table yes_notice
+(notice_id      number                not null   -- 글번호
+,fk_userid      varchar2(20)          not null   -- 사용자ID
+--,name           Nvarchar2(20)         not null   -- 글쓴이
+,category       varchar2(20)          not null   -- 카테고리
+,ticketopenday  varchar2(100)         default null
+,subject        Nvarchar2(200)        not null   -- 글제목
+,content        Nvarchar2(2000)       default '공지사항입니다.'       not null   -- 글내용    -- clob
+,pw             varchar2(20)          default '1234' not null   -- 글암호
+,readCount      number default 0      not null   -- 글조회수
+,regDate        date default sysdate  not null   -- 글쓴시간
+,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
+,fileName       varchar2(255)                    -- WAS(톰캣)에 저장될 파일명(20190725092715353243254235235234.png)                                       
+,orgFilename    varchar2(255)                    -- 진짜 파일명(강아지.png)  // 사용자가 파일을 업로드 하거나 파일을 다운로드 할때 사용되어지는 파일명 
+,fileSize       number                           -- 파일크기  
+,constraint  PK_notice_id primary key(notice_id)
+,constraint  FK_notice_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint  FK_notice_category foreign key(category) references yes_notice_cate(no_cate_code)
+,constraint  CK_notice_status check( status in(0,1) )
+);
+
+
+
+drop sequence noticeSeq;
+
+create sequence noticeSeq
+start with 1
+increment by 1
+nomaxvalue 
+nominvalue
+nocycle
+nocache;
+
+select * 
+from yes_notice_cate;
+
+delete from yes_notice;
+
+select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,content,pw,readCount,regDate,status,fileName,orgFilename,fileSize
+from yes_notice N join yes_notice_cate C
+on N.category = C.no_cate_code;
+
+select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
+from yes_notice N join yes_notice_cate C
+on N.category = C.no_cate_code
+order by notice_id;
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '4', default, '[공지] 고객센터 이용 안내', '안녕하세요. 예스24 입니다.<br/>
+금일 예스24 공연 고객센터로의 전화문의량이 많아 연결이 지연되고 있습니다.<br/>
+양해 부탁드리며, 문의하실 내용이 있으신 고객님께서는 일대일문의를 이용해주시기 바랍니다.<br/>
+불편드려 죄송합니다.', sysdate-300);
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2019.11.27(수) 오후 2:00', '허각 콘서트〈공연각〉- 부산 티켓오픈안내', '오랜만입니다.<br/>
+공연하는 남자, 허각 입니다<br/>
+캐스팅<br/><br/>허각', '2019-10-21');
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2019.12.02(월) 오후 18:00', '2019 임한별 연말 단독 콘서트〈Agit〉티켓오픈안내', '[공연소개]<br/>임한별, 데뷔 후 첫 단독 콘서트<br/>
+임한별은 지난해부터 ‘이별하러 가는 길’, ‘사랑 이딴 거’, ‘오월의 어느 봄날’ 등의 곡을 잇따라 발매하며 특유의 미성과 폭발적인 가창력을 선보여 대중들의 사랑을 받는 음원강자로 등극했다.<br/>
+또한 EXO-CBX(첸백시), 슈퍼주니어, NCT DREAM, 오마이걸, V.O.S. 등 여러 아티스트 앨범의 작사, 작곡을 비롯하여 ‘동백꽃 필 무렵’ OST에서 본인이 가창한 "꽃처럼 예쁜 그대"의 작사, 작곡도 직접 참여해 실력을 입증하며 프로듀서, 창작자로서 다양한 활약을 펼치고 있다.<br/>
+이번 단독 콘서트의 주제는 "AGIT"이며, 임한별의 개인공간인 아지트에서 관객들과 함께 음악을 즐기고 소통하는 특별한 시간을 갖겠다는 의미로 준비되었다. 비밀스러운 주제처럼 그 동안 임한별이 하지 못했던 이야기를 들려주고, 솔로 데뷔 이후 갖는 첫 단독 콘서트인 만큼 오랜 시간 자신과 함께 해온 팬들을 위한 임한별의 대표 곡들과 함께 다양한 커버 무대를 라이브로 선보일 예정이다.<br/>
+또한 임한별의 감미로운 보이스와 재치 있는 입담으로 추운 겨울 팬들의 마음을 녹여줄 따뜻한 시간을 선사할 것으로 기대된다.<br/>
+2019년 12월, 그만의 색깔을 가득 채운 콘서트 무대로 여러분들과 함께하고 싶습니다.<br/><br/>
+[출연진]<br/>임한별<br/>', '2019-10-26');
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2019.11.26(화) 오후 16:00', '2019 팬텀 오브 클래식 - 부산 티켓오픈 안내', '공연소개<br/>
+팬텀싱어를 대표하는 세 팀 - 포르테 디 콰트로, 포레스텔라, 미라클라스!<br/>
+한 해를 마무리하는 최고의 감동, 크로스오버의 진면목을 만날 수 있는 <br/>
+2019 최고의 음악회가 준비된다.<br/>
+팬텀싱어 초대 우승팀이자, 남성 사중창의 힘과 단단한 하모니를 들려주는 ‘포르테 디 콰트로’, <br/>
+정교한 하모니와 다이나믹을 모두 겸비한, 팬텀싱어2 우승팀 ‘포레스텔라’,<br/>
+클래시컬한 보이스로 풍부하면서도 균형잡힌 밸런스가 감동을 자아내는, 기적의 하모니 ‘미라클라스’ <br/>
+2019년 연말! 코리아쿱오케스트라와 함께 세 팀의 대표곡과 특별한 명곡들까지, 노래가 주는 최고의 감동으로 한 해를 마무리하시기 바랍니다. <br/><br/>
+캐스팅<br/>포르테 디 콰트로<br/>포레스텔라<br/>미라클라스', '2019-10-28');
+
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '1', to_char(sysdate-240+i, 'yyyy.mm.dd') || '(' || to_char(sysdate-240+i,'dy') ||') 오후 2:00', '허각 콘서트〈컴백공연각>'||i||'차 오픈', '오랜만입니다.<br/>
+        공연하는 남자, 허각 입니다<br/>
+        캐스팅<br/><br/>허각', sysdate - 260+i);
+    end loop;
+end;
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '1', to_char(sysdate-230+i, 'yyyy.mm.dd') || '(' || to_char(sysdate-230+i,'dy') ||') 오후 5:00', '연극 [히스토리 보이즈] '||i||'차 티켓 오픈 안내', 
+        '공연 소개<br/>[시놉시스]<br/>
+        1980년대 초 영국 북부지방의 한 공립 고등학교 대학입시 준비반. 똑똑하지만 장난기 넘치는 8명의 남학생들이 옥스퍼드와 캠브리지에 입학하기 위해 학업에 몰두하고 있다. <br/>
+        시험과는 무관한, "인생을 위한 수업"을 하는 낭만적인 문학 교사 헥터와 학교생활을 하던 이들 앞에, 오로지 시험 성적을 올리기 위해 고용된 젊고 비판적인 옥스퍼드 출신 역사교사 어윈이 등장한다. <br/>
+        가르치는 방식이 전혀 다른 두 선생님 사이에서 학생들은 그들 나름의 기준을 찾으려 노력한다. 한 편, 평소 헥터를 못마땅해하던 교장은 헥터에게 퇴교를 권하고, 어윈은 학생들과의 예상치 못한 관계 속에서 흔들리기 시작한다. <br/>
+        인생의 출발점에 선 학생들과 삶의 큰 전환점을 맞이한 선생님들. 이들의 역사는 과연 어떤 기록으로 남게 될까?<br/><br/>
+        [캐스팅]<br/>헥터 │ 오대석 조영규<br/>어윈│ 박정복 안재영<br/>린톳 │ 양소민 이지현<br/>교장│ 견민성', sysdate - 250+i);
+    end loop;
+end;
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '3', default, '2020 태사자 콘서트［THE RETURN］좌석거리 두기 관련 안내', 
+'본 공연은 5월 13일 질병관리본부, 문화체육관광부에서 발표한 지침에 의거하여 콘서트도 거리두기 좌석제(지그재그 띄어 앉기) 시행이 의무화되어, 현재 1일 1회 공연을 1일 2회 공연으로 분리해서 진행하게 되었습니다. 기존 관람객 분들의 많은 양해와 이해를 부탁드립니다.<br/>
+<상세 안내><br/>
+- 공연 시간 변경 : 토일 모두 1회차(14:00) ㅣ 2회차(19:30) 좌석 분리 진행 <br/>
+- 좌우앞뒤 좌석을 한 칸씩 지그재그로 떨어져서 착석 <br/>
+  ( 변경 좌석배치도 확인 ☞ http://naver.me/5Efpdweb )<br/>
+- 해당 회차에 관람이 불가한 분들은 아래 이메일로 문의 접수 하시면 교차 관람이 가능하도록 안내 도와드리겠습니다. 단, 같은 요일 공연만 교차 관람이 가능하며 2층 잔여석에 한해서 변경 가능합니다. <br/>
+- 2층 연석 예매자의 경우, 불가피하게 1회차/2회차로 분리되어야 하지만, 문의하시는 분에 한해서 일행끼리 같은 회차에 최대한 가깝게 관람 가능하시도록 안내 협력하겠습니다. <br/>
+- 교차 관람 mail 문의 :  주관사 비에프케이 info@bforest.kr <br/>
+- 문의 기간 :  공지 이후 ~ 7월 23일까지 <br/>
+- 작성 내용 :  예스24 ID / 예매자 성함 / 휴대전화번호 / 예매 좌석 (00층 00구역 00열 00번)', '2019-12-25');
+
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '2', default, '[점검] 시스템 점검으로 인한 로그인 불가 안내 (1/9 02:00~06:00)', 
+'안녕하세요. 예스24 공연입니다.<br/>보다 나은 서비스를 제공해드리기 위해 아래와 같이 시스템 점검을 실시하오니,<br/>이용에 착오 없으시기 바랍니다.<br/>
+------------------아 래--------------------------------------------------<br/>
+1. 작업시간 : 2020년 1월 8일(일) 02:00 ~ 06:00 (4시간)<br/>
+2. 작업내용 : 시스템 점검<br/>
+3. 작업영향 : 로그인 불가(예매/취소 및 MY공연 이용 불가),
+                         예스24 결제수단 사용 불가(YES머니/YES상품권 등)<br/>
+-------------------------------------------------------------------------<br/>
+이용에 불편을 드려 대단히 죄송합니다.<br/>항상 안정적인 서비스 제공을 위해 최선의 노력을 다할 것을 약속 드립니다.<br/>감사합니다.', '2020-01-08');
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '1', to_char(sysdate-180+i, 'yyyy.mm.dd') || '(' || to_char(sysdate-180+i,'dy') ||') 오후 4:00', '그랜드 민트 페스티벌 2020 - 공식 '||i||'차 티켓 오픈 안내', 
+        '공연 소개<br/>[시놉시스]<br/>
+        공연 제목 : 그랜드 민트 페스티벌 2020 - 공식 티켓<br/>
+        공연 일시 : 2020년 02월 14일(금) ~ 02월 23일(일)<br/>
+        공연 장소 : 올림픽공원 내<br/>
+        티켓 가격 : 1일권 99,000원 / 10일권 158,000원(양일간 관람)', sysdate - 200+i);
+    end loop;
+end;
+
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '2', default, '[점검] 시스템 점검으로 인한 로그인 불가 안내 (3/1 02:00~06:00)', 
+'안녕하세요. 예스24 공연입니다.<br/>보다 나은 서비스를 제공해드리기 위해 아래와 같이 시스템 점검을 실시하오니,<br/>이용에 착오 없으시기 바랍니다.<br/>
+------------------아 래--------------------------------------------------<br/>
+1. 작업시간 : 2020년 3월 1일(일) 02:00 ~ 06:00 (4시간)<br/>
+2. 작업내용 : 시스템 점검<br/>
+3. 작업영향 : 로그인 불가(예매/취소 및 MY공연 이용 불가),
+                         예스24 결제수단 사용 불가(YES머니/YES상품권 등)<br/>
+-------------------------------------------------------------------------<br/>
+이용에 불편을 드려 대단히 죄송합니다.<br/>항상 안정적인 서비스 제공을 위해 최선의 노력을 다할 것을 약속 드립니다.<br/>감사합니다.', '2020-02-27');
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '4', default, '[공지] 고객센터 이용 안내', '안녕하세요. 예스24 입니다.<br/>
+금일 예스24 공연 고객센터로의 전화문의량이 많아 연결이 지연되고 있습니다.<br/>
+양해 부탁드리며, 문의하실 내용이 있으신 고객님께서는 일대일문의를 이용해주시기 바랍니다.<br/>
+불편드려 죄송합니다.', '2020-03-27');
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '3', default, '뮤지컬 레베카 - 공식 '||i||'차 티켓 취소 안내', 
+        '안녕하세요. 뮤지컬 <레베카> - 인천 공연 주최·주관사 인천문화예술회관, (주)하늘이엔티, (주)공연마루 입니다. <br/>
+        먼저 뮤지컬〈레베카〉 공연을 기다려주신 많은 분들께 진심으로 사과의 말씀드립니다. <br/>
+        최근 산발적으로 지역 내 코로나-19 재 확산이 이루어지며, 지역사회 확산세가 계속됨에 따라, 확진자가 다시 증가세를 보여 2차 확산이 우려되는 상황으로 추가적 확산을 방지하고, 관객 및 아티스트 보호 차원에서 불가피하게 본 일정을 취소하기로 결정하게 되었습니다. <br/>
+        본 공연을 기다려 주셨던 관객 여러분, 그리고 한차례 연기됨으로 인해 예약 회차 변경의 수고를 마다하지 않고 공연을 예매해 주셨던 관객 여러분께 다시 한번 머리 숙여 사과의 말씀을 드립니다. <br/>
+        예매 티켓은 결제금액 전액 환불 조치되며, 환불 절차에 불편함이 없도록 최선을 다하겠습니다. ', sysdate - 130+i);
+    end loop;
+end;
+
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '3', default, '뮤지컬 투란도트 - 공식 '||i||'차 티켓 취소 안내', 
+        '안녕하세요. 뮤지컬 <투란도트> - 인천 공연 주최·주관사 인천문화예술회관, (주)하늘이엔티, (주)공연마루 입니다. <br/>
+        먼저 뮤지컬〈투란도트〉 공연을 기다려주신 많은 분들께 진심으로 사과의 말씀드립니다. <br/>
+        최근 산발적으로 지역 내 코로나-19 재 확산이 이루어지며, 지역사회 확산세가 계속됨에 따라, 확진자가 다시 증가세를 보여 2차 확산이 우려되는 상황으로 추가적 확산을 방지하고, 관객 및 아티스트 보호 차원에서 불가피하게 본 일정을 취소하기로 결정하게 되었습니다. <br/>
+        본 공연을 기다려 주셨던 관객 여러분, 그리고 한차례 연기됨으로 인해 예약 회차 변경의 수고를 마다하지 않고 공연을 예매해 주셨던 관객 여러분께 다시 한번 머리 숙여 사과의 말씀을 드립니다. <br/>
+        예매 티켓은 결제금액 전액 환불 조치되며, 환불 절차에 불편함이 없도록 최선을 다하겠습니다. ', sysdate - 100+5*i);
+    end loop;
+end;
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2020.07.27(월) 오후 2:00', '팬텀싱어3 콘서트 - 서울 추가회차 티켓오픈 안내', '공연소개<br/>
+팬텀싱어3 부산공연에 보여주신 많은 분들의 사랑과 관심에 진심으로 감사 드리며,<br/>
+여러분의 뜨거운 성원과 요청에 힘입어 더 많은 분들과 함께 하고자 8월 30일(일) 공연을 추가 진행하게 되었습니다. 감사합니다.<br/><br/>
+<추가 공연 안내><br/>
+※ 추가 회차 공연 일정: 2020년 8월 30일(일) 오후 5시<br/>
+※ 추가 회차 공연 티켓오픈 일정: 2020년 7월 27일(월) 오후 2시<br/><br/>
+공 연 명: 팬텀싱어3 콘서트 - 서울<br/>
+공연일자: 2020년 8월 29일(토) ~ 30일(일)<br/>
+공연시간: 토요일 오후 6시 / 일요일 오후 5시<br/>
+공연장소: 벡스코 제1전시장 1홀<br/>
+티켓가격: R석 121,000원 / S석 110,000원<br/>
+관람등급: 만 7세 이상 관람가<br/>
+관람시간: 약 150분(인터미션 없음)<br/>
+매수제한: 회차당 1인 최대 4매', '2020-07-01');
+
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2020.07.28(화) 오후 14:00', '2020 임한별 연말 단독 콘서트〈2nd〉티켓오픈안내', '[공연소개]<br/>임한별, 두번째 콘서트<br/>
+임한별은 지난해부터 ‘이별하러 가는 길’, ‘사랑 이딴 거’, ‘오월의 어느 봄날’ 등의 곡을 잇따라 발매하며 특유의 미성과 폭발적인 가창력을 선보여 대중들의 사랑을 받는 음원강자로 등극했다.<br/>
+또한 EXO-CBX(첸백시), 슈퍼주니어, NCT DREAM, 오마이걸, V.O.S. 등 여러 아티스트 앨범의 작사, 작곡을 비롯하여 ‘동백꽃 필 무렵’ OST에서 본인이 가창한 "꽃처럼 예쁜 그대"의 작사, 작곡도 직접 참여해 실력을 입증하며 프로듀서, 창작자로서 다양한 활약을 펼치고 있다.<br/>
+이번 단독 콘서트의 주제는 "AGIT"이며, 임한별의 개인공간인 아지트에서 관객들과 함께 음악을 즐기고 소통하는 특별한 시간을 갖겠다는 의미로 준비되었다. 비밀스러운 주제처럼 그 동안 임한별이 하지 못했던 이야기를 들려주고, 솔로 데뷔 이후 갖는 첫 단독 콘서트인 만큼 오랜 시간 자신과 함께 해온 팬들을 위한 임한별의 대표 곡들과 함께 다양한 커버 무대를 라이브로 선보일 예정이다.<br/>
+또한 임한별의 감미로운 보이스와 재치 있는 입담으로 추운 겨울 팬들의 마음을 녹여줄 따뜻한 시간을 선사할 것으로 기대된다.<br/>
+2020년 12월, 그만의 색깔을 가득 채운 콘서트 무대로 여러분들과 함께하고 싶습니다.<br/><br/>
+[출연진]<br/>임한별<br/>', '2020-07-13');
+
+
+commit;
+
+select sysdate - 130 from dual;
+select to_char(sysdate-130, 'dy') from dual;
+select sysdate - 130+10 from dual;
+select to_char(sysdate-130+10, 'dy') from dual;
+
+
+select to_char(to_date('2020-03-01'), 'dy') from dual;
+
+select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
+from yes_notice N join yes_notice_cate C
+on N.category = C.no_cate_code
+order by notice_id;
+
+----------------------------------- 공지 카테고리 테이블 -----------------------------------
+
+
+drop table yes_notice_cate purge;
+
+create table yes_notice_cate
+(no_cate_id    number(8)     not null  -- 카테고리 대분류 번호
+,no_cate_code  varchar2(20)  not null  -- 카테고리 코드
+,no_cate_name  varchar2(100) not null  -- 카테고리명
+,constraint PK_no_cate_cnum primary key(no_cate_id)
+,constraint UQ_no_cate_code unique(no_cate_code)
+);
+
+drop sequence noticeCateSeq;
+
+create sequence noticeCateSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+insert into yes_notice_cate values(noticeCateSeq.nextval, '1', '티켓오픈');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '2', '서비스점검');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '3', '변경/취소');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '4', '기타');
+commit;
+
+select * 
+from yes_notice_cate;
+
+
+----------------------------------- QNA 카테고리 테이블 -----------------------------------
+
+
+drop table yes_qna_cate purge;
+
+create table yes_qna_cate
+(qna_cate_id    number(8)     not null  -- 카테고리 대분류 번호
+,qna_cate_code  varchar2(20)  not null  -- 카테고리 코드
+,qna_cate_name  varchar2(100) not null  -- 카테고리명
+,constraint PK_qna_cate_cnum primary key(qna_cate_id)
+,constraint UQ_qna_cate_code unique(qna_cate_code)
+);
+
+drop sequence qnaCateSeq;
+
+create sequence qnaCateSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+insert into yes_qna_cate values(qnaCateSeq.nextval, '1', '주문');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '2', '배송');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '3', '취소/교환/환불');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '4', '회원');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '5', '공연/예매');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '6', '기타');
+commit;
+
+select * 
+from yes_qna_cate;
+
+
+----------------------------------- 리뷰 테이블 -----------------------------------
+
+create table yes_review
+(review_id     number               not null   -- 리뷰번호
+,fk_userid     varchar2(20)         not null   -- 사용자ID
+,name          varchar2(20)         not null   -- 성명
+,content       varchar2(1000)       not null   -- 리뷰내용
+,star          number(1) default 5  not null   -- 별점
+,regDate       date default sysdate not null   -- 작성일자
+,parentProdId  number               not null   -- 원게시물 글번호(공연ID)
+,fk_rev_status number default 0     not null   -- 예매상태
+,fk_rev_date   date                            -- 예매일자
+,status        number(1) default 1  not null   -- 글삭제여부
+                                               -- 1 : 사용가능한 글,  0 : 삭제된 글
+                                               -- 댓글은 원글이 삭제되면 자동적으로 삭제되어야 한다.
+,constraint PK_review_id primary key(review_id)
+,constraint FK_review_fk_userid foreign key(fk_userid)
+                                references yes_member(userid)
+,constraint FK_review_parentProdId foreign key(parentProdId) 
+                                   references prod(prod_id) on delete cascade
+,constraint FK_review_fk_rev_date foreign key(fk_rev_date)
+                               references yes_reserve(rev_date)
+,constraint CK_review_star check( star in (1,2,3,4,5) )
+,constraint CK_review_status check( status in(1,0) ) 
+);
+
+
+
+
+drop sequence reviewSeq;
+
+create sequence reviewSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+select *
+from yes_review;
+
+
+----------------------------------- 리뷰 테이블 -----------------------------------
+
+
+drop table like_review purge;
+
+create table like_review
+(seq          number          not null    -- 시퀀스
+,fk_userid          varchar2(20)	not null    -- 사용자ID
+,fk_parentReviewId  number          not null    -- 리뷰ID
+,fk_parentProdId    number          not null    -- 공연ID
+,constraint	PK_like_rev primary key(fk_userid, fk_parentReviewId) -- 복합 primary key
+,constraint FK_like_rev_userid foreign key(fk_userid) references yes_member(userid)
+,constraint FK_like_rev_parentReviewId foreign key(fk_parentReviewId) references yes_review(review_id)
+,constraint FK_like_rev_parentProdId foreign key(fk_parentProdId) references prod(prod_id) on delete cascade
+);
+
+drop sequence likeReviewSeq;
+
+create sequence likeReviewSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+----------------------------------- 관심공연 테이블 -----------------------------------
+
+
+drop table like_prod purge;
+
+create table like_prod
+(seq                number          not null    -- 시퀀스
+,fk_userid          varchar2(20)	not null    -- 사용자ID
+,fk_parentProdId    number          not null    -- 공연ID
+,constraint FK_like_prod_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint FK_like_prod_fk_parentProdId foreign key(fk_parentProdId) references prod(prod_id) on delete cascade
+);
+
+drop sequence likeProdSeq;
+
+create sequence likeProdSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+
+
+----------------------------------- 고객센터질문(FAQ) 테이블 -----------------------------------
+
+drop table yes_faq purge;
+
+create table yes_faq
+(faq_id         number                not null   -- 글번호
+,fk_userid      varchar2(20)          not null   -- 사용자ID
+,fk_category    varchar2(20)          not null   -- 카테고리  
+,subject        Nvarchar2(200)        not null   -- 글제목
+,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
+,regDate        date default sysdate  not null   -- 글쓴시간
+,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
+,constraint  PK_faq_id primary key(faq_id)
+,constraint  FK_faq_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint  FK_faq_fk_category foreign key(fk_category) references yes_faq_cate(faq_cate_code)
+,constraint  CK_faq_status check( status in(0,1) )
+);
+
+
+
+drop sequence faqSeq;
+
+create sequence faqSeq
+start with 1
+increment by 1
+nomaxvalue 
+nominvalue
+nocycle
+nocache;
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '비회원도 공연 예매를 할 수 있나요?', '비회원 및 간편 가입 회원은 예매를 하실 수가 없습니다. <br/>
+예매 서비스 이용을 위해서는 휴대폰 또는 I-PIN 본인 인증을 해주시기 바랍니다. ');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '법인회원도 공연 예매를 할 수 있나요?', '법인회원도 공연예매 가능합니다. <br/>
+현장에서 티켓 수령을 위해 사업자등록증 사본, 명함 또는 사원증, 예매내역서, 신분증 등을 지참해주시기 바랍니다. ');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '2', '환불 계좌 정보를 잘못 입력해서 환불 받지 못했어요!', '환불 계좌 정보를 잘못 입력하여 환불이 되지 않은 경우 환불 계좌 수정이 가능합니다. <br/>
+MY티켓>예매확인/취소>결제내역 의 환불진행상태에서 [수정] 버튼을 클릭하시어 환불 계좌 정보를 입력해주세요. <br/>
+단, PC 에서만, 평일 오전 10시 ~ 오후 3시 에 가능합니다. <br/>');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '4', '예매한 이후 회원정보를 변경했어요. 예매 정보에도 자동으로 반경되나요?', '아닙니다. 회원 정보 수정 후 기존 로그인 상태를 유지할 경우 변경된 회원 정보는 예매 정보에 반영이 되지 않습니다. <br/>
+번거로우시겠지만 반드시 로그아웃 후 재 로그인을 하셔야 반영되므로, 최신 회원 정보 반영을 위해서는 재로그인해주시기 바랍니다. <br/>');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '결제수단을 여러 개 이용하여 예매한 경우 취소는 어떻게 하나요?', '결제수단을 여러 개 이용하여 예매한 경우 취소는 어떻게 하나요? <br/>
+여러 결제 수단을 이용 해 예매한 경우 부분 취소는 불가하며, 전체 취소만 가능합니다. <br/>
+부분 취소를 원하시는 경우 고객센터(T.1544-6399)로 문의해주시기 바랍니다. <br/>
+단, 취소 마감 시간 전까지만 가능합니다.');
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '예매 취소는 언제까지 할 수 있나요?', '예매 취소는 취소 마감 시간까지만 가능하며, 취소 일자에 따라 수수료가 부과됩니다. <br/>
+<span style="color: red;">[예매취소 마감일]</span> <br/>
+* 공연관람일이 일요일~월요일 → 토요일 오전 11시<br/>
+* 공연관람일이 화요일~토요일 → 전날 오후 5시<br/>
+* 공연관람일이 공휴일 및 공휴일 다음날<br/>
+  → 공휴일 전날이 평일인 경우 오후 5시 <br/>
+  → 공휴일 전날이 토요일, 일요일인 경우 토요일 오전 11시<br/>
+  → 공휴일이 긴 경우에는 공휴일 첫날 기준 (평일 - 오후 5시 이전 / 일, 월 - 오전 11시 이전)<br/><br/>
+단, 각 상품 정책에 따라 취소 마감 시간이 다를 수 있으며, 이 경우 해당 상품 정책이 우선 적용되오니 예매 시 상품 상세 정보 내 안내 사항을 참고해주시기 바랍니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '예매취소시 취소수수료가 부과되나요?', '취소 일자에 따라 취소수수료가 다르게 부과됩니다. ');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '배송 받은 티켓을 취소하고 싶습니다.', '배송 받은 티켓은 웹/모바일 취소가 불가하며, 취소 마감 시간 전까지 예스24 고객센터로 반송되어야 취소 가능합니다. <br/>
+단, 고객센터 운영시간에 한하며, 티켓이 고객센터에 도착한 날짜를 기준으로 취소수수료가 적용됩니다. <br/>');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '공연 관람 당일 취소가 가능한가요 ?', '기본적으로 <span style="color: red;">공연 관람 당일 취소는 불가</span>합니다. <br/>
+(관람일 당일 취소가 가능한 일부 공연의 경우 티켓 금액의 90%가 취소수수료로 부과됩니다.) <br/>
+공연의 특성에 따라 취소마감시간/취소수수료 정책이 달라질 수 있으니 예매 시 반드시 각 공연 상세 정보를 확인해주시기 바랍니다.<br/>');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '3', '예매 취소 시 환불은 어떻게 받나요?', '결제 수단에 따라 아래의 방법과 같이 환불 됩니다.<br/>
+신용카드<br/>- 일반적으로 취소완료 4~5일(토, 공휴일 제외) 후 카드 승인 취소가 확인됩니다.<br/>
+무통장입금<br/>- 예매 취소 시 반드시 환불 받으실 은행명과 계좌번호를 입력해주세요.<br/>
+YES상품권<br/>- 정상적으로 예매를 취소하는 경우 취소 시 바로 복원됩니다.<br/>
+YES머니, 예치금<br/>- 정상적으로 예매를 취소하는 경우 취소 시 바로 복원됩니다.<br/>
+쿠폰<br/>- 예매 취소시 쿠폰은 자동 복원됩니다.(쿠폰 사용 기간이 종료된 경우 복원되지 않습니다.)<br/>
+* 단, 쿠폰에 따라 복원되지 않는 경우도 있으니 쿠폰 유의사항을 확인해주시기 바랍니다.');
+
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '공연 예매 시 몇 장까지 예매할 수 있나요?', '일반적으로 1회 예매 시 최대 10장까지 예매 가능합니다. <br/>
+단, 공연에 따라 ID당 또는 회차당 예매 매수 제한이 있을 수 있으니, 각 상품 상세 정보를 확인해주시기 바랍니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '예매한 티켓의 관람일시 또는 좌석을 변경할 수 있나요?', '예매 건의 날짜, 시간, 좌석 등의 일부 변경을 원하실 경우 재예매 하신 후 기존 예매를 취소해주셔야 합니다. <br/>
+단, 취소 마감시간 전까지만 가능하며, 취소 시점에 따라 예매수수료가 환불되지 않으며 취소수수료가 부과될 수있습니다. <br/>
+* 재예매하시고 결제 완료 후 기존 예매 건의 취소 마감 시간 내에 고객센터(1544-6399)로 전화주시면 동일한 공연, 1회에 한해 100% 취소처리 해드립니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '공연 예매 시에도 YES포인트 적립이 되나요?', '일반적으로 공연 예매 시에는 YES포인트가 적립되지 않습니다. <br/> 
+(간혹 이벤트 진행 시 특정 기간 동안 일부 상품에 한해 적립되는 경우가 있으며, 이 경우 YES포인트 적립 상품은 해당 상품 상세 정보에 별도 표기됩니다.) ');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '1', '예매(예약) 건의 결제 수단을 변경할 수 있나요?', ' "무통장입금"을 선택하여 예매한 경우 입금 완료 전 신용카드로 결제 수단을 변경할 수 있습니다. <br/>
+PC>MY공연>예매확인/취소 상세에서 직접 변경하시거나 <br/>
+고객센터 전화(1544-6399) 또는 일대일문의를 남겨주시면 처리 가능합니다. <br/>
+단, 신용카드로 결제한 경우 다른 카드로 변경 또는 할부 개월 수 변경 등은 하실 수 없으니 카드 결제 시 유의해 주시기 바랍니다. ');
+
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '4', '본인인증된 ID 로만 예매할 수 있나요?', '<span style="color: red;">공연 예매는 본인 인증된 ID로만 예매 가능합니다. </span><br/>
+비회원 또는 간편 가입 회원 예매는 불가하오니, 예매 전 휴대폰 또는 I-PIN 으로 본인 인증을 하신 후 재로그인 해주시기 바랍니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '4', 'YES마니아에게는 어떤 공연 예매 혜택이 있나요?', '매월 예매수수료 면제쿠폰 1장이 지급되며, 일부 공연에 한해 YES마니아 전용 할인이 제공됩니다.');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '2', '티켓 수령 방법은 어떤 것이 있나요?', '[현장수령]<br/>- 공연 관람 당일 공연장에서 예매 내역 확인 후 티켓을 수령하실 수 있습니다.><br/>
+- 티켓 수령을 위해 예매자 본인 신분증과 예매내역서를 지참해주시기 바랍니다. <br/><br/>[배송]<br/>- 예매완료(결제익일) 기준 5~7일 이내에 배송됩니다. (주말, 공휴일 제외한 영업일 기준) <br/>
+- 배송료는 2,800원이며 공연일 14일 전 예매 건에 한해 배송 접수 가능합니다. <br/>');
+
+insert into yes_faq(faq_id, fk_userid, fk_category, subject, content)
+values(faqSeq.nextval, 'admin', '2', '배송지 정보를 변경할 수 있나요?', '티켓 배송이 시작되기 전(발송대기 상태)에는 MY티켓>예매상세내역 에서 직접 변경할 수 있습니다. <br/>
+배송이 시작된 이후에는 고객님께서 직접 배송 업체로 문의 및 변경 요청해주셔야 하며, <br/>
+경우에 따라 배송지 변경이 불가할 수 있습니다. <br/>');
+
+commit;
+
+----------------------------------- FAQ 카테고리 테이블 -----------------------------------
+
+
+drop table yes_faq_cate purge;
+
+create table yes_faq_cate
+(faq_cate_id     number(8)     not null  -- 카테고리 대분류 번호
+,faq_cate_code   varchar2(20)  not null  -- 카테고리 코드
+,faq_cate_name   varchar2(100) not null  -- 카테고리명
+,constraint PK_faq_cate_cnum primary key(faq_cate_id)
+,constraint UQ_faq_cate_code unique(faq_cate_code)
+);
+
+drop sequence faqCateSeq;
+
+create sequence faqCateSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+insert into yes_faq_cate values(faqCateSeq.nextval, '1', '예매/결제');
+insert into yes_faq_cate values(faqCateSeq.nextval, '2', '취소/환불');
+insert into yes_faq_cate values(faqCateSeq.nextval, '3', '티켓수령');
+insert into yes_faq_cate values(faqCateSeq.nextval, '4', '기타');
+commit;
+
+select * 
+from yes_faq_cate;
+
+
+select faq_id, fk_userid, fk_category, subject, content, regDate, status
+from yes_faq
+where fk_category = '1';
+
+select faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
+from 
+(
+select faq_id, fk_userid, C.faq_cate_name, fk_category, subject, content, regDate, status
+from yes_faq F join yes_faq_cate C
+on F.fk_category = C.faq_cate_code
+) T
+where fk_category = '1';
+-- 카테고리 1인 예매/결제 카테고리의 FAQ 글들 가져오기
+
+
+select faq_id, fk_userid, subject, content, regDate, status, C.faq_cate_name, fk_category
+from yes_faq F join yes_faq_cate C
+on F.fk_category = C.faq_cate_code;
+-- FAQ join 테이블
+
+select faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
+from 
+(
+select faq_id, fk_userid, C.faq_cate_name, fk_category, subject, content, regDate, status
+from yes_faq F join yes_faq_cate C
+on F.fk_category = C.faq_cate_code
+) T
+where 1=1 and fk_category = '1' and subject like '%회원%';
