@@ -746,6 +746,8 @@ nominvalue
 nocycle
 nocache;
 
+select * from yes_qna;
+
 
 
 ----------------------------------- 공지 게시판 테이블 -----------------------------------
@@ -757,12 +759,12 @@ drop table yes_notice purge;
 create table yes_notice
 (notice_id      number                not null   -- 글번호
 ,fk_userid      varchar2(20)          not null   -- 사용자ID
-,name           Nvarchar2(20)         not null   -- 글쓴이
+--,name           Nvarchar2(20)         not null   -- 글쓴이
 ,category       varchar2(20)          not null   -- 카테고리
-,ticketopenday  varchar2(100)         
+,ticketopenday  varchar2(100)         default null
 ,subject        Nvarchar2(200)        not null   -- 글제목
-,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
-,pw             varchar2(20)          not null   -- 글암호
+,content        Nvarchar2(2000)       default '공지사항입니다.'       not null   -- 글내용    -- clob
+,pw             varchar2(20)          default '1234' not null   -- 글암호
 ,readCount      number default 0      not null   -- 글조회수
 ,regDate        date default sysdate  not null   -- 글쓴시간
 ,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
@@ -771,6 +773,7 @@ create table yes_notice
 ,fileSize       number                           -- 파일크기  
 ,constraint  PK_notice_id primary key(notice_id)
 ,constraint  FK_notice_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint  FK_notice_category foreign key(category) references yes_notice_cate(no_cate_code)
 ,constraint  CK_notice_status check( status in(0,1) )
 );
 
@@ -786,7 +789,195 @@ nominvalue
 nocycle
 nocache;
 
+select * 
+from yes_notice_cate;
 
+delete from yes_notice;
+
+select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,content,pw,readCount,regDate,status,fileName,orgFilename,fileSize
+from yes_notice N join yes_notice_cate C
+on N.category = C.no_cate_code;
+
+select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
+from yes_notice N join yes_notice_cate C
+on N.category = C.no_cate_code
+order by notice_id;
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '4', default, '[공지] 고객센터 이용 안내', '안녕하세요. 예스24 입니다.<br/>
+금일 예스24 공연 고객센터로의 전화문의량이 많아 연결이 지연되고 있습니다.<br/>
+양해 부탁드리며, 문의하실 내용이 있으신 고객님께서는 일대일문의를 이용해주시기 바랍니다.<br/>
+불편드려 죄송합니다.', sysdate-300);
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2019.11.27(수) 오후 2:00', '허각 콘서트〈공연각〉- 부산 티켓오픈안내', '오랜만입니다.<br/>
+공연하는 남자, 허각 입니다<br/>
+캐스팅<br/><br/>허각', '2019-10-21');
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2019.12.02(월) 오후 18:00', '2019 임한별 연말 단독 콘서트〈Agit〉티켓오픈안내', '[공연소개]<br/>임한별, 데뷔 후 첫 단독 콘서트<br/>
+임한별은 지난해부터 ‘이별하러 가는 길’, ‘사랑 이딴 거’, ‘오월의 어느 봄날’ 등의 곡을 잇따라 발매하며 특유의 미성과 폭발적인 가창력을 선보여 대중들의 사랑을 받는 음원강자로 등극했다.<br/>
+또한 EXO-CBX(첸백시), 슈퍼주니어, NCT DREAM, 오마이걸, V.O.S. 등 여러 아티스트 앨범의 작사, 작곡을 비롯하여 ‘동백꽃 필 무렵’ OST에서 본인이 가창한 "꽃처럼 예쁜 그대"의 작사, 작곡도 직접 참여해 실력을 입증하며 프로듀서, 창작자로서 다양한 활약을 펼치고 있다.<br/>
+이번 단독 콘서트의 주제는 "AGIT"이며, 임한별의 개인공간인 아지트에서 관객들과 함께 음악을 즐기고 소통하는 특별한 시간을 갖겠다는 의미로 준비되었다. 비밀스러운 주제처럼 그 동안 임한별이 하지 못했던 이야기를 들려주고, 솔로 데뷔 이후 갖는 첫 단독 콘서트인 만큼 오랜 시간 자신과 함께 해온 팬들을 위한 임한별의 대표 곡들과 함께 다양한 커버 무대를 라이브로 선보일 예정이다.<br/>
+또한 임한별의 감미로운 보이스와 재치 있는 입담으로 추운 겨울 팬들의 마음을 녹여줄 따뜻한 시간을 선사할 것으로 기대된다.<br/>
+2019년 12월, 그만의 색깔을 가득 채운 콘서트 무대로 여러분들과 함께하고 싶습니다.<br/><br/>
+[출연진]<br/>임한별<br/>', '2019-10-26');
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2019.11.26(화) 오후 16:00', '2019 팬텀 오브 클래식 - 부산 티켓오픈 안내', '공연소개<br/>
+팬텀싱어를 대표하는 세 팀 - 포르테 디 콰트로, 포레스텔라, 미라클라스!<br/>
+한 해를 마무리하는 최고의 감동, 크로스오버의 진면목을 만날 수 있는 <br/>
+2019 최고의 음악회가 준비된다.<br/>
+팬텀싱어 초대 우승팀이자, 남성 사중창의 힘과 단단한 하모니를 들려주는 ‘포르테 디 콰트로’, <br/>
+정교한 하모니와 다이나믹을 모두 겸비한, 팬텀싱어2 우승팀 ‘포레스텔라’,<br/>
+클래시컬한 보이스로 풍부하면서도 균형잡힌 밸런스가 감동을 자아내는, 기적의 하모니 ‘미라클라스’ <br/>
+2019년 연말! 코리아쿱오케스트라와 함께 세 팀의 대표곡과 특별한 명곡들까지, 노래가 주는 최고의 감동으로 한 해를 마무리하시기 바랍니다. <br/><br/>
+캐스팅<br/>포르테 디 콰트로<br/>포레스텔라<br/>미라클라스', '2019-10-28');
+
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '1', to_char(sysdate-240+i, 'yyyy.mm.dd') || '(' || to_char(sysdate-240+i,'dy') ||') 오후 2:00', '허각 콘서트〈컴백공연각>'||i||'차 오픈', '오랜만입니다.<br/>
+        공연하는 남자, 허각 입니다<br/>
+        캐스팅<br/><br/>허각', sysdate - 260+i);
+    end loop;
+end;
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '1', to_char(sysdate-230+i, 'yyyy.mm.dd') || '(' || to_char(sysdate-230+i,'dy') ||') 오후 5:00', '연극 [히스토리 보이즈] '||i||'차 티켓 오픈 안내', 
+        '공연 소개<br/>[시놉시스]<br/>
+        1980년대 초 영국 북부지방의 한 공립 고등학교 대학입시 준비반. 똑똑하지만 장난기 넘치는 8명의 남학생들이 옥스퍼드와 캠브리지에 입학하기 위해 학업에 몰두하고 있다. <br/>
+        시험과는 무관한, "인생을 위한 수업"을 하는 낭만적인 문학 교사 헥터와 학교생활을 하던 이들 앞에, 오로지 시험 성적을 올리기 위해 고용된 젊고 비판적인 옥스퍼드 출신 역사교사 어윈이 등장한다. <br/>
+        가르치는 방식이 전혀 다른 두 선생님 사이에서 학생들은 그들 나름의 기준을 찾으려 노력한다. 한 편, 평소 헥터를 못마땅해하던 교장은 헥터에게 퇴교를 권하고, 어윈은 학생들과의 예상치 못한 관계 속에서 흔들리기 시작한다. <br/>
+        인생의 출발점에 선 학생들과 삶의 큰 전환점을 맞이한 선생님들. 이들의 역사는 과연 어떤 기록으로 남게 될까?<br/><br/>
+        [캐스팅]<br/>헥터 │ 오대석 조영규<br/>어윈│ 박정복 안재영<br/>린톳 │ 양소민 이지현<br/>교장│ 견민성', sysdate - 250+i);
+    end loop;
+end;
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '3', default, '2020 태사자 콘서트［THE RETURN］좌석거리 두기 관련 안내', 
+'본 공연은 5월 13일 질병관리본부, 문화체육관광부에서 발표한 지침에 의거하여 콘서트도 거리두기 좌석제(지그재그 띄어 앉기) 시행이 의무화되어, 현재 1일 1회 공연을 1일 2회 공연으로 분리해서 진행하게 되었습니다. 기존 관람객 분들의 많은 양해와 이해를 부탁드립니다.<br/>
+<상세 안내><br/>
+- 공연 시간 변경 : 토일 모두 1회차(14:00) ㅣ 2회차(19:30) 좌석 분리 진행 <br/>
+- 좌우앞뒤 좌석을 한 칸씩 지그재그로 떨어져서 착석 <br/>
+  ( 변경 좌석배치도 확인 ☞ http://naver.me/5Efpdweb )<br/>
+- 해당 회차에 관람이 불가한 분들은 아래 이메일로 문의 접수 하시면 교차 관람이 가능하도록 안내 도와드리겠습니다. 단, 같은 요일 공연만 교차 관람이 가능하며 2층 잔여석에 한해서 변경 가능합니다. <br/>
+- 2층 연석 예매자의 경우, 불가피하게 1회차/2회차로 분리되어야 하지만, 문의하시는 분에 한해서 일행끼리 같은 회차에 최대한 가깝게 관람 가능하시도록 안내 협력하겠습니다. <br/>
+- 교차 관람 mail 문의 :  주관사 비에프케이 info@bforest.kr <br/>
+- 문의 기간 :  공지 이후 ~ 7월 23일까지 <br/>
+- 작성 내용 :  예스24 ID / 예매자 성함 / 휴대전화번호 / 예매 좌석 (00층 00구역 00열 00번)', '2019-12-25');
+
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '2', default, '[점검] 시스템 점검으로 인한 로그인 불가 안내 (1/9 02:00~06:00)', 
+'안녕하세요. 예스24 공연입니다.<br/>보다 나은 서비스를 제공해드리기 위해 아래와 같이 시스템 점검을 실시하오니,<br/>이용에 착오 없으시기 바랍니다.<br/>
+------------------아 래--------------------------------------------------<br/>
+1. 작업시간 : 2020년 1월 8일(일) 02:00 ~ 06:00 (4시간)<br/>
+2. 작업내용 : 시스템 점검<br/>
+3. 작업영향 : 로그인 불가(예매/취소 및 MY공연 이용 불가),
+                         예스24 결제수단 사용 불가(YES머니/YES상품권 등)<br/>
+-------------------------------------------------------------------------<br/>
+이용에 불편을 드려 대단히 죄송합니다.<br/>항상 안정적인 서비스 제공을 위해 최선의 노력을 다할 것을 약속 드립니다.<br/>감사합니다.', '2020-01-08');
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '1', to_char(sysdate-180+i, 'yyyy.mm.dd') || '(' || to_char(sysdate-180+i,'dy') ||') 오후 4:00', '그랜드 민트 페스티벌 2020 - 공식 '||i||'차 티켓 오픈 안내', 
+        '공연 소개<br/>[시놉시스]<br/>
+        공연 제목 : 그랜드 민트 페스티벌 2020 - 공식 티켓<br/>
+        공연 일시 : 2020년 02월 14일(금) ~ 02월 23일(일)<br/>
+        공연 장소 : 올림픽공원 내<br/>
+        티켓 가격 : 1일권 99,000원 / 10일권 158,000원(양일간 관람)', sysdate - 200+i);
+    end loop;
+end;
+
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '2', default, '[점검] 시스템 점검으로 인한 로그인 불가 안내 (3/1 02:00~06:00)', 
+'안녕하세요. 예스24 공연입니다.<br/>보다 나은 서비스를 제공해드리기 위해 아래와 같이 시스템 점검을 실시하오니,<br/>이용에 착오 없으시기 바랍니다.<br/>
+------------------아 래--------------------------------------------------<br/>
+1. 작업시간 : 2020년 3월 1일(일) 02:00 ~ 06:00 (4시간)<br/>
+2. 작업내용 : 시스템 점검<br/>
+3. 작업영향 : 로그인 불가(예매/취소 및 MY공연 이용 불가),
+                         예스24 결제수단 사용 불가(YES머니/YES상품권 등)<br/>
+-------------------------------------------------------------------------<br/>
+이용에 불편을 드려 대단히 죄송합니다.<br/>항상 안정적인 서비스 제공을 위해 최선의 노력을 다할 것을 약속 드립니다.<br/>감사합니다.', '2020-02-27');
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '4', default, '[공지] 고객센터 이용 안내', '안녕하세요. 예스24 입니다.<br/>
+금일 예스24 공연 고객센터로의 전화문의량이 많아 연결이 지연되고 있습니다.<br/>
+양해 부탁드리며, 문의하실 내용이 있으신 고객님께서는 일대일문의를 이용해주시기 바랍니다.<br/>
+불편드려 죄송합니다.', '2020-03-27');
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '3', default, '뮤지컬 레베카 - 공식 '||i||'차 티켓 취소 안내', 
+        '안녕하세요. 뮤지컬 <레베카> - 인천 공연 주최·주관사 인천문화예술회관, (주)하늘이엔티, (주)공연마루 입니다. <br/>
+        먼저 뮤지컬〈레베카〉 공연을 기다려주신 많은 분들께 진심으로 사과의 말씀드립니다. <br/>
+        최근 산발적으로 지역 내 코로나-19 재 확산이 이루어지며, 지역사회 확산세가 계속됨에 따라, 확진자가 다시 증가세를 보여 2차 확산이 우려되는 상황으로 추가적 확산을 방지하고, 관객 및 아티스트 보호 차원에서 불가피하게 본 일정을 취소하기로 결정하게 되었습니다. <br/>
+        본 공연을 기다려 주셨던 관객 여러분, 그리고 한차례 연기됨으로 인해 예약 회차 변경의 수고를 마다하지 않고 공연을 예매해 주셨던 관객 여러분께 다시 한번 머리 숙여 사과의 말씀을 드립니다. <br/>
+        예매 티켓은 결제금액 전액 환불 조치되며, 환불 절차에 불편함이 없도록 최선을 다하겠습니다. ', sysdate - 130+i);
+    end loop;
+end;
+
+
+begin
+    for i in 1..10 loop 
+        insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+        values(noticeSeq.nextval, 'admin', '3', default, '뮤지컬 투란도트 - 공식 '||i||'차 티켓 취소 안내', 
+        '안녕하세요. 뮤지컬 <투란도트> - 인천 공연 주최·주관사 인천문화예술회관, (주)하늘이엔티, (주)공연마루 입니다. <br/>
+        먼저 뮤지컬〈투란도트〉 공연을 기다려주신 많은 분들께 진심으로 사과의 말씀드립니다. <br/>
+        최근 산발적으로 지역 내 코로나-19 재 확산이 이루어지며, 지역사회 확산세가 계속됨에 따라, 확진자가 다시 증가세를 보여 2차 확산이 우려되는 상황으로 추가적 확산을 방지하고, 관객 및 아티스트 보호 차원에서 불가피하게 본 일정을 취소하기로 결정하게 되었습니다. <br/>
+        본 공연을 기다려 주셨던 관객 여러분, 그리고 한차례 연기됨으로 인해 예약 회차 변경의 수고를 마다하지 않고 공연을 예매해 주셨던 관객 여러분께 다시 한번 머리 숙여 사과의 말씀을 드립니다. <br/>
+        예매 티켓은 결제금액 전액 환불 조치되며, 환불 절차에 불편함이 없도록 최선을 다하겠습니다. ', sysdate - 100+5*i);
+    end loop;
+end;
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2020.07.27(월) 오후 2:00', '팬텀싱어3 콘서트 - 서울 추가회차 티켓오픈 안내', '공연소개<br/>
+팬텀싱어3 부산공연에 보여주신 많은 분들의 사랑과 관심에 진심으로 감사 드리며,<br/>
+여러분의 뜨거운 성원과 요청에 힘입어 더 많은 분들과 함께 하고자 8월 30일(일) 공연을 추가 진행하게 되었습니다. 감사합니다.<br/><br/>
+<추가 공연 안내><br/>
+※ 추가 회차 공연 일정: 2020년 8월 30일(일) 오후 5시<br/>
+※ 추가 회차 공연 티켓오픈 일정: 2020년 7월 27일(월) 오후 2시<br/><br/>
+공 연 명: 팬텀싱어3 콘서트 - 서울<br/>
+공연일자: 2020년 8월 29일(토) ~ 30일(일)<br/>
+공연시간: 토요일 오후 6시 / 일요일 오후 5시<br/>
+공연장소: 벡스코 제1전시장 1홀<br/>
+티켓가격: R석 121,000원 / S석 110,000원<br/>
+관람등급: 만 7세 이상 관람가<br/>
+관람시간: 약 150분(인터미션 없음)<br/>
+매수제한: 회차당 1인 최대 4매', '2020-07-01');
+
+
+insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content,regDate)
+values(noticeSeq.nextval, 'admin', '1', '2020.07.28(화) 오후 14:00', '2020 임한별 연말 단독 콘서트〈2nd〉티켓오픈안내', '[공연소개]<br/>임한별, 두번째 콘서트<br/>
+임한별은 지난해부터 ‘이별하러 가는 길’, ‘사랑 이딴 거’, ‘오월의 어느 봄날’ 등의 곡을 잇따라 발매하며 특유의 미성과 폭발적인 가창력을 선보여 대중들의 사랑을 받는 음원강자로 등극했다.<br/>
+또한 EXO-CBX(첸백시), 슈퍼주니어, NCT DREAM, 오마이걸, V.O.S. 등 여러 아티스트 앨범의 작사, 작곡을 비롯하여 ‘동백꽃 필 무렵’ OST에서 본인이 가창한 "꽃처럼 예쁜 그대"의 작사, 작곡도 직접 참여해 실력을 입증하며 프로듀서, 창작자로서 다양한 활약을 펼치고 있다.<br/>
+이번 단독 콘서트의 주제는 "AGIT"이며, 임한별의 개인공간인 아지트에서 관객들과 함께 음악을 즐기고 소통하는 특별한 시간을 갖겠다는 의미로 준비되었다. 비밀스러운 주제처럼 그 동안 임한별이 하지 못했던 이야기를 들려주고, 솔로 데뷔 이후 갖는 첫 단독 콘서트인 만큼 오랜 시간 자신과 함께 해온 팬들을 위한 임한별의 대표 곡들과 함께 다양한 커버 무대를 라이브로 선보일 예정이다.<br/>
+또한 임한별의 감미로운 보이스와 재치 있는 입담으로 추운 겨울 팬들의 마음을 녹여줄 따뜻한 시간을 선사할 것으로 기대된다.<br/>
+2020년 12월, 그만의 색깔을 가득 채운 콘서트 무대로 여러분들과 함께하고 싶습니다.<br/><br/>
+[출연진]<br/>임한별<br/>', '2020-07-13');
+
+
+commit;
+
+select sysdate - 130 from dual;
+select to_char(sysdate-130, 'dy') from dual;
+select sysdate - 130+10 from dual;
+select to_char(sysdate-130+10, 'dy') from dual;
+
+
+select to_char(to_date('2020-03-01'), 'dy') from dual;
+
+select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
+from yes_notice N join yes_notice_cate C
+on N.category = C.no_cate_code
+order by notice_id;
 
 ----------------------------------- 공지 카테고리 테이블 -----------------------------------
 
@@ -795,8 +986,8 @@ drop table yes_notice_cate purge;
 
 create table yes_notice_cate
 (no_cate_id    number(8)     not null  -- 카테고리 대분류 번호
-,no_cate_code    varchar2(20)  not null  -- 카테고리 코드
-,no_cate_name   varchar2(100) not null  -- 카테고리명
+,no_cate_code  varchar2(20)  not null  -- 카테고리 코드
+,no_cate_name  varchar2(100) not null  -- 카테고리명
 ,constraint PK_no_cate_cnum primary key(no_cate_id)
 ,constraint UQ_no_cate_code unique(no_cate_code)
 );
@@ -811,10 +1002,10 @@ nominvalue
 nocycle
 nocache;
 
-insert into yes_notice_cate values(noticeCateSeq.nextval, '100000', '티켓오픈');
-insert into yes_notice_cate values(noticeCateSeq.nextval, '200000', '서비스점검');
-insert into yes_notice_cate values(noticeCateSeq.nextval, '300000', '변경/취소');
-insert into yes_notice_cate values(noticeCateSeq.nextval, '400000', '기타');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '1', '티켓오픈');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '2', '서비스점검');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '3', '변경/취소');
+insert into yes_notice_cate values(noticeCateSeq.nextval, '4', '기타');
 commit;
 
 select * 
@@ -844,12 +1035,12 @@ nominvalue
 nocycle
 nocache;
 
-insert into yes_qna_cate values(qnaCateSeq.nextval, '100000', '주문');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '200000', '배송');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '300000', '취소/교환/환불');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '400000', '회원');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '500000', '공연/예매');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '600000', '기타');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '1', '주문');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '2', '배송');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '3', '취소/교환/환불');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '4', '회원');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '5', '공연/예매');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '6', '기타');
 commit;
 
 select * 

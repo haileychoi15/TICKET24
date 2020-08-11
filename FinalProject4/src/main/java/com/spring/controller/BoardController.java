@@ -28,6 +28,7 @@ public class BoardController {
 	@Autowired	// Type 에 따라 알아서 스프링컨테이너가 Bean 을 주입해준다.
 	private FileManager fileManager;
 	
+	// 고객센터 페이지로 이동
 	@RequestMapping(value = "/qna.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
 	public String qna() {
 		
@@ -87,6 +88,13 @@ public class BoardController {
 		
 	}
 	
+	
+	// 공지사항 페이지로 이동
+	@RequestMapping(value = "/notice.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
+	public String notice() {
+			
+		return "notice/notice.tiles1";
+	}
 	
 	
 }
