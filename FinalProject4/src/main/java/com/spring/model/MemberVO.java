@@ -24,6 +24,9 @@ public class MemberVO {
 	private int point;            // 포인트
 	private String registerday;   // 가입일자
 	private int status;           // 회원탈퇴유무   1:사용가능(가입중) / 0:사용불능(탈퇴) 
+	private String isSMS;		  // sms 수신여부
+	private String isEMAIL;	      // email 수신여부
+	
 	
 	private String lastLoginDate;     // 마지막으로 로그인 한 날짜시간 기록용
 	private String lastPwdChangeDate; // 마지막으로 암호를 변경한 날짜시간 기록용
@@ -45,15 +48,19 @@ public class MemberVO {
 	private int lastlogindategap; // 로그인시 현재날짜와 최근 마지막으로 로그인한 날짜와의 개월수 차이 (12개월 동안 로그인을 안 했을 경우 해당 로그인계정을 비활성화 시키려고 함) 
 
 	
-	////////////////// ~~~ 카카오 ~~~ //////////////////////
+	////////////////// ~~~ API ~~~ //////////////////////
 	private String kakaoStatus;
+	private String naverStauts;
+	
+	/////////////////// 쿠키 시험 /////////////////////////
+	private boolean useCookie;
 	
 	public MemberVO() { }
 	
 	public MemberVO(int idx, String userid, String name, String pwd, String email, String hp1, String hp2, String hp3,
 			String postcode, String address, String detailAddress, String extraAddress, String gender, String birthyyyy, String birthmm,
 			String birthdd, int coin, int point, String registerday, int status,
-			String clientip, String kakaoStatus) {
+			String clientip, String kakaoStatus, String naverStatus, String isSMS, String isEMAIL) {
 		this.idx = idx;
 		this.userid = userid;
 		this.name = name;
@@ -77,8 +84,11 @@ public class MemberVO {
 		
 		this.clientip = clientip;
 		
-		
 		this.kakaoStatus = kakaoStatus;
+		this.naverStauts = naverStatus;
+		
+		this.isSMS = isSMS;
+		this.isEMAIL = isEMAIL;
 	}
 
 	public int getIdx() {
@@ -348,6 +358,42 @@ public class MemberVO {
 	public void setKakaoStatus(String kakaoStatus) {
 		this.kakaoStatus = kakaoStatus;
 	}
+
+	public String getNaverStauts() {
+		return naverStauts;
+	}
+
+	public void setNaverStauts(String naverStauts) {
+		this.naverStauts = naverStauts;
+	}
+
+	public String getIsSMS() {
+		return isSMS;
+	}
+
+	public void setIsSMS(String isSMS) {
+		this.isSMS = isSMS;
+	}
+
+	public String getIsEMAIL() {
+		return isEMAIL;
+	}
+
+	public void setIsEMAIL(String isEMAIL) {
+		this.isEMAIL = isEMAIL;
+	}
+
+	//////////////////////////////////////////////////
+	public boolean isUseCookie() {
+		return useCookie;
+	}
+
+	public void setUseCookie(boolean useCookie) {
+		this.useCookie = useCookie;
+	}
+	///////////////////////////////////////////////////
+	
+	
 	
 	
 }

@@ -97,6 +97,34 @@ public class MemberDAO implements InterMemberDAO {
 		int n = sqlsession.insert("finalproject4.naverRegister", membervo);
 		return n;
 	}
+
+	// 회원 수정 페이지
+	@Override
+	public MemberVO modifyInfo(String idx) {
+
+		MemberVO mvo = sqlsession.selectOne("finalproject4.modifyInfo", idx);
+		
+		return mvo;
+	}
+
+	// 회원 수정
+	@Override
+	public int modifyEnd(HashMap<String, String> paraMap) {
+		int n = sqlsession.update("finalproject4.modifyEnd", paraMap);
+		return n;
+	}
+
+	// 세션 id, 유효시간
+	@Override
+	public void keepLogin(HashMap<String, Object> map) {
+		sqlsession.update("finalproject4.keepLogin", map);
+	}
+
+	@Override
+	public MemberVO checkUserWithSessionKey(String sessionId) {
+		MemberVO mvo = sqlsession.selectOne("finalproject4.checkUserWithSessionKey", sessionId);
+		return mvo;
+	}
 	
 	
 	

@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="resources/css/reset.css">
     <link rel="stylesheet" href="resources/css/main.css">
     <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
+    
     <script>
 	    function reservePopUp() {
 			var url = "<%= request.getContextPath()%>/reservePopUp.action";
@@ -43,7 +44,7 @@
             		<a href="<%=ctxPath%>/logout.action">로그아웃</a>
             	</c:if>
                 
-                <a href="#">마이페이지</a>
+                <a href="<%=ctxPath%>/modifyInfo.action">마이페이지</a>
                 <a href="#">고객센터</a>
             </div>
         </div>

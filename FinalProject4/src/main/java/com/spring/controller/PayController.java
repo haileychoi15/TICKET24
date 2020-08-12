@@ -3,6 +3,7 @@ package com.spring.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
 import com.spring.model.ShowVO;
 import com.spring.service.InterPayService;
@@ -25,7 +27,18 @@ public class PayController {
 	
 	// == YES24 메인페이지 == //
 	@RequestMapping(value="/yes24.action")
-	public ModelAndView index(ModelAndView mav) {
+	public ModelAndView index(ModelAndView mav, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+		
+		//Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+		
+
+/*		Cookie cookie = new Cookie("yes24Cookie", session.getId());
+		cookie.setPath("/");
+		cookie.setMaxAge(60*60*24*7);
+		response.addCookie(cookie);
+		
+		System.out.println("yes24 session id : " + session.getId());*/
+		
 		mav.setViewName("main/main.notiles");
 		return mav;
 	}

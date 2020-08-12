@@ -2,6 +2,7 @@ package com.spring.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.sql.Date;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +131,44 @@ public class MemberService implements InterMemberService {
 		int n = dao.naverRegister(membervo);
 		return n;
 	}
-	
+
+
+
+	// 회원 수정 페이지
+	@Override
+	public MemberVO modifyInfo(String idx) {
+
+		MemberVO mvo = dao.modifyInfo(idx);
+		
+		return mvo;
+	}
+
+
+
+	// 회원 수정
+	@Override
+	public int modifyEnd(HashMap<String, String> paraMap) {
+		int n = dao.modifyEnd(paraMap);
+		return n;
+	}
+
+
+
+	// 세션 id, 유효시간 저장
+	@Override
+	public void keepLogin(HashMap<String, Object> map) {
+		dao.keepLogin(map);
+	}
+
+
+	@Override
+	public MemberVO checkUserWithSessionKey(String sessionId) {
+		MemberVO mvo = dao.checkUserWithSessionKey(sessionId);
+		return mvo;
+	}
+
+
+
 	
 	
 	

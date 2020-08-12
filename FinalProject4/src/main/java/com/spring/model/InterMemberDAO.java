@@ -26,5 +26,13 @@ public interface InterMemberDAO {
 	
 	int naverRegister(MemberVO membervo); // 네이버 회원 가입
 	
+	MemberVO modifyInfo(String idx); // 회원 수정 페이지
+	
+	int modifyEnd(HashMap<String, String> paraMap); // 회원 수정
+	
+	void keepLogin(HashMap<String, Object> map); // 세션id, 유효시간 저장
+	
+	MemberVO checkUserWithSessionKey(String sessionId);
+	
 	
 }

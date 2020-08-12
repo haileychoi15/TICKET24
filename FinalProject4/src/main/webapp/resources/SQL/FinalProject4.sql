@@ -34,11 +34,12 @@ alter table yes_show_map drop constraint FK_PROD_ID cascade;
 ----------------------------------- 회원 테이블 - User -----------------------------------
 -- 회원 테이블
 drop table yes_member cascade constraints;
+
 create table yes_member
 (idx                number(10)     not null       -- 회원번호(시퀀스로 데이터가 들어온다)
 ,userid             varchar2(20)   not null       -- 회원아이디
 ,name               varchar2(30)   not null       -- 회원명
-,pwd                varchar2(200)  default '0'    -- 비밀번호 (SHA-256 암호화 대상)
+,pwd                varchar2(200)  not null       -- 비밀번호 (SHA-256 암호화 대상)
 ,email              varchar2(200)  not null       -- 이메일   (AES-256 암호화/복호화 대상)
 ,hp1                varchar2(3)                   -- 연락처
 ,hp2                varchar2(200)                 --         (AES-256 암호화/복호화 대상) 
@@ -58,11 +59,17 @@ create table yes_member
 ,clientip           varchar2(20)                  -- 클라이언트의 IP 주소
 ,kakaoStatus        varchar2(1) default '0'       -- 카카오 로그인 유무
 ,naverStatus        varchar2(1) default '0'       -- 네이버 로그인 유무
-,constraint   PK_final_member_test_idx primary key(idx)
-,constraint   UQ_final_member__test_userid unique(userid)
-,constraint   CK_final_member_test_gender check( gender in('1','2') ) 
-,constraint   CK_final_member_test_status check( status in('0','1') ) 
-,constraint   CK_final_member_test_kakao check( status in('0','1') ) 
+,isSMS              varchar2(1) default '0'       -- sms 수신 여부
+,isEMAIL            varchar2(1) default '0'       -- email 수신 여부
+,sessionKey         varchar2(100) default 'none'  -- 로그인 유지시 세션 저장
+,sessionLimit       timestamp
+,constraint   PK_yes_member_idx primary key(idx)
+,constraint   UQ_yes_member_userid unique(userid)
+,constraint   CK_yes_member_gender check( gender in('1','2') ) 
+,constraint   CK_yes_member_status check( status in('0','1') ) 
+,constraint   CK_yes_member_kakao check( status in('0','1') ) 
+,constraint   CK_yes_member_isSMS check( status in('0','1') )
+,constraint   CK_yes_member_isEMAIL check( status in('0','1') )
 );
 
 drop sequence seq_member;
@@ -75,8 +82,17 @@ nominvalue
 nocycle
 nocache;
 
+delete yes_member;
+select * from yes_member;
+
 insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
 values(seq_member.nextval, 'kimjy', '김진영', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
+
+select userid, name, postcode, address, detailaddress, hp1, hp2, hp3, email, isSMS, isEMAIL
+from yes_member
+where idx = 3;
+
+commit;
 
 -- 로그인 테이블 삭제
 drop table yes_login cascade constraints;

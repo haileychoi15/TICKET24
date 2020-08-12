@@ -26,6 +26,16 @@ public interface InterMemberService {
 
 	int naverRegister(MemberVO membervo); // 네이버 회원가입
 
+	MemberVO modifyInfo(String idx); // 회원수정 페이지
+
+	int modifyEnd(HashMap<String, String> paraMap); // 회원 수정
+
+
+	void keepLogin(HashMap<String, Object> map); // 쿠키 세션
+
+	MemberVO checkUserWithSessionKey(String sessionId);
+
+
 
 	
 }

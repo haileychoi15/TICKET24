@@ -90,13 +90,15 @@ public class KakaoController {
 		
 		if(loginuser == null) {
 			
-			String msg = "기본 정보를 입력해주세요.";
+			String msg = "먼저 회원 등록해주세요.";
 			
 			paraMap.put("email", email); // 원래의 이메일(암호화 안한거)
 			
+			paraMap.put("kakao", "1");
+			
 			mav.addObject("msg", msg);
 			mav.addObject("paraMap", paraMap);
-			mav.setViewName("member/kakaoRegister.notiles");
+			mav.setViewName("member/join.notiles");
 			
 			return mav;
 		}
@@ -130,20 +132,33 @@ public class KakaoController {
 			String userid = request.getParameter("userid");
 			String pwd = request.getParameter("pwd");
 			String email = request.getParameter("email");
-			String hp1 = request.getParameter("hp1");
-			String hp2 = request.getParameter("hp2");
-			String hp3 = request.getParameter("hp3");
+			String hp1 = request.getParameter("mobile1");
+			String hp2 = request.getParameter("mobile2");
+			String hp3 = request.getParameter("mobile3");
 			String postcode = request.getParameter("postcode");
 			String address = request.getParameter("address");
-			String detailAddress = request.getParameter("detailAddress");
-			String extraAddress= request.getParameter("extraAddress");
-			String gender = request.getParameter("gender");
-			String birthyyyy = request.getParameter("birthyyyy");
-			String birthmm = request.getParameter("birthmm");
-			String birthdd = request.getParameter("birthdd");
+			String detailAddress = request.getParameter("detailaddress");
+			
+			String isSMS = request.getParameter("is-sms");
+			String isEMAIL = request.getParameter("is-email");
+			
+			if(isSMS == null) {
+				isSMS = "0";
+			}
+			if(isEMAIL == null) {
+				isEMAIL = "0";
+			}
+			
+			//String extraAddress= request.getParameter("extraAddress");
+			//String gender = request.getParameter("gender");
+			//String birthyyyy = request.getParameter("birthyyyy");
+			//String birthmm = request.getParameter("birthmm");
+			//String birthdd = request.getParameter("birthdd");
+			
+			
 			
 			// *** 클라이언트의 IP 주소 알아오기 *** //
-			String clientip = request.getRemoteAddr();
+			//String clientip = request.getRemoteAddr();
 			
 			MemberVO membervo = new MemberVO();
 			membervo.setName(name);
@@ -156,12 +171,15 @@ public class KakaoController {
 			membervo.setPostcode(postcode);
 			membervo.setAddress(address);
 			membervo.setDetailAddress(detailAddress);
-			membervo.setExtraAddress(extraAddress);
-			membervo.setGender(gender);
-			membervo.setBirthyyyy(birthyyyy);
-			membervo.setBirthmm(birthmm);
-			membervo.setBirthdd(birthdd);
-			membervo.setClientip(clientip);
+			membervo.setIsSMS(isSMS);
+			membervo.setIsEMAIL(isEMAIL);
+			
+			//membervo.setExtraAddress(extraAddress);
+			//membervo.setGender(gender);
+			//membervo.setBirthyyyy(birthyyyy);
+			//membervo.setBirthmm(birthmm);
+			//membervo.setBirthdd(birthdd);
+			//membervo.setClientip(clientip);
 			
 			int n = service.kakaoRegister(membervo);
 			
@@ -170,7 +188,7 @@ public class KakaoController {
 			
 			if(n==1) {
 				msg = "회원가입 성공";
-				loc = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=0ce82228a182b543337d77406ca58a08&redirect_uri=http://localhost:9090/board/KakaoLoginEnd.action";
+				loc = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=0ce82228a182b543337d77406ca58a08&redirect_uri=http://localhost:9090/finalproject4/KakaoLoginEnd.action";
 			}
 			else {
 				msg = "회원가입 실패";
