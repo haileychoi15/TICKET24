@@ -104,7 +104,7 @@ public class BoardController {
 		System.out.println(totalPage +":totalPage");*/
 		
 	//	return "notice/notice.tiles1";
-		mav.addObject("page",page);
+		mav.addObject("page", page);
 		mav.setViewName("notice/notice.tiles1");
 		return mav;
 	}
