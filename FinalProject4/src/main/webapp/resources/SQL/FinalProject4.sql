@@ -1632,9 +1632,71 @@ select notice_id, fk_userid,no_cate_name,category,ticketopenday,subject,readCoun
         )
         where status = 1 and subject like '%%'
     )V
-where rno between 1 and 10;
+where rno between 135 and 280;
 
 
+-- 공지 글 한개 보기(오늘작성한글은 시간만 표시되도록)
+select previousseq, previoussubject
+       , notice_id,fk_userid,category,ticketopenday,ticketopenday1, ticketopenday2, subject,readCount
+       , regDate
+       , fileName,orgFilename,fileSize
+	   , nextseq, nextsubject
+		from
+		    (
+                select lag(notice_id, 1) over(order by notice_id desc) as previousseq
+		       , lag(subject, 1) over(order by notice_id desc) as previoussubject
+		       
+		       , notice_id, fk_userid, category, subject, readCount
+               , nvl(ticketopenday, ' ') as ticketopenday
+               , nvl2(ticketopenday, substr(ticketopenday, 1, 13) , ' ') as ticketopenday1
+               , nvl2(ticketopenday, substr(ticketopenday, 15) , ' ') as ticketopenday2
+		       , decode(to_char(regDate, 'hh24:mi:ss'), to_char(sysdate, 'yyyy-mm-dd'), to_char(regDate, 'hh24:mi:ss'), to_char(regDate, 'yyyy-mm-dd') ) as regDate
+		       , status, fileName, orgFilename, fileSize
+		       
+		       , lead(notice_id, 1) over(order by notice_id desc) as nextseq
+		       , lead(subject, 1) over(order by notice_id desc) as nextsubject
+                from yes_notice
+                where status = 1
+		    ) V
+where notice_id = 1;
+
+
+-- 공지 글 한개 보기
+select previousseq, previoussubject
+       , notice_id,fk_userid,category,ticketopenday, subject,readCount
+       , regDate
+       , fileName,orgFilename,fileSize
+	   , nextseq, nextsubject
+		from
+		    (
+               select lag(notice_id, 1) over(order by notice_id desc) as previousseq
+		       , lag(subject, 1) over(order by notice_id desc) as previoussubject
+		       
+		       , notice_id, fk_userid, category, subject, readCount
+               , nvl(ticketopenday, ' ') as ticketopenday
+		       , to_char(regDate, 'yyyy-mm-dd') as regDate
+		       , status, fileName, orgFilename, fileSize
+		       
+		       , lead(notice_id, 1) over(order by notice_id desc) as nextseq
+		       , lead(subject, 1) over(order by notice_id desc) as nextsubject
+                from yes_notice
+                where status = 1
+		    ) V
+where notice_id = 1;
+
+
+
+select decode(to_char(regDate, 'yyyy-mm-dd'), sysdate, 1
+                    ,2 )
+from yes_notice;
+
+select decode(to_char(regDate, 'yyyy-mm-dd'), to_char(to_date('2019-10-16'), 'yyyy-mm-dd'), to_char(regDate, 'hh24:mi:ss')
+                    ,to_char(regDate, 'yyyy-mm-dd') )
+from yes_notice;
+
+select decode(to_char(regDate, 'yyyy-mm-dd'), to_char(sysdate, 'yyyy-mm-dd'), to_char(regDate, 'hh24:mi:ss')
+                                                                            , to_char(regDate, 'yyyy-mm-dd') )
+from yes_notice;
 
 
 ----------------------------------- 공지 카테고리 테이블 -----------------------------------

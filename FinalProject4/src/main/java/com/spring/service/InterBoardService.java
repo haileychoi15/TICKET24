@@ -14,4 +14,6 @@ public interface InterBoardService {
 
 	List<NoticeVO> noticeListWithPaging(HashMap<String, String> paraMap); // 페이징처리한 공지글 리스트
 
+	NoticeVO getNoticeViewWithNoAddCount(String seq); // 공지사항 글 1개 보기 페이지로 이동
+
 }

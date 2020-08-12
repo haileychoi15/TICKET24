@@ -117,6 +117,32 @@
 	</select>
 	
 	
+	<!-- 공지사항 글 1개 보기 페이지로 이동(조회수 증가 없음) -->
+	<select id="getView" parameterType="HashMap" resultType="com.spring.model.NoticeVO">
+		select previousseq, previoussubject
+		       , notice_id,fk_userid,category, ticketopenday, subject,readCount
+		       , regDate
+		       , fileName,orgFilename,fileSize
+			   , nextseq, nextsubject
+				from
+				    (
+		                select lag(notice_id, 1) over(order by notice_id desc) as previousseq
+				       , lag(subject, 1) over(order by notice_id desc) as previoussubject
+				       
+				       , notice_id, fk_userid, category, subject, readCount
+		               , nvl(ticketopenday, ' ') as ticketopenday
+				       , to_char(regDate, 'yyyy-mm-dd') as regDate
+				       , status, fileName, orgFilename, fileSize
+				       
+				       , lead(notice_id, 1) over(order by notice_id desc) as nextseq
+				       , lead(subject, 1) over(order by notice_id desc) as nextsubject
+		                from yes_notice
+		                where status = 1
+				    ) V
+		where notice_id = #{seq}
+	</select>
+	
+	
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
 
 </mapper>

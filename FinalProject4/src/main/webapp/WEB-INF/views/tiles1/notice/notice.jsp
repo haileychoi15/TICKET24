@@ -22,10 +22,10 @@
                 TICKET24의 업데이트 정보(서비스, 약관), 점검 공지 등 <br />
                 다양한 소식들을 알려드립니다.${totalPage}
             </p>
-            <form class="search-form">
+            <div class="search-form">
                 <input name="search-word" type="text" class="search-word">
                 <button type="button" class="search-button">검색</button>
-            </form>
+            </div>
         </div>
     </section>
     <section class="qna">
@@ -146,9 +146,13 @@
             </div>
             <div class="col-12">
                 <div class="page-group">
-                    <button type="button" class="page-button selected" aria-label="Go to page1">1</button>
-                    <button type="button" class="page-button" aria-label="Go to page2">2</button>
-                    <button type="button" class="page-button" aria-label="Go to page3">3</button>
+                	<span class="prev-group"></span>
+	                <span class="page-list">
+	                    <button type="button" class="page-button selected" aria-label="Go to page1">1</button>
+	                    <button type="button" class="page-button" aria-label="Go to page2">2</button>
+	                    <button type="button" class="page-button" aria-label="Go to page3">3</button>
+	                </span>
+	                <span class="next-group"></span>
                 </div>
             </div>
         </div>

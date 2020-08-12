@@ -11,4 +11,6 @@ public interface InterBoardDAO {
 
 	List<NoticeVO> noticeListWithPaging(HashMap<String, String> paraMap); // 페이징처리한 공지글 리스트
 
+	NoticeVO getView(String seq); // 공지사항 글 1개 보기 페이지로 이동(조회수 증가 없음)
+
 }

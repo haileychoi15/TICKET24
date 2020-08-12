@@ -1,51 +1,46 @@
 window.addEventListener('DOMContentLoaded', () => {
 
-    ajaxBoard(1);
-
+	
+	
+	ajaxBoard(1);
+	
+	
+    // 검색 버튼 클릭 했을 때 이벤트
     let searchButton = document.querySelector('.search-button');
     searchButton.addEventListener('click',() => {
 
         setFirstPage();
         ajaxBoard(1);
     });
-    
-    
 
- // 카테고리 누를 때 이벤트 발생
+    // 엔터 눌렀을 때 이벤트
+    let searchWord = document.querySelector('.search-word');
+    searchWord.addEventListener("keyup",(event)=>{
+        if(event.keyCode === 13){
+            searchButton.click();
+            return false;
+        }
+    });
+
+    // 카테고리 누를 때 이벤트 발생
     let categoryGroup = document.querySelector('.category-group');
     categoryGroup.addEventListener('click', (event) => {
 
         let target = event.target;
         if(target.nodeName == 'BUTTON'){
 
-            let category = target.value;
-            console.log(category);
-
-            //ajax
-            //ajaxBoard(category);
-
             // 색깔 변경
-            console.log(target,event.currentTarget );
             let buttons = event.currentTarget.querySelectorAll('button');
             buttons.forEach((value) => {
                 value.classList.remove('selected');
             });
-
             target.classList.add('selected');
-        }
 
-    });
-    
-/*    searchButton.addEventListener('keydown',(event) => {
-
-        const keyCode = event.keyCode;
-        console.log('pushed key : ',event.keyCode);
-
-        if(keyCode == 13){
             setFirstPage();
             ajaxBoard(1);
         }
-    });*/
+
+    });
 
     let pageGroup = document.querySelector('.page-group');
     pageGroup.addEventListener('click', (event) => {
@@ -53,23 +48,16 @@ window.addEventListener('DOMContentLoaded', () => {
         let target = event.target;
         if(target.nodeName === 'BUTTON'){
 
-            let page = target.innerText;
-            ajaxBoard(page);
             removePageColor();
             target.classList.add('selected');
-        }
 
+            let page = target.innerText;
+            ajaxBoard(page);
+
+        }
     });
 
 });
-
-function enterSearchButton() {
-
-    if(window.event.keyCode == 13) {
-        ajaxBoard(1);
-        setFirstPage();
-    }
-}
 
 function removePageColor() {
 
@@ -82,7 +70,7 @@ function removePageColor() {
 function setFirstPage() {
 
     removePageColor();
-    document.querySelector('.page-button').classList.add('selected');
+    document.querySelector('.page-button:first-child').classList.add('selected');
 }
 
 function getBoardTemplate(id, category, title, date, view, file) {
@@ -92,7 +80,7 @@ function getBoardTemplate(id, category, title, date, view, file) {
                         ${category}
                     </span>
                     <span class="table-title">
-                        <a href="#${id}">
+                        <a href="/finalproject4/noticeView.action?seq=${id}">
                             ${title}
                         </a>
                     </span>
@@ -110,22 +98,22 @@ function getBoardTemplate(id, category, title, date, view, file) {
     return template;
 }
 
-
-
 function ajaxBoard(page) {
 
+    let category = document.querySelector('.category-group .selected').value;
     let searchWord = document.querySelector('.search-word').value.trim();
-    console.log("searchWord : ",searchWord, ", page : ",page); //확인용
+    if(searchWord === null) {
+        searchWord = '';
+    }
+    console.log("searchWord : ",searchWord, ", page : ",page, ", category : ",category); //확인용
 
     let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/notice.action',searchWord);
+    makeRequest('/finalproject4/notice.action', searchWord, page); // ###
 
-    function makeRequest(url, searchWord) {
+    function makeRequest(url, searchWord, page) {
 
         httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('GET', url+"?searchWord="+ encodeURIComponent(searchWord)+'&page=' + encodeURIComponent(page));
-     //   httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-     //   httpRequest.send('searchWord=' + encodeURIComponent(searchWord)+'&page=' + encodeURIComponent(page));
+        httpRequest.open('GET', `${url}?searchWord=${searchWord}&page=${page}`);
         httpRequest.send();
     }
 
@@ -138,60 +126,81 @@ function ajaxBoard(page) {
 
                 //ajax 성공시 코드
                 let html = '';
-                let totalPage = 0;
+                let recodes = 0;
                 response.forEach((item) => {
-                	
-                	if(item.fileName === undefined){
+
+                    if(item.fileName === undefined) {
                         item.fileName = '';
                     }
-                	
-                    html += getBoardTemplate(item.id, item.category, item.subject, item.regDate, item.readCount ,item.fileName);
-                    totalPage = item.totalPage;
-
-                    let pageList = '';
-                    for(let i=0; i<totalPage; i++){
-                    		
-                    		if(i==0){
-                    			if(page == 1){
-                    				pageList += '<span onclick="ajaxBoard('+(1)+')">&lt;</span>';
-                    			}
-                    			else {
-                    				pageList += '<span onclick="ajaxBoard('+(page-1)+')">&lt;</span>';
-                    			}
-                    		}
-                    		
-                        	if((i+1) == page){
-                                pageList += '<button type="button" class="page-button selected" aria-label="Go to page1">'+(i+1)+'</button>';
-                            }
-                            else{
-                                pageList += '<button type="button" class="page-button" aria-label="Go to page1">'+(i+1)+'</button>';
-                            }
-                        	
-
-                    		if((i+1)==totalPage){
-                    			if(page == totalPage){
-                    				pageList += '<span onclick="ajaxBoard('+(page)+')">&gt;</span>';
-                    			}
-                    			else {
-                    				pageList += '<span onclick="ajaxBoard('+(page+1)+')">&gt;</span>';
-                    			}
-                    		}
+                    if(item.ticketopenday === undefined) {
+                        item.ticketopenday = '해당없음';
                     }
-                    
-                    document.querySelector('.page-group').innerHTML = pageList;
-                    
-                   
-                    
-                    let tbody = document.querySelector('.qna .table .tbody');
-                    tbody.innerHTML = html;
-                    
-                    
+
+                    html += getBoardTemplate(item.notice_id, item.category, item.subject, item.ticketopenday, item.readCount ,item.fileName);
+                    recodes = item.totalCount;
                 });
-                
+
+                setPageList(page, recodes); // 페이징 처리
+
+                let tbody = document.querySelector('.qna .table .tbody');
+                tbody.innerHTML = html;
+
 
             } else {
                 alert('There was a problem with the request.');
             }
         }
     }
+}
+
+function setPageList(page, recodes) { // 현재 누른 페이지, 총 레코드 수
+
+    let startPage = page-(page-1) % 10;
+    let lastPage = Math.ceil(Number(recodes)/10);
+
+    let prevGroup = document.querySelector('.prev-group');
+    let pageList = document.querySelector('.page-list');
+    let nextGroup = document.querySelector('.next-group');
+
+    let prevHtml = '';
+    if(startPage-1 >= 1){
+
+        let prevPage = startPage-1;
+        prevHtml += `<span role="button" onclick="ajaxBoard(${prevPage})">이전</span>`;
+    }
+    else{
+        prevHtml += `<span class="no-click">이전</span>`; // 앞으로 갈 페이지가 없을 때
+    }
+    prevGroup.innerHTML = prevHtml;
+
+
+    let html = '';
+    for(let i=0; i<10; i++){
+
+        let eachPage = startPage + i;
+
+        if(eachPage <= lastPage){
+
+            if(page == eachPage){ // 선택된 페이지에 selected class 추가
+                html += `<button type="button" class="page-button selected" aria-label="Go to page${eachPage}">${eachPage}</button>`
+            }
+            else{
+                html += `<button type="button" class="page-button" aria-label="Go to page${eachPage}">${eachPage}</button>`
+            }
+        }
+    }
+    pageList.innerHTML = html;
+
+
+    let nextHtml = '';
+    if(startPage+9 < lastPage){
+
+        let nextPage = startPage+10;
+        nextHtml += `<span role="button" onclick="ajaxBoard(${nextPage})">다음</span>`;
+    }
+    else{
+        nextHtml += `<span class="no-click">다음</span>`; // 뒤로 갈 페이지가 없을 때
+    }
+    nextGroup.innerHTML = nextHtml;
+
 }
