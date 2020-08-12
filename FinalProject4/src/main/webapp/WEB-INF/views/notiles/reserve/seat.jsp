@@ -355,6 +355,10 @@
             </div>
         </div>
     </div>
+    
+    <form name="payFrm">
+    	<input type="hidden" name="" value=""/>
+    </form>
 </body>
 <jsp:include page="../../../../resources/js/seatSelScript.jsp"/>
 </html>

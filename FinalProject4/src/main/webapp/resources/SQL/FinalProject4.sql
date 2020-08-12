@@ -1274,7 +1274,7 @@ order by date_showday;
 drop view view_seat_info;
 create or replace view view_seat_info
 AS
-select S.seattype_id, S.seat_name, S.seat_status, T.prod_id, T.seat_type, T.seat_price, S.date_id
+select S.seattype_id, S.seat_name, S.seat_status, T.prod_id, T.seat_type, T.seat_price, S.date_id, T.seat_color
 from yes_show_seat S
 join yes_seat_type T
 on S.seattype_id = T.seattype_id;
@@ -1286,3 +1286,7 @@ where prod_id = 1;
 select date_id
 from yes_show_date
 where prod_id=1 and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day')='20/09/01 화요일' and date_showtime = '1회차 9시';
+
+select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id, seat_color
+from view_seat_info
+where prod_id = 1;

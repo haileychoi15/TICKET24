@@ -235,6 +235,7 @@ function seatSelComplete() {
     let selSeat = document.getElementsByClassName('selSeat');
     let ticketPrice = document.getElementById('ticketPrice');
     var seatType = "";
+    var i = 0;
     var sumPrice = 0;
     ticketPrice.innerHTML = "";
     
@@ -243,17 +244,19 @@ function seatSelComplete() {
     else {
     	$(".selSeat").each(function(index, item){
     		seatType = $(item).attr("grade");
+
     		switch (seatType) {
-    		case "VIP":
-    			sumPrice += 120000;
-    			break;
-			case "R":
-				sumPrice += 80000;
+			case "${getSeatType.get(0).seat_type}":
+				sumPrice += ${getSeatType.get(0).seat_price};
 				break;
-			case "S":
-				sumPrice += 40000;
+			case "${getSeatType.get(1).seat_type}":
+				sumPrice += ${getSeatType.get(1).seat_price};
+				break;
+			case "${getSeatType.get(2).seat_type}":
+				sumPrice += ${getSeatType.get(2).seat_price};
 				break;
 			}
+    		
     	});
         change(step2);
         ticketPrice.innerHTML += '<span>' + money(sumPrice) + '</span>';
@@ -369,10 +372,13 @@ function payment() {
             check2 = true;
     }
 
-    if(check1 && check2)
+    if(check1 && check2) {
         alert('결제로 이동');
-    else
+    	Pay();
+    }
+    else {
         alert('취소 수수료/취소 기한 및 제 3자 정보 제공 내용에 동의하셔야만 \n결제가 가능합니다.');
+    }
 }
 
 function setAddress(){
@@ -426,5 +432,12 @@ function setAddress(){
     }).open();
 
 }; // end of function setAddress();
+
+function Pay() {
+	var frm = document.payFrm;
+	frm.method = "POST";
+	frm.action = "<%= request.getContextPath()%>/payPopUp.action";
+	frm.submit();
+}
 
 </script>
