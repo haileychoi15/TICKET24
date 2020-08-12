@@ -130,13 +130,24 @@ public class BoardController {
 			searchWord = "";
 		}
 		
-		if(category == "") {
-			
+		String order = "";
+		switch (category) {
+		case "1":
+			order = "regDate";
+			break;
+		case "2":
+			order = "ticketopenday";
+			break;
+		case "3":
+			order = "readCount";
+			break;
+		default:
+			break;
 		}
 
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("searchWord", searchWord);
-		paraMap.put("order", category);
+		paraMap.put("order", order);
 
 
 		int totalCount = 0; 		// 총 게시물 건수(totalCount)

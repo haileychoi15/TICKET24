@@ -104,12 +104,13 @@
 		select notice_id, fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
 		    from
 		    (
-		        select row_number() over(order by notice_id desc) AS rno, notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
+		        select row_number() over(order by ${order} desc) AS rno, notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
 		        from
 		        (
-			        select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
+			        select notice_id,fk_userid,no_cate_name,category,nvl(ticketopenday, ' ') as ticketopenday,subject,readCount,regDate,status,fileName,orgFilename,fileSize
 			        from yes_notice N join yes_notice_cate C
 			        on N.category = C.no_cate_code
+            		order by notice_id desc
 		        )
 		        where status = 1
 		        <if test='searchWord != ""'>
