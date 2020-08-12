@@ -111,7 +111,10 @@
 			        from yes_notice N join yes_notice_cate C
 			        on N.category = C.no_cate_code
 		        )
-		        where status = 1 and subject like '%' || #{searchWord} || '%'
+		        where status = 1
+		        <if test='searchWord != ""'>
+		        and subject like '%' || #{searchWord} || '%'
+		        </if>
 		    )V
 		where rno between #{startRno} and #{endRno}
 	</select>

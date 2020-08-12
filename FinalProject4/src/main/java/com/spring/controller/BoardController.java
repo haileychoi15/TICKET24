@@ -120,6 +120,7 @@ public class BoardController {
 		// == #112. 페이징 처리를 한 검색어가 있는 전체 글목록 보여주기 == //
 		String searchWord = request.getParameter("searchWord");
 		String str_currentShowPageNo = request.getParameter("page");
+		String category = request.getParameter("category");
 	//	String str_currentShowPageNo = request.getParameter("currentShowPageNo");
 		System.out.println("page : "+str_currentShowPageNo);
 		System.out.println("searchWord : "+searchWord);
@@ -128,9 +129,14 @@ public class BoardController {
 		if(searchWord == null || searchWord.trim().isEmpty()) {
 			searchWord = "";
 		}
+		
+		if(category == "") {
+			
+		}
 
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("searchWord", searchWord);
+		paraMap.put("order", category);
 
 
 		int totalCount = 0; 		// 총 게시물 건수(totalCount)
