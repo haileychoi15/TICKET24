@@ -9,6 +9,10 @@
 	String ctxPath = request.getContextPath();
 %>
 
+<link rel="stylesheet" href="resources/css/header.css">
+<link rel="stylesheet" href="resources/css/reset.css">
+<script src="resources/js/header.js"></script>
+    
 
 <script>
 	function reservePopUp() {

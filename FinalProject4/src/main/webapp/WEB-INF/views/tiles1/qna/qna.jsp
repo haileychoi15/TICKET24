@@ -22,8 +22,8 @@
                 찾으시는 답변이 없으면 1:1 문의를 이용해주세요.
             </p>
             <form class="search-form">
-                <input name="search-word" type="text">
-                <button type="submit">검색</button>
+                <input name="search-word" class="search-word" type="text">
+                <button type="button" class="search-button">검색</button>
             </form>
         </div>
     </section>

@@ -1,10 +1,14 @@
 package com.spring.service;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.common.AES256;
 import com.spring.mail.GoogleMail;
+import com.spring.model.FaqVO;
 import com.spring.model.InterBoardDAO;
 
 @Service
@@ -34,5 +38,12 @@ public class BoardService implements InterBoardService {
 	
 	@Autowired	// 의존객체로 사용하기 위해 @Autowired 를 통해 DI 선언한다.
 	private GoogleMail mail;
+
+
+	@Override
+	public List<FaqVO> faqList(HashMap<String, String> paraMap) {
+		List<FaqVO> faqList = dao.faqList(paraMap);
+		return faqList;
+	}
 	
 }

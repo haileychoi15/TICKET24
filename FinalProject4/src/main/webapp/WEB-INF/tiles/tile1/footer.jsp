@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%-- ======= #27. tile1 중 footer 페이지 만들기  ======= --%>
 <link rel="stylesheet" href="resources/css/footer.css">
+<link rel="stylesheet" href="resources/css/reset.css">
 <script src="resources/js/footer.js"></script>
-    
+
+<%-- ======= #27. tile1 중 footer 페이지 만들기  ======= --%>
 <footer class="footer">
     <div class="container">
         <div class="row">

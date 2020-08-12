@@ -1,4 +1,29 @@
+window.onload = function(){
+	ajaxBoard("0");
+}
+
+
 window.addEventListener('DOMContentLoaded', () => {
+	
+	// 검색 버튼 눌렀을 때 이벤트
+	let searchButton = document.querySelector('.search-button');
+	
+	
+	// 검색입력하고 엔터쳤을 때 이벤트
+	searchButton.addEventListener('keydown', (event) => {
+		
+		if(event.keyCode == 13) {
+			let category = document.querySelector('.category-group .selected').value;
+			ajaxBoard(category);
+		}		
+		
+	});
+
+	searchButton.addEventListener('click', () => {
+		
+		let category = document.querySelector('.category-group .selected').value;
+		ajaxBoard(category);		
+	});
 
     // 카테고리 누를 때 이벤트 발생
     let categoryGroup = document.querySelector('.category-group');
@@ -8,7 +33,6 @@ window.addEventListener('DOMContentLoaded', () => {
         if(target.nodeName == 'BUTTON'){
 
             let category = target.value;
-            console.log(category);
 
             //ajax
             ajaxBoard(category);
@@ -41,6 +65,9 @@ window.addEventListener('DOMContentLoaded', () => {
     qnaButton.addEventListener('click',(event) => {
 
         modal.style.display = 'flex';
+        let userid = modal.querySelector('.modal-form .userid');
+        console.log('userid',userid);
+        ajaxProduct(userid);
     });
 
     let closeButton = modal.querySelector('.close-button');
@@ -65,24 +92,102 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
-function ajaxBoard(category) {
+function ajaxProduct(userid) {
 
-    let oReg = new XMLHttpRequest();
-    oReg.addEventListener("readystatechange", function () {
+    let httpRequest = new XMLHttpRequest();
+    makeRequest('/finalproject4/qna.action',category);
 
-        if(this.readyState == 4 && this.status == 200) {
-            let response = this.responseText;
-            console.log(typeof response); // string
-            let jsonObj = JSON.parse(response); // json 형태로 파싱, type은 object
-            console.log(jsonobj.title); // key값으로 출력가능
+    function makeRequest(url, category) {
 
+        httpRequest.onreadystatechange = getResponse;
+        httpRequest.open('GET', url);
+        httpRequest.send('userid=' + encodeURIComponent(userid));
+    }
+
+    function getResponse() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                alert(response.computedString);
+
+                //ajax 성공시 코드
+
+                let selectElement = document.querySelector('.qna-product');
+                let html = '';
+                response.forEach((item) => {
+
+                        html += `<option value="">${item}</option>`;
+                });
+
+                selectElement.insertAdjacentElement('beforeend', html);
+
+
+            } else {
+                alert('There was a problem with the request.');
+            }
         }
+    }
 
-    });
+}
 
-    oReg.open("POST","/finalproject4/");
-    oReg.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    oReg.send();
+function getBoardTemplate(category, title, content) {
+
+    let template = `<div class="row">
+                    <span class="table-category">
+                        ${category}
+                    </span>
+                    <span class="table-title">
+                        ${title}
+                    </span>
+                    <div class="table-content">
+                        ${content}
+                    </div>
+                </div>`;
+
+    return template;
+}
+
+function ajaxBoard(category) {
+	
+    let searchWord = document.querySelector('.search-word').value;
+    
+    let httpRequest = new XMLHttpRequest();
+    makeRequest('/finalproject4/faq.action',category);
+
+    function makeRequest(url, category) {
+
+    	console.log(url + ":url");
+    	console.log(category + ":category")
+        httpRequest.onreadystatechange = getResponse;
+        httpRequest.open('POST', url);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send('category=' + encodeURIComponent(category)+ '&searchWord=' + encodeURIComponent(searchWord));
+        
+    }
+
+    function getResponse() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+              //  alert(response.computedString);
+
+                //ajax 성공시 코드
+
+                let html = '';
+                response.forEach((item) => {
+
+                    html += getBoardTemplate(item.category, item.subject, item.content);
+                });
+
+                let tbody = document.querySelector('.qna .table .tbody');
+                tbody.innerHTML = html;
+
+
+            } else {
+                alert('There was a problem with the request.');
+            }
+        }
+    }
 }
 
 function validateForm() {
