@@ -62,5 +62,12 @@ public class BoardService implements InterBoardService {
 		List<NoticeVO> noticeList = dao.noticeListWithPaging(paraMap);
 		return noticeList;
 	}
+
+	// 공지사항 글 1개 보기 페이지로 이동(조회수 증가 없음)
+	@Override
+	public NoticeVO getNoticeViewWithNoAddCount(String seq) {
+		NoticeVO notivo = dao.getView(seq);
+		return notivo;
+	}
 	
 }

@@ -90,8 +90,10 @@ public class BoardController {
 	
 	
 	// 고객센터 페이지로 이동
-	@RequestMapping(value = "/noticeMain.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
-	public String noticeMain(HttpServletRequest request) {
+	@RequestMapping(value = "/noticeMain.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView noticeMain(HttpServletRequest request, ModelAndView mav) {
+		
+		String page = request.getParameter("page");
 		/*
 		int totalCount = service.getTotalNoticeCount(paraMap);
 		
@@ -101,7 +103,10 @@ public class BoardController {
 		request.setAttribute("totalPage", totalPage);
 		System.out.println(totalPage +":totalPage");*/
 		
-		return "notice/notice.tiles1";
+	//	return "notice/notice.tiles1";
+		mav.addObject("page", page);
+		mav.setViewName("notice/notice.tiles1");
+		return mav;
 	}
 	
 	// 공지사항 페이지로 이동
@@ -211,7 +216,7 @@ public class BoardController {
 
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 
-		String url = "list.action";
+	//	String url = "list.action";
 		// list.action?searchType=subject&searchWord=정화&currentShowPageNo=1
 
 
@@ -233,8 +238,8 @@ public class BoardController {
 		//          웹브라우저에서 새로고침(F5)을 했을 경우에는 증가가 되지 않도록 해야 한다.
 		//          이것을 하기 위해서는 session 을 사용하여 처리하면 된다.
 
-	//	HttpSession session = request.getSession();
-	//	session.setAttribute("readCountPermission", "yes"); // 조회수증가권한의 값을 yes 로 세션에 저장한다.
+		HttpSession session = request.getSession();
+		session.setAttribute("readCountPermission", "yes"); // 조회수증가권한의 값을 yes 로 세션에 저장한다.
 
 		/*
 		   session 에  "readCountPermission" 키값으로 저장된 value값은 "yes" 이다.
@@ -242,8 +247,8 @@ public class BoardController {
 		      반드시 웹브라우저에서 주소창에 "/list.action" 이라고 입력해야만 얻어올 수 있다. 
 		 */
 
-		//	session.setAttribute("gobackURL", gobackURL);
 
+	//	session.setAttribute("gobackURL", gobackURL);
 
 		//////////////////////////////////////////////////////////////
 
@@ -268,6 +273,7 @@ public class BoardController {
 			jsonObj.put("status", notivo.getStatus());
 			jsonObj.put("regDate", notivo.getRegDate());
 			jsonObj.put("fileName", notivo.getFileName());
+			jsonObj.put("totalCount", totalCount);
 			jsonObj.put("totalPage", totalPage);
 			jsonObj.put("page", str_currentShowPageNo);
 
@@ -276,6 +282,70 @@ public class BoardController {
 
 		return jsonArr.toString();
 	}
+	
+	
+	// 공지사항 글 1개 보기 페이지로 이동
+	@RequestMapping(value = "/noticeView.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
+	public ModelAndView noticeView(ModelAndView mav, HttpServletRequest request) {
+		
+		String seq = request.getParameter("seq");
+		
+	//	String gobackURL = request.getParameter("gobackURL");
+	//	mav.addObject("gobackURL", gobackURL);
+		
+		
+		NoticeVO notivo = null;
+		
+		HttpSession session = request.getSession();
+	
+		/*
+		// 위의 글목록보기 #69. 에서 session.setAttribute("readCountPermission", "yes"); 해두었다.
+		if("yes".equals(session.getAttribute("readCountPermission"))) {
+			// 글목록보기를 클릭한 다음에 특정글을 조회해온 경우이다. 
+
+			notivo = service.getNoticeView(seq, userid); 
+			// 글 조회수 증가와 함께 글 1개를 조회를 해주는 것
+			// 서비스단에서는 글 내용을 select 하는 것과 조회수를 update 하는 것이 동시에 일어나야 한다.
+
+			session.removeAttribute("readCountPermission"); 
+			// 중요함!! session 에 저장된 readCountPermission 을 삭제한다.
+		}
+		else {
+			// 웹브라우저에서 새로고침(F5) 을 클릭한 경우이다.
+			// (글목록보기를 클릭을 안하고 특정글을 조회해온 경우)
+
+			notivo = service.getNoticeViewWithNoAddCount(seq); 
+			// 글 조회수 증가는 없고 단순히 글 1개 조회만을 해주는 것이다. 
+			// 유저가 새로고침을 하는 경우에는 , DML 을 쏙 뺀 select 만 해주어야 한다. 
+		}
+		*/
+		
+		notivo = service.getNoticeViewWithNoAddCount(seq); 
+		
+		if(notivo == null) {
+			// 존재하지 않는 글번호의 글내용을 조회하려는 경우
+			String msg = "존재하지 않는 글번호입니다.";
+			String loc = "javascript:history.back()";
+
+			mav.addObject("msg", msg);
+			mav.addObject("loc", loc);
+
+			mav.setViewName("msg");
+
+		}
+		else {
+		//	String gobackURL = (String) session.getAttribute("gobackURL");
+		//	System.out.println("gobackURL : "+gobackURL);
+			//	mav.addObject("gobackURL", gobackURL);
+			mav.addObject("notivo", notivo); // 글 1개 boardvo 를 뷰단으로 넘겨준다. 
+			mav.setViewName("notice/noticeView.tiles1");
+		//	mav.addObject("gobackURL", gobackURL);
+		}
+
+	//	return "notice/noticeView.tiles1";
+		return mav;
+	}
+	
 	
 	
 }

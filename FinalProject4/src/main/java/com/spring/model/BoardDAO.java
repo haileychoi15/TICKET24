@@ -36,6 +36,14 @@ public class BoardDAO implements InterBoardDAO {
 		List<NoticeVO> noticeList = sqlsession.selectList("finalproject4.noticeListWithPaging", paraMap);
 		return noticeList;
 	}
+
+	
+	// 공지사항 글 1개 보기 페이지로 이동(조회수 증가 없음)
+	@Override
+	public NoticeVO getView(String seq) {
+		NoticeVO notivo = sqlsession.selectOne("finalproject4.getView", seq);
+		return notivo;
+	}
 	
 	
 }
