@@ -10,6 +10,7 @@ import com.spring.common.AES256;
 import com.spring.mail.GoogleMail;
 import com.spring.model.FaqVO;
 import com.spring.model.InterBoardDAO;
+import com.spring.model.NoticeVO;
 
 @Service
 public class BoardService implements InterBoardService {
@@ -39,11 +40,27 @@ public class BoardService implements InterBoardService {
 	@Autowired	// 의존객체로 사용하기 위해 @Autowired 를 통해 DI 선언한다.
 	private GoogleMail mail;
 
-
+	
+	// FAQ 리스트(검색어 있음)
 	@Override
 	public List<FaqVO> faqList(HashMap<String, String> paraMap) {
 		List<FaqVO> faqList = dao.faqList(paraMap);
 		return faqList;
+	}
+
+
+	// 총 공지글 개수
+	@Override
+	public int getTotalNoticeCount(HashMap<String, String> paraMap) {
+		int n = dao.getTotalNoticeCount(paraMap);
+		return n;
+	}
+
+	// 페이징처리한 공지글 리스트
+	@Override
+	public List<NoticeVO> noticeListWithPaging(HashMap<String, String> paraMap) {
+		List<NoticeVO> noticeList = dao.noticeListWithPaging(paraMap);
+		return noticeList;
 	}
 	
 }

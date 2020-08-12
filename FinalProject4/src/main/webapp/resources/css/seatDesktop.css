@@ -271,10 +271,12 @@
 
 #discount {
     height: 50%;
+    overflow: auto;
 }
 
 #coupon {
     height: 40%;
+    overflow: auto;
 }
 
 .content h3 {
@@ -284,10 +286,8 @@
 
 #discountTbl, #couponTbl {
     width: 95%;
-    height: 40%;
     margin: 0 auto;
     padding-top: 10px;
-    overflow: auto;
 }
 
 #couponTbl {

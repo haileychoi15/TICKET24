@@ -42,6 +42,7 @@ $(document).ready(function(){
 			success:function(json){
 				seatArea.innerHTML = ""; 
 
+				// 1층 1~9열
 				for(var j=0; j<9; j++) {
 			        for(var i=0; i<37; i++) {
 			            var top = 162 + 12*j;
@@ -259,7 +260,15 @@ function seatSelComplete() {
     		
     	});
         change(step2);
-        ticketPrice.innerHTML += '<span>' + money(sumPrice) + '</span>';
+        ticketPrice.innerHTML += sumPrice;
+        
+     	// 예매 정보 출력 (side bar)
+        let ticketPriceInner = ticketPrice.innerText;
+        let ticketCommission = document.getElementById('ticketCommission').innerText;
+        let sum = Number(ticketPriceInner) + Number(ticketCommission);
+
+        let totalPrice = document.getElementById('totalPrice');
+        totalPrice.innerText = sum;
     }
 }
 
@@ -433,6 +442,7 @@ function setAddress(){
 
 }; // end of function setAddress();
 
+  
 function ChangeAddressInfo(num) {
 	var children = $(".deliveryRow2").children('input');
 	
@@ -511,5 +521,68 @@ function Pay() {
         webkitTransform: 'translate(-50%, -50%)'
     });
 } */
+
+//가격할인
+function changeDC() {
+
+    let dcSel1 = document.getElementById('dcSel1');
+    let dcSel2 = document.getElementById('dcSel2');
+    let dcSel3 = document.getElementById('dcSel3');
+    let dc1 = document.getElementById('dc1').innerText;
+    let dc2 = document.getElementById('dc2').innerText;
+    let dc3 = document.getElementById('dc3').innerText;
+
+    let selValue1 = dcSel1.options[dcSel1.selectedIndex].value;
+    let selValue2 = dcSel1.options[dcSel2.selectedIndex].value;
+    let selValue3 = dcSel1.options[dcSel3.selectedIndex].value;
+
+    let resultDC = (Number(dc1) * Number(selValue1)) + (Number(dc2) * Number(selValue2)) + (Number(dc3) * Number(selValue3));
+
+    let dcPrice = document.getElementById('dcPrice');
+    dcPrice.innerText = resultDC;
+    let dcPriceInner = dcPrice.innerText;
+
+    // 총 결제금액 변경
+    let ticketPrice = document.getElementById('ticketPrice').innerText;
+    let ticketCommission = document.getElementById('ticketCommission').innerText;
+    let sum = Number(ticketPrice) + Number(ticketCommission);
+
+    let totalPrice = document.getElementById('totalPrice');
+    totalPrice.innerHTML = sum;
+
+    let totalPriceInner = totalPrice.innerText;
+    let resultPrice = Number(totalPriceInner) - Number(dcPriceInner);
+    totalPrice.innerText = resultPrice;
+
+}
+
+// 쿠폰할인
+function changeCoupon() {
+
+    let couponCheck1 = document.getElementById('couponCheck1');
+    let dcCoupon = document.getElementById('dcCoupon');
+    if(couponCheck1.checked) {
+        dcCoupon.innerText = couponCheck1.value;
+    }
+    if(!couponCheck1.checked) {
+        let dcCouponInner = dcCoupon.innerText;
+        dcCoupon.innerText = Number(dcCouponInner) - Number(couponCheck1.value);
+    }
+
+    let dcCouponInner = dcCoupon.innerText;
+
+    // 총 결제금액 변경
+    let ticketPrice = document.getElementById('ticketPrice').innerText;
+    let ticketCommission = document.getElementById('ticketCommission').innerText;
+    let sum = Number(ticketPrice) + Number(ticketCommission);
+
+    let totalPrice = document.getElementById(  'totalPrice');
+    totalPrice.innerHTML = sum;
+
+    let totalPriceInner = totalPrice.innerText;
+    let resultPrice = Number(totalPriceInner) - Number(dcCouponInner);
+    totalPrice.innerText = resultPrice;
+}
+
 
 </script>
