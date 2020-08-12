@@ -39,6 +39,7 @@
 }
 
 .search input{
+	color: black;
     width: 70%;
     padding: 10px 20px;
 }
