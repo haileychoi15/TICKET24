@@ -45,9 +45,10 @@
 		<result property="seat_price"		column="seat_price"		javaType="String"/>
 		<result property="seat_status"		column="seat_status"	javaType="String"/>
 		<result property="date_id"			column="date_id"		javaType="String"/>
+		<result property="seat_color"		column="seat_color"		javaType="String"/>
 	</resultMap>
 	<select id="getSeatStatus" parameterType="String" resultMap="seatStatus">
-		select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id
+		select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id, seat_color
 		from view_seat_info
 		where prod_id = #{showNum}
 	</select>

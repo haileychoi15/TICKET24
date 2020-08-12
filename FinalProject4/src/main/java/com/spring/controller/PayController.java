@@ -62,9 +62,6 @@ public class PayController {
 		List<HashMap<String, String>> getShowTime = new ArrayList<>();
 		getShowTime = service.getShowTime(showNum);
 		mav.addObject("getShowTime", getShowTime);
-//		for(int i=0; i<getShowTime.size(); i++) {
-//			System.out.println(getShowTime.get(i).get("date_showday"));
-//		}
 		
 		// 좌석타입종류
 		List<HashMap<String, String>> getSeatType = new ArrayList<>();
@@ -77,7 +74,7 @@ public class PayController {
 	
 	// == 시간, 회차에 따른 좌석상태 ajax == //
 	@ResponseBody
-	@RequestMapping(value="/seatStatus.action", method= {RequestMethod.POST})
+	@RequestMapping(value="/seatStatus.action", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
 	public String requiredLogin_seatStatus(HttpServletRequest request, HttpServletResponse response) {
 	
 		String jsonStr = "";
@@ -105,6 +102,7 @@ public class PayController {
 				jsonObj.put("seat_price", seatStatus.get("seat_price"));
 				jsonObj.put("seat_status", seatStatus.get("seat_status"));
 				jsonObj.put("date_id", seatStatus.get("date_id"));
+				jsonObj.put("seat_color", seatStatus.get("seat_color"));
 				
 				jsonArr.put(jsonObj);
 			}

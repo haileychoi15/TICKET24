@@ -98,7 +98,7 @@
     width: 10px;
     height: 10px;
     position: absolute;
-    background-color: #d6c7da;
+    /* background-color: #d6c7da; */
     
     display: inline-block;
     margin: 1px;
@@ -112,6 +112,19 @@
     display: inline-block;
     margin: 1px;
     background-image: url("http://tkfile.yes24.com/images/ticket_new/ic_seat_on.gif");
+}
+
+.soldout{
+	width: 10px;
+    height: 10px;
+    position: absolute;
+    
+    display: inline-block;
+    margin: 1px;
+    border-radius: 20%;
+    
+	pointer-events: none;
+	background-color: gray;
 }
 
 #seatInfo h3 {
@@ -258,10 +271,12 @@
 
 #discount {
     height: 50%;
+    overflow: auto;
 }
 
 #coupon {
     height: 40%;
+    overflow: auto;
 }
 
 .content h3 {
@@ -271,10 +286,8 @@
 
 #discountTbl, #couponTbl {
     width: 95%;
-    height: 40%;
     margin: 0 auto;
     padding-top: 10px;
-    overflow: auto;
 }
 
 #couponTbl {
