@@ -29,14 +29,6 @@ public class PayController {
 	@Autowired
 	private InterPayService service;
 	
-	// == YES24 메인페이지 == //
-	@RequestMapping(value="/yes24.action")
-	public ModelAndView index(ModelAndView mav) {
-		mav.setViewName("main/main.notiles");
-		return mav;
-	}
-
-	
 	// == 예매하기 클릭 시, 좌석선택 및 시간, 할인 팝업창 띄우기 == //
 	@RequestMapping(value="/reservePopUp.action")
 	public ModelAndView requiredLogin_reservePopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {

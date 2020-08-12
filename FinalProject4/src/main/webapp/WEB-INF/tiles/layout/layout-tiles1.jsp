@@ -11,36 +11,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시판</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
-  <%--  ===== #179. 스피너를 사용하기 위해  jquery-ui 사용하기 ===== --%>
-  <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
-  <script type="text/javascript" src="<%= request.getContextPath() %>/resources/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YES24 티켓</title>
+<link rel="shortcut icon" href="http://tkfile.yes24.com/img/favicon.ico?ver=150825a" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="resources/css/header.css">
+<link rel="stylesheet" href="resources/css/grid.min.css">
 <link rel="stylesheet" href="resources/css/reset.css">
-<script src="resources/js/header.js"></script>
-    
-
-
+<link rel="stylesheet" href="resources/css/main.css">
+<link rel="stylesheet" href="resources/css/footer.css">
+  
 </head>
 <body>
-	<div id="mycontainer">
-		<div id="myheader">
-			<tiles:insertAttribute name="header" />
-		</div>
-		
-		<div id="mycontent">
-			<tiles:insertAttribute name="content" />
-		</div>
-		
-		<div id="myfooter">
-			<tiles:insertAttribute name="footer" />
-		</div>
-	</div>
+<tiles:insertAttribute name="header" />
+
+<tiles:insertAttribute name="content" />
+
+<tiles:insertAttribute name="footer" />
 </body>
 </html>

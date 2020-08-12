@@ -1,19 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.net.InetAddress"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%-- ======= #27. tile1 중 header 페이지 만들기  ======= --%>
 <%
 	String ctxPath = request.getContextPath();
 %>
 
-<link rel="stylesheet" href="resources/css/header.css">
-<link rel="stylesheet" href="resources/css/reset.css">
 <script src="resources/js/header.js"></script>
-    
-
+<script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
 <script>
 	function reservePopUp() {
 		var url = "<%=ctxPath%>/reservePopUp.action";
@@ -21,6 +16,7 @@
 		window.open(url, "", option);
 	}
 </script>
+
 <header class="header">
     <nav class="header-menu">
         <h1>
@@ -141,41 +137,27 @@
                 <span></span>
                 <ul class="user-box hide">
                     <li class="user-box-item">
-                        <a href="">
-                            회원가입
-                        </a>
+                        <a href=""> 회원가입 </a>
                     </li>
                     <li class="user-box-item">
-                        <a href="">
-                            로그인
-                        </a>
+                        <c:if test="${sessionScope.loginuser == null}">
+            				<a href="<%=ctxPath%>/login.action">로그인</a>
+            			</c:if>
+               			<c:if test="${sessionScope.loginuser != null}">
+            				<a href="<%=ctxPath%>/logout.action">로그아웃</a>
+            			</c:if>
                     </li>
                     <li class="user-box-item">
-                        <a href="">
-                            마이티켓
-                        </a>
+                        <a href=""> 마이티켓 </a>
                     </li>
                     <li class="user-box-item">
-                        <a href="">
-                            마이페이지
-                        </a>
+                        <a href="<%=ctxPath%>/modifyInfo.action"> 마이페이지 </a>
                     </li>
                     <li class="user-box-item">
-                        <a href="">
-                            고객센터
-                        </a>
+                        <a href=""> 고객센터 </a>
                     </li>
                 </ul>
             </button>
         </div>
     </nav>
 </header>
-	
-	
-	<!-- === #49. 로그인이 성공되어지면 로그인되어진 사용자의 이메일 주소를 출력하기 === -->
-	<c:if test="${sessionScope.loginuser != null}">
-		<div style="float: right; margin-top: 0.5%; border: solid 0px red;">
-		  <span style="color: navy; font-weight: bold; font-size: 10pt;">${sessionScope.loginuser.email}</span> 님 로그인중.. 
-		</div>
-	</c:if>
-	

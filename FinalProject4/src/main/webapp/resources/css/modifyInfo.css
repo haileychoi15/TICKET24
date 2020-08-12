@@ -1,0 +1,113 @@
+#container {
+    font-size: 13px;
+    color: #666;
+}
+
+#title {
+    font-size: 20px;
+    text-align: center;
+    width: 200px;
+    margin: 30px auto 50px auto;
+    color: #333;
+}
+
+#myPageForm {
+    width: 700px;
+    margin: 0 auto;
+}
+
+.myPageCol {
+    height: 75px;
+    padding: 10px 20px;
+    border-bottom: solid 1px #eee;
+}
+
+.inputArea {
+    width: 90%;
+    height: 50px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.idDiv {
+    border-top: solid 1px #eee;
+}
+
+.addressDiv {
+    height: 110px;
+}
+
+.data {
+    height: 20px;
+    margin-top: 10px;
+    padding-left: 5px;
+    border: none;
+    border-bottom: solid 1px lightgray;
+}
+.data:focus {
+    outline: none;
+    border-bottom: solid 1px #848484;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.inputArea button {
+    height: 25px;
+    margin-left: 10px;
+    border: solid 1px #c2c2c2;
+    border-radius: 13px;
+    background-color: white;
+    font-size: 12px;
+}
+
+.agree input {
+    position: relative;
+    top: 5px;
+}
+
+.agree label {
+    margin: 0 20px 0 10px;
+}
+
+.agree br {
+    display: none;
+}
+
+#btnArea {
+    margin: 30px 0 50px 0;
+    text-align: center;
+}
+
+#btnArea button {
+    width: 50px;
+    height: 30px;
+    border: solid 1px #c2c2c2;
+    border-radius: 13px;
+    background-color: white;
+}
+
+@media screen and (max-width: 767px) {
+    #container {
+        width: 90%;
+    }
+}
+
+@media (max-width: 479px) {
+    #container {
+        width: 90%;
+    }
+
+    .addressDiv {
+        height: 142px;
+    }
+
+    .agreeDiv {
+        height: 115px;
+    }
+
+    .agree br {
+        display: block;
+    }
+}
