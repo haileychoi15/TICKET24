@@ -23,7 +23,7 @@ $(document).ready(function() {
        pg : 'html5_inicis', // 결제방식 PG사 구분
        pay_method : 'card',	// 결제 수단  // 'card' 'kakao'
        merchant_uid : 'merchant_' + new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호
-       name : 'YES24 결제(공연명)', // ${show.name} 공연명	 
+       name : 'YES24 결제(${payShowName})', // ${show.name} 공연명	 
        // 코인충전 또는 order 테이블에 들어갈 주문명 혹은 주문 번호. (선택항목)원활한 결제정보 확인을 위해 입력 권장(PG사 마다 차이가 있지만) 16자 이내로 작성하기를 권장
        amount : 100, // ${sum} 총가격 
        // '${coinmoney}'  결제 금액 number 타입. 필수항목. 
@@ -62,12 +62,13 @@ $(document).ready(function() {
 		//	opener.location.href = "javascript:goCoinUpdate('${idx}','${coinmoney}');";
 		//	window.opener.goCoinUpdate('${idx}','${coinmoney}'); // 이동시켜서 결제 완료처리
 		//  $(opener.location).attr("href", "javascript:goCoinUpdate('${idx}','${coinmoney}');");
-			
-		    self.close();
+			location.href="<%=request.getContextPath()%>/payComplete.action?success=1";
 			
         } else {
-            location.href="/yes24.action"; // 실패 후 이동할 페이지
-            alert("결제에 실패하였습니다.");
+        	alert("결제에 실패하였습니다.");
+        	//location.href = "javascript:back();";
+        	//$("#inipay_modal").hide(); // 실패 후 이동할 페이지
+        	self.close();
        }
 
    }); // end of IMP.request_pay()----------------------------

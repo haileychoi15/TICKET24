@@ -131,9 +131,9 @@ public class PayController {
 //		HashMap<String, String> payMap = new HashMap<>(); // 결제창에 보낼 정보 여러개일까..?
 //		mav.addObject("payMap", payMap);
 		
-		String sum = request.getParameter("sum");
+		String payShowName = request.getParameter("payShowName");
 		
-		mav.addObject("sum", sum);
+		mav.addObject("payShowName", payShowName);
 		
 		mav.setViewName("reserve/paymentGateway.notiles");
 		return mav;

@@ -433,11 +433,83 @@ function setAddress(){
 
 }; // end of function setAddress();
 
+function ChangeAddressInfo(num) {
+	var children = $(".deliveryRow2").children('input');
+	
+	switch (num) {
+	case 1:
+		alert("주문자정보동일");
+		break;
+	case 2:
+		alert("최근배송지");
+		
+		break;
+	case 3:
+		alert("새로고침");
+		console.log(children);
+		children.value = "";
+		break;
+	}
+}
+
 function Pay() {
 	var frm = document.payFrm;
 	frm.method = "POST";
 	frm.action = "<%= request.getContextPath()%>/payPopUp.action";
 	frm.submit();
+	
+	<%-- var url = "<%= request.getContextPath()%>/payPopUp.action";
+	var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, status = no";
+	window.open(url, "", option); --%>
+	
+	
+	/* var sFeatures = "dialogWidth:300px; dialogheight:100px; dialogLeft:100px; dialogTop:100px; center: no; status:no; scroll:no";
+	window.showModalDialog("paymentGateway.jsp", window,sFeatures); */
+	/* window.showModalDialog("paymentGateway.jsp", self, "dialogLeft:0px; dialogTop:0px; dialogWidth:200px; dialogHeight:200px"); */
+	
+	/* modal('inipay_modal'); */
 }
+
+/* function modal(id) {
+	var zIndex = 9999;
+    var modal = document.getElementById(id);
+
+    // 모달 div 뒤에 희끄무레한 레이어
+    var bg = document.createElement('div');
+    bg.setStyle({
+        position: 'fixed',
+        zIndex: zIndex,
+        left: '0px',
+        top: '0px',
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+        // 레이어 색갈은 여기서 바꾸면 됨
+        backgroundColor: 'rgba(0,0,0,0.4)'
+    });
+    document.body.append(bg);
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+        bg.remove();
+        modal.style.display = 'none';
+    });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+} */
 
 </script>

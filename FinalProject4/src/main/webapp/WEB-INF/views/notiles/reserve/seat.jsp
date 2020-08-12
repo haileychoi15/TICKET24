@@ -166,17 +166,17 @@
                                     <div class="ordererRow2"><input type="text" size="8"> @ <input type="text" size="10"></div>
                                 </div>
                             </div><br>
-                            <div id="deliveryInfo" style="display: block">
+                            <div id="deliveryInfo" style="display: none;">
                                 <div class="infoTitle">배송지 정보 <span id="exclamation" onmouseenter="deliveryCaution()" onmouseleave="deliveryCautionEnd()">!</span>
                                     <div id="deliveryRadio">
-                                        <input type="radio" id="same" name="address"><label for="same">주문자 정보와 동일</label>
-                                        <input type="radio" id="latest" name="address"><label for="latest">최근 배송지</label>
-                                        <input type="radio" id="new" name="address"><label for="new">새로 입력</label>
+                                        <input type="radio" id="same" name="address" onclick="ChangeAddressInfo(1)"><label for="same">주문자 정보와 동일</label>
+                                        <input type="radio" id="latest" name="address" onclick="ChangeAddressInfo(2)"><label for="latest">최근 배송지</label>
+                                        <input type="radio" id="new" name="address" onclick="ChangeAddressInfo(3)"><label for="new">새로 입력</label>
                                     </div>
                                 </div>
                                 <div id="deliveryName">
                                     <div class="deliveryRow1">받으시는 분</div>
-                                    <div class="deliveryRow2"><input type="text" size="15"></div>
+                                    <div class="deliveryRow2"><input type="text" size="15" value=""></div>
                                 </div>
                                 <div id="deliveryCall">
                                     <div class="deliveryRow1">연락처</div>
@@ -187,7 +187,7 @@
                                     <div class="deliveryRow2">
                                         <input id="postNo" type="text" size="5">&nbsp;
                                         <input id="address" type="text" size="25">&nbsp;
-                                        <button class="btn" onclick="setAddress();">우편번호검색</button>
+                                        <button class="btn" onclick="setAddress()">우편번호검색</button>
                                     </div>
                                 </div>
                                 <div id="deliveryDetailAddress">
@@ -278,16 +278,16 @@
                             </div>
                         </div>
                         <div class="agree">
-                            <input type="checkbox" id="paymentConfirm" name="confirm"><label for="refundConfirm">[필수] 결제대행 서비스 표준이용약관을 확인하였으며 동의합니다.</label>&nbsp;
+                            <input type="checkbox" id="paymentConfirm" name="confirm"><label for="paymentConfirm">[필수] 결제대행 서비스 표준이용약관을 확인하였으며 동의합니다.</label>&nbsp;
                         </div>
                         <div class="agree">
-                            <input type="checkbox" id="kakaoConfirm" name="confirm"><label for="refundConfirm">[필수] 카카오 전자금융 이용약관을 확인하였으며 동의합니다.</label>&nbsp;
+                            <input type="checkbox" id="kakaoConfirm" name="confirm"><label for="kakaoConfirm">[필수] 카카오 전자금융 이용약관을 확인하였으며 동의합니다.</label>&nbsp;
                         </div>
                         <div class="agree">
-                            <input type="checkbox" id="infoOfferConfirm" name="confirm"><label for="refundConfirm">[필수] 개인정보 제3자 제공에 동의하며 주의사항을 확인하였습니다.</label>&nbsp;
+                            <input type="checkbox" id="infoOfferConfirm" name="confirm"><label for="infoOfferConfirm">[필수] 개인정보 제3자 제공에 동의하며 주의사항을 확인하였습니다.</label>&nbsp;
                         </div>
                         <div class="agree">
-                            <input type="checkbox" id="infoUseConfirm" name="confirm"><label for="refundConfirm">[필수] 개인정보 수집 및 이용에 동의합니다.</label>&nbsp;
+                            <input type="checkbox" id="infoUseConfirm" name="confirm"><label for="infoUseConfirm">[필수] 개인정보 수집 및 이용에 동의합니다.</label>&nbsp;
                         </div>
                     </div>
                 </div>
@@ -356,8 +356,16 @@
         </div>
     </div>
     
+    <!-- <div class="inipay_modal" id="inipay_modal">
+   		<iframe id="inipay_iframe" src="payPopUp.action" class="inipay_iframe" scrolling="yes"></iframe>
+    </div> -->
+    
     <form name="payFrm">
-    	<input type="hidden" name="" value=""/>
+    	<input type="hidden" name="payShowName" value="${getShowRsvInfo.prod_title}"/>
+    	<input type="hidden" name="paySum" value=""/>
+    	<input type="hidden" name="payUserEmail" value=""/>
+    	<input type="hidden" name="payUserName" value=""/>
+    	<input type="hidden" name="payReciveMethod" value=""/>
     </form>
 </body>
 <jsp:include page="../../../../resources/js/seatSelScript.jsp"/>
