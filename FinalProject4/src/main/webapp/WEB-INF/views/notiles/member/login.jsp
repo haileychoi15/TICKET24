@@ -30,7 +30,7 @@
 		var loginUserid = localStorage.getItem('saveID');
 		
 		
-		if(loginUserid != null){
+		if(loginUserid != null && ${sessionScope.loginuser !=null}){
 			$("#userid").val(loginUserid);
 			$("input:checkbox[name=saveID]").prop("checked", true);
 		}

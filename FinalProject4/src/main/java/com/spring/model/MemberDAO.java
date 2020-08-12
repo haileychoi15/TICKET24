@@ -125,6 +125,13 @@ public class MemberDAO implements InterMemberDAO {
 		MemberVO mvo = sqlsession.selectOne("finalproject4.checkUserWithSessionKey", sessionId);
 		return mvo;
 	}
+
+	// 회원 탈퇴
+	@Override
+	public int infoDelete(HashMap<String, String> paraMap) {
+		int n = sqlsession.delete("finalproject4.infoDelete", paraMap);
+		return n;
+	}
 	
 	
 	

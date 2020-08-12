@@ -36,6 +36,9 @@ public interface InterMemberService {
 	MemberVO checkUserWithSessionKey(String sessionId);
 
 
+	int infoDelete(HashMap<String, String> paraMap); // 회원 탈퇴
+
+
 
 	
 }

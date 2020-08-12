@@ -365,25 +365,24 @@ public class MemberController {
 		
 		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
 		
-		if( loginCookie == null) {
-			mav.setViewName("member/login.notiles");
-			return mav;
-		}
-
 		//System.out.println("idx : " + idx);
-		
-		MemberVO mvo = service.modifyInfo(String.valueOf(loginuser.getIdx()));
-		
-		try {
-			mvo.setHp2(aes.decrypt(mvo.getHp2()));
-			mvo.setHp3(aes.decrypt(mvo.getHp3()));
-			mvo.setEmail(aes.decrypt(mvo.getEmail()));
-		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
-			e.printStackTrace();
+		if(loginuser != null || loginCookie != null) {
+			MemberVO mvo = service.modifyInfo(String.valueOf(loginuser.getIdx()));
+			
+			try {
+				mvo.setHp2(aes.decrypt(mvo.getHp2()));
+				mvo.setHp3(aes.decrypt(mvo.getHp3()));
+				mvo.setEmail(aes.decrypt(mvo.getEmail()));
+			} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+			
+			mav.addObject("mvo", mvo);
+			mav.setViewName("member/modifyInfo.notiles");
 		}
-		
-		mav.addObject("mvo", mvo);
-		mav.setViewName("member/modifyInfo.notiles");
+		else {
+			mav.setViewName("member/login.notiles");
+		}
 		
 		return mav;
 	}
@@ -458,6 +457,60 @@ public class MemberController {
 		
 		return mav;
 	}
+	
+	
+	
+	// == 회원탈퇴 == //
+	@RequestMapping(value="/infoDelete.action", method= {RequestMethod.POST})
+	public ModelAndView infoDelete(HttpServletRequest request, ModelAndView mav, HttpServletResponse response) {
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		String idx = String.valueOf(loginuser.getIdx());
+		String pwd = request.getParameter("pwd");
+		
+		HashMap<String, String> paraMap = new HashMap<String, String>();
+		
+		paraMap.put("idx", idx);
+		paraMap.put("pwd", Sha256.encrypt(pwd));
+		
+		int n = service.infoDelete(paraMap);
+		
+
+		String msg = "";
+		String loc = "";
+		
+		if(n==1) {
+			
+			
+			session.invalidate();
+			
+			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+			
+			if(loginCookie != null) {
+				loginCookie.setMaxAge(0);
+				loginCookie.setPath("/");
+				response.addCookie(loginCookie);
+			}
+			
+			msg = "회원 탈퇴되었습니다.";
+			loc = request.getContextPath() + "/yes24.action";
+		}
+		else {
+			msg = "다시 시도해주세요.";
+			loc = "javascript:history.back()";
+		}
+		
+		mav.addObject("msg", msg);
+		mav.addObject("loc", loc);
+		
+		mav.setViewName("msg");
+		
+		
+		return mav;
+	}
+	
 	
 	
 }

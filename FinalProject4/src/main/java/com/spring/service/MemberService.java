@@ -168,6 +168,14 @@ public class MemberService implements InterMemberService {
 	}
 
 
+	// 회원탈퇴
+	@Override
+	public int infoDelete(HashMap<String, String> paraMap) {
+		int n = dao.infoDelete(paraMap);
+		return n;
+	}
+
+
 
 	
 	

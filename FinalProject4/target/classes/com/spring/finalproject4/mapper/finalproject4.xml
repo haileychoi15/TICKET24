@@ -144,7 +144,35 @@
 	
 	
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
-	
+	<select id="getTotalProdCount" parameterType="HashMap" resultType="int">
+		select count(*)
+      	from prod
+      	where status = 1 
+      	<if test="searchWord != ''">
+      	and lower(prod_title) like '%'|| lower(#{searchWord}) || '%'
+      	</if>
+   	</select>
+   
+   
+   	<select id="prodList" parameterType="HashMap" resultType="com.spring.model.ProdVO">
+      	select RNO, prod_id, category_name, fk_category_id, prod_title, prod_img, date_start, date_end, info_open_date, info_close_date, info_rev_status, info_qnty, map_address, map_id
+      	from (
+          	select ROW_NUMBER() OVER (ORDER BY prod_id desc) as RNO, prod_id, category_name, fk_category_id, prod_title, prod_img, date_start, date_end, info_open_date, info_close_date, info_rev_status, info_qnty, map_address, map_id
+          	from (
+              	select P.prod_id, C.category_name, fk_category_id, prod_title, prod_img, date_start, date_end, info_open_date, info_close_date, info_rev_status, info_qnty, map_address, M.map_id, status
+              	from prod P join yes_show_category C
+              	on P. fk_category_id = C.category_id
+              	left join yes_show_map M
+              	on P.prod_id = M. prod_id
+              	order by P.prod_id
+          	) V
+          	where status = 1 
+          	<if test="searchWord != ''">
+             	and lower(prod_title) like '%' || lower(#{searchWord}) || '%'
+          	</if>
+      	) T
+      	where rno between #{startRno} and #{endRno}
+   	</select>
 	
 	<!-- ===== Member ===== -->
 	<!-- === #47. 로그인 처리하기 === -->
@@ -282,6 +310,11 @@
         from yes_member
         where sessionKey = #{sessionId} and sessionLimit > sysdate
     </select>
+	
+	<update id="infoDelete" parameterType="HashMap">
+		delete from yes_member
+		where idx = #{idx} and pwd = #{pwd} 
+	</update>
 	
 
 </mapper>

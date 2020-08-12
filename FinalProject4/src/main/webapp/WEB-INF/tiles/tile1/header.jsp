@@ -6,7 +6,7 @@
 <%
 	String ctxPath = request.getContextPath();
 %>
-
+<link rel="stylesheet" href="resources/css/header.css">
 <script src="resources/js/header.js"></script>
 <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
 <script>
@@ -25,8 +25,13 @@
             </a>
         </h1>
         <ul class="header-category list-group">
-            <li class="header-category-item active">
-                <a href="#" class="category-link">콘서트</a>
+            <c:if test="${param.category == 1}">
+                <li class="header-category-item active">
+            </c:if>
+            <c:if test="${param.category != 1}">
+                <li class="header-category-item">
+            </c:if>
+                <a href="?category=1" class="category-link">콘서트</a>
                 <ul class="header-sub-category list-group">
                     <li class="header-sub-category-item">
                         <a href="#">전체보기</a>
@@ -42,8 +47,13 @@
                     </li>
                 </ul>
             </li>
-            <li class="header-category-item">
-                <a href="#" class="category-link">뮤지컬</a>
+            <c:if test="${param.category == 2}">
+                <li class="header-category-item active">
+            </c:if>
+            <c:if test="${param.category != 2}">
+                <li class="header-category-item">
+            </c:if>
+                <a href="?category=2" class="category-link">뮤지컬</a>
                 <ul class="header-sub-category list-group">
                     <li class="header-sub-category-item">
                         <a href="#">전체보기</a>
@@ -62,8 +72,13 @@
                     </li>
                 </ul>
             </li>
-            <li class="header-category-item">
-                <a href="#" class="category-link">연극</a>
+            <c:if test="${param.category == 3}">
+                <li class="header-category-item active">
+            </c:if>
+            <c:if test="${param.category != 3}">
+                <li class="header-category-item">
+            </c:if>
+                <a href="?category=3" class="category-link">연극</a>
                 <ul class="header-sub-category list-group">
                     <li class="header-sub-category-item">
                         <a href="#">전체보기</a>
@@ -76,8 +91,13 @@
                     </li>
                 </ul>
             </li>
-            <li class="header-category-item">
-                <a href="#" class="category-link">클래식</a>
+            <c:if test="${param.category == 4}">
+                <li class="header-category-item active">
+            </c:if>
+            <c:if test="${param.category != 4}">
+                <li class="header-category-item">
+            </c:if>
+                <a href="?category=4" class="category-link">클래식</a>
                 <ul class="header-sub-category list-group">
                     <li class="header-sub-category-item">
                         <a href="#">전체보기</a>
@@ -93,8 +113,13 @@
                     </li>
                 </ul>
             </li>
-            <li class="header-category-item">
-                <a href="#" class="category-link">전시</a>
+            <c:if test="${param.category == 5}">
+                <li class="header-category-item active">
+            </c:if>
+            <c:if test="${param.category != 5}">
+                <li class="header-category-item">
+            </c:if>
+                <a href="?category=5" class="category-link">전시</a>
                 <ul class="header-sub-category list-group">
                     <li class="header-sub-category-item">
                         <a href="#">전체보기</a>
@@ -110,8 +135,13 @@
                     </li>
                 </ul>
             </li>
-            <li class="header-category-item">
-                <a href="#" class="category-link">아동</a>
+            <c:if test="${param.category == 6}">
+                <li class="header-category-item active">
+            </c:if>
+            <c:if test="${param.category != 6}">
+                <li class="header-category-item">
+            </c:if>
+                <a href="?category=6" class="category-link">아동</a>
                 <ul class="header-sub-category list-group">
                     <li class="header-sub-category-item">
                         <a href="#">전체보기</a>
