@@ -241,6 +241,10 @@ nominvalue
 nocycle
 nocache;
 
+
+select *
+from prod;
+
 select prod_id, fk_category_id, fk_category_detail_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty
 from prod
@@ -251,6 +255,22 @@ info_close_date,info_rev_status,info_grade,info_run_time,info_qnty
 from prod P join  yes_show_category C
 on P. fk_category_id = C.category_id;
 -- 공연 테이블 임시
+
+
+select prod_id, C.category_name, fk_category_id, prod_title, prod_img, info_open_date,
+info_close_date, info_rev_status, info_run_time,info_qnty
+
+,date_start             date             -- 공연시작날짜
+,date_end               date             -- 공연종료날짜
+,info_open_date         date             -- 티켓오픈일시
+,info_close_date        date             -- 티켓마감일시
+,info_rev_status        number           -- 예매가능상태
+,info_run_time          varchar2(10)     -- 관람시간
+,info_qnty              number default 0 -- 판매량
+
+from prod P join  yes_show_category C
+on P. fk_category_id = C.category_id
+-- 공연메인페이지에서 가져올 정보
 
 insert into prod(prod_id, fk_category_id, fk_category_detail_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)

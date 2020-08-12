@@ -8,6 +8,8 @@ window.addEventListener('DOMContentLoaded', () => {
         setFirstPage();
         ajaxBoard(1);
     });
+    
+    
 
  // 카테고리 누를 때 이벤트 발생
     let categoryGroup = document.querySelector('.category-group');
@@ -80,7 +82,7 @@ function removePageColor() {
 function setFirstPage() {
 
     removePageColor();
-    document.querySelector('.page-button:first-child').classList.add('selected');
+    document.querySelector('.page-button').classList.add('selected');
 }
 
 function getBoardTemplate(id, category, title, date, view, file) {

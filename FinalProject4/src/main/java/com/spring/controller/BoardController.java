@@ -71,10 +71,6 @@ public class BoardController {
 
 		for(FaqVO faqvo : faqList) {
 			JSONObject jsonObj = new JSONObject();
-			// jsonObj 객체에 결과물 testvo 을 넣고(put)
-			//	jsonObj.put("testvo", testvo); // 그런데 이렇게 하면 안된다.
-			//	그냥 객체만 들어가므로, 뷰단에서 키값으로 no, name, writeday 를 설정했으므
-			//	jsonObj.put 으로 키값과 밸류값을 넣어줘야 한다.
 			jsonObj.put("category", faqvo.getFaq_cate_name());
 			jsonObj.put("fk_userid", faqvo.getFk_userid());
 			jsonObj.put("content", faqvo.getContent());
@@ -146,12 +142,6 @@ public class BoardController {
 		totalCount = service.getTotalNoticeCount(paraMap);
 		//	System.out.println("~~~~~ 확인용 totalCount : "+totalCount);
 
-
-		// 만약에 총 게시물 건수(totalCount) 가 127개 이라면
-		// 총 페이지수(totalPage) 는 ceil(127/10) 인데 
-		// 자바에서 정수/정수는 정수형태로 소수부분이 짤리므로 실수형태인 double 로 바꿔서 실수/정수로 실수결과가 나와야 한다.
-		// (double)127/10 ==> 12.7 ==> Math.ceil(12.7) ==> (int)13.0 ==> 13
-		// (double)120/10 ==> 12.0 ==> Math.ceil(12.0) ==> (int)12.0 ==> 12
 		totalPage = (int) Math.ceil((double)totalCount / sizePerPage);
 
 
@@ -168,11 +158,6 @@ public class BoardController {
 			try {
 				currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
 
-				// list.action?searchType=subject&searchWord=&currentShowPageNo=-12345 와 같이 
-				// currentShowPageNo 에 음수 형태 또는 0이 올 경우 1페이지를 보여준다.
-				// list.action?searchType=subject&searchWord=&currentShowPageNo=999 와 같이 
-				// currentShowPageNo 총페이지보다 큰 페이지가 올 경우 1페이지를 보여준다.
-				// currentShowPageNo <= 0 또는 currentShowPageNo < 1 로 사용하면 0 또는 음수보다 같거나 작을 경우라는 뜻이다. 
 				if(currentShowPageNo <= 0 || currentShowPageNo > totalPage) {
 					currentShowPageNo = 1;
 				}
@@ -182,7 +167,6 @@ public class BoardController {
 			}
 		}
 
-		// **** 가져올 게시글의 범위를 구한다.(공식임!!!) **** 
 		/*
 		     currentShowPageNo      startRno     endRno
 		    --------------------------------------------
@@ -204,9 +188,9 @@ public class BoardController {
 		// == 페이징 처리한 글목록 보여주기(검색이 있든지, 검색이 없든지 모두 다 포함한 것) == //
 		noticeList = service.noticeListWithPaging(paraMap);
 		
-		if(!"".equals(searchWord)) {
-		//	mav.addObject("paraMap", paraMap);
-		}
+	//	if(!"".equals(searchWord)) {
+	//		mav.addObject("paraMap", paraMap);
+	//	}
 
 
 		// === #119. 페이지바 만들기 === //
@@ -226,7 +210,6 @@ public class BoardController {
 		 */
 
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
-		// *** !! 공식이다. !! *** //
 
 		String url = "list.action";
 		// list.action?searchType=subject&searchWord=정화&currentShowPageNo=1
