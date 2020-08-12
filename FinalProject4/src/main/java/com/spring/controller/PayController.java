@@ -131,13 +131,36 @@ public class PayController {
 //		HashMap<String, String> payMap = new HashMap<>(); // 결제창에 보낼 정보 여러개일까..?
 //		mav.addObject("payMap", payMap);
 		
-		String sum = request.getParameter("sum");
+		String payShowName = request.getParameter("payShowName");
 		
-		mav.addObject("sum", sum);
+		mav.addObject("payShowName", payShowName);
 		
-		mav.setViewName("reserve/paymentGateway.jsp");
+		mav.setViewName("reserve/paymentGateway.notiles");
 		return mav;
 	}
+	
+	// == 결제 실행 API 띄우기 == //
+		@RequestMapping(value="/payComplete.action")
+		public ModelAndView requiredLogin_payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+			
+		/*
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			
+			mav.addObject("loginuser", loginuser);
+			
+			String showNum = request.getAttribute("showNum");
+			ShowVO show = service.getShowInfo(showNum); // 공연 전체 정보를 집어넣을 필요 있을까?
+			
+			mav.addObject("show", show);
+	*/
+//			HashMap<String, String> payMap = new HashMap<>(); // 결제창에 보낼 정보 여러개일까..?
+//			mav.addObject("payMap", payMap);
+			
+			
+			mav.setViewName("reserve/payComplete.notiles");
+			return mav;
+		}
 	
 	// == 결제 후 에매 확인 창 띄우기 == //
 	@RequestMapping(value="/reserveCheck.action")
