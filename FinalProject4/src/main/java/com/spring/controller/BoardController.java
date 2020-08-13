@@ -44,9 +44,11 @@ public class BoardController {
 		
 		String category = request.getParameter("category");
 		String searchWord = request.getParameter("searchWord");
+		String str_currentShowPageNo = request.getParameter("page");
 		
 		System.out.println(category +"category");
 		System.out.println(searchWord +"searchWord");
+		System.out.println(str_currentShowPageNo +"page");
 		
 	// 	if(category == "0") {
 		if(category.equals("0")) {
@@ -61,6 +63,40 @@ public class BoardController {
 		paraMap.put("category", category);
 		paraMap.put("searchWord", searchWord);
 		
+		int sizePerPage = 5;
+		
+		int totalFaqCount = service.getTotalFaqCount(paraMap);
+		
+		int totalPage = (int) Math.ceil((double)totalFaqCount / sizePerPage);
+		
+		int currentShowPageNo = 1;	// 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정한다.	
+		int startRno = 0;			
+		int endRno = 0;				
+
+		// str_currentShowPageNo 가 없다면 초기화면을 보여준다.
+		if(str_currentShowPageNo == null) {
+			currentShowPageNo = 1;
+		}
+		else {
+			try {
+				currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+
+				if(currentShowPageNo <= 0 || currentShowPageNo > totalPage) {
+					currentShowPageNo = 1;
+				}
+
+			} catch (NumberFormatException e) {
+				currentShowPageNo = 1;
+			}
+		}
+
+		startRno = ((currentShowPageNo - 1 ) * sizePerPage) + 1;
+		endRno = startRno + sizePerPage - 1; 
+
+
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+
 		
 		List<FaqVO> faqList = service.faqList(paraMap);
 		
@@ -74,8 +110,12 @@ public class BoardController {
 			jsonObj.put("subject", faqvo.getSubject());
 			jsonObj.put("status", faqvo.getStatus());
 			jsonObj.put("regDate", faqvo.getRegDate());
+			jsonObj.put("totalCount", totalFaqCount);
+			jsonObj.put("totalPage", totalPage);
+			jsonObj.put("page", str_currentShowPageNo);
 
-
+		//	jsonObj.put("regDate", faqvo.getRegDate());
+			
 			jsonArr.put(jsonObj);
 		}
 
@@ -289,6 +329,25 @@ public class BoardController {
 		//	mav.addObject("gobackURL", gobackURL);
 		}
 
+		return mav;
+	}
+	
+	// qna 글쓰기 
+	@RequestMapping(value = "/qnaAdd.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView qnaAdd(HttpServletRequest request, ModelAndView mav) {
+		
+		String qna_category = request.getParameter("qna-category");
+		String qna_product = request.getParameter("qna-product");
+		String qna_title = request.getParameter("qna-title");
+		String qna_content = request.getParameter("qna-content");
+		
+		System.out.println("qna_category : "+qna_category);
+		System.out.println("qna_product : "+qna_product);
+		System.out.println("qna_title : "+qna_title);
+		System.out.println("qna_content : "+qna_content);
+		
+		
+		mav.setViewName("notice/notice.tiles1");
 		return mav;
 	}
 	

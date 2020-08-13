@@ -1,29 +1,23 @@
-window.onload = function(){
-	ajaxBoard("0");
-}
-
-
 window.addEventListener('DOMContentLoaded', () => {
-	
-	// 검색 버튼 눌렀을 때 이벤트
-	let searchButton = document.querySelector('.search-button');
-	
-	
-	// 검색입력하고 엔터쳤을 때 이벤트
-	searchButton.addEventListener('keydown', (event) => {
-		
-		if(event.keyCode == 13) {
-			let category = document.querySelector('.category-group .selected').value;
-			ajaxBoard(category);
-		}		
-		
-	});
 
-	searchButton.addEventListener('click', () => {
-		
-		let category = document.querySelector('.category-group .selected').value;
-		ajaxBoard(category);		
-	});
+    ajaxBoard(1);
+
+    // 검색 버튼 눌렀을 때 이벤트
+    let searchButton = document.querySelector('.search-button');
+    searchButton.addEventListener('click', () => {
+
+        setFirstPage();
+        ajaxBoard(1);
+    });
+
+    // 엔터 눌렀을 때 이벤트
+    let searchWord = document.querySelector('.search-word');
+    searchWord.addEventListener("keyup",(event)=>{
+        if(event.keyCode === 13){
+            searchButton.click();
+            return false;
+        }
+    });
 
     // 카테고리 누를 때 이벤트 발생
     let categoryGroup = document.querySelector('.category-group');
@@ -32,21 +26,31 @@ window.addEventListener('DOMContentLoaded', () => {
         let target = event.target;
         if(target.nodeName == 'BUTTON'){
 
-            let category = target.value;
-
-            //ajax
-            ajaxBoard(category);
-
             // 색깔 변경
-            console.log(target,event.currentTarget );
             let buttons = event.currentTarget.querySelectorAll('button');
             buttons.forEach((value) => {
                 value.classList.remove('selected');
             });
-
             target.classList.add('selected');
-        }
 
+            setFirstPage();
+            ajaxBoard(1);
+        }
+    });
+
+    // 페이지 눌렀을 때
+    let pageGroup = document.querySelector('.page-group');
+    pageGroup.addEventListener('click', (event) => {
+
+        let target = event.target;
+        if(target.nodeName === 'BUTTON'){
+
+            removePageColor();
+            target.classList.add('selected');
+
+            let page = target.innerText;
+            ajaxBoard(page);
+        }
     });
 
 
@@ -56,7 +60,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         let target = event.target;
         showContent(target);
-
     });
 
 
@@ -86,21 +89,116 @@ window.addEventListener('DOMContentLoaded', () => {
         product.selected = true;
         title.value = '';
         content.value = '';
-
         modal.style.display = 'none';
     });
 
 });
 
-function ajaxProduct(userid) {
+function removePageColor() {
+
+    let buttons = document.querySelectorAll('.page-button'); //  색깔 변경
+    buttons.forEach((item) => {
+        item.classList.remove('selected');
+    });
+}
+
+function setFirstPage() {
+
+    removePageColor();
+    let buttons = document.querySelectorAll('.page-button');
+    buttons[0].classList.add('selected');
+}
+
+function ajaxBoard(page) {
+
+    let searchWord = document.querySelector('.search-word').value;
+    let category = document.querySelector('.category-group .selected').value;
+    console.log('searchWord : ',searchWord,', category : ',category,', page : ',page);
 
     let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/qna.action',category);
+    makeRequest('/finalproject4/faq.action', searchWord, category, page); // ####
+
+    function makeRequest(url, searchWord, category, page) {
+
+        httpRequest.onreadystatechange = getResponse;
+        httpRequest.open('GET', `${url}?searchWord=${searchWord}&category=${category}&page=${page}`);
+        httpRequest.send();
+    }
+
+    function getResponse() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+
+                console.log(response.computedString); //ajax 성공시 코드
+
+                let html = '';
+                let recodes = 0;
+
+                let notice = document.querySelector('.no-result-notice');
+                let thead = document.querySelector('.table .thead');
+                let tbody = document.querySelector('.table .tbody');
+                let pageGroup = document.querySelector('.page-group');
+
+                if(response.length === 0){ // 받은 데이터가 없을 때
+
+                    notice.classList.replace('hide','show');
+                    thead.classList.replace('show','hide');
+                    tbody.innerHTML = '';
+                    pageGroup.style.visibility = 'hidden';
+
+                }
+                else { // 데이터가 있으면
+
+                    notice.classList.replace('show', 'hide');
+                    thead.classList.replace('hide', 'show');
+                    pageGroup.style.visibility = 'visible';
+
+                    response.forEach((item) => {
+                        html += getBoardTemplate(item.category, item.subject, item.content);
+                        recodes = item.totalCount;
+                    });
+
+                    setPageList(pageGroup, page, recodes); // 페이징 처리
+                    tbody.innerHTML = html;
+                }
+
+            } else {
+                alert('There was a problem with the request.');
+            }
+        }
+    }
+}
+
+function setPageList(pageGroup, page, recodes) { // 현재 누른 페이지, 총 레코드 수
+
+    let totalPage = Math.ceil(Number(recodes)/5);
+
+    let html = '';
+    for(let i=0; i<totalPage; i++){
+
+        let count = i+1;
+        if(Number(page) === count){ // 선택된 페이지에 selected class 추가
+            html += `<button type="button" class="page-button selected" aria-label="Go to page${count}">${count}</button>`
+        }
+        else{
+            html += `<button type="button" class="page-button" aria-label="Go to page${count}">${count}</button>`
+        }
+    }
+    pageGroup.innerHTML = html;
+
+}
+
+
+function ajaxProduct(userid) {
+
+    //let httpRequest = new XMLHttpRequest();
+    //makeRequest('/finalproject4/qna.action',category);
 
     function makeRequest(url, category) {
 
         httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('GET', url);
+        httpRequest.open('POST', url);
         httpRequest.send('userid=' + encodeURIComponent(userid));
     }
 
@@ -116,7 +214,7 @@ function ajaxProduct(userid) {
                 let html = '';
                 response.forEach((item) => {
 
-                        html += `<option value="">${item}</option>`;
+                    html += `<option value="">${item}</option>`;
                 });
 
                 selectElement.insertAdjacentElement('beforeend', html);
@@ -145,49 +243,6 @@ function getBoardTemplate(category, title, content) {
                 </div>`;
 
     return template;
-}
-
-function ajaxBoard(category) {
-	
-    let searchWord = document.querySelector('.search-word').value;
-    
-    let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/faq.action',category);
-
-    function makeRequest(url, category) {
-
-    	console.log(url + ":url");
-    	console.log(category + ":category")
-        httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('POST', url);
-        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        httpRequest.send('category=' + encodeURIComponent(category)+ '&searchWord=' + encodeURIComponent(searchWord));
-        
-    }
-
-    function getResponse() {
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-                let response = JSON.parse(httpRequest.responseText);
-              //  alert(response.computedString);
-
-                //ajax 성공시 코드
-
-                let html = '';
-                response.forEach((item) => {
-
-                    html += getBoardTemplate(item.category, item.subject, item.content);
-                });
-
-                let tbody = document.querySelector('.qna .table .tbody');
-                tbody.innerHTML = html;
-
-
-            } else {
-                alert('There was a problem with the request.');
-            }
-        }
-    }
 }
 
 function validateForm() {

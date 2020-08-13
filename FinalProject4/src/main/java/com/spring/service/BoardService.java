@@ -53,5 +53,13 @@ public class BoardService implements InterBoardService {
 		NoticeVO notivo = dao.getView(seq);
 		return notivo;
 	}
+
+
+	// 총 공지글 개수
+	@Override
+	public int getTotalFaqCount(HashMap<String, String> paraMap) {
+		int n = dao.getTotalFaqCount(paraMap);
+		return n;
+	}
 	
 }

@@ -13,4 +13,6 @@ public interface InterBoardDAO {
 
 	NoticeVO getView(String seq); // 공지사항 글 1개 보기 페이지로 이동(조회수 증가 없음)
 
+	int getTotalFaqCount(HashMap<String, String> paraMap); // 총 faq 개수
+
 }

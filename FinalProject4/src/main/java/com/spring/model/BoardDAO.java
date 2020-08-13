@@ -44,6 +44,14 @@ public class BoardDAO implements InterBoardDAO {
 		NoticeVO notivo = sqlsession.selectOne("finalproject4.getView", seq);
 		return notivo;
 	}
+
+	
+	// 총 faq 개수
+	@Override
+	public int getTotalFaqCount(HashMap<String, String> paraMap) {
+		int n = sqlsession.selectOne("finalproject4.getTotalFaqCount", paraMap);
+		return n;
+	}
 	
 	
 }
