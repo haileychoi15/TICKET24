@@ -16,6 +16,16 @@ from dba_users;
 
 -- 계정 삭제 drop user finalproject cascade;
 
+alter user finalorauser4 indentified by eclass;
+
+CREATE USER finalorauser4 IDENTIFIED BY eclass 
+DEFAULT TABLESPACE USERS;
+--계정명, 암호, 저장공간 부여
+GRANT CONNECT, RESOURCE TO finalorauser4;
+--ROLE부여
+GRANT UNLIMITED TABLESPACE TO finalorauser4;
+--TABLESPACE 부여
+
 grant create session to finalproject4;
 grant create table to finalproject4;
 --------------------------------------------------------------------------------------------------------------------------------
@@ -235,38 +245,20 @@ nominvalue
 nocycle
 nocache;
 
+alter table prod
+add status number(1) default 1;
 
-select *
-from prod;
+alter table prod
+add map_id number(10) default '1';
 
-select prod_id, fk_category_id, fk_category_detail_id, prod_title,prod_img, prod_detail_img,info_open_date,
-info_close_date,info_rev_status,info_grade,info_run_time,info_qnty
-from yes_show
-where prod_id = '1';
-
+update prod set prod_img = replace(prod_img,'FinalProject4/src/main/webapp/resources/images/','');
+update prod set prod_detail_img = replace(prod_detail_img,'FinalProject4/src/main/webapp/resources/images/','');
 
 select prod_id, C.category_name, fk_category_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty
 from prod P join  yes_show_category C
 on P. fk_category_id = C.category_id;
 -- 공연 테이블 임시
-
-
-select prod_id, C.category_name, fk_category_id, prod_title, prod_img, info_open_date,
-info_close_date, info_rev_status, info_run_time,info_qnty
-
-,date_start             date             -- 공연시작날짜
-,date_end               date             -- 공연종료날짜
-,info_open_date         date             -- 티켓오픈일시
-,info_close_date        date             -- 티켓마감일시
-,info_rev_status        number           -- 예매가능상태
-,info_run_time          varchar2(10)     -- 관람시간
-,info_qnty              number default 0 -- 판매량
-
-from prod P join  yes_show_category C
-on P. fk_category_id = C.category_id
--- 공연메인페이지에서 가져올 정보
-
 
 insert into prod(prod_id, fk_category_id, fk_category_detail_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)

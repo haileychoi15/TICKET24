@@ -129,7 +129,7 @@ public class MemberDAO implements InterMemberDAO {
 	// 회원 탈퇴
 	@Override
 	public int infoDelete(HashMap<String, String> paraMap) {
-		int n = sqlsession.delete("finalproject4.infoDelete", paraMap);
+		int n = sqlsession.update("finalproject4.infoDelete", paraMap);
 		return n;
 	}
 	

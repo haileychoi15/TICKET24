@@ -1,8 +1,3 @@
-.list-group{
-    display: flex;
-    justify-content: space-between;
-}
-
 /* Reset CSS */
 *{
     box-sizing: border-box;
@@ -100,7 +95,7 @@ p{
     justify-content: space-around;
     align-items: center;
     order: 3;
-    padding: 0 10px;
+    padding: 0 20px;
     margin-bottom: 20px;
 }
 
