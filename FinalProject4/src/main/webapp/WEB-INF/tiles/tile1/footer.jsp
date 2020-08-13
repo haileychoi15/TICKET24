@@ -59,7 +59,7 @@
                     이용하실 수 있습니다.
                 </p>
                 <button type="button" class="return-top-button" aria-label="Back to top">
-                    <img src="../images/arrow-icon.png" alt="">
+                    <img src="resources/images/arrow-icon.png" alt="">
                 </button>
             </div>
         </div>

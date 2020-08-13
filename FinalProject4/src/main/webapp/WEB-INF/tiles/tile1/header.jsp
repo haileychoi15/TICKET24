@@ -53,7 +53,8 @@
             <c:if test="${param.category != 2}">
                 <li class="header-category-item">
             </c:if>
-                <a href="?category=2" class="category-link">뮤지컬</a>
+                <a href="?category=2
+                " class="category-link">뮤지컬</a>
                 <ul class="header-sub-category list-group">
                     <li class="header-sub-category-item">
                         <a href="#">전체보기</a>

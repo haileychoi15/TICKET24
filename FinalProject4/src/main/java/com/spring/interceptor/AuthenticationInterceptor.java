@@ -29,6 +29,30 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         
     	Cookie yes24Cookie = WebUtils.getCookie(request, "yes24Cookie");
     	
+    	String requestUrl = request.getRequestURI().toString();
+    	
+    	//System.out.println("requ : " + requestUrl);
+    	
+    	if(requestUrl.contains("/yes24.action")) {
+    		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+    		
+    		if(loginCookie != null) {
+        		String sessionId = loginCookie.getValue();
+        		
+        		MemberVO mvo = service.checkUserWithSessionKey(sessionId);
+
+        		if(mvo != null) {
+        			session.setAttribute("loginuser", mvo);
+        			return true;
+        		}
+    		}
+    		else {
+    			return true;
+    		}
+    		
+    	}
+    	
+    	
     	if(yes24Cookie == null) {
         	
     		yes24Cookie = new Cookie("yes24Cookie", session.getId());
@@ -49,7 +73,6 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
                 // 따라서true로하면 컨트롤러 uri로 가게 됨.
                 return true;
         	}
-        	// yes24Cookie != null && 
         	if(yes24Cookie != null &&  loginCookie != null) {
         		String sessionId = loginCookie.getValue();
         		
@@ -65,8 +88,10 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         	}
         	
             // 로그인이 안되어 있는 상태임으로 로그인 폼으로 다시 돌려보냄(redirect)
-            response.sendRedirect("/finalproject4/login.action");
-            return false; // 더이상 컨트롤러 요청으로 가지 않도록false로 반환함
+            //response.sendRedirect("/finalproject4/login.action");
+            //return false; // 더이상 컨트롤러 요청으로 가지 않도록false로 반환함
+        	
+        	return true;
         }
          	
 
