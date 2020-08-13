@@ -61,5 +61,13 @@ public class BoardService implements InterBoardService {
 		int n = dao.getTotalFaqCount(paraMap);
 		return n;
 	}
+
+	
+	// Qna 문의 등록하기
+	@Override
+	public int qnaAdd(HashMap<String, String> paraMap) {
+		int n = dao.qnaAdd(paraMap);
+		return n;
+	}
 	
 }

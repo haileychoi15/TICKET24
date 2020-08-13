@@ -68,8 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
     qnaButton.addEventListener('click',(event) => {
 
         modal.style.display = 'flex';
-        let userid = modal.querySelector('.modal-form .userid');
-        console.log('userid',userid);
+        let userid = modal.querySelector('.modal-form #userid').value;
         ajaxProduct(userid);
     });
 
@@ -189,36 +188,36 @@ function setPageList(pageGroup, page, recodes) { // 현재 누른 페이지, 총
 
 }
 
-
 function ajaxProduct(userid) {
 
-    //let httpRequest = new XMLHttpRequest();
-    //makeRequest('/finalproject4/qna.action',category);
+    let httpRequest = new XMLHttpRequest();
+    makeRequest('/finalproject4/qnaAddClick.action', userid); // ####
 
-    function makeRequest(url, category) {
+    // /qnaAddClick.action
+    
+    function makeRequest(url, userid) {
 
         httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('POST', url);
-        httpRequest.send('userid=' + encodeURIComponent(userid));
+        httpRequest.open('GET', `${url}?fk_userid=${userid}`);
+        httpRequest.send();
     }
 
     function getResponse() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
-                let response = JSON.parse(httpRequest.responseText);
-                alert(response.computedString);
 
-                //ajax 성공시 코드
+                let response = httpRequest.responseText.split(',');
+                console.log(response, response.computedString, response.length); //ajax 성공시 코드
 
-                let selectElement = document.querySelector('.qna-product');
-                let html = '';
-                response.forEach((item) => {
+                let html = `<option value="0" class="qna-product-default selected">해당사항없음</option>`;
 
-                    html += `<option value="">${item}</option>`;
-                });
-
-                selectElement.insertAdjacentElement('beforeend', html);
-
+                if(response.length !== 0){
+                    response.forEach((item, index) => {
+                        html += `<option value="${item.index}">${item}</option>`;
+                        // html += `<option value="${index+1}">${index+1}</option>`;
+                    });
+                }
+                document.querySelector('.modal-form .qna-product').innerHTML = html;
 
             } else {
                 alert('There was a problem with the request.');

@@ -18,4 +18,6 @@ public interface InterBoardService {
 
 	int getTotalFaqCount(HashMap<String, String> paraMap); // 총 faq 개수
 
+	int qnaAdd(HashMap<String, String> paraMap); // Qna 문의 등록하기
+
 }

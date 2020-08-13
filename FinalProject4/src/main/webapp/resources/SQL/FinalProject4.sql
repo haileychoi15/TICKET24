@@ -586,10 +586,10 @@ create table yes_show_map
 ,map_lat        number          -- 위도
 ,map_name       varchar2(20)    -- 장소이름
 ,map_address    varchar2(30)    -- 장소주소
-,map_url        varchar2(50)    -- 홈페이지url
-,map_img        varchar2(100)    -- 장소이미지
+,map_url        varchar2(50)  default ' '  -- 홈페이지url
+--,map_img        varchar2(100)    -- 장소이미지
 ,constraint PK_map_id primary key(map_id)
-,constraint FK_prod_id_map foreign key(prod_id) references prod(prod_id) on delete cascade
+--,constraint FK_prod_id_map foreign key(prod_id) references prod(prod_id) on delete cascade
 );
 
 drop sequence seq_show_map;
@@ -604,8 +604,20 @@ nocache;
 select *
 from yes_show_map;
 
-insert into yes_show_map(map_id, prod_id, map_lng, map_lat, map_name, map_address, map_url, map_img)
-values(seq_show_map.nextval, 1, 37.56511284953554, 126.98187860455485, 'YES24 극장', '서울 종각역', 'www.naver.com', 'FinalProject4/src/main/webapp/resources/images/classic/classic_01m.jpg');
+insert into yes_show_map(map_id, prod_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 1, 37.56511284953554, 126.98187860455485, 'YES24 극장', '서울 종각역', 'www.naver.com');
+
+commit;
+
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.56511284953554, 126.98187860455485, 'YES24 극장', '서울 종각역 322-1', 'www.yes24.com');
+
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.56511284953554, 126.98187860455485, '신촌 암흑카페', '서울특별시 서대문구 창천동 62-1');
+
+
+
+commit;
 
 -- 공연 좌석 종류 테이블
 drop table yes_seat_type purge;
@@ -1389,12 +1401,10 @@ nominvalue
 nocycle
 nocache;
 
-insert into yes_qna_cate values(qnaCateSeq.nextval, '1', '주문');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '2', '배송');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '3', '취소/교환/환불');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '4', '회원');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '5', '공연/예매');
-insert into yes_qna_cate values(qnaCateSeq.nextval, '6', '기타');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '1', '예매/결제');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '2', '티켓수령');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '3', '취소/환불');
+insert into yes_qna_cate values(qnaCateSeq.nextval, '4', '기타');
 commit;
 
 select * 
@@ -1411,10 +1421,10 @@ create table yes_qna
 ,fk_userid      varchar2(20)          not null   -- 사용자ID
 ,name           Nvarchar2(20)         not null   -- 글쓴이
 ,category       varchar2(20)          not null   -- 카테고리
---,fk_rev_id      number(10)
+,fk_rev_id      number(10)
 ,subject        Nvarchar2(200)        not null   -- 글제목
 ,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
-,pw             varchar2(20)          not null   -- 글암호
+,pw             varchar2(20)    default '1234'      not null   -- 글암호
 ,readCount      number default 0      not null   -- 글조회수
 ,regDate        date default sysdate  not null   -- 글쓴시간
 ,secret         number(1) default 0   not null   -- 비밀글여부  1:비밀글, 0:공개글
@@ -1441,6 +1451,8 @@ create table yes_qna
 );
 
 
+alter table yes_qna 
+modify pw default '1234';
 
 drop sequence qnaSeq;
 
@@ -2052,3 +2064,162 @@ DROP VIEW VIEW_REV_SHOWINFO;
 
 
 purge recyclebin;
+
+
+
+---------------prod 테이블에 map_id 컬럼 추가-------------
+ALTER TABLE prod ADD(map_id varchar2(100));
+
+commit;
+
+
+select * from prod;
+--------------------------------------------------
+update prod set map_id = '세종문화회관 M씨어터' where prod_id = 1;
+
+update prod set map_id = '광림아트센터 장천홀' where prod_id = 2;
+
+update prod set map_id = '예술의전당 콘서트홀' where prod_id = 3;
+
+update prod set map_id = '광림아트센터 장천홀' where prod_id = 4;
+
+update prod set map_id = '롯데 콘서트홀' where prod_id = 5;
+
+update prod set map_id = '세종문화회관 대극장' where prod_id = 6;
+
+update prod set map_id = '예술의전당 CJ토월극장' where prod_id = 7;
+
+update prod set map_id = '세종문화회관 M씨어터' where prod_id = 8;
+
+update prod set map_id = 'kt chamberhall' where prod_id = 9;
+
+update prod set map_id = '롯데 콘서트홀' where prod_id = 10;
+
+commit;
+
+
+update prod set map_id = '노들섬 라이브 하우스' where prod_id = 11;
+
+update prod set map_id = '노들섬 라이브 하우스' where prod_id = 12;
+
+update prod set map_id = '김화생활체육공원 특설무대' where prod_id = 13;
+
+update prod set map_id = '노들섬 라이브 하우스' where prod_id = 14;
+
+update prod set map_id = '부산 벡스코 제1전시장 1홀' where prod_id = 15;
+
+update prod set map_id = '세종문화회관 대극장' where prod_id = 16;
+
+update prod set map_id = '노들섬 라이브 하우스' where prod_id = 17;
+
+update prod set map_id = '세종문화회관 M씨어터' where prod_id = 18;
+
+update prod set map_id = '예술의전당 오페라극장' where prod_id = 19;
+
+update prod set map_id = '롯데 콘서트홀' where prod_id = 20;
+
+commit;
+
+
+update prod set map_id = '대학로 유니플렉스 2관' where prod_id = 21;
+
+update prod set map_id = '세종문화회관 S씨어터' where prod_id = 22;
+
+update prod set map_id = '대학로 유니플렉스 2관' where prod_id = 23;
+
+update prod set map_id = '광림아트센터 BBCH홀' where prod_id = 24;
+
+update prod set map_id = '샤롯데 씨어터' where prod_id = 25;
+
+update prod set map_id = '블루스퀘어 인터파크홀' where prod_id = 26;
+
+update prod set map_id = '예스24스테이지 1관' where prod_id = 27;
+
+update prod set map_id = '동국대학교 이해랑 예술극장' where prod_id = 28;
+
+update prod set map_id = '대학로 드림아트센터 2관' where prod_id = 29;
+
+update prod set map_id = '부산 소향씨어터 신한카드홀' where prod_id = 30;
+
+commit;
+
+
+
+update prod set map_id = '예스24스테이지 3관' where prod_id = 31;
+
+update prod set map_id = '밀양아리랑아트센터 대극장' where prod_id = 32;
+
+update prod set map_id = 'BNK부산은행 조은극장 1관' where prod_id = 33;
+
+update prod set map_id = '예술의전당 CJ 토월극장' where prod_id = 34;
+
+update prod set map_id = '세종시문화예술회관' where prod_id = 35;
+
+update prod set map_id = '구미 소극장[공터_다]' where prod_id = 36;
+
+update prod set map_id = '대학로 나온씨어터' where prod_id = 37;
+
+update prod set map_id = 'BNK부산은행조은극장 2관' where prod_id = 38;
+
+update prod set map_id = '대구 여우별아트홀' where prod_id = 39;
+
+update prod set map_id = '대학로 해피씨어터' where prod_id = 40;
+
+commit;
+
+
+update prod set map_id = '완전한세상' where prod_id = 41;
+
+update prod set map_id = '밀양아리랑아트센터 대극장' where prod_id = 42;
+
+update prod set map_id = '암흑카페 1인 이용권' where prod_id = 43;
+
+update prod set map_id = '양양 쏠비치 아쿠아월드' where prod_id = 44;
+
+update prod set map_id = '예천 삼강문화단지 내' where prod_id = 45;
+
+update prod set map_id = '전주학옥마을 경기전' where prod_id = 46;
+
+update prod set map_id = '거제오션어드벤처' where prod_id = 47;
+
+update prod set map_id = '경복궁' where prod_id = 48;
+
+update prod set map_id = '경주대명아쿠아월드' where prod_id = 49;
+
+update prod set map_id = '-경복궁' where prod_id = 50;
+
+commit;
+
+
+update prod set map_id = '뮤지엄 다' where prod_id = 51;
+
+update prod set map_id = '밀양아리랑아트센터 대극장' where prod_id = 52;
+
+update prod set map_id = '신촌 암흑카페' where prod_id = 53;
+
+update prod set map_id = '양양 쏠비치 서핑스쿨 이용권' where prod_id = 54;
+
+update prod set map_id = '예천 삼강문화단지 내' where prod_id = 55;
+
+update prod set map_id = '전주한옥마을 경기전' where prod_id = 56;
+
+update prod set map_id = '거제오션어드벤처' where prod_id = 57;
+
+update prod set map_id = '경복궁' where prod_id = 58;
+
+update prod set map_id = '경주대명아쿠아월드' where prod_id = 59;
+
+update prod set map_id = '경복궁' where prod_id = 60;
+
+commit;
+
+-----------------------
+
+select *
+from yes_show_map;
+
+
+
+insert into yes_show_map(map_id, prod_id, map_lng, map_lat, map_name, map_address, map_url, map_img)
+values(seq_show_map.nextval, 1, 37.56511284953554, 126.98187860455485, 'YES24 극장', '서울 종각역', 'www.naver.com', 'FinalProject4/src/main/webapp/resources/images/classic/classic_01m.jpg');
+

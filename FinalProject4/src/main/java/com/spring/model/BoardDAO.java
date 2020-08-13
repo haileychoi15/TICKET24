@@ -52,6 +52,14 @@ public class BoardDAO implements InterBoardDAO {
 		int n = sqlsession.selectOne("finalproject4.getTotalFaqCount", paraMap);
 		return n;
 	}
+
+	
+	// Qna 문의 등록하기
+	@Override
+	public int qnaAdd(HashMap<String, String> paraMap) {
+		int n = sqlsession.insert("finalproject4.qnaAdd", paraMap);
+		return n;
+	}
 	
 	
 }

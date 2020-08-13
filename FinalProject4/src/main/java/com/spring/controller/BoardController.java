@@ -332,23 +332,59 @@ public class BoardController {
 		return mav;
 	}
 	
-	// qna 글쓰기 
+	
+	// qna 글쓰기
+	@ResponseBody
+	@RequestMapping(value = "/qnaAddClick.action", produces="text/plain;charset=UTF-8")
+	public String qnaAddClick(HttpServletRequest request) {
+		
+		return "안녕하세요, 안안안안".toString(); 
+		
+	//	mav.setViewName("notice/notice.tiles1");
+	//	return mav;
+	}
+		
+	
+	// Qna 문의 등록하기
 	@RequestMapping(value = "/qnaAdd.action", produces="text/plain;charset=UTF-8")
 	public ModelAndView qnaAdd(HttpServletRequest request, ModelAndView mav) {
 		
-		String qna_category = request.getParameter("qna-category");
-		String qna_product = request.getParameter("qna-product");
-		String qna_title = request.getParameter("qna-title");
-		String qna_content = request.getParameter("qna-content");
-		
-		System.out.println("qna_category : "+qna_category);
-		System.out.println("qna_product : "+qna_product);
-		System.out.println("qna_title : "+qna_title);
-		System.out.println("qna_content : "+qna_content);
+		String category = request.getParameter("qna-category");
+		String product = request.getParameter("qna-product");
+		String subject = request.getParameter("qna-title");
+		String content = request.getParameter("qna-content");
+		String fk_userid = request.getParameter("fk_userid");
+		String name = request.getParameter("name");
+		String fk_seq = request.getParameter("fk_seq");
 		
 		
-		mav.setViewName("notice/notice.tiles1");
-		return mav;
+		System.out.println("category : "+category);
+		System.out.println("product : "+product);
+		System.out.println("subject : "+subject);
+		System.out.println("content : "+content);
+		System.out.println("fk_userid : "+fk_userid);
+		System.out.println("name : "+name);
+		System.out.println("fk_seq : "+fk_seq);
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("category", category);
+		paraMap.put("product", product);
+		paraMap.put("subject", subject);
+		paraMap.put("content", content);
+		paraMap.put("fk_userid", fk_userid);
+		paraMap.put("name", name);
+		paraMap.put("fk_seq", fk_seq);
+		
+		int n = service.qnaAdd(paraMap);
+		
+		String loc = "javascript:history.back()";
+
+		mav.addObject("loc", loc);
+
+		mav.setViewName("msg");
+		
+		return mav; 
+		
 	}
 	
 	

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <% String ctxPath = request.getContextPath(); %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,7 +106,12 @@
             <h1>1:1 문의쓰기</h1>
         </header>
         <div class="modal-content">
-            <form class="modal-form" action="<%=ctxPath %>/qnaAdd.action" method="POST" onsubmit="return validateForm();">
+            <form class="modal-form" action="<%=ctxPath%>/qnaAdd.action" method="POST" onsubmit="return validateForm();"> <%--####--%>
+                <c:set var="userid" value="${sessionScope.loginuser.userid}" />
+                <c:set var="name" value="${sessionScope.loginuser.name}" />
+                <input name="name" type="hidden" value="${name}"/>
+                <input name="fk_userid" id="userid" type="hidden" value="${userid}"/>
+                <input name="fk_seq" type="hidden" value="0"/>
                 <div class="modal-table">
                     <div class="row sort">
                         <div class="table-title">구분</div>
@@ -126,7 +131,7 @@
                     <div class="row">
                         <div class="table-title">공연</div>
                         <div class="table-content">
-                            <select name="qna-product">
+                            <select name="qna-product" class="qna-product">
                                 <option value="0" class="qna-product-default" selected>해당사항 없음</option>
                                 <option value="">오페라의 유령</option>
                                 <option value="">엄마를 부탁해</option>
@@ -135,11 +140,11 @@
                     </div>
                     <div class="row">
                         <div class="table-title">성명</div>
-                        <div class="table-content">최유영</div>
+                        <div class="table-content">${name}</div>
                     </div>
                     <div class="row">
-                        <div class="table-title userid">아이디</div>
-                        <div class="table-content">imdud0612</div>
+                        <div class="table-title">아이디</div>
+                        <div class="table-content">${userid}</div>
                     </div>
                     <div class="row title">
                         <div class="table-title">제목</div>
@@ -159,6 +164,6 @@
         </div>
     </div>
 </section>
-<script src="resources/js/qna.js"></script> <%-- —###— --%>
+<script src="resources/js/qna.js"></script> <%--###--%>
 </body>
 </html>
