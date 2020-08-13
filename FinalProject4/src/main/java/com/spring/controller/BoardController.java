@@ -211,7 +211,7 @@ public class BoardController {
 	//	session.setAttribute("gobackURL", gobackURL);
 
 		request.setAttribute("totalPage", totalPage);
-		System.out.println(totalPage +":totalPage");
+	//	System.out.println(totalPage +":totalPage");
 		
 		JSONArray jsonArr = new JSONArray();
 

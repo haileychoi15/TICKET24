@@ -71,6 +71,125 @@ function setFirstPage() {
     buttons[0].classList.add('selected');
 }
 
+function ajaxBoard(page) {
+
+    let category = document.querySelector('.category-group .selected').value;
+    let searchWord = document.querySelector('.search-word').value.trim();
+    if(searchWord === null) {
+        searchWord = '';
+    }
+    console.log("searchWord : ", searchWord, ", category : ", category ,", page : ", page); //확인용
+
+    let httpRequest = new XMLHttpRequest();
+    makeRequest('/finalproject4/notice.action', searchWord, category, page); // ###
+
+    function makeRequest(url, searchWord, category, page) {
+
+        httpRequest.onreadystatechange = getResponse;
+        httpRequest.open('GET', `${url}?searchWord=${searchWord}&category=${category}&page=${page}`);
+        httpRequest.send();
+    }
+
+    function getResponse() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+
+                console.log(response.computedString); //ajax 성공시 확인용
+
+                let html = '';
+                let recodes = 0;
+
+                let notice = document.querySelector('.no-result-notice');
+                let thead = document.querySelector('.table .thead');
+                let tbody = document.querySelector('.table .tbody');
+                let pageGroup = document.querySelector('.page-group');
+
+                if(response.length === 0){ // 받은 데이터가 없을 때
+
+                    notice.classList.replace('hide','show');
+                    thead.classList.replace('show','hide');
+                    tbody.innerHTML = '';
+                    pageGroup.style.visibility = 'hidden';
+
+                }
+                else{ // 데이터가 있으면
+
+                    notice.classList.replace('show','hide');
+                    thead.classList.replace('hide','show');
+                    pageGroup.style.visibility = 'visible';
+
+                    response.forEach((item) => {
+
+                        if(item.fileName === undefined) {
+                            item.fileName = '';
+                        }
+                        if(item.ticketopenday === undefined) {
+                            item.ticketopenday = '해당없음';
+                        }
+
+                        html += getBoardTemplate(item.notice_id, item.category, item.subject, item.ticketopenday, item.readCount ,item.fileName);
+                        recodes = item.totalCount;
+                    });
+
+                    setPageList(pageGroup, page, recodes); // 페이징 처리
+                    tbody.innerHTML = html;
+                }
+            } else {
+                alert('There was a problem with the request.');
+            }
+        }
+    }
+}
+
+function setPageList(pageGroup, page, recodes) { // 현재 누른 페이지, 총 레코드 수
+
+    let startPage = page-(page-1) % 10;
+    let lastPage = Math.ceil(Number(recodes)/10);
+
+    let prevGroup = pageGroup.querySelector('.prev-group');
+    let pageList = pageGroup.querySelector('.page-list');
+    let nextGroup = pageGroup.querySelector('.next-group');
+
+    let prevHtml = '';
+    let html = '';
+    let nextHtml = '';
+
+    if(startPage-1 >= 1){
+        let prevPage = startPage-1;
+        prevHtml += `<span role="button" onclick="ajaxBoard(${prevPage})">이전</span>`;
+    }
+    else{
+        prevHtml += `<span class="no-click">이전</span>`; // 앞으로 갈 페이지가 없을 때
+    }
+    prevGroup.innerHTML = prevHtml;
+
+    for(let i=0; i<10; i++){
+
+        let eachPage = startPage + i;
+        if(eachPage <= lastPage){
+
+            if(page == eachPage){ // 선택된 페이지에 selected class 추가
+                html += `<button type="button" class="page-button selected" aria-label="Go to page${eachPage}">${eachPage}</button>`
+            }
+            else{
+                html += `<button type="button" class="page-button" aria-label="Go to page${eachPage}">${eachPage}</button>`
+            }
+        }
+    }
+    pageList.innerHTML = html;
+
+    if(startPage+9 < lastPage){
+        let nextPage = startPage+10;
+        nextHtml += `<span role="button" onclick="ajaxBoard(${nextPage})">다음</span>`;
+    }
+    else{
+        nextHtml += `<span class="no-click">다음</span>`; // 뒤로 갈 페이지가 없을 때
+    }
+    nextGroup.innerHTML = nextHtml;
+
+}
+
 function getBoardTemplate(seq, category, title, date, view, file) {
 
     let template = `<div class="row">
@@ -94,140 +213,4 @@ function getBoardTemplate(seq, category, title, date, view, file) {
                 </div>`;
 
     return template;
-}
-
-function ajaxBoard(page) {
-
-    let category = document.querySelector('.category-group .selected').value;
-    let searchWord = document.querySelector('.search-word').value.trim();
-    if(searchWord === null) {
-        searchWord = '';
-    }
-    console.log("searchWord : ",searchWord, ", page : ",page, ", category : ",category); //확인용
-
-    let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/notice.action', searchWord, page, category); // ###
-
-    function makeRequest(url, searchWord, page, category) {
-
-        httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('GET', `${url}?searchWord=${searchWord}&page=${page}&category=${category}`);
-        httpRequest.send();
-    }
-
-    function getResponse() {
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-                let response = JSON.parse(httpRequest.responseText);
-
-                console.log(response.computedString);
-
-                //ajax 성공시 코드
-                let html = '';
-                let recodes = 0;
-
-                let notice = document.querySelector('.no-result-notice');
-                let thead = document.querySelector('.table .thead');
-                let tbody = document.querySelector('.table .tbody');
-                let prevGroup = document.querySelector('.prev-group');
-                let pageList = document.querySelector('.page-list');
-                let nextGroup = document.querySelector('.next-group');
-                
-                //notice.classList.add('hide');
-                
-                if(response.length === 0){ // 받은 데이터가 없을 때
-
-                    notice.classList.replace('hide','show');
-                    thead.classList.replace('show','hide');
-                    tbody.innerHTML = '';
-                    pageList.style.opacity = '0';
-                    prevGroup.style.opacity = '0';
-                    nextGroup.style.opacity = '0';
-                    
-                }
-                else{ // JSON 데이터가 있으면
-
-                    notice.classList.replace('show','hide');
-                    thead.classList.replace('hide','show');
-                    
-                    pageList.style.opacity = '100';
-                    prevGroup.style.opacity = '100';
-                    nextGroup.style.opacity = '100';
-
-                    response.forEach((item) => {
-
-                        if(item.fileName === undefined) {
-                            item.fileName = '';
-                        }
-                        if(item.ticketopenday === undefined) {
-                            item.ticketopenday = '해당없음';
-                        }
-
-                        html += getBoardTemplate(item.notice_id, item.category, item.subject, item.ticketopenday, item.readCount ,item.fileName);
-                        recodes = item.totalCount;
-                    });
-
-                    setPageList(page, recodes); // 페이징 처리
-
-                    let tbody = document.querySelector('.qna .table .tbody');
-                    tbody.innerHTML = html;
-                }
-
-            } else {
-                alert('There was a problem with the request.');
-            }
-        }
-    }
-}
-
-function setPageList(page, recodes) { // 현재 누른 페이지, 총 레코드 수
-
-    let startPage = page-(page-1) % 10;
-    let lastPage = Math.ceil(Number(recodes)/10);
-
-    let prevGroup = document.querySelector('.prev-group');
-    let pageList = document.querySelector('.page-list');
-    let nextGroup = document.querySelector('.next-group');
-
-    let prevHtml = '';
-    if(startPage-1 >= 1){
-
-        let prevPage = startPage-1;
-        prevHtml += `<span role="button" onclick="ajaxBoard(${prevPage})">이전</span>`;
-    }
-    else{
-        prevHtml += `<span class="no-click">이전</span>`; // 앞으로 갈 페이지가 없을 때
-    }
-    prevGroup.innerHTML = prevHtml;
-
-
-    let html = '';
-    for(let i=0; i<10; i++){
-
-        let eachPage = startPage + i;
-
-        if(eachPage <= lastPage){
-
-            if(page == eachPage){ // 선택된 페이지에 selected class 추가
-                html += `<button type="button" class="page-button selected" aria-label="Go to page${eachPage}">${eachPage}</button>`
-            }
-            else{
-                html += `<button type="button" class="page-button" aria-label="Go to page${eachPage}">${eachPage}</button>`
-            }
-        }
-    }
-    pageList.innerHTML = html;
-
-
-    let nextHtml = '';
-    if(startPage+9 < lastPage){
-
-        let nextPage = startPage+10;
-        nextHtml += `<span role="button" onclick="ajaxBoard(${nextPage})">다음</span>`;
-    }
-    else{
-        nextHtml += `<span class="no-click">다음</span>`; // 뒤로 갈 페이지가 없을 때
-    }
-    nextGroup.innerHTML = nextHtml;
-
 }
