@@ -24,12 +24,10 @@ import com.spring.service.InterBoardService;
 @Controller
 public class BoardController {
 	
-	@Autowired	// Type 에 따라 알아서 스프링컨테이너가 Bean 을 주입해준다.
+	@Autowired
 	private InterBoardService service;
 
-
-	// ===== #150. 파일업로드 및 다운로드를 해주는 FileManager 클래스 의존객체 주입하기(DI: Dependency Injection) =====
-	@Autowired	// Type 에 따라 알아서 스프링컨테이너가 Bean 을 주입해준다.
+	@Autowired
 	private FileManager fileManager;
 	
 	// 고객센터 페이지로 이동
@@ -117,13 +115,11 @@ public class BoardController {
 		
 		List<NoticeVO> noticeList = null; 
 
-		// == #112. 페이징 처리를 한 검색어가 있는 전체 글목록 보여주기 == //
 		String searchWord = request.getParameter("searchWord");
 		String str_currentShowPageNo = request.getParameter("page");
 		String category = request.getParameter("category");
-	//	String str_currentShowPageNo = request.getParameter("currentShowPageNo");
-		System.out.println("page : "+str_currentShowPageNo);
-		System.out.println("searchWord : "+searchWord);
+	//	System.out.println("page : "+str_currentShowPageNo);
+	//	System.out.println("searchWord : "+searchWord);
 		
 		// 검색어가 없을 때는(null) 검색어를 ""로 변환
 		if(searchWord == null || searchWord.trim().isEmpty()) {
@@ -157,26 +153,16 @@ public class BoardController {
 		int startRno = 0;			// 시작 행번호
 		int endRno = 0;				// 끝 행번호
 
-
-		// 먼저 총 게시물 건수(totalCount) 를 구해와야 한다.
-		// 총 게시물 건수(totalCount)는 검색조건이 있을 때와 없을 때로 나뉘어진다.
 		// 총 게시물 건수(totalCount)
 		totalCount = service.getTotalNoticeCount(paraMap);
-		//	System.out.println("~~~~~ 확인용 totalCount : "+totalCount);
-
+		
 		totalPage = (int) Math.ceil((double)totalCount / sizePerPage);
-
 
 		// str_currentShowPageNo 가 없다면 초기화면을 보여준다.
 		if(str_currentShowPageNo == null) {
-			// 게시판에 보여지는 초기화면 
 			currentShowPageNo = 1;
-			// 즉, 초기화면인 /list.action 은 /list.action?currentShowPageNo=1 로 하겠다는 말이다.
 		}
-		// str_currentShowPageNo 가 있다면(페이지바에서 넘어온 값이 있다면), currentShowPageNo 는 str_currentShowPageNo 를 int 로 바꾼 값으로 한다.
 		else {
-			// list.action?searchType=subject&searchWord=&currentShowPageNo=abcdef 와 같이 
-			// currentShowPageNo 에 숫자형태가 아닌 문자열이 올 경우 1페이지를 보여준다.
 			try {
 				currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
 
@@ -189,23 +175,12 @@ public class BoardController {
 			}
 		}
 
-		/*
-		     currentShowPageNo      startRno     endRno
-		    --------------------------------------------
-		         1 page        ===>    1           10
-		         2 page        ===>    11          20
-		         3 page        ===>    21          30
-		         4 page        ===>    31          40
-		         ......                ...         ...
-		 */
-
 		startRno = ((currentShowPageNo - 1 ) * sizePerPage) + 1;
 		endRno = startRno + sizePerPage - 1; 
 
 
 		paraMap.put("startRno", String.valueOf(startRno));
 		paraMap.put("endRno", String.valueOf(endRno));
-
 
 		// == 페이징 처리한 글목록 보여주기(검색이 있든지, 검색이 없든지 모두 다 포함한 것) == //
 		noticeList = service.noticeListWithPaging(paraMap);
@@ -214,46 +189,20 @@ public class BoardController {
 	//		mav.addObject("paraMap", paraMap);
 	//	}
 
-
 		// === #119. 페이지바 만들기 === //
 		String pageBar = "<ul style='list-style: none;'>";
 
 		int blockSize = 10;
-		// blockSize 는 1개 블럭(토막)당 보여지는 페이지 번호의 개수이다.
-		/*
-				1  2  3  4  5  6  7  8  9  10   다음	-- 1개 블럭
-			이전   11 12 13 14 15 16 17 18 19 20   다음	-- 1개 블럭
-			이전   21 22 23
-		 */
 
 		int loop = 1;
-		/* 
-			loop 는 1 부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
-		 */
-
+		
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
-
-	//	String url = "list.action";
-		// list.action?searchType=subject&searchWord=정화&currentShowPageNo=1
-
 
 	//	mav.addObject("totalCount", totalCount);
 
-		// === #121. 페이징 처리되어진 후 특정글제목을 클릭하여 상세내용을 본 이후
-		// 			  사용자가 목록보기 버튼을 클릭했을때 돌아갈 페이지를 알려주기 위해
-		// 			  현재 페이지 주소를 뷰단으로 넘겨준다.
 	//	String gobackURL = MyUtil.getCurrentURL(request);
-
-		//	System.out.println("~~~~~ 확인용 gobackURL : " + gobackURL);
+	//	System.out.println("~~~~~ 확인용 gobackURL : " + gobackURL);
 	//	mav.addObject("gobackURL", gobackURL);
-
-
-		//////////////////////////////////////////////////////////////
-		//
-		// === #69. 글조회수(readCount)증가 (DML문 update)는
-		//          반드시 목록보기에 와서 해당 글제목을 클릭했을 경우에만 증가되고,
-		//          웹브라우저에서 새로고침(F5)을 했을 경우에는 증가가 되지 않도록 해야 한다.
-		//          이것을 하기 위해서는 session 을 사용하여 처리하면 된다.
 
 		HttpSession session = request.getSession();
 		session.setAttribute("readCountPermission", "yes"); // 조회수증가권한의 값을 yes 로 세션에 저장한다.
@@ -264,16 +213,8 @@ public class BoardController {
 		      반드시 웹브라우저에서 주소창에 "/list.action" 이라고 입력해야만 얻어올 수 있다. 
 		 */
 
-
 	//	session.setAttribute("gobackURL", gobackURL);
 
-		//////////////////////////////////////////////////////////////
-
-	//	mav.addObject("noticeList", noticeList);
-	//	mav.setViewName("notice/notice_exam.tiles1");
-
-	//	return mav;
-		
 		request.setAttribute("totalPage", totalPage);
 		System.out.println(totalPage +":totalPage");
 		
@@ -309,7 +250,6 @@ public class BoardController {
 		
 	//	String gobackURL = request.getParameter("gobackURL");
 	//	mav.addObject("gobackURL", gobackURL);
-		
 		
 		NoticeVO notivo = null;
 		
@@ -353,13 +293,12 @@ public class BoardController {
 		else {
 		//	String gobackURL = (String) session.getAttribute("gobackURL");
 		//	System.out.println("gobackURL : "+gobackURL);
-			//	mav.addObject("gobackURL", gobackURL);
+		//	mav.addObject("gobackURL", gobackURL);
 			mav.addObject("notivo", notivo); // 글 1개 boardvo 를 뷰단으로 넘겨준다. 
 			mav.setViewName("notice/noticeView.tiles1");
 		//	mav.addObject("gobackURL", gobackURL);
 		}
 
-	//	return "notice/noticeView.tiles1";
 		return mav;
 	}
 	
