@@ -20,7 +20,7 @@
 <header class="header">
     <nav class="header-menu">
         <h1>
-            <a href="#">
+            <a href="<%=ctxPath%>/yes24.action">
                 TICKET24
             </a>
         </h1>

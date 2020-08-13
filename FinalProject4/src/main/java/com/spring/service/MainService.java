@@ -17,6 +17,12 @@ public class MainService implements InterMainService {
 	private InterMainDAO dao;
 	
 	@Override
+	public List<ProdVO> getProdList(String category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public int getTotalProdCount(HashMap<String, String> paraMap) {
 		int n = dao.getTotalProdCount(paraMap);
 		return n;
@@ -27,6 +33,8 @@ public class MainService implements InterMainService {
 		List<ProdVO> prodList = dao.prodList(paraMap);
 		return prodList;
 	}
+
+	
 
 
 }
