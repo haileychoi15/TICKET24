@@ -38,7 +38,7 @@ create table yes_member
 (idx                number(10)     not null       -- 회원번호(시퀀스로 데이터가 들어온다)
 ,userid             varchar2(20)   not null       -- 회원아이디
 ,name               varchar2(30)   not null       -- 회원명
-,pwd                varchar2(200)  default '0'    -- 비밀번호 (SHA-256 암호화 대상)
+,pwd                varchar2(200)  not null       -- 비밀번호 (SHA-256 암호화 대상)
 ,email              varchar2(200)  not null       -- 이메일   (AES-256 암호화/복호화 대상)
 ,hp1                varchar2(3)                   -- 연락처
 ,hp2                varchar2(200)                 --         (AES-256 암호화/복호화 대상) 
@@ -58,11 +58,17 @@ create table yes_member
 ,clientip           varchar2(20)                  -- 클라이언트의 IP 주소
 ,kakaoStatus        varchar2(1) default '0'       -- 카카오 로그인 유무
 ,naverStatus        varchar2(1) default '0'       -- 네이버 로그인 유무
-,constraint   PK_final_member_test_idx primary key(idx)
-,constraint   UQ_final_member__test_userid unique(userid)
-,constraint   CK_final_member_test_gender check( gender in('1','2') ) 
-,constraint   CK_final_member_test_status check( status in('0','1') ) 
-,constraint   CK_final_member_test_kakao check( status in('0','1') ) 
+,isSMS              varchar2(1) default '0'       -- sms 수신 여부
+,isEMAIL            varchar2(1) default '0'       -- email 수신 여부
+,sessionKey         varchar2(100) default 'none'  -- 로그인 유지시 세션 저장
+,sessionLimit       timestamp
+,constraint   PK_yes_member_idx primary key(idx)
+,constraint   UQ_yes_member_userid unique(userid)
+,constraint   CK_yes_member_gender check( gender in('1','2') ) 
+,constraint   CK_yes_member_status check( status in('0','1') ) 
+,constraint   CK_yes_member_kakao check( status in('0','1') ) 
+,constraint   CK_yes_member_isSMS check( status in('0','1') )
+,constraint   CK_yes_member_isEMAIL check( status in('0','1') )
 );
 
 drop sequence seq_member;
@@ -1622,71 +1628,9 @@ select notice_id, fk_userid,no_cate_name,category,ticketopenday,subject,readCoun
         )
         where status = 1 and subject like '%%'
     )V
-where rno between 135 and 280;
+where rno between 1 and 10;
 
 
--- 공지 글 한개 보기(오늘작성한글은 시간만 표시되도록)
-select previousseq, previoussubject
-       , notice_id,fk_userid,category,ticketopenday,ticketopenday1, ticketopenday2, subject,readCount
-       , regDate
-       , fileName,orgFilename,fileSize
-	   , nextseq, nextsubject
-		from
-		    (
-                select lag(notice_id, 1) over(order by notice_id desc) as previousseq
-		       , lag(subject, 1) over(order by notice_id desc) as previoussubject
-		       
-		       , notice_id, fk_userid, category, subject, readCount
-               , nvl(ticketopenday, ' ') as ticketopenday
-               , nvl2(ticketopenday, substr(ticketopenday, 1, 13) , ' ') as ticketopenday1
-               , nvl2(ticketopenday, substr(ticketopenday, 15) , ' ') as ticketopenday2
-		       , decode(to_char(regDate, 'hh24:mi:ss'), to_char(sysdate, 'yyyy-mm-dd'), to_char(regDate, 'hh24:mi:ss'), to_char(regDate, 'yyyy-mm-dd') ) as regDate
-		       , status, fileName, orgFilename, fileSize
-		       
-		       , lead(notice_id, 1) over(order by notice_id desc) as nextseq
-		       , lead(subject, 1) over(order by notice_id desc) as nextsubject
-                from yes_notice
-                where status = 1
-		    ) V
-where notice_id = 1;
-
-
--- 공지 글 한개 보기
-select previousseq, previoussubject
-       , notice_id,fk_userid,category,ticketopenday, subject,readCount
-       , regDate
-       , fileName,orgFilename,fileSize
-	   , nextseq, nextsubject
-		from
-		    (
-               select lag(notice_id, 1) over(order by notice_id desc) as previousseq
-		       , lag(subject, 1) over(order by notice_id desc) as previoussubject
-		       
-		       , notice_id, fk_userid, category, subject, readCount
-               , nvl(ticketopenday, ' ') as ticketopenday
-		       , to_char(regDate, 'yyyy-mm-dd') as regDate
-		       , status, fileName, orgFilename, fileSize
-		       
-		       , lead(notice_id, 1) over(order by notice_id desc) as nextseq
-		       , lead(subject, 1) over(order by notice_id desc) as nextsubject
-                from yes_notice
-                where status = 1
-		    ) V
-where notice_id = 1;
-
-
-
-select decode(to_char(regDate, 'yyyy-mm-dd'), sysdate, 1
-                    ,2 )
-from yes_notice;
-
-select decode(to_char(regDate, 'yyyy-mm-dd'), to_char(to_date('2019-10-16'), 'yyyy-mm-dd'), to_char(regDate, 'hh24:mi:ss')
-                    ,to_char(regDate, 'yyyy-mm-dd') )
-from yes_notice;
-
-select decode(to_char(regDate, 'yyyy-mm-dd'), to_char(sysdate, 'yyyy-mm-dd'), to_char(regDate, 'hh24:mi:ss')
-                                                                            , to_char(regDate, 'yyyy-mm-dd') )
-from yes_notice;
 
 
 ----------------------------------- 공지 카테고리 테이블 -----------------------------------

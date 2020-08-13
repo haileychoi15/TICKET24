@@ -1,3 +1,63 @@
+.list-group{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Reset CSS */
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body{
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 16px;
+}
+
+/* Reset CSS */
+a{
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea{
+    border: none;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 16px;
+}
+
+button:focus,
+button:active,
+input:focus,
+input:active,
+textarea:focus,
+textarea:active{
+    outline: none;
+    box-shadow: none;
+}
+
+ul,
+ol,
+li{
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+p{
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+}
+
+.sr-only{
+    position: absolute;
+    opacity: 0%;
+    z-index: 100;
+}
+
 /* Header */
 .header{
     position: relative;
@@ -322,5 +382,4 @@
         left: auto;
         right: 0;
     }
-
 }

@@ -584,5 +584,4 @@ function changeCoupon() {
     totalPrice.innerText = resultPrice;
 }
 
-
 </script>
