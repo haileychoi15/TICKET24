@@ -44,10 +44,10 @@ function styleCategory() {
             list.forEach((item) => {
 
                 let category = item.innerText;
-                //let parent = item.closest('.header-category-item');
+                let parent = item.closest('.header-category-item');
 
                 if (category === selectedCategory) {
-                    //parent.classList.add('on');
+                    parent.classList.add('on');
 
                     let body = document.querySelector('body');
                     let width = Number(window.getComputedStyle(body).width.replace("px",""));
@@ -59,7 +59,7 @@ function styleCategory() {
                         headerMenu.style.paddingBottom = '100px';
                     }
                 } else {
-                    //parent.classList.remove('on');
+                    parent.classList.remove('on');
                 }
             });
         }

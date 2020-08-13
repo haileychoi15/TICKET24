@@ -6,7 +6,7 @@
 <%
 	String ctxPath = request.getContextPath();
 %>
-<link rel="stylesheet" href="resources/css/header.css">
+
 <script src="resources/js/header.js"></script>
 <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
 <script>
