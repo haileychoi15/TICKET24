@@ -14,7 +14,7 @@
     width: 90%;
     height: 100%;
     padding-top: 40px;
-    background-image: url("../images/notice2.png");
+    background-image: url("resources/images/notice2.png"); /*###*/
     background-repeat: no-repeat;
     background-size: contain;
     background-position : right;
@@ -106,6 +106,32 @@
     width: 100%;
     margin: 0 auto;
     font-size: 12px;
+}
+
+.table .no-result-notice{
+    width: 100%;
+    text-align: center;
+}
+
+.table .no-result-notice strong{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.table .no-result-notice.show{
+    display: block;
+}
+
+.table .no-result-notice.hide{
+    display: none;
+}
+
+.table .thead.show{
+    display: block;
+}
+
+.table .thead.hide{
+    display: none;
 }
 
 .table .tbody .row:hover{
@@ -218,6 +244,10 @@
     .table{
         width: 90%;
         font-size: 14px;
+    }
+
+    .table .no-result-notice strong{
+        font-size: 20px;
     }
 
     .table .row .table-category{

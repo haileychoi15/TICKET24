@@ -1,10 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
 
-	
-	
-	ajaxBoard(1);
-	
-	
+    ajaxBoard(1);
+
     // 검색 버튼 클릭 했을 때 이벤트
     let searchButton = document.querySelector('.search-button');
     searchButton.addEventListener('click',() => {
@@ -70,17 +67,18 @@ function removePageColor() {
 function setFirstPage() {
 
     removePageColor();
-    document.querySelector('.page-button:first-child').classList.add('selected');
+    let buttons = document.querySelectorAll('.page-button');
+    buttons[0].classList.add('selected');
 }
 
-function getBoardTemplate(id, category, title, date, view, file) {
+function getBoardTemplate(seq, category, title, date, view, file) {
 
     let template = `<div class="row">
                     <span class="table-category">
                         ${category}
                     </span>
                     <span class="table-title">
-                        <a href="/finalproject4/noticeView.action?seq=${id}">
+                        <a href="/finalproject4/noticeView.action?seq=${seq}">
                             ${title}
                         </a>
                     </span>
@@ -108,12 +106,12 @@ function ajaxBoard(page) {
     console.log("searchWord : ",searchWord, ", page : ",page, ", category : ",category); //확인용
 
     let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/notice.action', searchWord, page); // ###
+    makeRequest('/finalproject4/notice.action', searchWord, page, category); // ###
 
-    function makeRequest(url, searchWord, page) {
+    function makeRequest(url, searchWord, page, category) {
 
         httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('GET', `${url}?searchWord=${searchWord}&page=${page}`);
+        httpRequest.open('GET', `${url}?searchWord=${searchWord}&page=${page}&category=${category}`);
         httpRequest.send();
     }
 
@@ -127,24 +125,53 @@ function ajaxBoard(page) {
                 //ajax 성공시 코드
                 let html = '';
                 let recodes = 0;
-                response.forEach((item) => {
 
-                    if(item.fileName === undefined) {
-                        item.fileName = '';
-                    }
-                    if(item.ticketopenday === undefined) {
-                        item.ticketopenday = '해당없음';
-                    }
+                let notice = document.querySelector('.no-result-notice');
+                let thead = document.querySelector('.table .thead');
+                let tbody = document.querySelector('.table .tbody');
+                let prevGroup = document.querySelector('.prev-group');
+                let pageList = document.querySelector('.page-list');
+                let nextGroup = document.querySelector('.next-group');
+                
+                //notice.classList.add('hide');
+                
+                if(response.length === 0){ // 받은 데이터가 없을 때
 
-                    html += getBoardTemplate(item.notice_id, item.category, item.subject, item.ticketopenday, item.readCount ,item.fileName);
-                    recodes = item.totalCount;
-                });
+                    notice.classList.replace('hide','show');
+                    thead.classList.replace('show','hide');
+                    tbody.innerHTML = '';
+                    pageList.style.opacity = '0';
+                    prevGroup.style.opacity = '0';
+                    nextGroup.style.opacity = '0';
+                    
+                }
+                else{ // JSON 데이터가 있으면
 
-                setPageList(page, recodes); // 페이징 처리
+                    notice.classList.replace('show','hide');
+                    thead.classList.replace('hide','show');
+                    
+                    pageList.style.opacity = '100';
+                    prevGroup.style.opacity = '100';
+                    nextGroup.style.opacity = '100';
 
-                let tbody = document.querySelector('.qna .table .tbody');
-                tbody.innerHTML = html;
+                    response.forEach((item) => {
 
+                        if(item.fileName === undefined) {
+                            item.fileName = '';
+                        }
+                        if(item.ticketopenday === undefined) {
+                            item.ticketopenday = '해당없음';
+                        }
+
+                        html += getBoardTemplate(item.notice_id, item.category, item.subject, item.ticketopenday, item.readCount ,item.fileName);
+                        recodes = item.totalCount;
+                    });
+
+                    setPageList(page, recodes); // 페이징 처리
+
+                    let tbody = document.querySelector('.qna .table .tbody');
+                    tbody.innerHTML = html;
+                }
 
             } else {
                 alert('There was a problem with the request.');
