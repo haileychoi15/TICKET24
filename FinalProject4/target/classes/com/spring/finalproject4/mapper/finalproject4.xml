@@ -16,7 +16,7 @@
 	</select>
 	<update id="setLastLoginDate" parameterType="HashMap">
 		update yes_member set lastLoginDate = sysdate 
-		where userid = #{userid}
+		where status = 1 and userid = #{userid}
 	</update>
 
 
@@ -35,7 +35,7 @@
 	<select id="idDuplicateCheck" resultType="String" parameterType="String">
 		select userid 
 		from yes_member
-		where userid = #{userid}
+		where status = 1 and userid = #{userid}
 	</select>
 
 	<!-- 카카오 회원가입 -->
@@ -67,11 +67,11 @@
 	<select id="emailDuplicateCheck" resultType="String" parameterType="String">
 		select userid
 		from yes_member 
-		where (status = 1 and 
+		where ( status = 1 and
 		      email = #{email} and 
 		      kakaoStatus = '1')
 		      or
-		      (status = 1 and 
+		      ( status = 1 and
 		      email = #{email} and 
 		      naverStatus = '1')	
 	
@@ -81,14 +81,14 @@
 	<update id="kakaoStatus" parameterType="String">
 		update yes_member
 		set kakaoStatus = '1'
-		where email = #{email}
+		where status = 1 and email = #{email}
 	</update>
 
 	<!-- 네이버 상태 변경 -->
 	<update id="naverStatus" parameterType="String">
 		update yes_member
 		set naverStatus = '1'
-		where email = #{email}
+		where status = 1 and email = #{email}
 	</update>
 	
 	<!-- 네이버 회원가입 -->
@@ -128,7 +128,7 @@
     <update id="keepLogin" parameterType="HashMap">
         update yes_member 
         set sessionKey = #{sessionId}, sessionLimit = #{sessionLimit}
-        where userId = #{userid}
+        where status = 1 and userid = #{userid}
     </update>
      
     <!-- 유효기간이 남아 있으면서 해당 sessionId를 가지는 사용자 정보를 꺼내오는 부분 -->
@@ -137,10 +137,15 @@
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
         from yes_member
-        where sessionKey = #{sessionId} and sessionLimit > sysdate
+        where status = 1 and  sessionKey = #{sessionId} and sessionLimit > sysdate
     </select>
 
-
+	<!-- 회원 탈퇴 -->
+	<update id="infoDelete" parameterType="HashMap">
+		update yes_member
+		set status = 0
+		where idx = #{idx} and pwd = #{pwd} 
+	</update>
 	
 
 </mapper>

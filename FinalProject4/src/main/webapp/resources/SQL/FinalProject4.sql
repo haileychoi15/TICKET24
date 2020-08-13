@@ -64,7 +64,6 @@ create table yes_member
 ,sessionKey         varchar2(100) default 'none'  -- 로그인 유지시 세션 저장
 ,sessionLimit       timestamp
 ,constraint   PK_yes_member_idx primary key(idx)
-,constraint   UQ_yes_member_userid unique(userid)
 ,constraint   CK_yes_member_gender check( gender in('1','2') ) 
 ,constraint   CK_yes_member_status check( status in('0','1') ) 
 ,constraint   CK_yes_member_kakao check( status in('0','1') ) 

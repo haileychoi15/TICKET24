@@ -39,6 +39,15 @@
     		
     	}
     	
+    	function infoDelete(){
+    		
+    		var frm = document.modifyFrm;
+    		frm.method = "POST";
+			frm.action = "<%= ctxPath%>/infoDelete.action";
+			frm.submit();
+    		
+    	}
+    	
     </script>
     
 </head>
@@ -105,6 +114,7 @@
         <div id="btnArea">
             <button id="modify">수정</button>
             <button id="cancel">취소</button>
+            <button id="delete" onclick="infoDelete();">탈퇴</button>
         </div>
     </div>
 </body>
