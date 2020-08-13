@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notice page</title>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="resources/css/grid.min.css">
-    <link rel="stylesheet" href="resources/css/reset.css">
-    <link rel="stylesheet" href="resources/css/notice.css">
+    <link rel="stylesheet" href="./grid.min.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/notice.css">
     <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -16,12 +16,12 @@
         <h1>공지사항</h1>
         <p>
             TICKET24의 업데이트 정보(서비스, 약관), 점검 공지 등 <br />
-            다양한 소식들을 알려드립니다.${totalPage}
+            다양한 소식들을 알려드립니다.
         </p>
-        <form class="search-form">
+        <div class="search-form">
             <input name="search-word" type="text" class="search-word">
             <button type="button" class="search-button">검색</button>
-        </form>
+        </div>
     </div>
 </section>
 <section class="qna">
@@ -153,6 +153,6 @@
         </div>
     </div>
 </section>
-<script src="resources/js/notice.js"></script>
+<script src="../js/notice.js"></script>
 </body>
 </html>
