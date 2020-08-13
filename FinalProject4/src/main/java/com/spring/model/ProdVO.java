@@ -19,34 +19,36 @@ public class ProdVO {
    private String info_qnty;            // -- 판매량
    private String map_address;            // -- 공연장소주소
    private String map_name;            // -- 공연장소명
+   private String status;
    private String map_id;               // -- 공연장소코드
    
    
    public ProdVO() {}
    
    public ProdVO(String prod_id, String fk_category_id, String category_name, String fk_category_detail_id,
-         String prod_title, String prod_img, String prod_detail_img, String date_start, String date_end,
-         String info_open_date, String info_close_date, String info_rev_status, String info_grade,
-         String info_run_time, String info_qnty, String map_address, String map_name, String map_id) {
-      super();
-      this.prod_id = prod_id;
-      this.fk_category_id = fk_category_id;
-      this.category_name = category_name;
-      this.fk_category_detail_id = fk_category_detail_id;
-      this.prod_title = prod_title;
-      this.prod_img = prod_img;
-      this.prod_detail_img = prod_detail_img;
-      this.date_start = date_start;
-      this.date_end = date_end;
-      this.info_open_date = info_open_date;
-      this.info_close_date = info_close_date;
-      this.info_rev_status = info_rev_status;
-      this.info_grade = info_grade;
-      this.info_run_time = info_run_time;
-      this.info_qnty = info_qnty;
-      this.map_address = map_address;
-      this.map_name = map_name;
-      this.map_id = map_id;
+		String prod_title, String prod_img, String prod_detail_img, String date_start, String date_end,
+		String info_open_date, String info_close_date, String info_rev_status, String info_grade, String info_run_time,
+		String info_qnty, String map_address, String map_name, String status, String map_id) {
+	   super();
+	   this.prod_id = prod_id;
+	   this.fk_category_id = fk_category_id;
+	   this.category_name = category_name;
+	   this.fk_category_detail_id = fk_category_detail_id;
+	   this.prod_title = prod_title;
+	   this.prod_img = prod_img;
+	   this.prod_detail_img = prod_detail_img;
+	   this.date_start = date_start;
+	   this.date_end = date_end;
+	   this.info_open_date = info_open_date;
+	   this.info_close_date = info_close_date;
+	   this.info_rev_status = info_rev_status;
+	   this.info_grade = info_grade;
+	   this.info_run_time = info_run_time;
+	   this.info_qnty = info_qnty;
+	   this.map_address = map_address;
+	   this.map_name = map_name;
+	   this.status = status;
+	   this.map_id = map_id;
    }
 
    
@@ -185,16 +187,21 @@ public class ProdVO {
    public void setMap_name(String map_name) {
       this.map_name = map_name;
    }
-
-   public String getMap_id() {
-      return map_id;
-   }
-
-   public void setMap_id(String map_id) {
-      this.map_id = map_id;
-   }
    
-   
+   public String getStatus() {
+	return status;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
+	public String getMap_id() {
+      	return map_id;
+	}
+
+	public void setMap_id(String map_id) {
+		this.map_id = map_id;
+	}
    
 }

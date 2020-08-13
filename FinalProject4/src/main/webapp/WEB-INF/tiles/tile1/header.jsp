@@ -25,10 +25,10 @@
             </a>
         </h1>
         <ul class="header-category list-group">
-            <c:if test="${param.category == 1}">
+            <c:if test="${param.category == 1 || category == 1}">
                 <li class="header-category-item active">
             </c:if>
-            <c:if test="${param.category != 1}">
+            <c:if test="${param.category != 1 && category != 1}">
                 <li class="header-category-item">
             </c:if>
                 <a href="?category=1" class="category-link">콘서트</a>

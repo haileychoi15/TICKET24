@@ -26,29 +26,12 @@ public class MainController {
 	public ModelAndView index(HttpServletRequest request, ModelAndView mav) {
 
 		String category = request.getParameter("category");
+		if(category == null) {
+			category = "1";
+		}
 		List<ProdVO> prodList = service.getProdList(category);
 		
-		if(category == null) {
-			
-		}
-		else {
-			switch (category) {
-			case "1":
-				
-				break;
-			case "2":
-				break;
-			case "3":
-				break;
-			case "4":
-				break;
-			case "5":
-				break;
-			case "6":
-				break;
-			}
-		}
-		
+		mav.addObject("category", category);
 		mav.addObject("prodList", prodList);
 		mav.setViewName("main/main.tiles1");
 		return mav;

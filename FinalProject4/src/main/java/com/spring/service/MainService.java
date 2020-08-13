@@ -16,10 +16,11 @@ public class MainService implements InterMainService {
 	@Autowired
 	private InterMainDAO dao;
 	
+	// === 메인페이지 공연 정보들 === //
 	@Override
 	public List<ProdVO> getProdList(String category) {
-		// TODO Auto-generated method stub
-		return null;
+		List<ProdVO> getProdList = dao.getProdList(category);
+		return getProdList;
 	}
 	
 	@Override
@@ -27,7 +28,7 @@ public class MainService implements InterMainService {
 		int n = dao.getTotalProdCount(paraMap);
 		return n;
 	}
-
+	
 	@Override
 	public List<ProdVO> prodList(HashMap<String, String> paraMap) {
 		List<ProdVO> prodList = dao.prodList(paraMap);
