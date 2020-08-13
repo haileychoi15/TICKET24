@@ -40,7 +40,6 @@ public class BoardController {
 	// FAQ 
 	@ResponseBody
 	@RequestMapping(value = "/faq.action", produces="text/plain;charset=UTF-8")
-//	@RequestMapping(value = "/faq.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
 	public String qna(HttpServletRequest request) {
 		
 		String category = request.getParameter("category");
@@ -147,11 +146,11 @@ public class BoardController {
 
 
 		int totalCount = 0; 		// 총 게시물 건수(totalCount)
-		int sizePerPage = 10;		// 한 페이지당 보여줄 게시물 건수 (select 태그로 값을 선택할 수도 있지만, 이번에는 무조건 10개로 고정한다.)
-		int currentShowPageNo = 1;	// 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정한다. (아무것도 주지 않으면 1페이지로 고정이다.)
-		int totalPage = 0;			// 총 페이지수(웹브라우저 상에 보여줄 총 페이지 개수, 페이지바)
-		int startRno = 0;			// 시작 행번호
-		int endRno = 0;				// 끝 행번호
+		int sizePerPage = 10;		// 한 페이지당 보여줄 게시물 건수
+		int currentShowPageNo = 1;	// 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정한다.
+		int totalPage = 0;			
+		int startRno = 0;			
+		int endRno = 0;				
 
 		// 총 게시물 건수(totalCount)
 		totalCount = service.getTotalNoticeCount(paraMap);
@@ -182,14 +181,10 @@ public class BoardController {
 		paraMap.put("startRno", String.valueOf(startRno));
 		paraMap.put("endRno", String.valueOf(endRno));
 
-		// == 페이징 처리한 글목록 보여주기(검색이 있든지, 검색이 없든지 모두 다 포함한 것) == //
+		// == 공지사항목록 보여주기 == //
 		noticeList = service.noticeListWithPaging(paraMap);
-		
-	//	if(!"".equals(searchWord)) {
-	//		mav.addObject("paraMap", paraMap);
-	//	}
 
-		// === #119. 페이지바 만들기 === //
+		// === 페이지바 만들기 === //
 		String pageBar = "<ul style='list-style: none;'>";
 
 		int blockSize = 10;
@@ -258,22 +253,17 @@ public class BoardController {
 		/*
 		// 위의 글목록보기 #69. 에서 session.setAttribute("readCountPermission", "yes"); 해두었다.
 		if("yes".equals(session.getAttribute("readCountPermission"))) {
-			// 글목록보기를 클릭한 다음에 특정글을 조회해온 경우이다. 
-
 			notivo = service.getNoticeView(seq, userid); 
 			// 글 조회수 증가와 함께 글 1개를 조회를 해주는 것
 			// 서비스단에서는 글 내용을 select 하는 것과 조회수를 update 하는 것이 동시에 일어나야 한다.
 
 			session.removeAttribute("readCountPermission"); 
-			// 중요함!! session 에 저장된 readCountPermission 을 삭제한다.
+			// session 에 저장된 readCountPermission 을 삭제한다.
 		}
 		else {
 			// 웹브라우저에서 새로고침(F5) 을 클릭한 경우이다.
-			// (글목록보기를 클릭을 안하고 특정글을 조회해온 경우)
-
 			notivo = service.getNoticeViewWithNoAddCount(seq); 
 			// 글 조회수 증가는 없고 단순히 글 1개 조회만을 해주는 것이다. 
-			// 유저가 새로고침을 하는 경우에는 , DML 을 쏙 뺀 select 만 해주어야 한다. 
 		}
 		*/
 		
