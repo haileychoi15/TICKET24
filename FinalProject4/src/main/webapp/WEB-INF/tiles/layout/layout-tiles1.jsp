@@ -18,7 +18,6 @@
 
 <link rel="stylesheet" href="resources/css/header.css">
 
-
 <link rel="stylesheet" href="resources/css/main.css">
 <link rel="stylesheet" href="resources/css/category.css">
 

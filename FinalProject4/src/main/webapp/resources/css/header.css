@@ -234,13 +234,21 @@ p{
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    width: 30px;
-    height: 30px;
-    border: 2px solid #999;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
-    background-color: #999;
     overflow: hidden;
     flex-shrink: 0;
+}
+
+.header-menu .search-group .user-button span.no-user{
+    border: 2px solid #999;
+    background-color: #999;
+}
+
+.header-menu .search-group .user-button span.yes-user{
+    border: 2px solid #ec7d2c;
+    background-color: #ec7d2c;
 }
 
 .header-menu .search-group .user-button span::before{
@@ -248,6 +256,8 @@ p{
     font-family: "Font Awesome 5 Free";
     font-size: 1.5em;
     font-weight: 900;
+    position: relative;
+    top: 2px;
     color: #fff;
 }
 
