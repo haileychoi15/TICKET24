@@ -21,6 +21,34 @@ public class MainDAO implements InterMainDAO {
 		return getProdList;
 	}
 	
+	// == 메인페이지 what's Hot === //
+	@Override
+	public List<ProdVO> getHotProdList(String category) {
+		List<ProdVO> getHotProdList = sqlsession.selectList("finalproject4.getHotProdList", category);
+		return getHotProdList;
+	}
+	
+	// == 메인페이지 지역추천 == //
+	@Override
+	public List<ProdVO> getlocalRecProdList(String category) {
+		List<ProdVO> getlocalRecProdList = sqlsession.selectList("finalproject4.getlocalRecProdList", category);
+		return getlocalRecProdList;
+	}
+	
+	// == category 페이지 categoryName 가져오기 == //
+	@Override
+	public String getCategoryName(String category) {
+		String getCategoryName = sqlsession.selectOne("finalproject4.getCategoryName", category);
+		return getCategoryName;
+	}
+
+	// == category 페이지 detailCategoryName 가져오기 == //
+	@Override
+	public List<HashMap<String, String>> getdetailCategoryName(String category) {
+		List<HashMap<String, String>> getdetailCategoryName = sqlsession.selectList("finalproject4.getdetailCategoryName", category);
+		return getdetailCategoryName;
+	}
+
 	@Override
 	public int getTotalProdCount(HashMap<String, String> paraMap) {
 		int n = sqlsession.selectOne("board.getTotalProdCount", paraMap);

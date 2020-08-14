@@ -113,6 +113,10 @@ create table yes_show_category
 ,constraint PK_category_id primary key (category_id)
 );
 
+select category_name
+from yes_show_category
+where category_id = 1;
+
 drop sequence seq_show_category;
 create sequence seq_show_category
 start with 1
@@ -123,13 +127,13 @@ nocycle
 nocache;
 
 insert into yes_show_category(category_id, category_name)
-values(1,'클래식');
+values(1,'콘서트');
 insert into yes_show_category(category_id, category_name)
-values(2,'콘서트');
+values(2,'뮤지컬');
 insert into yes_show_category(category_id, category_name)
-values(3,'뮤지컬');
+values(3,'연극');
 insert into yes_show_category(category_id, category_name)
-values(4,'연극');
+values(4,'클래식');
 insert into yes_show_category(category_id, category_name)
 values(5,'전시');
 insert into yes_show_category(category_id, category_name)
@@ -258,9 +262,14 @@ from prod P join  yes_show_category C
 on P. fk_category_id = C.category_id;
 -- 공연 테이블 임시
 
-select *
+select * 
+from prod;
+
+select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
+     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
 from prod
-order by 1;
+where fk_category_id = 1
+order by info_qnty desc;
 
 select *
 from yes_show_category_detail;
@@ -628,6 +637,7 @@ create table yes_show_seat
 ,constraint PK_seat_id primary key(seat_id)
 ,constraint FK_seattype_id foreign key(seattype_id) references yes_seat_type(seattype_id) on delete cascade
 );
+
 
 drop sequence seq_show_seat;
 create sequence seq_show_seat

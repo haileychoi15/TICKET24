@@ -22,7 +22,6 @@ public class ProdVO {
    private String status;
    private String map_id;               // -- 공연장소코드
    
-   
    public ProdVO() {}
    
    public ProdVO(String prod_id, String fk_category_id, String category_name, String fk_category_detail_id,

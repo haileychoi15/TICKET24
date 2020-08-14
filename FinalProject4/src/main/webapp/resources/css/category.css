@@ -1,4 +1,42 @@
+.common-detail{
+    font-size: 13px;
+    color: #999;
+}
+
+.common-image{
+    margin-bottom: 20px;
+}
+
+.common-title{
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.common-content{
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.list-group{
+    display: flex;
+    justify-content: space-between;
+}
+
 /* Category */
+
+/* Category - Header */
+.category-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    margin: 16px 0 30px;
+    background-color: #ec7d2c;
+}
+
 .main-category,
 .sub-category{
     text-align: center;
@@ -6,104 +44,253 @@
 
 .main-category{
     margin: 20px 0;
+    font-size: 26px;
     font-weight: 500;
+    color: #fff;
 }
 
-.sub-category{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.sub-category .category-box-button{
+    position: relative;
+    width: 116px;
+    padding: 8px 12px;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0);
 }
 
-.sub-category > button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 20px;
-    background-color: #fff;
-    cursor: pointer;
+.sub-category .category-box-button::after{
+    position: relative;
+    content: "\f0dd";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    top: -3px;
+    color: #fff;
 }
 
-.sub-category .button-icon{
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-left: 5px;
-    background-image: url("../img/sub-category-button.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    border: 1px solid #000;
-    border-radius: 50%;
-}
-
-.sub-category > button .fas{
-    font-size: 0.9em;
+.sub-category .category-box-button.on::after{
+    content: "\f0de";
+    top: 3px;
 }
 
 .sub-category-box{
+    position: absolute;
+    top: 60px;
+    left: 0;
     display: none;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    width: 40%;
-    height: auto;
-    border: 1px solid #ec7d2c;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    font-size: 15px;
-    font-weight: 500;
-    box-shadow: 0 2px 4px 0 rgba(236, 125, 44, 0.8);
-}
-
-.sub-category-box-item{
-    padding: 5px 0;
-}
-
-.sub-category-box-item button{
+    justify-content: center;
+    width: 240px;
+    height: 180px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
     background-color: #fff;
-    cursor: pointer;
+    z-index: 100;
 }
 
-.sub-category-box-item.active button,
-.sub-category-box-item:hover button{
-    color: #ec7d2c;
+.sub-category-box .sub-category-box-item{
+    width: 100%;
+    padding-bottom: 0;
+    color: #000;
+    text-align: left;
 }
 
-.order-group{
+.sub-category-box .sub-category-box-item p{
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+    padding-left: 10%;
+    font-size: 14px;
+    line-height: 40px;
+}
+
+.sub-category-box .sub-category-box-item p:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.order{
+    margin-bottom: 30px;
+    overflow-x: scroll;
+}
+
+::-webkit-scrollbar {
+    display:none;
+}
+
+.order .order-group{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 100%;
+    min-width: 400px;
 }
 
-.order-group button{
-    padding: 2% 3%;
-    border: 1px solid rgb(176, 176, 176);
-    /*border-radius: 8px;*/
+.order .order-group button{
+    border: 1px solid rgb(216, 222, 226);
     border-radius: 20px;
-    color: #000;
-    font-size: 12px;
-    font-weight: 600;
+    padding: 7px 12px;
     background-color: #fff;
+    font-size: 15px;
     cursor: pointer;
 }
 
-.order-group .active{
-    border: 1px solid #ec7d2c;
+.order .order-group button:hover{
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
-.order-group button:hover{
-    border: 1px solid #ec7d2c;
-    box-shadow: 0 1px 2px 0 rgba(236, 125, 44, 0.8);
+.order .order-group button.selected{
+    border: 1px solid #000;
 }
 
 
+/* Product */
+.product{
+    position: relative;
+    text-align: center;
+}
 
+.main-title{
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+}
 
+.card-list{
+    margin-bottom: 20px;
+}
 
+.card{
+    max-width: 250px;
+    margin: 0 1px;
+}
+
+.card:first-child{
+    margin-right: 15px;
+}
+
+.card-desc{
+    padding: 0 10px;
+}
+
+.card-image{
+    position: relative;
+}
+
+.card-image img{
+    width: 100%;
+    height: auto;
+    transition: transform 250ms ease-in-out;
+}
+
+.card:hover .card-image img{
+    transform: scale(1.1);
+}
+
+.notice-sticker{
+    position: absolute;
+    bottom: -18px;
+    left: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 4px solid white;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 65px;
+    color: #fff;
+    background-color: #ec7d2c;
+}
+
+.product .card-title{
+    color: #888;
+}
+
+.product .card-content{
+    color: #000;
+}
 
 @media screen and (min-width: 768px){
 
+    .common-image{
+        margin-bottom: 25px;
+    }
+
+    .common-title{
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .common-content{
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    /* Category */
+    .category-header{
+        flex-direction: row;
+        justify-content: center;
+        padding: 50px 0;
+         margin: 116px 0 50px;
+    }
+
+    .main-category{
+        display: flex;
+        align-items: center;
+        margin: 0 20px 0 0;
+        font-size: 32px;
+        font-weight: 500;
+        text-align: right;
+    }
+
+    .main-category::after{
+        content: "";
+        font-family: "Font Awesome 5 Free";
+        font-size: 1em;
+        font-weight: 900;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        margin-left: 50px;
+        color: #fff;
+        background-image: url("../images/chevron.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position:center;
+    }
+
+    .sub-category{
+        margin: 0 0 0 30px;
+    }
+
+    .sub-category-box{
+        position: absolute;
+        top: 50px;
+        left: 0;
+    }
+
+    .order{
+        margin-bottom: 50px;
+    }
+
+    .order .order-group{
+        justify-content: center;
+    }
+
+    .order .order-group button{
+        margin: 0 10px;
+        font-size: 16px;
+    }
+
+    /* Product */
+    .card-list{
+        margin-bottom: 50px;
+    }
+
+    .card:first-child{
+        margin-right: 30px;
+    }
 }

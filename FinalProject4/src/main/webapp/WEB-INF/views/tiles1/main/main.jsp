@@ -18,44 +18,44 @@
             <li class="promotion-item">
                 <a href>
                     <div class="promotion-item-image">
-                        <img src="http://tkfile.yes24.com/Upload2/Display/202007/20200721/genre_big_gmf2020.jpg/dims/quality/70/" alt="그랜드민트 페스티벌 2020">
+                        <img src="resources/images/${prodList.get(0).prod_img}" alt="${prodList.get(0).prod_title}">
                     </div>
                     <div class="promotion-item-content">
-                        <h3>${prodList.get }</h3>
-                        <p>2020.10.24 ~ 2020.10.25 올림픽공원</p>
+                        <h3>${prodList.get(0).prod_title}</h3>
+                        <p>${prodList.get(0).date_start} ~ ${prodList.get(0).date_end} ${prodList.get(0).map_name}</p>
                     </div>
                 </a>
             </li>
             <li class="promotion-item">
                 <a href>
                     <div class="promotion-item-image">
-                        <img src="http://tkfile.yes24.com/Upload2/Display/202006/20200630/gmain_top_Werther.jpg/dims/quality/70/" alt="뮤지컬 &lt;베르테르&gt;">
+                        <img src="resources/images/${prodList.get(1).prod_img}" alt="${prodList.get(1).prod_title}">
                     </div>
                     <div class="promotion-item-content">
-                        <h3>뮤지컬 &lt;베르테르&gt;</h3>
-                        <p>2020.08.28 ~ 2020.11.01 광림아트센터 BBCH홀</p>
+                        <h3>${prodList.get(1).prod_title}</h3>
+                        <p>${prodList.get(1).date_start} ~ ${prodList.get(1).date_end} ${prodList.get(1).map_name}</p>
                     </div>
                 </a>
             </li>
             <li class="promotion-item">
                 <a href>
                     <div class="promotion-item-image">
-                        <img src="http://tkfile.yes24.com/Upload2/Display/201910/20191029/gmain_top_trot.jpg/dims/quality/70/" alt="내일은 미스트롯">
+                        <img src="resources/images/${prodList.get(2).prod_img}" alt="${prodList.get(2).prod_title}">
                     </div>
                     <div class="promotion-item-content">
-                        <h3>내일은 미스트롯</h3>
-                        <p>전국투어</p>
+                        <h3>${prodList.get(2).prod_title}</h3>
+                        <p>${prodList.get(2).date_start} ~ ${prodList.get(2).date_end} ${prodList.get(2).map_name}</p>
                     </div>
                 </a>
             </li>
             <li class="promotion-item">
                 <a href>
                     <div class="promotion-item-image">
-                        <img src="http://tkfile.yes24.com/Upload2/Display/202007/20200716/gmain_top_36995.jpg/dims/quality/70/" alt="뻔하지않은듯뻔한페스티벌">
+                        <img src="resources/images/${prodList.get(3).prod_img}" alt="${prodList.get(3).prod_title}">
                     </div>
                     <div class="promotion-item-content">
-                        <h3>뻔하지않은듯뻔한페스티벌</h3>
-                        <p>2020.08.22 연세대학교 노천극장</p>
+                        <h3>${prodList.get(3).prod_title}</h3>
+                        <p>${prodList.get(3).date_start} ~ ${prodList.get(3).date_end} ${prodList.get(3).map_name}</p>
                     </div>
                 </a>
             </li>
@@ -77,24 +77,24 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200722/20200722-37219_1.jpg/dims/quality/70/" alt="겨울방학 정규 4집 발매 기념 공연" />
+                                <img src="resources/images/${hotProdList.get(0).prod_img}" alt="${hotProdList.get(0).prod_title}" />
                             </div>
                             <div class="card-desc">
-                                <h3 class="card-title common-title">겨울방학 정규 4집 발매 기념 공연</h3>
-                                <strong class="card-content common-content">노들섬 라이브 하우스</strong>
+                                <h3 class="card-title common-title">${hotProdList.get(0).prod_title}</h3>
+                                <strong class="card-content common-content">${hotProdList.get(0).map_name}</strong>
                             </div>
                         </a>
                     </li>
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="http://tkfile.yes24.com/upload2/perfblog/202005/20200525/20200525-36897_1.jpg/dims/quality/70/" alt="서울 숲재즈 페스티벌 2020" />
+                                <img src="resources/images/${hotProdList.get(1).prod_img}" alt="${hotProdList.get(1).prod_title}" />
                                 <span class="sr-only">Discount rate</span>
                                 <strong class="notice-sticker">30%</strong>
                             </div>
                             <div class="card-desc">
-                                <h3 class="card-title common-title">서울 숲재즈 페스티벌 2020</h3>
-                                <strong class="card-content common-content">서울 숲 공원</strong>
+                                <h3 class="card-title common-title">${hotProdList.get(1).prod_title}</h3>
+                                <strong class="card-content common-content">${hotProdList.get(1).map_name}</strong>
                             </div>
                         </a>
                     </li>
@@ -105,22 +105,22 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200722/20200722-37219_1.jpg/dims/quality/70/" alt="" />
+                                 <img src="resources/images/${hotProdList.get(2).prod_img}" alt="${hotProdList.get(2).prod_title}" />
                             </div>
                             <div class="card-desc">
-                                <h3 class="card-title common-title">겨울방학 정규 4집 발매 기념 공연</h3>
-                                <strong class="card-content common-content">노들섬 라이브 하우스</strong>
+                                <h3 class="card-title common-title">${hotProdList.get(2).prod_title}</h3>
+                                <strong class="card-content common-content">${hotProdList.get(2).map_name}</strong>
                             </div>
                         </a>
                     </li>
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="http://tkfile.yes24.com/upload2/perfblog/202005/20200525/20200525-36897_1.jpg/dims/quality/70/" alt="" />
+                                <img src="resources/images/${hotProdList.get(3).prod_img}" alt="${hotProdList.get(3).prod_title}" />
                             </div>
                             <div class="card-desc">
-                                <h3 class="card-title common-title">서울 숲재즈 페스티벌 2020</h3>
-                                <strong class="card-content common-content">서울 숲 공원</strong>
+                                <h3 class="card-title common-title">${hotProdList.get(3).prod_title}</h3>
+                                <strong class="card-content common-content">${hotProdList.get(3).map_name}</strong>
                             </div>
                         </a>
                     </li>
@@ -133,22 +133,22 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200722/20200722-37219_1.jpg/dims/quality/70/" alt="" />
+                                <img src="resources/images/${hotProdList.get(4).prod_img}" alt="${hotProdList.get(4).prod_title}" />
                             </div>
-                            <h3 class="card-title common-title">겨울방학 정규 4집 발매 기념 공연</h3>
-                            <strong class="card-content common-content">노들섬 라이브 하우스</strong>
+                            <h3 class="card-title common-title">${hotProdList.get(4).prod_title}</h3>
+                            <strong class="card-content common-content">${hotProdList.get(4).map_name}</strong>
                         </a>
                     </li>
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="http://tkfile.yes24.com/upload2/perfblog/202005/20200525/20200525-36897_1.jpg/dims/quality/70/" alt="" />
+                                <img src="resources/images/${hotProdList.get(5).prod_img}" alt="${hotProdList.get(5).prod_title}" />
                                 <span class="sr-only">Discount rate</span>
                                 <strong class="notice-sticker">30%</strong>
                             </div>
                             <div class="card-desc">
-                                <h3 class="card-title common-title">서울 숲재즈 페스티벌 2020</h3>
-                                <strong class="card-content common-content">서울 숲 공원</strong>
+                                <h3 class="card-title common-title">${hotProdList.get(5).prod_title}</h3>
+                            <strong class="card-content common-content">${hotProdList.get(5).map_name}</strong>
                             </div>
                         </a>
                     </li>
@@ -159,22 +159,22 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200722/20200722-37219_1.jpg/dims/quality/70/" alt="" />
+                                <img src="resources/images/${hotProdList.get(6).prod_img}" alt="${hotProdList.get(6).prod_title}" />
                             </div>
                             <div class="card-desc">
-                                <h3 class="card-title common-title">겨울방학 정규 4집 발매 기념 공연</h3>
-                                <strong class="card-content common-content">노들섬 라이브 하우스</strong>
+                                <h3 class="card-title common-title">${hotProdList.get(6).prod_title}</h3>
+                            <strong class="card-content common-content">${hotProdList.get(6).map_name}</strong>
                             </div>
                         </a>
                     </li>
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="http://tkfile.yes24.com/upload2/perfblog/202005/20200525/20200525-36897_1.jpg/dims/quality/70/" alt="" />
+                            	<img src="resources/images/${hotProdList.get(7).prod_img}" alt="${hotProdList.get(7).prod_title}" />
                             </div>
                             <div class="card-desc">
-                                <h3 class="card-title common-title">서울 숲재즈 페스티벌 2020</h3>
-                                <strong class="card-content common-content">서울 숲 공원</strong>
+                               <h3 class="card-title common-title">${hotProdList.get(7).prod_title}</h3>
+                            <strong class="card-content common-content">${hotProdList.get(7).map_name}</strong>
                             </div>
                         </a>
                     </li>
@@ -229,12 +229,12 @@
                                 <dl>
                                     <dt class="ranking-item-ranking">1위</dt>
                                     <dd class="ranking-item-image hide">
-                                        <img src="http://tkfile.yes24.com/upload2/PerfBlog/202006/20200625/20200625-37085_1.jpg" alt="[부산]팬텀싱어">
+                                        <img src="resources/images/${hotProdList.get(0).prod_img}" alt="${hotProdList.get(0).prod_title}" />
                                     </dd>
                                     <dd class="ranking-item-content">
-                                        <strong class="ranking-item-title">[부산]팬텀싱어</strong>
-                                        <p class="common-detail hide">2020.08.07 ~ 2020.08.09</p>
-                                        <p class="common-detail hide">노들섬 라이브하우스</p>
+                                        <strong class="ranking-item-title">${hotProdList.get(0).prod_title}</strong>
+                                        <p class="common-detail hide">${prodList.get(0).date_start} ~ ${prodList.get(0).date_end}</p>
+                                        <p class="common-detail hide">${prodList.get(0).map_name}</p>
                                     </dd>
                                 </dl>
                             </a>
@@ -244,12 +244,12 @@
                                 <dl>
                                     <dt class="ranking-item-ranking">2위</dt>
                                     <dd class="ranking-item-image hide">
-                                        <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200722/20200722-37256_1.jpg" alt="2020 DMZPOP DRIVE IN CONCERT in CHEOLWON［무료공연]">
+                                        <img src="resources/images/${hotProdList.get(1).prod_img}" alt="${hotProdList.get(1).prod_title}" />
                                     </dd>
                                     <dd class="ranking-item-content">
-                                        <strong class="ranking-item-title">2020 DMZPOP DRIVE IN CONCERT in CHEOLWON［무료공연]</strong>
-                                        <p class="common-detail hide">2020.08.07 ~ 2020.08.09</p>
-                                        <p class="common-detail hide">노들섬 라이브하우스</p>
+                                        <strong class="ranking-item-title">${hotProdList.get(1).prod_title}</strong>
+                                        <p class="common-detail hide">${prodList.get(1).date_start} ~ ${prodList.get(1).date_end}</p>
+                                        <p class="common-detail hide">${prodList.get(1).map_name}</p>
                                     </dd>
                                 </dl>
                             </a>
@@ -259,12 +259,12 @@
                                 <dl>
                                     <dt class="ranking-item-ranking">3위</dt>
                                     <dd class="ranking-item-image hide">
-                                        <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200730/20200730-37311_11.jpg" alt="Someday Festival 2020 공식티켓">
+                                        <img src="resources/images/${hotProdList.get(2).prod_img}" alt="${hotProdList.get(2).prod_title}" />
                                     </dd>
                                     <dd class="ranking-item-content">
-                                        <strong class="ranking-item-title">Someday Festival 2020 공식티켓</strong>
-                                        <p class="common-detail hide">2020.09.05 ~ 2020.09.06</p>
-                                        <p class="common-detail hide">난지한강공원</p>
+                                        <strong class="ranking-item-title">${hotProdList.get(2).prod_title}</strong>
+                                        <p class="common-detail hide">${prodList.get(2).date_start} ~ ${prodList.get(2).date_end}</p>
+                                        <p class="common-detail hide">${prodList.get(2).map_name}</p>
                                     </dd>
                                 </dl>
                             </a>
@@ -272,14 +272,14 @@
                         <li  class="ranking-item">
                             <a href="#">
                                 <dl>
-                                    <dt class="ranking-item-ranking">4위</dt>
+                                	<dt class="ranking-item-ranking">4위</dt>
                                     <dd class="ranking-item-image hide">
-                                        <img src="http://tkfile.yes24.com/upload2/PerfBlog/202006/20200625/20200625-37085_1.jpg" alt="[부산]팬텀싱어">
+                                    	<img src="resources/images/${hotProdList.get(3).prod_img}" alt="${hotProdList.get(3).prod_title}" />
                                     </dd>
                                     <dd class="ranking-item-content">
-                                        <strong class="ranking-item-title">[부산]팬텀싱어</strong>
-                                        <p class="common-detail hide">2020.08.07 ~ 2020.08.09</p>
-                                        <p class="common-detail hide">노들섬 라이브하우스</p>
+                                        <strong class="ranking-item-title">${hotProdList.get(3).prod_title}</strong>
+                                        <p class="common-detail hide">${prodList.get(3).date_start} ~ ${prodList.get(3).date_end}</p>
+                                        <p class="common-detail hide">${prodList.get(3).map_name}</p>
                                     </dd>
                                 </dl>
                             </a>
@@ -289,12 +289,12 @@
                                 <dl>
                                     <dt class="ranking-item-ranking">5위</dt>
                                     <dd class="ranking-item-image hide">
-                                        <img src="http://tkfile.yes24.com/upload2/PerfBlog/202007/20200730/20200730-37311_11.jpg" alt="Someday Festival 2020 공식티켓">
+                                    	<img src="resources/images/${hotProdList.get(4).prod_img}" alt="${hotProdList.get(4).prod_title}" />
                                     </dd>
                                     <dd class="ranking-item-content">
-                                        <strong class="ranking-item-title">Someday Festival 2020 공식티켓</strong>
-                                        <p class="common-detail hide">2020.09.05 ~ 2020.09.06</p>
-                                        <p class="common-detail hide">난지한강공원</p>
+                                        <strong class="ranking-item-title">${hotProdList.get(4).prod_title}</strong>
+                                        <p class="common-detail hide">${prodList.get(4).date_start} ~ ${prodList.get(4).date_end}</p>
+                                        <p class="common-detail hide">${prodList.get(4).map_name}</p>
                                     </dd>
                                 </dl>
                             </a>
@@ -309,34 +309,34 @@
                         <li class="place-item image-transition">
                             <a href="">
                                 <div class="place-item-image">
-                                    <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200727/20200727-37268_12.jpg/dims/quality/70/" alt="2020 울산 서머 페스티벌">
+                                    <img src="resources/images/${localRecProdList.get(0).prod_img}" alt="${localRecProdList.get(0).prod_title}" />
                                     <strong class="place-sticker">울산</strong>
                                 </div>
-                                <strong class="place-item-title">2020 울산 서머 페스티벌</strong>
-                                <p class="common-detail">2020.08.07 ~ 2020.08.09</p>
-                                <p class="common-detail">범서생활체육공원</p>
+                                <strong class="place-item-title">${localRecProdList.get(0).prod_title}</strong>
+                                <p class="common-detail">${localRecProdList.get(0).date_start} ~ ${localRecProdList.get(0).date_end}</p>
+                                <p class="common-detail">${localRecProdList.get(0).map_name}</p>
                             </a>
                         </li>
                         <li class="place-item image-transition">
                             <a href="">
                                 <div class="place-item-image">
-                                    <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200727/20200727-37268_12.jpg/dims/quality/70/" alt="2020 울산 서머 페스티벌">
+                                    <img src="resources/images/${localRecProdList.get(1).prod_img}" alt="${localRecProdList.get(1).prod_title}" />
                                     <strong class="place-sticker">광주</strong>
                                 </div>
-                                <strong class="place-item-title">2020 울산 서머 페스티벌</strong>
-                                <p class="common-detail hide">2020.08.07 ~ 2020.08.09</p>
-                                <p class="common-detail">범서생활체육공원</p>
+                                <strong class="place-item-title">${localRecProdList.get(1).prod_title}</strong>
+                                <p class="common-detail">${localRecProdList.get(1).date_start} ~ ${localRecProdList.get(4).date_end}</p>
+                                <p class="common-detail">${localRecProdList.get(1).map_name}</p>
                             </a>
                         </li>
                         <li class="place-item image-transition">
                             <a href="">
                                 <div class="place-item-image">
-                                    <img src="http://tkfile.yes24.com/upload2/perfblog/202007/20200727/20200727-37268_12.jpg/dims/quality/70/" alt="2020 울산 서머 페스티벌">
+                                    <img src="resources/images/${localRecProdList.get(2).prod_img}" alt="${localRecProdList.get(2).prod_title}" />
                                     <strong class="place-sticker">부산</strong>
                                 </div>
-                                <strong class="place-item-title">2020 울산 서머 페스티벌</strong>
-                                <p class="common-detail hide">2020.08.07 ~ 2020.08.09</p>
-                                <p class="common-detail">범서생활체육공원</p>
+                                <strong class="place-item-title">${localRecProdList.get(2).prod_title}</strong>
+                                <p class="common-detail">${localRecProdList.get(2).date_start} ~ ${localRecProdList.get(2).date_end}</p>
+                                <p class="common-detail">${localRecProdList.get(2).map_name}</p>
                             </a>
                         </li>
                     </ul>

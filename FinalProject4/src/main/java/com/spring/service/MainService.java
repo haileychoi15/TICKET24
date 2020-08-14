@@ -23,6 +23,34 @@ public class MainService implements InterMainService {
 		return getProdList;
 	}
 	
+	// == 메인페이지 what's Hot === //
+	@Override
+	public List<ProdVO> getHotProdList(String category) {
+		List<ProdVO> getHotProdList = dao.getHotProdList(category);
+		return getHotProdList;
+	}
+	
+	// == 메인페이지 지역추천 == //
+	@Override
+	public List<ProdVO> getlocalRecProdList(String category) {
+		List<ProdVO> getlocalRecProdList = dao.getlocalRecProdList(category);
+		return getlocalRecProdList;
+	}
+	
+	// == category 페이지 categoryName 가져오기 == //
+	@Override
+	public String getCategoryName(String category) {
+		String getCategoryName = dao.getCategoryName(category);
+		return getCategoryName;
+	}
+	
+	// == category 페이지 detailCategoryName 가져오기 == //
+	@Override
+	public List<HashMap<String, String>> getdetailCategoryName(String category) {
+		List<HashMap<String, String>> getdetailCategoryName = dao.getdetailCategoryName(category);
+		return getdetailCategoryName;
+	}
+
 	@Override
 	public int getTotalProdCount(HashMap<String, String> paraMap) {
 		int n = dao.getTotalProdCount(paraMap);
@@ -37,5 +65,8 @@ public class MainService implements InterMainService {
 
 	
 
+
+	
+	
 
 }
