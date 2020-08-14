@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -173,6 +174,43 @@ public class MemberService implements InterMemberService {
 	public int infoDelete(HashMap<String, String> paraMap) {
 		int n = dao.infoDelete(paraMap);
 		return n;
+	}
+
+
+
+	// 아이디 찾기
+	@Override
+	public String findID(HashMap<String, String> paraMap) {
+
+		String userid = dao.findID(paraMap);
+		
+		return userid;
+	}
+
+
+	// 비밀번호 찾기
+	@Override
+	public String findPW(HashMap<String, String> paraMap) {
+		String findPW = dao.findPW(paraMap);
+		return findPW;
+	}
+
+
+	// 비밀번호 변경
+	@Override
+	public int updatePW(HashMap<String, String> paraMap) {
+		int n = dao.updatePW(paraMap);
+		return n;
+	}
+
+
+
+	// 적립금 내역
+	@Override
+	public List<HashMap<String, String>> pointList(String userid) {
+
+		List<HashMap<String, String>> pointList = dao.pointList(userid);
+		return pointList;
 	}
 
 

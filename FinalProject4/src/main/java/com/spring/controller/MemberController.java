@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -511,6 +513,230 @@ public class MemberController {
 		return mav;
 	}
 	
+	
+	@RequestMapping(value="/findID.action")
+	public ModelAndView findID(HttpServletRequest request, ModelAndView mav) {
+		
+		String method = request.getMethod();
+		
+		if("get".equalsIgnoreCase(method)) {
+			mav.setViewName("member/findID.notiles");	
+		}
+		else {
+			
+			String name = request.getParameter("name");
+			String mobile = request.getParameter("mobile");
+			
+			try {
+				mobile = mobile.substring(0,3) + aes.encrypt(mobile.substring(3,7)) + aes.encrypt( mobile.substring(7));
+			} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+			
+			HashMap<String, String> paraMap = new HashMap<String,String>();
+			
+			paraMap.put("name", name);
+			paraMap.put("mobile", mobile);
+			
+			String userid = service.findID(paraMap);
+			
+			if(userid != null) {
+				mav.addObject("userid", userid);
+				mav.setViewName("member/findIDResult.notiles");
+			}
+			else {
+				String loc = "javascript:history.back()";
+				String msg = "다시 입력해주세요.";
+				
+				mav.addObject("loc", loc);
+				mav.addObject("msg", msg);
+				mav.setViewName("msg");
+				
+			}
+			
+		}
+		
+		
+		return mav;
+	}
+	
+	
+	@RequestMapping(value="/findPW.action")
+	public ModelAndView findPW(HttpServletRequest request ,ModelAndView mav) {
+		
+		String method = request.getMethod();
+		
+		if("get".equalsIgnoreCase(method)) {
+			mav.addObject("method", method);
+		}
+		else {
+			String userid = request.getParameter("userid");
+			String email = request.getParameter("email");
+			
+			HashMap<String, String> paraMap = new HashMap<String, String>();
+			
+			try {
+				paraMap.put("userid", userid);
+				paraMap.put("email", aes.encrypt(email));
+			} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+			
+			String findPW = service.findPW(paraMap);
+			
+			// System.out.println("findPW : " + findPW);
+			
+			int n = 0;
+			
+			if(findPW != null) {
+				n = 1;
+				
+				Random rnd = new Random();
+				String certificationCode = "";
+				
+				char randchar = ' ';
+				for(int i = 0; i<5; i++) {
+					randchar = (char) (rnd.nextInt('z' - 'a' + 1) + 'a');
+					certificationCode += randchar;
+				}
+			
+				int randnum = 0;
+				for(int i=0;i<7;i++) {
+					randnum = rnd.nextInt(9 - 0 + 1) + 0;
+					certificationCode += randnum;
+				}
+				
+				GoogleMail mail = new GoogleMail();
+				
+				HttpSession session = request.getSession();
+				
+				try {
+					mail.sendmail(email, certificationCode);
+					session.setAttribute("certificationCode", certificationCode);
+				} catch (Exception e) {
+					e.printStackTrace();
+					n = -1;
+				}
+				
+			}
+			else {
+				n = 0;
+			}
+			
+			mav.addObject("n", n);
+			mav.addObject("userid", userid);
+			mav.addObject("email", email);
+			mav.addObject("method", method);
+			
+		}
+		
+		mav.setViewName("member/findPW.notiles");
+		
+		return mav;
+	}
+	
+	
+	// == 인증코드 검사 == //
+	@RequestMapping(value="/verifyCertification.action")
+	public ModelAndView verifyCertification(HttpServletRequest request ,ModelAndView mav) {
+		
+		String userid = request.getParameter("userid");
+		String userCertificationCode = request.getParameter("userCertificationCode");
+		
+		HttpSession session = request.getSession();
+		String certificationCode = (String) session.getAttribute("certificationCode");
+		
+		String msg = "";
+	 	String loc = "";
+	 	
+	 	if( certificationCode.equals(userCertificationCode) ) {
+	 		mav.addObject("userid", userid);
+	 		mav.setViewName("member/updatePW.notiles");
+	 	}
+	 	else {
+	 		msg = "발급된 인증코드가 아닙니다. 인증코드를 다시 발급받으세요.";
+	 		loc = request.getContextPath()+"/findPW.action";
+			
+			mav.addObject("loc", loc);
+			mav.addObject("msg", msg);
+			mav.setViewName("msg");
+	 	}
+
+	 	
+	 	
+		return mav;
+	}
+	
+	
+	@RequestMapping(value="/updatePW.action")
+	public ModelAndView updatePW(HttpServletRequest request ,ModelAndView mav) {
+		
+		String method = request.getMethod();
+		String userid = request.getParameter("userid");
+		
+		if("post".equalsIgnoreCase(method)) {
+			String pwd = request.getParameter("pwd");
+			
+			HashMap<String, String> paraMap = new HashMap<>();
+			
+			paraMap.put("userid", userid);
+			paraMap.put("pwd", Sha256.encrypt(pwd));
+			
+			int n = service.updatePW(paraMap);
+			
+			String loc = "";
+			String msg = "";
+			
+			if(n == 1) {
+				loc = request.getContextPath() + "/login.action";
+				msg = "비밀번호가 변경되었습니다. 바뀐 비밀번호로 로그인해주세요.";
+			}
+			else {
+				loc = "javascript:history.back()";
+				msg = "다시 입력해주세요.";
+			}
+			mav.addObject("loc", loc);
+			mav.addObject("msg", msg);
+			mav.setViewName("msg");
+			
+		}
+		else {
+			
+			mav.setViewName("member/updatePW.notiles");
+			
+		}
+		
+		
+		return mav;
+	}
+	
+	
+	// -- 마이페이지 보기 -- //
+	@RequestMapping(value="/myPage.action")
+	public ModelAndView myPage(HttpServletRequest request, ModelAndView mav) {
+		
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+		
+		if(loginuser != null || loginCookie != null) {
+		
+			List<HashMap<String,String>> pointList = service.pointList(loginuser.getUserid());
+			
+			//System.out.println("pointList : " + pointList.size());
+			//System.out.println(pointList.get(0).get("fk_rev_date"));
+			
+			mav.addObject("pointList", pointList);
+			mav.setViewName("member/myPage.tiles1");
+		}
+		else {
+			mav.setViewName("member/login.notiles");
+		}
+		
+		return mav;
+	}
 	
 	
 }

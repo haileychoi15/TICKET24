@@ -1,6 +1,7 @@
 package com.spring.model;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -131,6 +132,38 @@ public class MemberDAO implements InterMemberDAO {
 	public int infoDelete(HashMap<String, String> paraMap) {
 		int n = sqlsession.update("finalproject4.infoDelete", paraMap);
 		return n;
+	}
+
+	// 아이디 찾기
+	@Override
+	public String findID(HashMap<String, String> paraMap) {
+
+		String userid = sqlsession.selectOne("finalproject4.findID", paraMap);
+		
+		return userid;
+	}
+
+	// 비밀번호 찾기
+	@Override
+	public String findPW(HashMap<String, String> paraMap) {
+		String findPW = sqlsession.selectOne("finalproject4.findPW", paraMap);
+		return findPW;
+	}
+
+	// 비밀번호 변경
+	@Override
+	public int updatePW(HashMap<String, String> paraMap) {
+		int n = sqlsession.update("finalproject4.updatePW", paraMap);
+		return n;
+	}
+
+	// 적립금 내역
+	@Override
+	public List<HashMap<String, String>> pointList(String userid) {
+
+		List<HashMap<String, String>> pointList = sqlsession.selectList("finalproject4.pointList", userid);
+		
+		return pointList;
 	}
 	
 	

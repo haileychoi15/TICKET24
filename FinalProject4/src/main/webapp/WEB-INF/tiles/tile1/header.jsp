@@ -168,7 +168,7 @@
                 <span></span>
                 <ul class="user-box hide">
                     <li class="user-box-item">
-                        <a href=""> 회원가입 </a>
+                        <a href="<%=ctxPath%>/register.action"> 회원가입 </a>
                     </li>
                     <li class="user-box-item">
                         <c:if test="${sessionScope.loginuser == null}">
@@ -182,7 +182,7 @@
                         <a href=""> 마이티켓 </a>
                     </li>
                     <li class="user-box-item">
-                        <a href="<%=ctxPath%>/modifyInfo.action"> 마이페이지 </a>
+                        <a href="<%=ctxPath%>/myPage.action"> 마이페이지 </a>
                     </li>
                     <li class="user-box-item">
                         <a href=""> 고객센터 </a>

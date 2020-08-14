@@ -199,7 +199,7 @@
 	<!-- ===== Member ===== -->
 	<!-- === #47. 로그인 처리하기 === -->
 	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.model.MemberVO">
-		select idx, userid, name, email
+		select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -216,7 +216,7 @@
 	
 	<!-- API 회원으로 등록이 되어있는지 확인 -->
 	<select id="kakaoMember" resultType="com.spring.model.MemberVO" parameterType="HashMap">
-		select idx, userid, name, email
+		select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 		     , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -228,7 +228,7 @@
 	<select id="idDuplicateCheck" resultType="String" parameterType="String">
 		select userid 
 		from yes_member
-		where status = 1 and userid = #{userid}
+		where userid = #{userid}
 	</select>
 
 	<!-- 카카오 회원가입 -->
@@ -326,7 +326,7 @@
      
     <!-- 유효기간이 남아 있으면서 해당 sessionId를 가지는 사용자 정보를 꺼내오는 부분 -->
     <select id="checkUserWithSessionKey" resultType="com.spring.model.MemberVO">
-        select idx, userid, name, email
+        select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
         from yes_member
@@ -339,6 +339,43 @@
 		set status = 0
 		where idx = #{idx} and pwd = #{pwd} 
 	</update>
+	
+	<!-- 아이디 찾기 -->
+	<select id="findID" parameterType="HashMap" resultType="String">
+		select userid
+		from yes_member
+		where status = 1 and name = #{name} and (trim(hp1) || trim(hp2) || trim(hp3)) = #{mobile}
+	</select>
+	
+	<!-- 비밀번호 찾기 -->
+	<select id="findPW" parameterType="HashMap" resultType="String">
+		select userid
+		from yes_member
+		where status = 1 and userid = #{userid} and email = #{email}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePW" parameterType="HashMap">
+		update yes_member
+		set pwd = #{pwd}
+		where status = 1 and userid = #{userid}
+	</update>
+	
+	
+	<resultMap type="HashMap" id="pointMap">
+		<result property="point_id"  		column="point_id" 		javaType="String"/>
+		<result property="fk_userid" 		column="fk_userid"      javaType="String"/>
+		<result property="content" 	   		column="content"     	javaType="String"/>
+		<result property="fk_rev_date"      column="fk_rev_date"    javaType="String"/>
+		<result property="fk_rev_id"        column="fk_rev_id"      javaType="String"/>
+		<result property="point"        column="point"      javaType="String"/>
+	</resultMap>
+	<select id="pointList" parameterType="String" resultMap="pointMap">
+		select point_id, fk_userid, content, point, to_char(fk_rev_date, 'yyyy.mm.dd hh24:mi:ss') AS fk_rev_date, fk_rev_id 
+		from yes_point 
+		where fk_userid = #{userid}
+	</select>
+	
 	
 
 </mapper>

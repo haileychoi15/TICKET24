@@ -1,5 +1,11 @@
 --- **** FinalProject Team 4 - YES 24 **** ----
 
+SELECT  'DROP TABLE ' || object_name || ' CASCADE CONSTRAINTS;'
+FROM    user_objects
+WHERE   object_type = 'TABLE';
+
+
+
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------- sys 에서 작업 ---------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
@@ -73,6 +79,7 @@ create table yes_member
 ,sessionKey         varchar2(100) default 'none'  -- 로그인 유지시 세션 저장
 ,sessionLimit       timestamp
 ,constraint   PK_yes_member_idx primary key(idx)
+,constraint   UK_yes_member_userid unique(userid)
 ,constraint   CK_yes_member_gender check( gender in('1','2') ) 
 ,constraint   CK_yes_member_status check( status in('0','1') ) 
 ,constraint   CK_yes_member_kakao check( status in('0','1') ) 
@@ -91,6 +98,15 @@ nocache;
 
 insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
 values(seq_member.nextval, 'kimjy', '김진영', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
+
+update yes_member
+set point = 1000
+where userid = 'guzi10';
+
+select * from yes_member;
+delete from yes_member;
+commit;
+
 
 -- 로그인 테이블 삭제
 drop table yes_login cascade constraints;
@@ -1230,7 +1246,7 @@ create table yes_reserve
 ,constraint FK_prod_id_rev foreign key(prod_id) references prod(prod_id) on delete cascade
 ,constraint FK_user_id_rev foreign key(user_id) references yes_member(idx) on delete cascade
 ,constraint FK_seat_id_rev foreign key(seat_id) references yes_show_seat(seat_id) on delete cascade
-,constraint FK_status_id_rev foreign key(status_id) references yes_status(status_id) on delete cascade
+,constraint FK_status_id_rev foreign key(status_id) references yes_rev_status(status_id) on delete cascade
 );
 
 drop sequence seq_reserve;
@@ -1256,7 +1272,7 @@ create table yes_rev_status
 ,status             number(1)   default 0   -- 상태
 ,status_cng_date    date                    -- 수정일자
 ,constraint PK_status_id primary key(status_id)
-,constraint FK_rev_id_status foreign key(rev_id) references yes_reserve(rev_id) on delete cascade
+--,constraint FK_rev_id_status foreign key(rev_id) references yes_reserve(rev_id) on delete cascade
 );
 
 drop sequence seq_rev_status;
@@ -1301,57 +1317,6 @@ select distinct to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday
 from yes_show_date
 where prod_id = 1
 order by date_showday;
-
------------------------------------ QNA 게시판 테이블 -----------------------------------
-
-drop table yes_qna purge;
-
-create table yes_qna
-(qna_id         number                not null   -- 글번호
-,fk_userid      varchar2(20)          not null   -- 사용자ID
-,name           Nvarchar2(20)         not null   -- 글쓴이
-,category       varchar2(20)          not null   -- 카테고리
-,fk_rev_id      number(10)
-,subject        Nvarchar2(200)        not null   -- 글제목
-,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
-,pw             varchar2(20)          not null   -- 글암호
-,readCount      number default 0      not null   -- 글조회수
-,regDate        date default sysdate  not null   -- 글쓴시간
-,secret         number(1) default 0   not null   -- 비밀글여부  1:비밀글, 0:공개글
-,adminread      number(1) default 0
-,adminans       number(1) default 0
-,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
-,groupno        number                not null   -- 답변글쓰기에 있어서 그룹번호 
-                                                 -- 원글(부모글)과 답변글은 동일한 groupno 를 가진다.
-                                                 -- 답변글이 아닌 원글(부모글)인 경우 groupno 의 값은 groupno 컬럼의 최대값(max)+1 로 한다.
-,fk_seq         number default 0      not null   -- 답변글쓰기에 있어서 답변글이라면 fk_seq 컬럼의 값은 
-                                                 -- 원글(부모글)의 seq 컬럼의 값을 가지게 되며,
-                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
-,depthno        number default 0       not null  -- 답변글쓰기에 있어서 답변글 이라면
-                                                 -- 원글(부모글)의 depthno + 1 을 가지게 되며,
-                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
-,constraint  PK_qna_id primary key(qna_id)
-,constraint  FK_qna_fk_userid foreign key(fk_userid) references yes_member(userid)
-,constraint  FK_qna_fk_rev_id foreign key(fk_rev_id) references yes_reserve(rev_id)
-,constraint  CK_qna_status check( status in(0,1) )
-,constraint  CK_qna_secret check( secret in (0,1) )
-,constraint  CK_qna_adminread check( adminread in (0,1) )
-,constraint  CK_qna_adminans check( adminans in (0,1) )
-);
-
-
-
-drop sequence qnaSeq;
-
-create sequence qnaSeq
-start with 1
-increment by 1
-nomaxvalue 
-nominvalue
-nocycle
-nocache;
-
-select * from yes_qna;
 
 
 
@@ -1698,6 +1663,57 @@ select *
 from yes_qna_cate;
 
 
+----------------------------------- QNA 게시판 테이블 -----------------------------------
+
+drop table yes_qna purge;
+
+create table yes_qna
+(qna_id         number                not null   -- 글번호
+,fk_userid      varchar2(20)          not null   -- 사용자ID
+,name           Nvarchar2(20)         not null   -- 글쓴이
+,category       varchar2(20)          not null   -- 카테고리
+,fk_rev_id      number(10)
+,subject        Nvarchar2(200)        not null   -- 글제목
+,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
+,pw             varchar2(20)          not null   -- 글암호
+,readCount      number default 0      not null   -- 글조회수
+,regDate        date default sysdate  not null   -- 글쓴시간
+,secret         number(1) default 0   not null   -- 비밀글여부  1:비밀글, 0:공개글
+,adminread      number(1) default 0
+,adminans       number(1) default 0
+,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
+,groupno        number                not null   -- 답변글쓰기에 있어서 그룹번호 
+                                                 -- 원글(부모글)과 답변글은 동일한 groupno 를 가진다.
+                                                 -- 답변글이 아닌 원글(부모글)인 경우 groupno 의 값은 groupno 컬럼의 최대값(max)+1 로 한다.
+,fk_seq         number default 0      not null   -- 답변글쓰기에 있어서 답변글이라면 fk_seq 컬럼의 값은 
+                                                 -- 원글(부모글)의 seq 컬럼의 값을 가지게 되며,
+                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
+,depthno        number default 0       not null  -- 답변글쓰기에 있어서 답변글 이라면
+                                                 -- 원글(부모글)의 depthno + 1 을 가지게 되며,
+                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
+,constraint  PK_qna_id primary key(qna_id)
+,constraint  FK_qna_fk_userid foreign key(fk_userid) references yes_member(userid)
+,constraint  FK_qna_fk_rev_id foreign key(fk_rev_id) references yes_reserve(rev_id)
+,constraint  CK_qna_status check( status in(0,1) )
+,constraint  CK_qna_secret check( secret in (0,1) )
+,constraint  CK_qna_adminread check( adminread in (0,1) )
+,constraint  CK_qna_adminans check( adminans in (0,1) )
+);
+
+
+
+drop sequence qnaSeq;
+
+create sequence qnaSeq
+start with 1
+increment by 1
+nomaxvalue 
+nominvalue
+nocycle
+nocache;
+
+select * from yes_qna;
+
 ----------------------------------- 리뷰 테이블 -----------------------------------
 
 create table yes_review
@@ -1941,3 +1957,56 @@ where prod_id=1 and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_sho
 select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id, seat_color
 from view_seat_info
 where prod_id = 1;
+
+
+
+------------------ 포인트 테이블 --------------------------------
+drop table yes_point;
+
+create table yes_point
+(point_id     number(8)     not null  -- 포인트 시퀀스
+,fk_userid    varchar2(20)  not null  -- 회원 아이디
+,content      varchar2(200) not null  -- 포인트 적립 내용
+,point        number(8)     not null  -- 적립되는 포인트
+,fk_rev_date  date  default sysdate   -- 적립 날짜
+,fk_rev_id    number(10)    not null  -- 적립된 예매 코드
+,constraint PK_point_id primary key(point_id)
+,constraint FK_point_fk_userid foreign key(fk_userid) references yes_member(userid)
+--,constraint FK_point_rev_date foreign key(fk_rev_date) references yes_reserve(rev_date) 
+--,constraint FK_point_rev_id foreign key(fk_rev_id) references yes_reserve(rev_id)
+);
+
+drop sequence seq_point;
+create sequence seq_point
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+select * from yes_member;
+
+select point_id, fk_userid, content, point, to_char(fk_rev_date, 'yyyy.mm.dd hh24:mi:ss') AS fk_rev_date, fk_rev_id 
+from yes_point 
+where fk_userid = 'guzi10';
+
+insert into yes_point(point_id, fk_userid, content, point, fk_rev_date, fk_rev_id) 
+values(seq_point.nextval, 'guzi10', '포인트 적립!', 1500, sysdate, 123);
+
+insert into yes_point(point_id, fk_userid, content, point, fk_rev_date, fk_rev_id) 
+values(seq_point.nextval, 'guzi10', '포인트 적립222!', 1400, sysdate, 124);
+
+insert into yes_point(point_id, fk_userid, content, point, fk_rev_date, fk_rev_id) 
+values(seq_point.nextval, 'guzi10', '포인트 적립33!', 1200, sysdate, 114);
+
+insert into yes_point(point_id, fk_userid, content, point, fk_rev_date, fk_rev_id) 
+values(seq_point.nextval, 'guzi10', '포인트 적립ㅁㄴㅇ2!', 1400, sysdate, 14);
+
+insert into yes_point(point_id, fk_userid, content, point, fk_rev_date, fk_rev_id) 
+values(seq_point.nextval, 'guzi10', '포인트 적2!', 400, sysdate, 11);
+
+insert into yes_point(point_id, fk_userid, content, point, fk_rev_date, fk_rev_id) 
+values(seq_point.nextval, 'guzi10', '포인트 적립222!', 1400, sysdate, 1123);
+
+commit;
