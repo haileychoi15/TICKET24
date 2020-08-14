@@ -14,7 +14,7 @@
     width: 90%;
     height: 100%;
     padding-top: 40px;
-    background-image: url("resources/images/notice2.png"); /*###*/
+    background-image: url("/finalproject4/resources/images/notice2.png"); /* ### */
     background-repeat: no-repeat;
     background-size: contain;
     background-position : right;

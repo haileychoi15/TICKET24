@@ -18,7 +18,7 @@ body{
     width: 90%;
     height: 100%;
     padding-top: 40px;
-    background-image: url("../images/qna.png");
+    background-image: url("/finalproject4/resources/images/qna.png"); /* ## */
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: right;
@@ -38,7 +38,6 @@ body{
 
 .search input,
 .search button{
-	color: black;
     height: 40px;
     border-radius: 3px;
     font-size: 14px;
@@ -110,6 +109,32 @@ body{
     width: 100%;
     margin: 0 auto;
     font-size: 14px;
+}
+
+.table .no-result-notice{
+    width: 100%;
+    text-align: center;
+}
+
+.table .no-result-notice strong{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.table .no-result-notice.show{
+    display: block;
+}
+
+.table .no-result-notice.hide{
+    display: none;
+}
+
+.table .thead.show{
+    display: block;
+}
+
+.table .thead.hide{
+    display: none;
 }
 
 .table .row{
@@ -379,6 +404,10 @@ body{
         width: 90%;
     }
 
+    .table .no-result-notice strong{
+        font-size: 20px;
+    }
+
     .table .table-title,
     .table .table-content{
         padding-right: 20px;
@@ -455,4 +484,3 @@ body{
     }
 
 }
-

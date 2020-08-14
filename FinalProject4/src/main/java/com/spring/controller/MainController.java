@@ -4,11 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.model.ProdVO;
@@ -23,20 +28,113 @@ public class MainController {
 	
 	// == YES24 메인페이지 == //
 	@RequestMapping(value="/yes24.action")
-	public ModelAndView index(HttpServletRequest request, ModelAndView mav) {
+	public ModelAndView mainPage(HttpServletRequest request, ModelAndView mav) {
 
 		String category = request.getParameter("category");
+		
 		if(category == null) {
 			category = "1";
 		}
+		
 		List<ProdVO> prodList = service.getProdList(category);
+		List<ProdVO> hotProdList = service.getHotProdList(category);
+		List<ProdVO> localRecProdList = service.getlocalRecProdList(category);
 		
 		mav.addObject("category", category);
 		mav.addObject("prodList", prodList);
+		mav.addObject("hotProdList", hotProdList);
+		mav.addObject("localRecProdList", localRecProdList);
 		mav.setViewName("main/main.tiles1");
 		return mav;
 	}
 	
+	// == YES24 카테고리페이지 == //
+	@RequestMapping(value="/category.action")
+	public ModelAndView categoryPage(HttpServletRequest request, ModelAndView mav) {
+
+		String category = request.getParameter("category");
+		String categoryName = service.getCategoryName(category);
+		String categoryDetail = request.getParameter("categoryDetail");
+		String categoryDetailName = "";
+		
+		List<HashMap<String, String>> detailCategoryNameList = service.getdetailCategoryName(category);
+		
+		for(HashMap<String, String> item : detailCategoryNameList) {
+			if(categoryDetail.equals(item.get("category_detail_id"))) {
+				categoryDetailName = item.get("category_detail_name");
+			}
+		}
+		
+		
+//		if(categoryDetail == null) {
+//			
+//		}
+//		else {
+//			
+//		}
+		
+		mav.addObject("categoryDetailName", categoryDetailName);
+		mav.addObject("detailCategoryNameList", detailCategoryNameList);
+		mav.addObject("categoryName", categoryName);
+		mav.setViewName("main/category.tiles1");
+		return mav;
+	}
+	
+	// == 시간, 회차에 따른 좌석상태 ajax == //
+	@ResponseBody
+	@RequestMapping(value="/selectList.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String requiredLogin_seatStatus(HttpServletRequest request, HttpServletResponse response) {
+	
+		String jsonStr = "";
+		String selectNum = request.getParameter("selectNum");
+		String categoryNum = request.getParameter("categoryNum");
+		String detailCategoryNum = request.getParameter("detailCategoryNum");
+		
+		//List<HashMap<String, String>> selectedShowList = service.getSelectedShowList();
+		
+		switch (selectNum) {
+		case "1":
+			
+			break;
+		case "2":
+			
+			break;
+		case "3":
+	
+			break;
+		case "4":
+			
+			break;
+		}
+		
+//		HashMap<String, String> seatMap = new HashMap<>();
+//		seatMap.put("showDay", showDay);
+//		String dateID = service.getDateId(seatMap);
+//		
+//		JSONArray jsonArr = new JSONArray();
+//		
+//		List<HashMap<String, String>> getSeatStatus = service.getSeatStatus(dateID);
+//		
+//		if(getSeatStatus != null) {
+//			for(HashMap<String, String> seatStatus : getSeatStatus ) {
+//				JSONObject jsonObj = new JSONObject();
+//				jsonObj.put("date_id", seatStatus.get("date_id"));
+//				jsonObj.put("prod_id", seatStatus.get("prod_id"));
+//				jsonObj.put("seattype_id", seatStatus.get("seattype_id"));
+//				jsonObj.put("seat_type", seatStatus.get("seat_type"));
+//				jsonObj.put("seat_name", seatStatus.get("seat_name"));
+//				jsonObj.put("seat_price", seatStatus.get("seat_price"));
+//				jsonObj.put("seat_status", seatStatus.get("seat_status"));
+//				jsonObj.put("date_id", seatStatus.get("date_id"));
+//				jsonObj.put("seat_color", seatStatus.get("seat_color"));
+//				
+//				jsonArr.put(jsonObj);
+//			}
+//		}
+		
+		//return jsonArr.toString();
+		return "";
+	}
 	   
    @RequestMapping(value="/prodMain.action")
    public ModelAndView final_prodMain(ModelAndView mav, HttpServletRequest request) {

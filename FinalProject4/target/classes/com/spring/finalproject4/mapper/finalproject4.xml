@@ -13,6 +13,37 @@
 		order by info_open_date desc
 	</select>
 	
+	<select id="getHotProdList" parameterType="String" resultType="com.spring.model.ProdVO">
+		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
+		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		from prod
+		where fk_category_id = #{category}
+		order by info_qnty desc
+	</select>
+	
+	<select id="getlocalRecProdList" parameterType="String" resultType="com.spring.model.ProdVO">
+		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
+		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		from prod
+		where fk_category_id = #{category}
+		order by info_qnty desc
+	</select>
+	
+	<select id="getCategoryName" parameterType="String" resultType="String">
+		select category_name
+		from yes_show_category
+		where category_id = #{category}
+	</select>
+	
+	<resultMap type="HashMap" id="detailCategoryName">
+		<result property="category_detail_id"	column="category_detail_id"		javaType="String"/>
+		<result property="category_detail_name"	column="category_detail_name"	javaType="String"/>
+	</resultMap>
+	<select id="getdetailCategoryName" parameterType="String" resultMap="detailCategoryName">
+		select category_detail_id, category_detail_name
+		from yes_show_category_detail
+		where category_id = #{category}
+	</select>
 	
 	
 	<!-- === Pay(예매하기) 관련 === -->
@@ -90,6 +121,8 @@
 	<!-- FAQ 리스트(검색어 있음) -->
 	<select id="faqList" parameterType="HashMap" resultType="com.spring.model.FaqVO">
 		select faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
+		from(
+		select rownum as rno, faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
 		from 
 		(
 		select faq_id, fk_userid, C.faq_cate_name, fk_category, subject, content, regDate, status
@@ -102,6 +135,23 @@
 		</if>
 		<if test='searchWord != ""'>
 		and subject like '%' || #{searchWord} || '%'
+		</if>
+		) V
+		where rno between #{startRno} and ${endRno}
+	</select>
+	
+	<!-- ###  -->
+	
+	<!-- 총  FAQ 글 개수 -->
+	<select id="getTotalFaqCount" parameterType="HashMap" resultType="int">
+		select count(*) 
+		from yes_faq
+		where 1=1 
+		<if test='searchWord != ""'>
+		and subject like '%' || #{searchWord} || '%'
+		</if>
+		<if test='category != ""'>
+		and fk_category = #{category}
 		</if>
 	</select>
 	
@@ -162,7 +212,27 @@
 		where notice_id = #{seq}
 	</select>
 	
+	<!-- Qna 문의 등록하기 -->
+	<insert id="qnaAdd" parameterType="HashMap">
+		insert into yes_qna (qna_id, fk_userid, name, category, fk_rev_id, subject, content, groupno, fk_seq, depthno)
+		values(qnaSeq.nextval, #{fk_userid}, #{name}, #{category}, #{fk_rev_id}, #{subject}, #{content}, 0, 0, 0)
+	</insert>
+	
+	<!-- 로그인한 회원의 예매공연목록과 예매공연코드 가져오기 -->
+	<resultMap type="HashMap" id="reserveTitleList">
+		<result property="prod_title"		column="prod_title"		javaType="String"/>
+		<result property="prod_id"			column="prod_id"		javaType="String"/>
+	</resultMap>
+	<select id="reserveTitleList" parameterType="int" resultMap="reserveTitleList">
+		select distinct prod_title, prod_id
+		from view_rev_memberInfo
+		where idx = #{idx}
+	</select>
+	
+	
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
+	
+	
 	<select id="getTotalProdCount" parameterType="HashMap" resultType="int">
 		select count(*)
       	from prod
@@ -199,7 +269,7 @@
 	<!-- ===== Member ===== -->
 	<!-- === #47. 로그인 처리하기 === -->
 	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.model.MemberVO">
-		select idx, userid, name, email, point
+		select idx, userid, name, email
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -216,7 +286,7 @@
 	
 	<!-- API 회원으로 등록이 되어있는지 확인 -->
 	<select id="kakaoMember" resultType="com.spring.model.MemberVO" parameterType="HashMap">
-		select idx, userid, name, email, point
+		select idx, userid, name, email
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 		     , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -228,7 +298,7 @@
 	<select id="idDuplicateCheck" resultType="String" parameterType="String">
 		select userid 
 		from yes_member
-		where userid = #{userid}
+		where status = 1 and userid = #{userid}
 	</select>
 
 	<!-- 카카오 회원가입 -->
@@ -326,7 +396,7 @@
      
     <!-- 유효기간이 남아 있으면서 해당 sessionId를 가지는 사용자 정보를 꺼내오는 부분 -->
     <select id="checkUserWithSessionKey" resultType="com.spring.model.MemberVO">
-        select idx, userid, name, email, point
+        select idx, userid, name, email
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
         from yes_member
@@ -340,41 +410,6 @@
 		where idx = #{idx} and pwd = #{pwd} 
 	</update>
 	
-	<!-- 아이디 찾기 -->
-	<select id="findID" parameterType="HashMap" resultType="String">
-		select userid
-		from yes_member
-		where status = 1 and name = #{name} and (trim(hp1) || trim(hp2) || trim(hp3)) = #{mobile}
-	</select>
-	
-	<!-- 비밀번호 찾기 -->
-	<select id="findPW" parameterType="HashMap" resultType="String">
-		select userid
-		from yes_member
-		where status = 1 and userid = #{userid} and email = #{email}
-	</select>
-	
-	<!-- 비밀번호 변경 -->
-	<update id="updatePW" parameterType="HashMap">
-		update yes_member
-		set pwd = #{pwd}
-		where status = 1 and userid = #{userid}
-	</update>
-	
-	
-	<resultMap type="HashMap" id="pointMap">
-		<result property="point_id"  		column="point_id" 		javaType="String"/>
-		<result property="fk_userid" 		column="fk_userid"      javaType="String"/>
-		<result property="content" 	   		column="content"     	javaType="String"/>
-		<result property="fk_rev_date"      column="fk_rev_date"    javaType="String"/>
-		<result property="fk_rev_id"        column="fk_rev_id"      javaType="String"/>
-		<result property="point"        column="point"      javaType="String"/>
-	</resultMap>
-	<select id="pointList" parameterType="String" resultMap="pointMap">
-		select point_id, fk_userid, content, point, to_char(fk_rev_date, 'yyyy.mm.dd hh24:mi:ss') AS fk_rev_date, fk_rev_id 
-		from yes_point 
-		where fk_userid = #{userid}
-	</select>
 	
 	
 

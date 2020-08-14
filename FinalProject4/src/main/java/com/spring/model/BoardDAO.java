@@ -44,6 +44,29 @@ public class BoardDAO implements InterBoardDAO {
 		NoticeVO notivo = sqlsession.selectOne("finalproject4.getView", seq);
 		return notivo;
 	}
+
+	
+	// 총 faq 개수
+	@Override
+	public int getTotalFaqCount(HashMap<String, String> paraMap) {
+		int n = sqlsession.selectOne("finalproject4.getTotalFaqCount", paraMap);
+		return n;
+	}
+
+	
+	// Qna 문의 등록하기
+	@Override
+	public int qnaAdd(HashMap<String, String> paraMap) {
+		int n = sqlsession.insert("finalproject4.qnaAdd", paraMap);
+		return n;
+	}
+
+	// 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
+	@Override
+	public List<HashMap<String, String>> reserveTitleList(int idx) {
+		List<HashMap<String, String>> reserveTitleList = sqlsession.selectList("finalproject4.reserveTitleList", idx);
+		return reserveTitleList;
+	}
 	
 	
 }
