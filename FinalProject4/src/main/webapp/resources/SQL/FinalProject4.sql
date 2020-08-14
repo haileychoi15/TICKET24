@@ -1461,6 +1461,12 @@ select *
 from yes_qna_cate;
 
 
+select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
+		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		from prod
+		where fk_category_id = 1
+		order by info_open_date desc
+
 
 ----------------------------------- QNA 게시판 테이블 -----------------------------------
 
@@ -2344,3 +2350,21 @@ from yes_show_map;
 insert into yes_show_map(map_id, prod_id, map_lng, map_lat, map_name, map_address, map_url, map_img)
 values(seq_show_map.nextval, 1, 37.56511284953554, 126.98187860455485, 'YES24 극장', '서울 종각역', 'www.naver.com', 'FinalProject4/src/main/webapp/resources/images/classic/classic_01m.jpg');
 
+
+
+select RNO, prod_id, category_name, fk_category_id, prod_title, prod_img, date_start, date_end, info_open_date, info_close_date, info_rev_status, info_qnty, map_address, map_id
+from (
+    select ROW_NUMBER() OVER (ORDER BY prod_id desc) as RNO, prod_id, category_name, fk_category_id, prod_title, prod_img, date_start, date_end, info_open_date, info_close_date, info_rev_status, info_qnty, map_address, map_id
+    from (
+        select P.prod_id, C.category_name, fk_category_id, prod_title, prod_img, date_start, date_end, info_open_date, info_close_date, info_rev_status, info_qnty, map_address, M.map_id, status
+        from prod P join yes_show_category C
+        on P. fk_category_id = C.category_id
+        left join yes_show_map M
+        on P.prod_id = M. prod_id
+        order by P.prod_id
+    ) V
+    where status = 1 
+        and lower(prod_title) like '%' || '%'
+) T
+where rno between 1 and 8;
+        
