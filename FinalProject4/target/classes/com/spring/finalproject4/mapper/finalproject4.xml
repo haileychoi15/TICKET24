@@ -493,6 +493,11 @@
 	</update>
 	
 	
+	<!-- AOP pointPlus -->
+	<update id="pointPlus" parameterType="HashMap">
+		update yes_member set point = point + to_number(#{pointPlus})
+		where userid = #{userid}
+	</update>
 	
 
 </mapper>

@@ -215,6 +215,14 @@ public class MemberService implements InterMemberService {
 
 
 
+	// 포인트 추가
+	@Override
+	public void pointPlus(HashMap<String, String> paraMap) {
+		dao.pointPlus(paraMap);
+	}
+
+
+
 	
 	
 	

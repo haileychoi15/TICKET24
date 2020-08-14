@@ -44,5 +44,8 @@ public interface InterMemberDAO {
 	
 	List<HashMap<String, String>> pointList(String userid); // 적립금 내역
 	
+	void pointPlus(HashMap<String, String> paraMap); // 포인트추가
+	
+	
 	
 }

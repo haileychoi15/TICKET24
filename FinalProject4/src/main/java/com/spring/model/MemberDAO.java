@@ -165,7 +165,13 @@ public class MemberDAO implements InterMemberDAO {
 		
 		return pointList;
 	}
-	
+
+	// 포인트 추가
+	@Override
+	public void pointPlus(HashMap<String, String> paraMap) {
+		sqlsession.update("finalproject4.pointPlus", paraMap);
+	}
+
 	
 	
 	

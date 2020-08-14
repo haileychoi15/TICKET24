@@ -47,6 +47,9 @@ public interface InterMemberService {
 	List<HashMap<String, String>> pointList(String userid); // 포인트 적립 내역
 
 
+	void pointPlus(HashMap<String, String> paraMap); // === AOP === 포인트추가
+
+
 
 	
 }

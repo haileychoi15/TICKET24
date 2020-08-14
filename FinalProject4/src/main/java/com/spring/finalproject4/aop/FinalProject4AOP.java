@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.spring.common.MyUtil;
-import com.spring.service.InterBoardService;
+import com.spring.service.InterMemberService;
 
 @Aspect
 @Component
@@ -138,7 +138,7 @@ public class FinalProject4AOP {
 	// ===== After Advice 만들기 ===== //
 	
 	@Autowired
-	InterBoardService service; // service 로 보내기 위해 사용한다. 
+	InterMemberService service; // service 로 보내기 위해 사용한다. 
 	
 	/*
 		주업무(<예: 글쓰기, 글수정, 댓글쓰기 등등>)를 실행하기 앞서서
@@ -164,7 +164,7 @@ public class FinalProject4AOP {
 		// paraMap 에 포인트가 몇점인지, 그리고 어떤것에 대한 것인지의 정보를 담아와서
 		// 서비스단에 보내게 될 것이다. 
 		
-	//	service.pointPlus(paraMap); // ### service 단에서 추가 ### //
+		service.pointPlus(paraMap); // ### 추가 ### // 포인트추가
 	}
 	
 	
