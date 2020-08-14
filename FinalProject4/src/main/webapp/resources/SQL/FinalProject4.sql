@@ -99,6 +99,14 @@ values(seq_member.nextval, 'kimjy', '김진영', '9695b88a59a1610320897fa84cb7e1
 insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
 values(seq_member.nextval, 'admin', '관리자', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
 
+insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
+values(seq_member.nextval, 'leess', '이순신', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
+
+insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
+values(seq_member.nextval, 'eomjh', '엄정화', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
+
+
+
 update yes_member set pwd = '4d4f26369171994f3a46776ee2d88494fb9955800a5bb6261c016c4bb9f30b56'
 where userid = 'admin';
 -- qwer1234 비밀번호
@@ -575,6 +583,27 @@ insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
 values(seq_show_date.nextval, 1, to_date('2020/09/02','yyyy/mm/dd'), '1회차 9시');
 insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
 values(seq_show_date.nextval, 1, to_date('2020/09/02','yyyy/mm/dd'), '2회차 11시');
+
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 1, to_date('2020/10/01','yyyy/mm/dd'), '1회차 9시');
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 1, to_date('2020/10/01','yyyy/mm/dd'), '2회차 11시');
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 1, to_date('2020/10/02','yyyy/mm/dd'), '1회차 9시');
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 1, to_date('2020/10/02','yyyy/mm/dd'), '2회차 11시');
+
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 2, to_date('2020/10/15','yyyy/mm/dd'), '1회차 9시');
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 2, to_date('2020/10/15','yyyy/mm/dd'), '2회차 11시');
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 2, to_date('2020/10/16','yyyy/mm/dd'), '1회차 9시');
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 2, to_date('2020/10/16','yyyy/mm/dd'), '2회차 11시');
+
 commit;
 
 -- 공연장소 테이블
@@ -649,11 +678,23 @@ insert into yes_seat_type(seattype_id, prod_id, seat_type, seat_price, seat_colo
 values(seq_seat_type.nextval, 1, 'R', 80000, 'darkslateblue');
 insert into yes_seat_type(seattype_id, prod_id, seat_type, seat_price, seat_color)
 values(seq_seat_type.nextval, 1, 'S', 40000, 'mediumpurple');
+
+insert into yes_seat_type(seattype_id, prod_id, seat_type, seat_price, seat_color)
+values(seq_seat_type.nextval, 2, 'VIP', 120000, 'indianred');
+insert into yes_seat_type(seattype_id, prod_id, seat_type, seat_price, seat_color)
+values(seq_seat_type.nextval, 2, 'R', 80000, 'darkslateblue');
+insert into yes_seat_type(seattype_id, prod_id, seat_type, seat_price, seat_color)
+values(seq_seat_type.nextval, 2, 'S', 40000, 'mediumpurple');
+
 commit;
 
 select seat_type, seat_price, seat_color
 from yes_seat_type
 where prod_id = 1;
+
+select seat_type, seat_price, seat_color
+from yes_seat_type
+where prod_id = 2;
 
 
 SELECT * FROM USER_CONSTRAINTS WHERE TABLE_NAME = "tabnam";
@@ -1289,6 +1330,15 @@ from yes_reserve;
 insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
 values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
 
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
+values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
+values(seq_reserve.nextval, 2, 2, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
+values(seq_reserve.nextval, 2, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+
 -- 상태 테이블
 drop table yes_rev_status;
 create table yes_rev_status
@@ -1324,23 +1374,23 @@ AS
 select P.prod_id, P.prod_img, P.prod_title, P.info_grade, P.info_run_time, M.map_name 
 from prod P
 JOIN yes_show_map M
-ON P.prod_id = M.prod_id;
+ON P.map_id = M.map_id; -- ### ON P.prod_id = M.prod_id --
 --JOIN yes_show_seat S
 --ON M.prod_id = S.prod_id;
 
 select *
 from view_rev_showInfo
-where prod_id = 1;
+where prod_id = 2;
 
 -- 예매 시, 공연 시간 정보 가져옴
 select prod_id, to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday, date_showtime
 from yes_show_date
-where prod_id = 1
+where prod_id = 2
 order by 1, 2;
 
 select distinct to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday
 from yes_show_date
-where prod_id = 1
+where prod_id = 2
 order by date_showday;
 
 
@@ -2019,13 +2069,17 @@ join yes_seat_type T
 on S.seattype_id = T.seattype_id;
 
 
-select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id
+select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status
 from view_seat_info
 where prod_id = 1;
 
 select date_id
 from yes_show_date
 where prod_id=1 and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day')='20/09/01 화요일' and date_showtime = '1회차 9시';
+
+select date_id
+from yes_show_date
+where prod_id=1 and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day')='20/10/01 목요일' and date_showtime = '1회차 9시';
 
 select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id, seat_color
 from view_seat_info
