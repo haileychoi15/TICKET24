@@ -56,7 +56,7 @@
                                 제목
                             </span>
                         <span class="table-date">
-                                날짜
+                                티켓오픈일자
                             </span>
                         <span class="table-view">
                                 조회수

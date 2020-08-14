@@ -13,4 +13,10 @@ public interface InterBoardDAO {
 
 	NoticeVO getView(String seq); // 공지사항 글 1개 보기 페이지로 이동(조회수 증가 없음)
 
+	int getTotalFaqCount(HashMap<String, String> paraMap); // 총 faq 개수
+
+	int qnaAdd(HashMap<String, String> paraMap); // Qna 문의 등록하기
+
+	List<HashMap<String, String>> reserveTitleList(int idx); // 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
+
 }

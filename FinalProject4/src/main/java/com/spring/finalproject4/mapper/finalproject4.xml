@@ -121,6 +121,8 @@
 	<!-- FAQ 리스트(검색어 있음) -->
 	<select id="faqList" parameterType="HashMap" resultType="com.spring.model.FaqVO">
 		select faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
+		from(
+		select rownum as rno, faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
 		from 
 		(
 		select faq_id, fk_userid, C.faq_cate_name, fk_category, subject, content, regDate, status
@@ -133,6 +135,23 @@
 		</if>
 		<if test='searchWord != ""'>
 		and subject like '%' || #{searchWord} || '%'
+		</if>
+		) V
+		where rno between #{startRno} and ${endRno}
+	</select>
+	
+	<!-- ###  -->
+	
+	<!-- 총  FAQ 글 개수 -->
+	<select id="getTotalFaqCount" parameterType="HashMap" resultType="int">
+		select count(*) 
+		from yes_faq
+		where 1=1 
+		<if test='searchWord != ""'>
+		and subject like '%' || #{searchWord} || '%'
+		</if>
+		<if test='category != ""'>
+		and fk_category = #{category}
 		</if>
 	</select>
 	
@@ -193,7 +212,27 @@
 		where notice_id = #{seq}
 	</select>
 	
+	<!-- Qna 문의 등록하기 -->
+	<insert id="qnaAdd" parameterType="HashMap">
+		insert into yes_qna (qna_id, fk_userid, name, category, fk_rev_id, subject, content, groupno, fk_seq, depthno)
+		values(qnaSeq.nextval, #{fk_userid}, #{name}, #{category}, #{fk_rev_id}, #{subject}, #{content}, 0, 0, 0)
+	</insert>
+	
+	<!-- 로그인한 회원의 예매공연목록과 예매공연코드 가져오기 -->
+	<resultMap type="HashMap" id="reserveTitleList">
+		<result property="prod_title"		column="prod_title"		javaType="String"/>
+		<result property="prod_id"			column="prod_id"		javaType="String"/>
+	</resultMap>
+	<select id="reserveTitleList" parameterType="int" resultMap="reserveTitleList">
+		select distinct prod_title, prod_id
+		from view_rev_memberInfo
+		where idx = #{idx}
+	</select>
+	
+	
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
+	
+	
 	<select id="getTotalProdCount" parameterType="HashMap" resultType="int">
 		select count(*)
       	from prod
@@ -370,6 +409,8 @@
 		set status = 0
 		where idx = #{idx} and pwd = #{pwd} 
 	</update>
+	
+	
 	
 
 </mapper>
