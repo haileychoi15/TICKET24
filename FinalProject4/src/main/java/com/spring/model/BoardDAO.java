@@ -45,6 +45,14 @@ public class BoardDAO implements InterBoardDAO {
 		return notivo;
 	}
 
+
+	// 공지사항 글 1개 보기 조회수 증가
+	@Override
+	public void setAddReadCount(String seq) {
+		sqlsession.update("finalproject4.setAddReadCount", seq);
+		
+	}
+
 	
 	// 총 faq 개수
 	@Override

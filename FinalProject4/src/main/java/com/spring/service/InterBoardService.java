@@ -15,7 +15,9 @@ public interface InterBoardService {
 
 	List<NoticeVO> noticeListWithPaging(HashMap<String, String> paraMap); // 페이징처리한 공지글 리스트
 
-	NoticeVO getNoticeViewWithNoAddCount(String seq); // 공지사항 글 1개 보기 페이지로 이동
+	NoticeVO getNoticeViewWithNoAddCount(String seq); // 공지사항 글 1개 보기 페이지로 이동(조회수증가없음)
+
+	NoticeVO getNoticeView(String seq, String userid); // 공지사항 글 1개 보기 페이지로 이동(조회수증가)
 
 	int getTotalFaqCount(HashMap<String, String> paraMap); // 총 faq 개수
 

@@ -54,7 +54,20 @@ public class BoardService implements InterBoardService {
 		NoticeVO notivo = dao.getView(seq);
 		return notivo;
 	}
-
+	// 공지사항 글 1개 보기 페이지로 이동(조회수 증가)
+	@Override
+	public NoticeVO getNoticeView(String seq, String userid) {
+		
+		NoticeVO notivo = dao.getView(seq);
+		
+		if(!"admin".equals(userid)) {		// 관리자가 아니라면
+			dao.setAddReadCount(seq); 		// 글 조회수 1증가 하기
+		}
+		notivo = dao.getView(seq);
+		
+		return notivo;
+	}
+	
 
 	// 총 공지글 개수
 	@Override
@@ -113,6 +126,5 @@ public class BoardService implements InterBoardService {
 		int n = dao.qnaAddAdmin(qvo);
 		return n;
 	}
-	
 	
 }

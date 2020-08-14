@@ -244,7 +244,7 @@ public class BoardController {
 	//	mav.addObject("gobackURL", gobackURL);
 
 		HttpSession session = request.getSession();
-		session.setAttribute("readCountPermission", "yes"); // 조회수증가권한의 값을 yes 로 세션에 저장한다.
+		session.setAttribute("readNoticeCountPermission", "yes"); // 조회수증가권한의 값을 yes 로 세션에 저장한다.
 
 		/*
 		   session 에  "readCountPermission" 키값으로 저장된 value값은 "yes" 이다.
@@ -293,15 +293,20 @@ public class BoardController {
 		NoticeVO notivo = null;
 		
 		HttpSession session = request.getSession();
-	
-		/*
-		// 위의 글목록보기 #69. 에서 session.setAttribute("readCountPermission", "yes"); 해두었다.
-		if("yes".equals(session.getAttribute("readCountPermission"))) {
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+
+		String userid = null; // 로그인을 하면 loginuser 가 있지만, 로그인을 하지않으면 loginuser 는 null 이다.
+		if(loginuser != null) {
+			userid = loginuser.getUserid();
+		}
+		
+		// 위의 글목록보기 #69. 에서 session.setAttribute("readNoticeCountPermission", "yes"); 해두었다.
+		if("yes".equals(session.getAttribute("readNoticeCountPermission"))) {
 			notivo = service.getNoticeView(seq, userid); 
 			// 글 조회수 증가와 함께 글 1개를 조회를 해주는 것
 			// 서비스단에서는 글 내용을 select 하는 것과 조회수를 update 하는 것이 동시에 일어나야 한다.
 
-			session.removeAttribute("readCountPermission"); 
+			session.removeAttribute("readNoticeCountPermission"); 
 			// session 에 저장된 readCountPermission 을 삭제한다.
 		}
 		else {
@@ -309,9 +314,9 @@ public class BoardController {
 			notivo = service.getNoticeViewWithNoAddCount(seq); 
 			// 글 조회수 증가는 없고 단순히 글 1개 조회만을 해주는 것이다. 
 		}
-		*/
 		
-		notivo = service.getNoticeViewWithNoAddCount(seq); 
+		
+	//	notivo = service.getNoticeViewWithNoAddCount(seq); 
 		
 		if(notivo == null) {
 			// 존재하지 않는 글번호의 글내용을 조회하려는 경우

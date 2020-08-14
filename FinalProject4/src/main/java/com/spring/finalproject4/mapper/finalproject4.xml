@@ -212,6 +212,14 @@
 		where notice_id = #{seq}
 	</select>
 	
+	
+	<!-- 공지사항 글1개 보기 조회수 증가 -->
+	<update id="setAddReadCount" parameterType="String">
+		update yes_notice set readCount = readCount + 1
+		where notice_id = #{seq}
+	</update>
+	
+	
 	<!-- qna 테이블에서 groupno 컬럼의 최대값 구하기 -->
 	<select id="getGroupnoMax" resultType="int">
 		select nvl(max(groupno),0)

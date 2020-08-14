@@ -13,6 +13,8 @@ public interface InterBoardDAO {
 
 	NoticeVO getView(String seq); // 공지사항 글 1개 보기 페이지로 이동(조회수 증가 없음)
 
+	void setAddReadCount(String seq); // 공지사항 글 1개 보기 조회수 증가
+
 	int getTotalFaqCount(HashMap<String, String> paraMap); // 총 faq 개수
 
 	int qnaAdd(HashMap<String, String> paraMap); // Qna 문의 등록하기
@@ -28,5 +30,4 @@ public interface InterBoardDAO {
 	QnaVO getQnaView(String seq); // qna 글 1개 보기 페이지로 이동(조회수 증가 없음)
 
 	int qnaAddAdmin(QnaVO qvo); // Qna 답변 등록하기
-
 }
