@@ -519,8 +519,6 @@ public class BoardController {
 		
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 
-	//	mav.addObject("totalCount", totalCount);
-
 	//	String gobackURL = MyUtil.getCurrentURL(request);
 	//	System.out.println("~~~~~ 확인용 gobackURL : " + gobackURL);
 	//	mav.addObject("gobackURL", gobackURL);

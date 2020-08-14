@@ -85,7 +85,7 @@ public class BoardService implements InterBoardService {
 		return qnaList;
 	}
 
-
+	// 총 qna 개수
 	@Override
 	public int getTotalQnaCount(HashMap<String, String> paraMap) {
 		int n = dao.getTotalQnaCount(paraMap);
