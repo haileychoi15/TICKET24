@@ -23,7 +23,16 @@ public class MainController {
 	
 	// == YES24 메인페이지 == //
 	@RequestMapping(value="/yes24.action")
-	public ModelAndView index(ModelAndView mav) {
+	public ModelAndView index(HttpServletRequest request, ModelAndView mav) {
+
+		String category = request.getParameter("category");
+		if(category == null) {
+			category = "1";
+		}
+		List<ProdVO> prodList = service.getProdList(category);
+		
+		mav.addObject("category", category);
+		mav.addObject("prodList", prodList);
 		mav.setViewName("main/main.tiles1");
 		return mav;
 	}

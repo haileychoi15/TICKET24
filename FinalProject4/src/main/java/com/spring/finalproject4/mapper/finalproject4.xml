@@ -5,7 +5,13 @@
 <mapper namespace="finalproject4">
 
 	<!-- === MainPage === -->
-	
+	<select id="getProdList" parameterType="String" resultType="com.spring.model.ProdVO">
+		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
+		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		from prod
+		where fk_category_id = #{category}
+		order by info_open_date desc
+	</select>
 	
 	
 	

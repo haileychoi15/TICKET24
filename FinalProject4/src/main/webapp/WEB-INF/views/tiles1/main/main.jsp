@@ -21,7 +21,7 @@
                         <img src="http://tkfile.yes24.com/Upload2/Display/202007/20200721/genre_big_gmf2020.jpg/dims/quality/70/" alt="그랜드민트 페스티벌 2020">
                     </div>
                     <div class="promotion-item-content">
-                        <h3>그랜드민트 페스티벌 2020</h3>
+                        <h3>${prodList.get }</h3>
                         <p>2020.10.24 ~ 2020.10.25 올림픽공원</p>
                     </div>
                 </a>
