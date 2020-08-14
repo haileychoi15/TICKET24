@@ -67,6 +67,13 @@ public class BoardService implements InterBoardService {
 	// Qna 문의 등록하기
 	@Override
 	public int qnaAdd(HashMap<String, String> paraMap) {
+		
+		// 사용자가 qna 문의를 등록할 때 groupno 는 최대값의 +1 로 준다.
+		// qna 테이블에서 groupno 컬럼의 최대값 구하기
+		int groupno = dao.getGroupnoMax()+1;
+		
+		paraMap.put("groupno", String.valueOf(groupno));
+	
 		int n = dao.qnaAdd(paraMap);
 		return n;
 	}
@@ -80,8 +87,8 @@ public class BoardService implements InterBoardService {
 
 	// qna 글목록 보여주기
 	@Override
-	public List<QnaVO> qnaList() {
-		List<QnaVO> qnaList = dao.qnaList();
+	public List<QnaVO> qnaList(HashMap<String, String> paraMap) {
+		List<QnaVO> qnaList = dao.qnaList(paraMap);
 		return qnaList;
 	}
 
@@ -91,5 +98,21 @@ public class BoardService implements InterBoardService {
 		int n = dao.getTotalQnaCount(paraMap);
 		return n;
 	}
+
+	
+	// qna 글 1개 보기 페이지로 이동(조회수 증가 없음)
+	@Override
+	public QnaVO getQnaViewWithNoAddCount(String seq) {
+		QnaVO qnavo = dao.getQnaView(seq);
+		return qnavo;
+	}
+
+	// Qna 답변 등록하기
+	@Override
+	public int qnaAddAdmin(QnaVO qvo) {
+		int n = dao.qnaAddAdmin(qvo);
+		return n;
+	}
+	
 	
 }

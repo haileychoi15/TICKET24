@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // 검색 버튼 클릭 했을 때 이벤트
     let searchButton = document.querySelector('.search-button');
     searchButton.addEventListener('click',() => {
-
+    	
         setFirstPage();
         ajaxBoard(1);
     });

@@ -70,8 +70,8 @@ public class BoardDAO implements InterBoardDAO {
 
 	// qna 글목록 보여주기
 	@Override
-	public List<QnaVO> qnaList() {
-		List<QnaVO> qnaList = sqlsession.selectList("finalproject4.qnaList");
+	public List<QnaVO> qnaList(HashMap<String, String> paraMap) {
+		List<QnaVO> qnaList = sqlsession.selectList("finalproject4.qnaList", paraMap);
 		return qnaList;
 	}
 
@@ -81,6 +81,26 @@ public class BoardDAO implements InterBoardDAO {
 		int n = sqlsession.selectOne("finalproject4.getTotalQnaCount", paraMap);
 		return n;
 	}
-	
+
+	// qna 테이블에서 groupno 컬럼의 최대값 구하기
+	@Override
+	public int getGroupnoMax() {
+		int max = sqlsession.selectOne("finalproject4.getGroupnoMax");
+		return max;
+	}
+
+	// qna 글 1개 보기 페이지로 이동(조회수 증가 없음)
+	@Override
+	public QnaVO getQnaView(String seq) {
+		QnaVO qnavo = sqlsession.selectOne("finalproject4.getQnaView", seq);
+		return qnavo;
+	}
+
+	// Qna 답변 등록하기
+	@Override
+	public int qnaAddAdmin(QnaVO qvo) {
+		int n = sqlsession.insert("finalproject4.qnaAddAdmin", qvo);
+		return n;
+	}
 	
 }

@@ -19,8 +19,14 @@ public interface InterBoardDAO {
 
 	List<HashMap<String, String>> reserveTitleList(int idx); // 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
 
-	List<QnaVO> qnaList(); // qna 글목록 보여주기
+	List<QnaVO> qnaList(HashMap<String, String> paraMap); // qna 글목록 보여주기
 
 	int getTotalQnaCount(HashMap<String, String> paraMap); // 총 qna 개수
+
+	int getGroupnoMax(); // qna 테이블에서 groupno 컬럼의 최대값 구하기
+
+	QnaVO getQnaView(String seq); // qna 글 1개 보기 페이지로 이동(조회수 증가 없음)
+
+	int qnaAddAdmin(QnaVO qvo); // Qna 답변 등록하기
 
 }

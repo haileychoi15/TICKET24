@@ -133,6 +133,7 @@ public class BoardController {
 	public ModelAndView noticeMain(HttpServletRequest request, ModelAndView mav) {
 		
 		String page = request.getParameter("page");
+		
 		/*
 		int totalCount = service.getTotalNoticeCount(paraMap);
 		
@@ -144,6 +145,7 @@ public class BoardController {
 		
 	//	return "notice/notice.tiles1";
 		mav.addObject("page", page);
+		
 		mav.setViewName("notice/notice.tiles1");
 		return mav;
 	}
@@ -379,14 +381,14 @@ public class BoardController {
 		String name = request.getParameter("name");
 		String fk_seq = request.getParameter("fk_seq");
 		
-		
+		/*
 		System.out.println("category : "+category);
 		System.out.println("fk_rev_id : "+fk_rev_id);
 		System.out.println("subject : "+subject);
 		System.out.println("content : "+content);
 		System.out.println("fk_userid : "+fk_userid);
 		System.out.println("name : "+name);
-		System.out.println("fk_seq : "+fk_seq);
+		System.out.println("fk_seq : "+fk_seq);*/
 		
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("category", category);
@@ -420,15 +422,6 @@ public class BoardController {
 	}
 	
 
-	
-	// qna 목록가져오기
-/*	@RequestMapping(value = "/qnaList.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
-	public ModelAndView qnaList(HttpServletRequest request, ModelAndView mav) {
-		
-		
-	}
-	*/
-	
 	// QNA 게시판으로 이동
 	@ResponseBody
 	@RequestMapping(value="/qnaList.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
@@ -470,6 +463,7 @@ public class BoardController {
 
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("searchWord", searchWord);
+		paraMap.put("category", category);
 	//	paraMap.put("order", order);
 
 		
@@ -510,7 +504,7 @@ public class BoardController {
 		paraMap.put("endRno", String.valueOf(endRno));
 
 		// == qna 글목록 보여주기 == //
-		qnaList = service.qnaList(); 
+		qnaList = service.qnaList(paraMap); 
 
 
 		int blockSize = 10;
@@ -575,6 +569,110 @@ public class BoardController {
 		return jsonArr.toString();
 	}
 	
+	
+	
+	// 문의사항 글 1개 보기 페이지로 이동
+	@RequestMapping(value = "/qnaView.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
+	public ModelAndView qnaView(ModelAndView mav, HttpServletRequest request) {
+		
+		String seq = request.getParameter("seq");
+		
+	//	String gobackURL = request.getParameter("gobackURL");
+	//	mav.addObject("gobackURL", gobackURL);
+		
+		QnaVO qnavo = null;
+		
+		HttpSession session = request.getSession();
+	
+		/*
+		// 위의 글목록보기 #69. 에서 session.setAttribute("readCountPermission", "yes"); 해두었다.
+		if("yes".equals(session.getAttribute("readCountPermission"))) {
+			notivo = service.getNoticeView(seq, userid); 
+			// 글 조회수 증가와 함께 글 1개를 조회를 해주는 것
+			// 서비스단에서는 글 내용을 select 하는 것과 조회수를 update 하는 것이 동시에 일어나야 한다.
+
+			session.removeAttribute("readCountPermission"); 
+			// session 에 저장된 readCountPermission 을 삭제한다.
+		}
+		else {
+			// 웹브라우저에서 새로고침(F5) 을 클릭한 경우이다.
+			notivo = service.getNoticeViewWithNoAddCount(seq); 
+			// 글 조회수 증가는 없고 단순히 글 1개 조회만을 해주는 것이다. 
+		}
+		*/
+		
+		qnavo = service.getQnaViewWithNoAddCount(seq); 
+		
+		if(qnavo == null) {
+			// 존재하지 않는 글번호의 글내용을 조회하려는 경우
+			String msg = "존재하지 않는 글번호입니다.";
+			String loc = "javascript:history.back()";
+
+			mav.addObject("msg", msg);
+			mav.addObject("loc", loc);
+
+			mav.setViewName("msg");
+
+		}
+		else {
+		//	String gobackURL = (String) session.getAttribute("gobackURL");
+		//	System.out.println("gobackURL : "+gobackURL);
+		//	mav.addObject("gobackURL", gobackURL);
+			mav.addObject("qnavo", qnavo); // 글 1개 boardvo 를 뷰단으로 넘겨준다. 
+			mav.setViewName("qna/qnaView.tiles1");
+		//	mav.addObject("gobackURL", gobackURL);
+		}
+
+		return mav;
+	}
+	
+	
+	// Qna 답변 글쓰기 페이지로 이동
+	@RequestMapping(value = "/qnaAddAdmin.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView qnaAddAdmin(HttpServletRequest request, ModelAndView mav, QnaVO qvo) {
+		
+		String fk_seq = request.getParameter("fk_seq");
+		String groupno = request.getParameter("groupno");
+		String depthno = request.getParameter("depthno");
+		String category = request.getParameter("category");
+		
+		mav.addObject("fk_seq", fk_seq);
+		mav.addObject("groupno", groupno);
+		mav.addObject("depthno", depthno);
+		mav.addObject("category", category);
+		
+		mav.setViewName("qna/qnaAddAdmin.tiles1");
+		
+		return mav; 
+		
+	}
+	
+	// Qna 답변 등록하기
+	@RequestMapping(value = "/qnaAddAdminEnd.action", produces="text/plain;charset=UTF-8", method= {RequestMethod.POST})
+	public ModelAndView qnaAddAdminEnd(HttpServletRequest request, ModelAndView mav, QnaVO qvo) {
+		
+		int n = service.qnaAddAdmin(qvo); // Qna 답변 등록하기
+		
+		String loc = request.getContextPath()+"/qnaListMain.action";
+
+		String msg = "";
+		
+		if(n==1) {
+			msg = "답변이 등록되었습니다.";
+		}
+		else {
+			msg = "답변등록에 실패했습니다.";
+		}
+		
+		mav.addObject("loc", loc);
+		mav.addObject("msg", msg);
+
+		mav.setViewName("msg");
+		
+		
+		return mav; 
+		
+	}
 	
 	
 }

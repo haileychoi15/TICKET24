@@ -128,7 +128,7 @@ function ajaxBoard(page) {
                             item.ticketopenday = '해당없음';
                         }
 
-                        html += getBoardTemplate(item.qna_id, item.category, item.subject, item.regDate.substr(0,10), item.readCount, item.prod_title);
+                        html += getBoardTemplate(item.qna_id, item.category, item.subject, item.regDate.substr(0,10), item.name, item.prod_title, item.fk_seq);
                         recodes = item.totalCount;
                     });
 
@@ -190,15 +190,22 @@ function setPageList(pageGroup, page, recodes) { // 현재 누른 페이지, 총
 
 }
 
-function getBoardTemplate(seq, category, title, date, view, file) {
+function getBoardTemplate(seq, category, title, date, view, file, fk_seq) {
 
+	if (fk_seq > 0) {
+		fk_seq = "     └Re";
+	}
+	else {
+		fk_seq = "";
+	}
+	
     let template = `<div class="row">
                     <span class="table-category">
                         ${category}
                     </span>
                     <span class="table-title">
-                        <a href="/finalproject4/noticeView.action?seq=${seq}">
-                            ${title}
+                        <a href="/finalproject4/qnaView.action?seq=${seq}">
+                            ${fk_seq}${title}
                         </a>
                     </span>
                     <span class="table-date">

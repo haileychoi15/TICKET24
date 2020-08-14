@@ -63,13 +63,21 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    // 문의하기 버튼 눌렀을 때 이벤트
     let qnaButton = document.querySelector('.qna-button strong');
     let modal = document.querySelector('.modal');
     qnaButton.addEventListener('click',(event) => {
 
-        modal.style.display = 'flex';
-        let userid = modal.querySelector('.modal-form #userid').value;
-        ajaxProduct(userid);
+    	let loginUserid = document.querySelector('.login-userid').value;
+    	if(loginUserid === '') {
+    		alert("로그인 이후에 이용하실 수 있습니다.");
+    		return false;
+    	}
+    	
+	    modal.style.display = 'flex';
+	    let userid = modal.querySelector('.modal-form #userid').value;
+	    ajaxProduct(userid);
+    	
     });
 
     let closeButton = modal.querySelector('.close-button');
@@ -205,10 +213,7 @@ function ajaxProduct(userid) {
     function getResponse() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
-
-            //    let response = httpRequest.responseText.split(',');
-            //    console.log(response, response.computedString, response.length); //ajax 성공시 코드
-
+            	
             	let response = JSON.parse(httpRequest.responseText);
                 console.log(response.computedString);
             	
@@ -217,7 +222,6 @@ function ajaxProduct(userid) {
                 if(response.length !== 0){
                     response.forEach((item, index) => {
                         html += `<option value="${item.prod_id}">${item.prod_title}</option>`;
-                        // html += `<option value="${index+1}">${index+1}</option>`;
                     });
                 }
                 document.querySelector('.modal-form .qna-product').innerHTML = html;

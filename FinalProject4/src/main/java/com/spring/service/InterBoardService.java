@@ -23,8 +23,12 @@ public interface InterBoardService {
 
 	List<HashMap<String, String>> reserveTitleList(int idx); // 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
 
-	List<QnaVO> qnaList(); // qna 글목록 보여주기
+	List<QnaVO> qnaList(HashMap<String, String> paraMap); // qna 글목록 보여주기
 
 	int getTotalQnaCount(HashMap<String, String> paraMap); // 총 qna 건수
+
+	QnaVO getQnaViewWithNoAddCount(String seq); // qna 글 1개 보기 페이지로 이동
+
+	int qnaAddAdmin(QnaVO qvo); // Qna 답변 등록하기
 
 }

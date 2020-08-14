@@ -1477,7 +1477,7 @@ create table yes_qna
 ,fk_userid      varchar2(20)          not null   -- 사용자ID
 ,name           Nvarchar2(20)         not null   -- 글쓴이
 ,category       varchar2(20)          not null   -- 카테고리
-,fk_rev_id      number(10)
+,fk_rev_id      number(10)            default 0 
 ,subject        Nvarchar2(200)        not null   -- 글제목
 ,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
 ,pw             varchar2(20)    default '1234'      not null   -- 글암호
@@ -1511,6 +1511,9 @@ create table yes_qna
 alter table yes_qna 
 modify pw default '1234';
 
+alter table yes_qna
+modify fk_rev_id default 0; 
+
 drop sequence qnaSeq;
 
 create sequence qnaSeq
@@ -1521,7 +1524,85 @@ nominvalue
 nocycle
 nocache;
 
+insert into yes_qna(qna_id,fk_userid,name,category,fk_rev_id,subject,content,groupno,fk_seq,depthno)
+values(qnaSeq.nextval, 'admin', '관리자', '1', 0, '관리자 답변입니다. ', '답변내용입니다.', 1, 1, 1);
+
+select * 
+from view_qna_info
+where groupno = 1;
+
+select *
+from view_qna_info
+where qna_id = 1;
+
+--kimjy 가 문의한글, 그 문의에 답변글(admin)
+-- kimjy 문의한글 qna_id, groupno 
+
+
+
+select qna_id, fk_userid, name, qna_cate_name, subject, content
+                 , regDate, adminread, adminans, groupno, fk_seq, depthno
+                 ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		from 
+		(
+		    select rownum AS rno
+		         , qna_id, fk_userid, name, qna_cate_name, subject, content
+                 , regDate, adminread, adminans, groupno, fk_seq, depthno
+                 ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		    from
+		    (
+		        select qna_id, fk_userid, name, qna_cate_name, subject, content
+                        , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate, adminread, adminans, groupno, fk_seq, depthno
+                        ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		        from view_qna_info
+		        where status = 1
+		        -- and lower(${searchType}) like '%' || lower(#{searchWord}) || '%' 
+		        start with fk_seq = 0
+		        connect by prior qna_id = fk_seq
+		        order siblings by groupno desc, qna_id asc
+		    ) V
+		) T
+		where rno between 1 and 5;
+        -- 문의게시판 계층형 쿼리
+
+
+select *
+from view_qna_info
+where fk_userid in ('kimjy', 'admin')
+start with fk_seq = 0
+connect by prior qna_id = fk_seq
+order siblings by groupno desc, qna_id asc;
+-- 나의문의와 관리자 답변 같이보기(다른사람에게 답변한 관리자 답변도 같이 보인다.)
+
+select *
+from
+(select *
+from view_qna_info
+where fk_userid in ('kimjy', 'admin')
+start with fk_seq = 0
+connect by prior qna_id = fk_seq 
+order siblings by groupno desc, qna_id asc
+) V
+where groupno in (1,2,3);
+-- 나의문의와 관리자 답변 같이보기(내가쓴 글의 groupno 를 알아와야 한다.)
+
+
+select nvl(max(groupno),0)
+from yes_qna;
+
+select qna_id, fk_userid, name, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
+     ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+from view_qna_info
+where qna_id = 1;
+
+commit;
+
+delete from yes_qna;
 select * from yes_qna;
+
+
+
+
 
 select * 
 from yes_qna Q left join yes_reserve R 
@@ -1582,6 +1663,7 @@ where userid = 'kimjy';
 -- 'kimjy' 이 예매한 공연목록중 중복을 제거하고 공연이름과 공연정보코드만 가져오기
 
 
+
 select *
 from yes_reserve R join view_rev_showInfo I
 on R.prod_id = I.prod_id
@@ -1592,6 +1674,42 @@ on R.user_id = M.idx;
 select *
 from view_rev_showInfo
 where prod_id = 2;
+
+
+select * 
+from view_qna_info
+where 1=1 
+and ( fk_userid like 'kimjy'  or prod_title like '%' || '클래식' || '%' )
+and category = '1';
+-- 5개
+
+select *
+from view_qna_info
+where 1=1 
+and ( fk_userid like 'kimjy'  or prod_title like '%' || 'kimjy' || '%' )
+and category = '1';
+-- 5개
+
+select *
+from view_qna_info
+where 1=1 
+and ( fk_userid like '클래식'  or prod_title like '%' || '클래식' || '%' )
+and category = '1';
+-- 3개
+
+select *
+from(
+    select rownum as rno, qna_id, fk_userid, name, category, qna_cate_name, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
+          ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+    from view_qna_info
+    where status = 1
+    and ( lower(fk_userid) like lower('%%')  or lower(prod_title) like '%' ||  '%' )
+    --and category = '1'
+    order by qna_id desc
+)T
+where rno between  1 and 5;
+-- qna List 페이징처리
+
 ----------------------------------- 공지 게시판 테이블 -----------------------------------
 
 

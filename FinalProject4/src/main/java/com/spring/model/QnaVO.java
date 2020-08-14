@@ -24,7 +24,44 @@ public class QnaVO {
 	private String rev_email;
 	private String prod_img;
 	private String prod_title;
+
+	private String previousseq;      // 이전글번호
+	private String previoussubject;  // 이전글제목
+	private String nextseq;          // 다음글번호
+	private String nextsubject;      // 다음글제목	
 	
+	public String getPreviousseq() {
+		return previousseq;
+	}
+
+	public void setPreviousseq(String previousseq) {
+		this.previousseq = previousseq;
+	}
+
+	public String getPrevioussubject() {
+		return previoussubject;
+	}
+
+	public void setPrevioussubject(String previoussubject) {
+		this.previoussubject = previoussubject;
+	}
+
+	public String getNextseq() {
+		return nextseq;
+	}
+
+	public void setNextseq(String nextseq) {
+		this.nextseq = nextseq;
+	}
+
+	public String getNextsubject() {
+		return nextsubject;
+	}
+
+	public void setNextsubject(String nextsubject) {
+		this.nextsubject = nextsubject;
+	}
+
 	public QnaVO() {}
 	
 	public QnaVO(String qna_id, String fk_userid, String name, String category, String qna_cate_name, String subject,

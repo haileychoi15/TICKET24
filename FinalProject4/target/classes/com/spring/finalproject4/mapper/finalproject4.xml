@@ -103,7 +103,7 @@
 		and fk_category = #{category} 
 		</if>
 		<if test='searchWord != ""'>
-		and subject like '%' || #{searchWord} || '%'
+		and lower(subject) like '%' || lower(#{searchWord}) || '%'
 		</if>
 		) V
 		where rno between #{startRno} and ${endRno}
@@ -117,7 +117,7 @@
 		from yes_faq
 		where 1=1 
 		<if test='searchWord != ""'>
-		and subject like '%' || #{searchWord} || '%'
+		and lower(subject) like '%' || lower(#{searchWord}) || '%'
 		</if>
 		<if test='category != ""'>
 		and fk_category = #{category}
@@ -130,7 +130,7 @@
 		from yes_notice
 		where 1=1 
 		<if test='searchWord != ""'>
-		and subject like '%' || #{searchWord} || '%'
+		and lower(subject) like '%' || lower(#{searchWord}) || '%'
 		</if>
 	</select>
 	
@@ -149,7 +149,7 @@
 		        )
 		        where status = 1
 		        <if test='searchWord != ""'>
-		        and subject like '%' || #{searchWord} || '%'
+		        and lower(subject) like '%' || lower(#{searchWord}) || '%'
 		        </if>
 		    )V
 		where rno between #{startRno} and #{endRno}
@@ -181,10 +181,17 @@
 		where notice_id = #{seq}
 	</select>
 	
+	<!-- qna 테이블에서 groupno 컬럼의 최대값 구하기 -->
+	<select id="getGroupnoMax" resultType="int">
+		select nvl(max(groupno),0)
+		from yes_qna
+	</select>
+	<!-- 최초에는 max(groupno) 가 없으므로 null 이니까 nvl 로 null 을 0 으로 처리한다. -->
+	
 	<!-- Qna 문의 등록하기 -->
 	<insert id="qnaAdd" parameterType="HashMap">
 		insert into yes_qna (qna_id, fk_userid, name, category, fk_rev_id, subject, content, groupno, fk_seq, depthno)
-		values(qnaSeq.nextval, #{fk_userid}, #{name}, #{category}, #{fk_rev_id}, #{subject}, #{content}, 0, 0, 0)
+		values(qnaSeq.nextval, #{fk_userid}, #{name}, #{category}, #{fk_rev_id}, #{subject}, #{content}, #{groupno}, 0, 0)
 	</insert>
 	
 	<!-- 로그인한 회원의 예매공연목록과 예매공연코드 가져오기 -->
@@ -199,22 +206,79 @@
 	</select>
 	
 	<!-- qna 글목록 보여주기 -->
-	<select id="qnaList" resultType="com.spring.model.QnaVO">
-		select * 
-		from view_qna_info
-		where status = 1
-		order by qna_id desc
+	<select id="qnaList" parameterType="HashMap" resultType="com.spring.model.QnaVO">
+		<!-- select *
+		from(
+		    select rownum as rno, qna_id, fk_userid, name, category, qna_cate_name, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
+		          ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		    from view_qna_info
+		    where status = 1
+		    <if test='searchWord != ""'>
+	        and ( lower(fk_userid) like lower(#{searchWord})  or lower(prod_title) like '%' || lower(#{searchWord}) || '%' )
+	        </if>
+		    <if test='category != ""'>
+			and category = #{category}
+			</if>
+		    order by qna_id desc
+		)T
+		where rno between #{startRno} and #{endRno} -->
+		select qna_id, fk_userid, name, qna_cate_name, subject, content
+                 , regDate, adminread, adminans, groupno, fk_seq, depthno
+                 ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		from 
+		(
+		    select rownum AS rno
+		         , qna_id, fk_userid, name, qna_cate_name, subject, content
+                 , regDate, adminread, adminans, groupno, fk_seq, depthno
+                 ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		    from
+		    (
+		        select qna_id, fk_userid, name, qna_cate_name, subject, content
+                        , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate, adminread, adminans, groupno, fk_seq, depthno
+                        ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		        from view_qna_info
+		        where status = 1
+		        <if test='searchWord != ""'>
+		        and ( lower(fk_userid) like lower(#{searchWord})  or lower(prod_title) like '%' || lower(#{searchWord}) || '%' )
+		        </if>
+			    <if test='category != ""'>
+				and category = #{category}
+				</if>
+		        start with fk_seq = 0
+		        connect by prior qna_id = fk_seq
+		        order siblings by groupno desc, qna_id asc
+		    ) V
+		) T
+		where rno between #{startRno} and #{endRno}
 	</select>
 	
 	<!-- 총 qna 개수 -->
 	<select id="getTotalQnaCount" parameterType="HashMap" resultType="int">
 		select count(*) 
-		from yes_qna
+		from view_qna_info
 		where 1=1 
 		<if test='searchWord != ""'>
-		and subject like '%' || #{searchWord} || '%'
+		and ( lower(fk_userid) like lower(#{searchWord})  or lower(prod_title) like '%' || lower(#{searchWord}) || '%' )
+		</if>
+		<if test='category != ""'>
+		and category = #{category}
 		</if>
 	</select>
+	
+	
+	<!-- qna 글 1개 보기 페이지로 이동 -->
+	<select id="getQnaView" parameterType="String" resultType="com.spring.model.QnaVO">
+		select qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
+        	  ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		from view_qna_info
+		where qna_id = #{seq}
+	</select>
+	
+	<!-- Qna 답변 등록하기 -->
+	<insert id="qnaAddAdmin" parameterType="com.spring.model.QnaVO">
+		insert into yes_qna(qna_id,fk_userid,name,category,subject,content,groupno,fk_seq,depthno)
+		values(qnaSeq.nextval, #{fk_userid}, #{name}, #{category}, #{subject}, #{content}, #{groupno}, #{fk_seq}, #{depthno})
+	</insert>
 	
 	
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->

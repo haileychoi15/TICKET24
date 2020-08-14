@@ -52,21 +52,28 @@
                 </div>
                 <div class="thead show">
                     <div class="row">
-                            <span class="table-category">
+                        <span class="table-category">
                                 구분
-                            </span>
+                        </span>
                         <span class="table-title">
                                 제목
-                            </span>
+                        </span>
+                        <span class="table-product">
+                             예매공연
+                        </span>
+                        <span class="table-writer">
+                                작성자
+                        </span>
                         <span class="table-date">
-                                티켓오픈일자
-                            </span>
-                        <span class="table-view">
-                                조회수
-                            </span>
-                        <span class="table-file">
-                                첨부파일
-                            </span>
+                                문의일자
+                        </span>
+                        <span class="table-is-read">
+                                읽음여부
+                        </span>
+                        <span class="table-is-answer">
+                                답변여부
+                        </span>
+                
                     </div>
                 </div>
                 <div class="tbody">

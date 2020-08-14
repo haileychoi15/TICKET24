@@ -16,6 +16,7 @@
 <body>
 <section class="search">
     <div class="search-group">
+		<input type="hidden" class="login-userid" value="${sessionScope.loginuser.userid}" />
         <h1>자주찾는 FAQ</h1>
         <p>
             TICKET24에 자주 묻는 질문들을 모아 답변과 함께 알려드립니다.
