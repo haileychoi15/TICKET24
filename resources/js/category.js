@@ -1,4 +1,6 @@
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', (event) => {
+
+    ajaxProduct(event.currentTarget);
 
     // 카테고리 박스 눌렀을 때 이벤트
     let subCategoryButton = document.querySelector('.category-box-button');
@@ -30,11 +32,11 @@ window.addEventListener('DOMContentLoaded', () => {
             subCategory.innerText = target.innerText;
             subCategory.value = target.value;
 
-            ajaxProduct();
+            ajaxProduct(event.currentTarget);
         }
     });
 
-    // 오더 버튼 누를 때 이벤트 발생
+    // 오더 버튼 누를 때 이벤트
     let orderGroup = document.querySelector('.order-group');
     orderGroup.addEventListener('click', (event) => {
 
@@ -48,9 +50,17 @@ window.addEventListener('DOMContentLoaded', () => {
             });
             target.classList.add('selected');
 
-            ajaxProduct();
+            ajaxProduct(event.currentTarget);
         }
     });
+
+    // 더보기 버튼 눌렀을 때 이벤트
+    let moreButton = document.querySelector('.more-button');
+    moreButton.addEventListener('click', (event) => {
+
+        ajaxProduct(event.currentTarget);
+    });
+
 });
 
 function getCategoryId(category) {
@@ -95,7 +105,7 @@ function getProdTemplate(id, title, img, place) {
     return template;
 }
 
-function ajaxProduct() {
+function ajaxProduct(target) {
 
     let category = document.querySelector('.main-category').innerText;
     category = getCategoryId(category); // 메인 카테고리를 id 값으로 바꿔주기
@@ -106,8 +116,8 @@ function ajaxProduct() {
     console.log('서브 카테고리 : ',subCategory);
     console.log('정렬 순서 : ',order);
 
-    let httpRequest = new XMLHttpRequest();
-    makeRequest('/category', category, subCategory, order); // ####
+    //let httpRequest = new XMLHttpRequest();
+    //makeRequest('/category', category, subCategory, order); // ####
 
     function makeRequest(url, category, subCategory, order) {
 
@@ -127,6 +137,10 @@ function ajaxProduct() {
                 let html = '';
                 response.forEach((item, index) => {
 
+                    if(index%4 === 0){ // 0 번째
+                        html += '<div class="row">';
+                    }
+
                     if(index%2 === 0){ // index가 짝수일 때
                         html += `<div class="col12 col-md-6">
                                  <ul class="card-list list-group">`;
@@ -138,16 +152,22 @@ function ajaxProduct() {
                         html += `</ul>
                                  </div>`;
                     }
+
+                    if(index%4 === 3){
+                        html += `</div>`;
+                    }
                 });
 
                 let prodGroup = document.querySelector('.product-group');
-                prodGroup.innerHTML = html;
-                
+                if(!target.classList.contains('more-button')){ // 더보기 버튼 누른 것이 아니라면 상품리스트 비우기
+                    prodGroup.innerHTML = '';
+                }
+                prodGroup.insertAdjacentHTML('beforeend', html);
+
             } else {
                 alert('There was a problem with the request.');
             }
         }
 
     }
-
 }
