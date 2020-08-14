@@ -382,7 +382,7 @@
     
     <form name="payFrm">
     	<input type="hidden" name="payShowName" value="${getShowRsvInfo.prod_title}"/>
-    	<input type="hidden" name="paySum" value=""/>
+    	<input type="hidden" name="paySum" value="" id="paySum" />
     	<input type="hidden" name="payUserEmail" value=""/>
     	<input type="hidden" name="payUserName" value=""/>
     	<input type="hidden" name="payReciveMethod" value=""/>

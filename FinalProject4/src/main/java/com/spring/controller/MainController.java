@@ -90,6 +90,8 @@ public class MainController {
 		String categoryNum = request.getParameter("categoryNum");
 		String detailCategoryNum = request.getParameter("detailCategoryNum");
 		
+		System.out.println("ㅋㅋㅋ");
+		
 		//List<HashMap<String, String>> selectedShowList = service.getSelectedShowList();
 		
 		switch (selectNum) {
