@@ -214,6 +214,44 @@ public class MemberService implements InterMemberService {
 	}
 
 
+	// 나의 문의 내역
+	@Override
+	public List<HashMap<String, String>> qnaList(String userid) {
+		List<HashMap<String, String>> qnaList = dao.qnaList(userid);
+		return qnaList;
+	}
+
+	// 내 문의 개수
+	@Override
+	public String qnaCount(String userid) {
+		String qnaCount = dao.qnaCount(userid);
+		return qnaCount;
+	}
+
+	// 내 쿠폰 개수
+	@Override
+	public String couponCount(String userid) {
+		String couponCount = dao.couponCount(userid);
+		return couponCount;
+	}
+
+	// 쿠폰 내역
+	@Override
+	public List<HashMap<String, String>> couponList(String userid) {
+		List<HashMap<String, String>> couponList = dao.couponList(userid);
+		return couponList;
+	}
+
+
+
+	// 관리자 답변 내역
+	@Override
+	public List<HashMap<String, String>> qnaList2(String userid) {
+		List<HashMap<String, String>> qnaList2 = dao.qnaList2(userid);
+		return qnaList2;
+	}
+
+
 
 	
 	

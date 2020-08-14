@@ -219,7 +219,7 @@
 	</insert>
 	
 	<!-- 로그인한 회원의 예매공연목록과 예매공연코드 가져오기 -->
-	<resultMap type="HashMap" id="reserveTitleList">
+ 	<resultMap type="HashMap" id="reserveTitleList">
 		<result property="prod_title"		column="prod_title"		javaType="String"/>
 		<result property="prod_id"			column="prod_id"		javaType="String"/>
 	</resultMap>
@@ -228,7 +228,7 @@
 		from view_rev_memberInfo
 		where idx = #{idx}
 	</select>
-	
+	 
 	
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
 	
@@ -265,11 +265,10 @@
 	
 	
 	
-	
 	<!-- ===== Member ===== -->
 	<!-- === #47. 로그인 처리하기 === -->
 	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.model.MemberVO">
-		select idx, userid, name, email
+		select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -286,7 +285,7 @@
 	
 	<!-- API 회원으로 등록이 되어있는지 확인 -->
 	<select id="kakaoMember" resultType="com.spring.model.MemberVO" parameterType="HashMap">
-		select idx, userid, name, email
+		select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 		     , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -298,7 +297,7 @@
 	<select id="idDuplicateCheck" resultType="String" parameterType="String">
 		select userid 
 		from yes_member
-		where status = 1 and userid = #{userid}
+		where userid = #{userid}
 	</select>
 
 	<!-- 카카오 회원가입 -->
@@ -396,7 +395,7 @@
      
     <!-- 유효기간이 남아 있으면서 해당 sessionId를 가지는 사용자 정보를 꺼내오는 부분 -->
     <select id="checkUserWithSessionKey" resultType="com.spring.model.MemberVO">
-        select idx, userid, name, email
+        select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
         from yes_member
@@ -410,7 +409,107 @@
 		where idx = #{idx} and pwd = #{pwd} 
 	</update>
 	
+	<!-- 아이디 찾기 -->
+	<select id="findID" parameterType="HashMap" resultType="String">
+		select userid
+		from yes_member
+		where status = 1 and name = #{name} and (trim(hp1) || trim(hp2) || trim(hp3)) = #{mobile}
+	</select>
 	
+	<!-- 비밀번호 찾기 -->
+	<select id="findPW" parameterType="HashMap" resultType="String">
+		select userid
+		from yes_member
+		where status = 1 and userid = #{userid} and email = #{email}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePW" parameterType="HashMap">
+		update yes_member
+		set pwd = #{pwd}
+		where status = 1 and userid = #{userid}
+	</update>
+	
+	
+	<resultMap type="HashMap" id="pointMap">
+		<result property="point_id"  		column="point_id" 		javaType="String"/>
+		<result property="fk_userid" 		column="fk_userid"      javaType="String"/>
+		<result property="content" 	   		column="content"     	javaType="String"/>
+		<result property="fk_rev_date"      column="fk_rev_date"    javaType="String"/>
+		<result property="fk_rev_id"        column="fk_rev_id"      javaType="String"/>
+		<result property="point"        column="point"      javaType="String"/>
+	</resultMap>
+	<select id="pointList" parameterType="String" resultMap="pointMap">
+		select point_id, fk_userid, content, point, to_char(fk_rev_date, 'yyyy.mm.dd hh24:mi:ss') AS fk_rev_date, fk_rev_id 
+		from yes_point 
+		where fk_userid = #{userid}
+		order by fk_rev_date desc
+	</select>
+	
+	
+	
+	<resultMap type="HashMap" id="qnaMap">
+		<result property="qna_cate_name" column="qna_cate_name" javaType="String"/>
+		<result property="subject" 		 column="subject"       javaType="String"/>
+		<result property="regDate" 	   	 column="regDate"     	javaType="String"/>
+		<result property="adminans"      column="adminans"   	javaType="String"/>
+		<result property="content"       column="content"   	javaType="String"/>
+	</resultMap>
+	<select id="qnaList" parameterType="String" resultMap="qnaMap">
+		select A.qna_cate_name AS qna_cate_name
+		     , B.subject AS subject
+		     , to_char(B.regDate, 'yyyy.mm.dd hh24:mi:ss') AS regDate
+		     , B.adminans AS adminans
+		     , B.content AS content
+		from yes_qna_cate A, yes_qna B
+		where A.qna_cate_code = B.category and B.fk_userid = #{userid}
+		order by regDate desc
+	</select>
+	
+	<select id="qnaCount" resultType="String" parameterType="String">
+		select count(*)
+		from yes_qna
+		where fk_userid = #{userid}
+	</select>
+	
+	<select id="couponCount" resultType="String" parameterType="String">
+		select count(*)
+		from yes_coupon
+		where fk_userid = #{userid}
+	</select>
+	
+	
+	<resultMap type="HashMap" id="couponMap">
+		<result property="coupon_id" 		column="coupon_id" 			javaType="String"/>
+		<result property="coupon_dc" 		column="coupon_dc"      	javaType="String"/>
+		<result property="coupon_olddate" 	column="coupon_olddate" 	javaType="String"/>
+		<result property="coupon_condition" column="coupon_condition"   javaType="String"/>
+		<result property="coupon_name"      column="coupon_name"   		javaType="String"/>
+	</resultMap>
+	<select id="couponList" parameterType="String" resultMap="couponMap">
+		select coupon_id, coupon_dc, to_char(coupon_olddate, 'yyyy.mm.dd hh24:mi:ss') as coupon_olddate, coupon_condition, coupon_name
+		from yes_coupon
+		where coupon_status = 1 and fk_userid = #{userid}
+		order by coupon_olddate asc
+	</select>
+	
+	
+	<resultMap type="HashMap" id="qnaMap2">
+		<result property="regDate" 			column="regDate" 			javaType="String"/>
+		<result property="content"      	column="content"   		javaType="String"/>
+	</resultMap>
+	<select id="qnaList2" parameterType="String" resultMap="qnaMap2">
+		select to_char(regDate,'yyyy.mm.dd hh24:mi:ss') AS regDate, content
+		from
+		(select *
+		from view_qna_info
+		where fk_userid in (#{userid}, 'admin')
+		start with fk_seq = 0
+		connect by prior qna_id = fk_seq 
+		order siblings by groupno desc, qna_id asc
+		) V
+		where groupno in (1,2,3);
+	</select>
 	
 
 </mapper>

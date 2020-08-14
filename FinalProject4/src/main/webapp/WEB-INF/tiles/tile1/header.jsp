@@ -180,7 +180,7 @@
                         <a href="<%=ctxPath%>/myPage.action"> 마이페이지 </a>
                     </li>
                     <li class="user-box-item">
-                        <a href=""> 고객센터 </a>
+                        <a href="<%=ctxPath%>/qna.action"> 고객센터 </a>
                     </li>
                 </ul>
             </button>

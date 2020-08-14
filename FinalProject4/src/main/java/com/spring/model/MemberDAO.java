@@ -165,6 +165,42 @@ public class MemberDAO implements InterMemberDAO {
 		
 		return pointList;
 	}
+
+	// 나의 문의 내역
+	@Override
+	public List<HashMap<String, String>> qnaList(String userid) {
+		List<HashMap<String, String>> qnaList = sqlsession.selectList("finalproject4.qnaList", userid);
+		return qnaList;
+	}
+
+	// 내 문의 개수
+	@Override
+	public String qnaCount(String userid) {
+		String qnaCount = sqlsession.selectOne("finalproject4.qnaCount", userid);
+		return qnaCount;
+	}
+
+	// 내 쿠폰 개수
+	@Override
+	public String couponCount(String userid) {
+		String couponCount = sqlsession.selectOne("finalproject4.couponCount", userid);
+		return couponCount;
+	}
+
+	// 쿠폰 내역
+	@Override
+	public List<HashMap<String, String>> couponList(String userid) {
+		List<HashMap<String, String>> couponList = sqlsession.selectList("finalproject4.couponList", userid);
+		return couponList;
+	}
+
+	// 관리자 답변 내역
+	@Override
+	public List<HashMap<String, String>> qnaList2(String userid) {
+
+		List<HashMap<String, String>> qnaList2 = sqlsession.selectList("finalproject4.qnaList2", userid);
+		return qnaList2;
+	}
 	
 	
 	

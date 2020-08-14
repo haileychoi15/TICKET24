@@ -1358,7 +1358,6 @@ create table yes_notice
 );
 
 
-
 drop sequence noticeSeq;
 
 create sequence noticeSeq
@@ -1673,6 +1672,16 @@ select *
 from yes_qna_cate;
 
 
+select A.qna_cate_name AS qna_cate_name
+     , B.subject AS subject
+     , to_char(B.regDate, 'yyyy.mm.dd hh24:mi:ss') AS regDate
+     , B.adminans AS adminans
+     , B.content AS content
+from yes_qna_cate A, yes_qna B
+where A.qna_cate_code = B.category and B.fk_userid = 'guzi10'
+order by regDate desc;
+
+
 ----------------------------------- QNA 게시판 테이블 -----------------------------------
 
 drop table yes_qna purge;
@@ -1685,7 +1694,7 @@ create table yes_qna
 ,fk_rev_id      number(10)
 ,subject        Nvarchar2(200)        not null   -- 글제목
 ,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
-,pw             varchar2(20)          not null   -- 글암호
+,pw             varchar2(20)          default '1234'   -- 글암호
 ,readCount      number default 0      not null   -- 글조회수
 ,regDate        date default sysdate  not null   -- 글쓴시간
 ,secret         number(1) default 0   not null   -- 비밀글여부  1:비밀글, 0:공개글
@@ -1703,14 +1712,22 @@ create table yes_qna
                                                  -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
 ,constraint  PK_qna_id primary key(qna_id)
 ,constraint  FK_qna_fk_userid foreign key(fk_userid) references yes_member(userid)
-,constraint  FK_qna_fk_rev_id foreign key(fk_rev_id) references yes_reserve(rev_id)
+--,constraint  FK_qna_fk_rev_id foreign key(fk_rev_id) references yes_reserve(rev_id)
 ,constraint  CK_qna_status check( status in(0,1) )
 ,constraint  CK_qna_secret check( secret in (0,1) )
 ,constraint  CK_qna_adminread check( adminread in (0,1) )
 ,constraint  CK_qna_adminans check( adminans in (0,1) )
 );
 
+insert into yes_qna(qna_id,fk_userid,name,category,fk_rev_id,subject,content,groupno,fk_seq,depthno)
+values(qnaSeq.nextval, 'admin', '관리자', '1', 0, '관리자 답변입니다. ', '답변내용입니다.', 1, 1, 1);
 
+
+alter table yes_qna 
+modify pw default '1234';
+
+alter table yes_qna
+modify fk_rev_id default 0;
 
 drop sequence qnaSeq;
 
@@ -1722,7 +1739,15 @@ nominvalue
 nocycle
 nocache;
 
+
 select * from yes_qna;
+
+select count(*)
+from yes_qna
+where fk_userid = 'guzi10';
+
+delete from yes_qna;
+commit;
 
 ----------------------------------- 리뷰 테이블 -----------------------------------
 
@@ -1941,6 +1966,7 @@ values(faqSeq.nextval, 'admin', '2', '배송지 정보를 변경할 수 있나�
 
 commit;
 
+
 ----------------------------------- FAQ 카테고리 테이블 -----------------------------------
 
 
@@ -1956,18 +1982,23 @@ create table yes_faq_cate
 
 drop sequence faqCateSeq;
 
-select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id
-from view_seat_info
-where prod_id = 1;
+create sequence faqCateSeq
+start with 1
+increment by 1
+nomaxvalue 
+nominvalue
+nocycle
+nocache;
 
-select date_id
-from yes_show_date
-where prod_id=1 and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day')='20/09/01 화요일' and date_showtime = '1회차 9시';
 
-select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id, seat_color
-from view_seat_info
-where prod_id = 1;
+insert into yes_faq_cate values(faqCateSeq.nextval, '1', '예매/결제');
+insert into yes_faq_cate values(faqCateSeq.nextval, '2', '취소/환불');
+insert into yes_faq_cate values(faqCateSeq.nextval, '3', '티켓수령');
+insert into yes_faq_cate values(faqCateSeq.nextval, '4', '기타');
+commit;
 
+select * 
+from yes_faq_cate;
 
 
 ------------------ 포인트 테이블 --------------------------------
@@ -2020,3 +2051,107 @@ insert into yes_point(point_id, fk_userid, content, point, fk_rev_date, fk_rev_i
 values(seq_point.nextval, 'guzi10', '포인트 적립222!', 1400, sysdate, 1123);
 
 commit;
+
+
+----------------  view_rev_memberInfo ------------------------------
+create or replace view view_rev_memberInfo
+as
+select rev_id, R.prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status, prod_img, prod_title, info_grade, info_run_time, map_name, idx, userid, name
+from yes_reserve R join view_rev_showInfo I
+on R.prod_id = I.prod_id
+join yes_member M
+on R.user_id = M.idx;
+
+----------------------------------------------------------------
+create or replace view view_qna_info
+as
+select qna_id, fk_userid, name, category, qna_cate_name, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
+      ,fk_rev_id, nvl(I.prod_id, 0) as prod_id, nvl(rev_email, ' ') as rev_email, nvl(prod_img, ' ') as prod_img, nvl(prod_title, ' ') as prod_title
+from yes_qna Q left join yes_reserve R 
+on Q.fk_rev_id = R.rev_id
+left join view_rev_showInfo I
+on R.prod_id = I.prod_id
+left join yes_qna_cate C
+on Q.category = C.qna_cate_code;
+-- 예매한 공연목록문의 합쳐진 QNA 리스트 나타내기
+
+select * from view_qna_info;
+
+
+----------------------- 쿠폰 ---------------------------
+drop table yes_coupon purge;
+create table yes_coupon
+(coupon_id          varchar2(10)  not null  -- 쿠폰번호
+,coupon_dc          number(10)    not null  -- 할인금액
+,coupon_status      number(1)     not null  -- 사용상태
+,coupon_newdate     date default sysdate -- 발급일자
+,coupon_usedate     date                 -- 사용일자
+,coupon_olddate     date                 -- 사용기한(만료날짜)
+,coupon_name        varchar2(100) not null  -- 쿠폰명
+,coupon_condition   varchar2(100) default '모든 공연 가능'       -- 사용조건
+,fk_userid          varchar2(20)  not null  -- 사용가능회원코드
+,fk_prod_id         number        not null  -- 사용가능공연코드
+,constraint PK_coupon_id primary key(coupon_id)
+,constraint fk_userid_coupon foreign key(fk_userid) references yes_member(userid)
+,constraint fk_prod_id_coupon foreign key(fk_prod_id) references prod(prod_id) 
+);
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id) 
+values('AB3C212C3D', 5000, 1, sysdate, null, sysdate +4, '[2020 캣츠 내한공연] 5천원 할인 쿠폰', default, 'guzi10', 1);
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id) 
+values('AB4C212C3D', 10000, 1, sysdate, null, sysdate +2, '[2020 특별재난쿠폰] 코로나 재난쿠폰', default, 'guzi10', 2);
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id) 
+values('AB5C212C3D', 4000, 1, sysdate, null, sysdate +10, '김밥일번가 쿠폰', default, 'guzi10', 3);
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id) 
+values('AB6C212C3D', 2500, 1, sysdate, null, sysdate +7, 'MOMO 커피 쿠폰', default, 'guzi10', 4);
+
+commit;
+
+select * from yes_coupon;
+delete from yes_coupon;
+
+select coupon_id, coupon_dc, to_char(coupon_olddate, 'yyyy.mm.dd hh24:mi:ss') as coupon_olddate, coupon_condition, coupon_name
+from yes_coupon
+where coupon_status = 1 and fk_userid = 'guzi10';
+
+
+select count(*)
+from yes_coupon
+where fk_userid='guzi10';
+----------------------------------------------
+select *
+from view_qna_info
+where fk_userid in ('guzi10', 'admin')
+start with fk_seq = 0
+connect by prior qna_id = fk_seq
+order siblings by groupno desc, qna_id asc;
+-- 나의문의와 관리자 답변 같이보기
+-------------------------------------------------
+
+select *
+from
+(select *
+from view_qna_info
+where fk_userid in ('kimjy', 'admin')
+start with fk_seq = 0
+connect by prior qna_id = fk_seq 
+order siblings by groupno desc, qna_id asc
+) V
+where groupno in (1,2,3);
+-- 나의문의와 관리자 답변 같이보기(내가쓴 글의 groupno 를 알아와야 한다.)
+
+
+select to_char(regDate,'yyyy.mm.dd hh24:mi:ss') AS regDate, content
+from
+(select *
+from view_qna_info
+where fk_userid in ('kimjy', 'admin')
+start with fk_seq = 0
+connect by prior qna_id = fk_seq 
+order siblings by groupno desc, qna_id asc
+) V
+where groupno in (1,2,3);
+
