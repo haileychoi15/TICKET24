@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             console.log(target);
 
-            let subCategory = document.querySelector('.category-box-button > span');
+            let subCategory = document.querySelector('.category-box-button > button');
             console.log(target.innerText, subCategory.innerText);
             subCategory.innerText = target.innerText;
         }
