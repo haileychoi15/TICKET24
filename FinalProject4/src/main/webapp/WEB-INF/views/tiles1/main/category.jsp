@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
+    
 </head>
 <body>
 <section class="category">

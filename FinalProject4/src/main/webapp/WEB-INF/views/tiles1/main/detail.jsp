@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/grid.min.css" />
     <link rel="stylesheet" href="../css/respstyle.css">
     <script src="https://kit.fontawesome.com/3625c042d9.js" crossorigin="anonymous"></script>
+    <!-- 상세페이지 -->
 </head>
 <body>
 <section class="landing">

@@ -8,7 +8,8 @@
     <title>Main page</title>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
-    
+    <link rel="stylesheet" href="resources/css/main.css">
+	<link rel="stylesheet" href="resources/css/category.css">
 </head>
 <body>
 <section class="promotion">
