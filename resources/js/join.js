@@ -63,7 +63,45 @@ window.addEventListener('DOMContentLoaded',() => {
     });
 
 
+    // 회원가입 아이디, 이메일 중복 확인
+    let useridButton = document.querySelector('.userid-button');
+    let userid = document.querySelector('#userid');
+    useridButton.addEventListener('click', ajaxCheckValue(userid.name, userid.value));
+
+    let emailButton = document.querySelector('.email-button');
+    let email = document.querySelector('#userid');
+    emailButton.addEventListener('click', ajaxCheckValue(email.name, email.value));
+
 });
+
+function ajaxCheckValue(name, value) {
+
+    let httpRequest = new XMLHttpRequest();
+    makeRequest('/finalproject4/qna.action',value);
+
+    function makeRequest(url, value) {
+
+        httpRequest.onreadystatechange = getResponse;
+        httpRequest.open('GET', url);
+        httpRequest.send('value=' + encodeURIComponent(userid));
+    }
+
+    function getResponse() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                alert(response.computedString);
+
+                //ajax 성공시 코드
+
+            } else {
+                alert('There was a problem with the request.');
+            }
+        }
+    }
+
+
+}
 
 function check(re, input, message) {
     if(re.test(input.value)) {

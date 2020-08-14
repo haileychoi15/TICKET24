@@ -59,7 +59,7 @@ function styleCategory() {
                         headerMenu.style.paddingBottom = '100px';
                     }
                 } else {
-                    parent.classList.remove('on');
+                   parent.classList.remove('on');
                 }
             });
         }
@@ -88,7 +88,7 @@ function styleCategory() {
 
     });
 
-    headerCategory.addEventListener('click', (event) => {
+/*    headerCategory.addEventListener('click', (event) => {
 
         let ul = event.currentTarget;
         let list = ul.querySelectorAll('.header-category-item');
@@ -109,7 +109,7 @@ function styleCategory() {
             musicalOnly.style.display = 'flex';
         }
 
-    });
+    });*/
 
 
 }

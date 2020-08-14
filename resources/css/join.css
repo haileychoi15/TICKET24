@@ -28,7 +28,7 @@ body{
     width: 40px;
     height: 40px;
     margin-right: 20px;
-    background-image: url("../img/ticket.png");
+    background-image: url("../images/ticket.png");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -347,10 +347,6 @@ input:-webkit-autofill:active  {
     align-items: center;
 }
 
-.join .join-area .join-form .password-group{
-    position: relative;
-}
-
 .join .join-area .join-form .password-group button{
     position: absolute;
     top: 27px;
@@ -381,6 +377,8 @@ input:-webkit-autofill:active  {
 }
 
 .join .join-area .join-form .id-group,
+.join .join-area .join-form .password-group,
+.join .join-area .join-form .email-group,
 .join .join-area .join-form .postcode-group{
     position: relative;
 }
@@ -390,9 +388,10 @@ input:-webkit-autofill:active  {
 }
 
 .join .join-area .join-form .id-group .userid-button,
+.join .join-area .join-form .email-group .email-button,
 .join .join-area .join-form .postcode-group .address-button{
     position: absolute;
-    top: -5px;
+    top: -4px;
     right: 0;
     height: 25px;
     border: 1px solid #000;
@@ -405,6 +404,7 @@ input:-webkit-autofill:active  {
 }
 
 .join .join-area .join-form .id-group .userid-button:hover,
+.join .join-area .join-form .email-group .email-button:hover,
 .join .join-area .join-form .postcode-group .address-button:hover{
     background-color: rgba(0, 0, 0, 0.05);
 }

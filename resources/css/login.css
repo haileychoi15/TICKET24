@@ -22,7 +22,7 @@ button{
     width: 60px;
     height: 60px;
     margin: 32px 0 24px;
-    background-image: url("../img/ticket.png");
+    background-image: url("../images/ticket.png");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -186,13 +186,13 @@ button{
 }
 
 .login .login-area .other-login button .naver-logo-icon{
-    background-image: url("../img/naver-logo.png");
+    background-image: url("../images/naver-logo.png");
 }
 
 .login .login-area .other-login button .kakao-logo-icon{
     border-right: 1px solid rgb(255, 216, 26);
     border-radius: 3px;
-    background-image: url("../img/kakao-logo.png");
+    background-image: url("../images/kakao-logo.png");
 }
 
 .join-box{

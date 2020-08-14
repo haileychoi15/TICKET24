@@ -18,7 +18,7 @@ body{
     width: 90%;
     height: 100%;
     padding-top: 40px;
-    background-image: url("../img/qna.png");
+    background-image: url("../images/qna.png");
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: right;
@@ -78,18 +78,7 @@ body{
 }
 
 ::-webkit-scrollbar {
-    height: 4px;
-}
-::-webkit-scrollbar-track {
-    background-color: transparent;
-}
-::-webkit-scrollbar-thumb {
-    border-radius: 2px;
-    background-color: rgba(0, 0, 0, 0.2);
-}
-::-webkit-scrollbar-button {
-    width: 0;
-    height: 0;
+    display:none;
 }
 
 .qna .category .category-group{
