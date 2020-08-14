@@ -409,5 +409,14 @@ public class BoardController {
 	}
 	
 	
+	// QNA 게시판으로 이동
+	@RequestMapping(value = "/qnaList.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
+	public String qnaList() {
+		
+		
+		
+		return "qna/qnaList.tiles1";
+	}
+	
 	
 }
