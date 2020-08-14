@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.spring.model.FaqVO;
 import com.spring.model.NoticeVO;
+import com.spring.model.QnaVO;
 
 public interface InterBoardService {
 
@@ -21,5 +22,9 @@ public interface InterBoardService {
 	int qnaAdd(HashMap<String, String> paraMap); // Qna 문의 등록하기
 
 	List<HashMap<String, String>> reserveTitleList(int idx); // 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
+
+	List<QnaVO> qnaList(); // qna 글목록 보여주기
+
+	int getTotalQnaCount(HashMap<String, String> paraMap); // 총 qna 건수
 
 }

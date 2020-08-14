@@ -11,6 +11,7 @@ import com.spring.mail.GoogleMail;
 import com.spring.model.FaqVO;
 import com.spring.model.InterBoardDAO;
 import com.spring.model.NoticeVO;
+import com.spring.model.QnaVO;
 
 @Service
 public class BoardService implements InterBoardService {
@@ -75,6 +76,20 @@ public class BoardService implements InterBoardService {
 	public List<HashMap<String, String>> reserveTitleList(int idx) {
 		List<HashMap<String, String>> reserveTitleList = dao.reserveTitleList(idx);
 		return reserveTitleList;
+	}
+
+	// qna 글목록 보여주기
+	@Override
+	public List<QnaVO> qnaList() {
+		List<QnaVO> qnaList = dao.qnaList();
+		return qnaList;
+	}
+
+
+	@Override
+	public int getTotalQnaCount(HashMap<String, String> paraMap) {
+		int n = dao.getTotalQnaCount(paraMap);
+		return n;
 	}
 	
 }

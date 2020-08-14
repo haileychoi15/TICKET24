@@ -20,6 +20,7 @@ import com.spring.common.MyUtil;
 import com.spring.model.FaqVO;
 import com.spring.model.MemberVO;
 import com.spring.model.NoticeVO;
+import com.spring.model.QnaVO;
 import com.spring.service.InterBoardService;
 
 @Controller
@@ -127,7 +128,7 @@ public class BoardController {
 	}
 	
 	
-	// 고객센터 페이지로 이동
+	// 공지사항 페이지로 이동
 	@RequestMapping(value = "/noticeMain.action", produces="text/plain;charset=UTF-8")
 	public ModelAndView noticeMain(HttpServletRequest request, ModelAndView mav) {
 		
@@ -147,7 +148,7 @@ public class BoardController {
 		return mav;
 	}
 	
-	// 공지사항 페이지로 이동
+	// 공지사항 목록가져오기
 	@ResponseBody
 	@RequestMapping(value="/notice.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 //	public ModelAndView notice(HttpServletRequest request, ModelAndView mav) {
@@ -410,13 +411,172 @@ public class BoardController {
 	
 	
 	// QNA 게시판으로 이동
-	@RequestMapping(value = "/qnaList.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
-	public String qnaList() {
+	@RequestMapping(value = "/qnaListMain.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
+	public ModelAndView qnaListMain(HttpServletRequest request, ModelAndView mav) {
 		
+		mav.setViewName("qna/qnaList.tiles1");
 		
-		
-		return "qna/qnaList.tiles1";
+		return mav;
 	}
+	
+
+	
+	// qna 목록가져오기
+/*	@RequestMapping(value = "/qnaList.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
+	public ModelAndView qnaList(HttpServletRequest request, ModelAndView mav) {
+		
+		
+	}
+	*/
+	
+	// QNA 게시판으로 이동
+	@ResponseBody
+	@RequestMapping(value="/qnaList.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String qnaList(HttpServletRequest request) {
+
+		List<QnaVO> qnaList = null;
+
+		String searchWord = request.getParameter("searchWord");
+		String str_currentShowPageNo = request.getParameter("page");
+		String category = request.getParameter("category");
+	//	System.out.println("page : "+str_currentShowPageNo);
+	//	System.out.println("searchWord : "+searchWord);
+		
+	//	if(category == "0") {
+		if(category.equals("0")) {
+			category = "";
+		}
+		
+		// 검색어가 없을 때는(null) 검색어를 ""로 변환
+		if(searchWord == null || searchWord.trim().isEmpty()) {
+			searchWord = "";
+		}
+		
+		/*
+		String order = "";
+		switch (category) {
+		case "1":
+			order = "regDate";
+			break;
+		case "2":
+			order = "ticketopenday";
+			break;
+		case "3":
+			order = "readCount";
+			break;
+		default:
+			break;
+		}*/
+
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("searchWord", searchWord);
+	//	paraMap.put("order", order);
+
+		
+		int totalCount = 0; 		// 총 게시물 건수(totalCount)
+		int sizePerPage = 10;		// 한 페이지당 보여줄 게시물 건수
+		int currentShowPageNo = 1;	// 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정한다.
+		int totalPage = 0;			
+		int startRno = 0;			
+		int endRno = 0;				
+
+		// 총 qna 건수(totalCount)
+		totalCount = service.getTotalQnaCount(paraMap);
+		
+		totalPage = (int) Math.ceil((double)totalCount / sizePerPage);
+
+		// str_currentShowPageNo 가 없다면 초기화면을 보여준다.
+		if(str_currentShowPageNo == null) {
+			currentShowPageNo = 1;
+		}
+		else {
+			try {
+				currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+
+				if(currentShowPageNo <= 0 || currentShowPageNo > totalPage) {
+					currentShowPageNo = 1;
+				}
+
+			} catch (NumberFormatException e) {
+				currentShowPageNo = 1;
+			}
+		}
+
+		startRno = ((currentShowPageNo - 1 ) * sizePerPage) + 1;
+		endRno = startRno + sizePerPage - 1; 
+
+
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+
+		// == qna 글목록 보여주기 == //
+		qnaList = service.qnaList(); 
+
+
+		int blockSize = 10;
+
+		int loop = 1;
+		
+		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
+
+	//	mav.addObject("totalCount", totalCount);
+
+	//	String gobackURL = MyUtil.getCurrentURL(request);
+	//	System.out.println("~~~~~ 확인용 gobackURL : " + gobackURL);
+	//	mav.addObject("gobackURL", gobackURL);
+
+		HttpSession session = request.getSession();
+		session.setAttribute("readCountPermission", "yes"); // 조회수증가권한의 값을 yes 로 세션에 저장한다.
+
+		/*
+		   session 에  "readCountPermission" 키값으로 저장된 value값은 "yes" 이다.
+		   session 에  "readCountPermission" 키값에 해당하는 value값 "yes"를 얻으려면 
+		      반드시 웹브라우저에서 주소창에 "/list.action" 이라고 입력해야만 얻어올 수 있다. 
+		 */
+
+	//	session.setAttribute("gobackURL", gobackURL);
+
+		request.setAttribute("totalPage", totalPage);
+	//	System.out.println(totalPage +":totalPage");
+		
+		JSONArray jsonArr = new JSONArray();
+
+		for(QnaVO qna : qnaList) {
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("qna_id", qna.getQna_id());
+			jsonObj.put("name", qna.getName());
+			jsonObj.put("category_id", qna.getCategory());
+			jsonObj.put("category", qna.getQna_cate_name());
+			jsonObj.put("fk_userid", qna.getFk_userid());
+			
+			jsonObj.put("subject", qna.getSubject());
+			jsonObj.put("content", qna.getContent());
+			jsonObj.put("readCount", qna.getReadCount());
+			jsonObj.put("status", qna.getStatus());
+			jsonObj.put("regDate", qna.getRegDate());
+			
+			jsonObj.put("secret", qna.getSubject());
+			jsonObj.put("adminread", qna.getContent());
+			jsonObj.put("adminans", qna.getReadCount());
+			jsonObj.put("groupno", qna.getStatus());
+			jsonObj.put("fk_seq", qna.getFk_seq());
+			jsonObj.put("depthno", qna.getDepthno());
+			jsonObj.put("fk_rev_id", qna.getFk_rev_id());
+			jsonObj.put("prod_id", qna.getProd_id());
+			jsonObj.put("rev_email", qna.getRev_email());
+			jsonObj.put("prod_img", qna.getProd_img());
+			jsonObj.put("prod_title", qna.getProd_title());
+			
+			jsonObj.put("totalCount", totalCount);
+			jsonObj.put("totalPage", totalPage);
+			jsonObj.put("page", str_currentShowPageNo);
+
+			jsonArr.put(jsonObj);
+		}
+
+		return jsonArr.toString();
+	}
+	
 	
 	
 }

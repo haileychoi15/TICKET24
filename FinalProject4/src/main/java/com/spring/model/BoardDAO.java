@@ -67,6 +67,20 @@ public class BoardDAO implements InterBoardDAO {
 		List<HashMap<String, String>> reserveTitleList = sqlsession.selectList("finalproject4.reserveTitleList", idx);
 		return reserveTitleList;
 	}
+
+	// qna 글목록 보여주기
+	@Override
+	public List<QnaVO> qnaList() {
+		List<QnaVO> qnaList = sqlsession.selectList("finalproject4.qnaList");
+		return qnaList;
+	}
+
+	// 총 qna 개수
+	@Override
+	public int getTotalQnaCount(HashMap<String, String> paraMap) {
+		int n = sqlsession.selectOne("finalproject4.getTotalQnaCount", paraMap);
+		return n;
+	}
 	
 	
 }

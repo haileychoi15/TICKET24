@@ -1550,7 +1550,8 @@ on Q.category = C.qna_cate_code;
 -- 예매한 공연목록문의 합쳐진 QNA 리스트 나타내기
 
 select * from view_qna_info
-where status = 1;
+where status = 1
+order by qna_id desc;
 -- 예매한 공연목록문의 합쳐진 QNA 리스트 나타내기 (status = 1 인 목록만 출력)
 
 select *

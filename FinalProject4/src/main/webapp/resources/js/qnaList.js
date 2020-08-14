@@ -2,9 +2,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     ajaxBoard(1);
 
-    // 검색 버튼 눌렀을 때 이벤트
+    // 검색 버튼 클릭 했을 때 이벤트
     let searchButton = document.querySelector('.search-button');
-    searchButton.addEventListener('click', () => {
+    searchButton.addEventListener('click',() => {
 
         setFirstPage();
         ajaxBoard(1);
@@ -36,9 +36,9 @@ window.addEventListener('DOMContentLoaded', () => {
             setFirstPage();
             ajaxBoard(1);
         }
+
     });
 
-    // 페이지 눌렀을 때
     let pageGroup = document.querySelector('.page-group');
     pageGroup.addEventListener('click', (event) => {
 
@@ -50,45 +50,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
             let page = target.innerText;
             ajaxBoard(page);
+
         }
-    });
-
-
-    // 글 제목 누르면 내용 보이기
-    let tbody = document.querySelector('.tbody');
-    tbody.addEventListener('click', (event) => {
-
-        let target = event.target;
-        showContent(target);
-    });
-
-
-    let qnaButton = document.querySelector('.qna-button strong');
-    let modal = document.querySelector('.modal');
-    qnaButton.addEventListener('click',(event) => {
-
-        modal.style.display = 'flex';
-        let userid = modal.querySelector('.modal-form #userid').value;
-        ajaxProduct(userid);
-    });
-
-    let closeButton = modal.querySelector('.close-button');
-    closeButton.addEventListener('click',() => {
-
-        // 작성했던 내용 없애기
-        let radioInputs = document.querySelectorAll('.modal-input-group input[type=radio]');
-        let product = document.querySelector('.qna-product-default');
-        let title = document.querySelector('.qna-title');
-        let content = document.querySelector('.qna-content');
-
-        radioInputs.forEach((item) => {
-            item.checked = false;
-        });
-
-        product.selected = true;
-        title.value = '';
-        content.value = '';
-        modal.style.display = 'none';
     });
 
 });
@@ -110,12 +73,15 @@ function setFirstPage() {
 
 function ajaxBoard(page) {
 
-    let searchWord = document.querySelector('.search-word').value;
     let category = document.querySelector('.category-group .selected').value;
-    console.log('searchWord : ',searchWord,', category : ',category,', page : ',page);
+    let searchWord = document.querySelector('.search-word').value.trim();
+    if(searchWord === null) {
+        searchWord = '';
+    }
+    console.log("searchWord : ", searchWord, ", category : ", category ,", page : ", page); //확인용
 
     let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/faq.action', searchWord, category, page); // ####
+    makeRequest('/finalproject4/qnaList.action', searchWord, category, page); // ###
 
     function makeRequest(url, searchWord, category, page) {
 
@@ -129,7 +95,7 @@ function ajaxBoard(page) {
             if (httpRequest.status === 200) {
                 let response = JSON.parse(httpRequest.responseText);
 
-                console.log(response.computedString); //ajax 성공시 코드
+                console.log(response.computedString); //ajax 성공시 확인용
 
                 let html = '';
                 let recodes = 0;
@@ -147,21 +113,28 @@ function ajaxBoard(page) {
                     pageGroup.style.visibility = 'hidden';
 
                 }
-                else { // 데이터가 있으면
+                else{ // 데이터가 있으면
 
-                    notice.classList.replace('show', 'hide');
-                    thead.classList.replace('hide', 'show');
+                    notice.classList.replace('show','hide');
+                    thead.classList.replace('hide','show');
                     pageGroup.style.visibility = 'visible';
 
                     response.forEach((item) => {
-                        html += getBoardTemplate(item.category, item.subject, item.content);
+
+                        if(item.fileName === undefined) {
+                            item.fileName = '';
+                        }
+                        if(item.ticketopenday === undefined) {
+                            item.ticketopenday = '해당없음';
+                        }
+
+                        html += getBoardTemplate(item.qna_id, item.category, item.subject, item.regDate.substr(0,10), item.readCount, item.prod_title);
                         recodes = item.totalCount;
                     });
 
                     setPageList(pageGroup, page, recodes); // 페이징 처리
                     tbody.innerHTML = html;
                 }
-
             } else {
                 alert('There was a problem with the request.');
             }
@@ -171,129 +144,73 @@ function ajaxBoard(page) {
 
 function setPageList(pageGroup, page, recodes) { // 현재 누른 페이지, 총 레코드 수
 
-    let totalPage = Math.ceil(Number(recodes)/5);
+    let startPage = page-(page-1) % 10;
+    let lastPage = Math.ceil(Number(recodes)/10);
 
+    let prevGroup = pageGroup.querySelector('.prev-group');
+    let pageList = pageGroup.querySelector('.page-list');
+    let nextGroup = pageGroup.querySelector('.next-group');
+
+    let prevHtml = '';
     let html = '';
-    for(let i=0; i<totalPage; i++){
+    let nextHtml = '';
 
-        let count = i+1;
-        if(Number(page) === count){ // 선택된 페이지에 selected class 추가
-            html += `<button type="button" class="page-button selected" aria-label="Go to page${count}">${count}</button>`
-        }
-        else{
-            html += `<button type="button" class="page-button" aria-label="Go to page${count}">${count}</button>`
-        }
+    if(startPage-1 >= 1){
+        let prevPage = startPage-1;
+        prevHtml += `<span role="button" onclick="ajaxBoard(${prevPage})">이전</span>`;
     }
-    pageGroup.innerHTML = html;
-
-}
-
-function ajaxProduct(userid) {
-
-    let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/qnaAddClick.action', userid); // ####
-
-    // /qnaAddClick.action
-    
-    function makeRequest(url, userid) {
-
-        httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('GET', `${url}?fk_userid=${userid}`);
-        httpRequest.send();
+    else{
+        prevHtml += `<span class="no-click">이전</span>`; // 앞으로 갈 페이지가 없을 때
     }
+    prevGroup.innerHTML = prevHtml;
 
-    function getResponse() {
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
+    for(let i=0; i<10; i++){
 
-            //    let response = httpRequest.responseText.split(',');
-            //    console.log(response, response.computedString, response.length); //ajax 성공시 코드
+        let eachPage = startPage + i;
+        if(eachPage <= lastPage){
 
-            	let response = JSON.parse(httpRequest.responseText);
-                console.log(response.computedString);
-            	
-                let html = `<option value="0" class="qna-product-default selected">해당사항없음</option>`;
-
-                if(response.length !== 0){
-                    response.forEach((item, index) => {
-                        html += `<option value="${item.prod_id}">${item.prod_title}</option>`;
-                        // html += `<option value="${index+1}">${index+1}</option>`;
-                    });
-                }
-                document.querySelector('.modal-form .qna-product').innerHTML = html;
-
-            } else {
-                alert('There was a problem with the request.');
+            if(page == eachPage){ // 선택된 페이지에 selected class 추가
+                html += `<button type="button" class="page-button selected" aria-label="Go to page${eachPage}">${eachPage}</button>`
+            }
+            else{
+                html += `<button type="button" class="page-button" aria-label="Go to page${eachPage}">${eachPage}</button>`
             }
         }
     }
+    pageList.innerHTML = html;
+
+    if(startPage+9 < lastPage){
+        let nextPage = startPage+10;
+        nextHtml += `<span role="button" onclick="ajaxBoard(${nextPage})">다음</span>`;
+    }
+    else{
+        nextHtml += `<span class="no-click">다음</span>`; // 뒤로 갈 페이지가 없을 때
+    }
+    nextGroup.innerHTML = nextHtml;
 
 }
 
-function getBoardTemplate(category, title, content) {
+function getBoardTemplate(seq, category, title, date, view, file) {
 
     let template = `<div class="row">
                     <span class="table-category">
                         ${category}
                     </span>
                     <span class="table-title">
-                        ${title}
+                        <a href="/finalproject4/noticeView.action?seq=${seq}">
+                            ${title}
+                        </a>
                     </span>
-                    <div class="table-content">
-                        ${content}
-                    </div>
+                    <span class="table-date">
+                        ${date}
+                    </span>
+                    <span class="table-view">
+                        ${view}
+                    </span>
+                    <span class="table-file">
+                        ${file}
+                    </span>
                 </div>`;
 
     return template;
-}
-
-function validateForm() {
-
-    let radioInputs = document.querySelectorAll('.modal-input-group input[type=radio]');
-    let title = document.querySelector('.qna-title');
-    let content = document.querySelector('.qna-content');
-
-    let flag = false;
-    radioInputs.forEach((item) => {
-
-        if(item.checked){
-            flag = true;
-        }
-    });
-
-    if(!flag){
-        alert('문의 구분을 선택해주세요.');
-        return false;
-    }
-
-    if(title.value.trim() === ''){
-        alert('문의 제목을 입력해주세요.');
-        return false;
-    }
-
-
-    if(content.value.trim() === ''){
-        alert('문의 내용을 입력해주세요.');
-        return false;
-    }
-
-    alert('1:1문의가 등록되었습니다. 문의내역은 마이페이지에서 확인하실 수 있습니다.');
-    return true;
-}
-
-function showContent(target) {
-
-    if(target.classList.contains('table-title')){
-
-        let row = target.closest('.row');
-
-        if(row.classList.contains('on')){
-            row.classList.remove('on');
-        }
-        else{
-            row.classList.add('on');
-        }
-
-    }
-
 }

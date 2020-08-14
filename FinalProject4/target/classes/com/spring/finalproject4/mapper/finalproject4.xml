@@ -198,6 +198,24 @@
 		where idx = #{idx}
 	</select>
 	
+	<!-- qna 글목록 보여주기 -->
+	<select id="qnaList" resultType="com.spring.model.QnaVO">
+		select * 
+		from view_qna_info
+		where status = 1
+		order by qna_id desc
+	</select>
+	
+	<!-- 총 qna 개수 -->
+	<select id="getTotalQnaCount" parameterType="HashMap" resultType="int">
+		select count(*) 
+		from yes_qna
+		where 1=1 
+		<if test='searchWord != ""'>
+		and subject like '%' || #{searchWord} || '%'
+		</if>
+	</select>
+	
 	
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
 	
