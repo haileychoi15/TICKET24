@@ -142,8 +142,8 @@
                 <button type="button" class="login-button">로그인</button>
             </form>
             <div class="find-id">
-                <a href="">아이디 찾기</a>
-                <a href="">비밀번호 찾기</a>
+                <a href="<%= ctxPath%>/findID.action">아이디 찾기</a>
+                <a href="<%= ctxPath%>/findPW.action">비밀번호 찾기</a>
             </div>
             <div class="other-login">
                 <button type="button" onclick="location.href='${url}'">

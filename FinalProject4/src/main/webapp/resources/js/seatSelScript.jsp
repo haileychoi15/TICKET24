@@ -269,6 +269,7 @@ function seatSelComplete() {
 
         let totalPrice = document.getElementById('totalPrice');
         totalPrice.innerText = sum;
+        document.getElementById('paySum').value = sum;
     }
 }
 
@@ -383,7 +384,12 @@ function payment() {
 
     if(check1 && check2) {
         alert('결제로 이동');
-    	Pay();
+        if($("input:radio[id='card']").prop('checked') == true) {
+        	Pay();
+        }
+        else if($("input:radio[id='deposit']").prop('checked') == true) {
+        	alert("계좌이체 정보알림페이지로 이동");
+        }
     }
     else {
         alert('취소 수수료/취소 기한 및 제 3자 정보 제공 내용에 동의하셔야만 \n결제가 가능합니다.');
@@ -554,6 +560,7 @@ function changeDC() {
     let resultPrice = Number(totalPriceInner) - Number(dcPriceInner);
     totalPrice.innerText = resultPrice;
 
+    document.getElementById('paySum').value = resultPrice;
 }
 
 // 쿠폰할인
@@ -582,6 +589,8 @@ function changeCoupon() {
     let totalPriceInner = totalPrice.innerText;
     let resultPrice = Number(totalPriceInner) - Number(dcCouponInner);
     totalPrice.innerText = resultPrice;
+    
+    document.getElementById('paySum').value = resultPrice;
 }
 
 </script>

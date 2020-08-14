@@ -1,6 +1,7 @@
 package com.spring.model;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.spring.model.MemberVO;
 
@@ -35,6 +36,13 @@ public interface InterMemberDAO {
 	MemberVO checkUserWithSessionKey(String sessionId);
 	
 	int infoDelete(HashMap<String, String> paraMap); // 회원 탈퇴
+	
+	String findID(HashMap<String, String> paraMap); // 아이디 찾기
+	String findPW(HashMap<String, String> paraMap); // 비밀번호 찾기
+	
+	int updatePW(HashMap<String, String> paraMap); // 비밀번호 변경
+	
+	List<HashMap<String, String>> pointList(String userid); // 적립금 내역
 	
 	
 }

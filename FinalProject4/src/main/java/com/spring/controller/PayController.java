@@ -123,6 +123,8 @@ public class PayController {
 //		mav.addObject("payMap", payMap);
 		
 		String payShowName = request.getParameter("payShowName");
+		String paySum = request.getParameter("paySum");
+		
 		
 		mav.addObject("payShowName", payShowName);
 		

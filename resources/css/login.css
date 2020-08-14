@@ -1,0 +1,227 @@
+body{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(249, 249, 249);
+
+}
+
+button{
+    cursor: pointer;
+}
+
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.header .logo-image{
+    width: 60px;
+    height: 60px;
+    margin: 32px 0 24px;
+    background-image: url("../images/ticket.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.header h1{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.login .login-area{
+    width: 308px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgb(216, 222, 226);
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.login .login-area .login-form input[type="text"],
+.login .login-area .login-form input[type="password"]{
+    display: block;
+    width: 100%;
+    height: 32px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.login .login-area .login-form label:first-child,
+.login .login-area .login-form label:nth-child(3){
+    display: block;
+    margin-bottom: 7px;
+}
+
+.login .login-area .login-form .checkbox-group{
+    margin-bottom: 20px;
+}
+
+.login .login-area .login-form .checkbox-group label{
+    margin: 0 7px 0 3px;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"]{
+    position: absolute;
+    display: block;
+    top: 100px;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1000;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"] + label{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    background-color: #fff;
+    cursor: pointer;
+    float: left;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"] + label::before{
+    content: "\f00c";
+    font-family: "Font Awesome 5 Free";
+    font-size: 0.6em;
+    font-weight: 900;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    margin: 1px 0 0 1px; /* 체크박스 안의 체크 위치 */
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"]:checked + label{
+    border: 1px solid #f17311;
+    background-color: #f17311;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"]:checked + label:hover{
+    border: 1px solid #d96f1c;
+    background-color: #d96f1c;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"] + label span{
+    position: absolute;
+    width: 90px;
+    top: 0;
+    left: 17px; /* 체크박스 라벨명 */
+    font-size: 12px;
+}
+
+.login .login-area .login-form .checkbox-group input[type="checkbox"]:first-child + label{
+    margin-right: 95px; /* 아이디 저장 체크박스 */
+}
+
+.login .login-area .login-form .checkbox-group::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.login .login-area .login-form .login-button{
+    width: 100%;
+    height: 40px;
+    border: 1px solid #d96f1c;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #ec7d2c;
+}
+
+.login .login-area .find-id{
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.login .login-area .find-id a:first-child::after{
+    content: "|";
+    margin: 0 2px 0 5px;
+    color: rgb(216, 222, 226);
+}
+
+.login .login-area .other-login button{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 35px;
+    border: 1px solid rgb(216, 222, 226);
+    border-radius: 6px;
+    padding: 0;
+    margin-bottom: 5px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.login .login-area .other-login button strong{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.login .login-area .other-login button:last-child{
+    margin-bottom: 0;
+}
+
+.login .login-area .other-login button .logo-icon{
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    margin-right: 40px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.login .login-area .other-login button .naver-logo-icon{
+    background-image: url("../images/naver-logo.png");
+}
+
+.login .login-area .other-login button .kakao-logo-icon{
+    border-right: 1px solid rgb(255, 216, 26);
+    border-radius: 3px;
+    background-image: url("../images/kakao-logo.png");
+}
+
+.join-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 308px;
+    height: 53px;
+    border: 1px solid rgb(216, 222, 226);
+    border-radius: 5px;
+    margin-bottom: 50px;
+    font-size: 13px;
+    background-color: rgb(249, 249, 249);
+}
+
+.join-box strong{
+    font-weight: 500;
+}
+
+.join-box a{
+    color: #d96f1c;
+}
+
+.join-box a:hover{
+    text-decoration: #d96f1c underline;
+}
+
+.footer{
+    margin-bottom: 15px;
+    font-size: 12px;
+    color: #999;
+}

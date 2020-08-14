@@ -22,9 +22,18 @@
 <link rel="stylesheet" href="resources/css/header.css">
 
 <link rel="stylesheet" href="resources/css/main.css">
+<link rel="stylesheet" href="resources/css/category.css">
+
 
 <link rel="stylesheet" href="resources/css/footer.css">
 <link rel="stylesheet" href="resources/css/grid.min.css">
+
+<!-- 상세페이지 -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/3625c042d9.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="resources/css/respstyle.css">
+
+
 </head>
 <body>
 <tiles:insertAttribute name="header" />

@@ -170,7 +170,7 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                               <img src="resources/images/${hotProdList.get(7).prod_img}" alt="${hotProdList.get(7).prod_title}" />
+                            	<img src="resources/images/${hotProdList.get(7).prod_img}" alt="${hotProdList.get(7).prod_title}" />
                             </div>
                             <div class="card-desc">
                                <h3 class="card-title common-title">${hotProdList.get(7).prod_title}</h3>
@@ -272,9 +272,9 @@
                         <li  class="ranking-item">
                             <a href="#">
                                 <dl>
-                                   <dt class="ranking-item-ranking">4위</dt>
+                                	<dt class="ranking-item-ranking">4위</dt>
                                     <dd class="ranking-item-image hide">
-                                       <img src="resources/images/${hotProdList.get(3).prod_img}" alt="${hotProdList.get(3).prod_title}" />
+                                    	<img src="resources/images/${hotProdList.get(3).prod_img}" alt="${hotProdList.get(3).prod_title}" />
                                     </dd>
                                     <dd class="ranking-item-content">
                                         <strong class="ranking-item-title">${hotProdList.get(3).prod_title}</strong>
@@ -289,7 +289,7 @@
                                 <dl>
                                     <dt class="ranking-item-ranking">5위</dt>
                                     <dd class="ranking-item-image hide">
-                                       <img src="resources/images/${hotProdList.get(4).prod_img}" alt="${hotProdList.get(4).prod_title}" />
+                                    	<img src="resources/images/${hotProdList.get(4).prod_img}" alt="${hotProdList.get(4).prod_title}" />
                                     </dd>
                                     <dd class="ranking-item-content">
                                         <strong class="ranking-item-title">${hotProdList.get(4).prod_title}</strong>
