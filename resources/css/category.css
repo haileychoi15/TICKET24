@@ -105,16 +105,18 @@
     text-align: left;
 }
 
-.sub-category-box .sub-category-box-item p{
+.sub-category-box .sub-category-box-item button{
     display: inline-block;
     width: 100%;
     height: 40px;
     padding-left: 10%;
     font-size: 14px;
     line-height: 40px;
+    text-align: left;
+    background-color: #fff;
 }
 
-.sub-category-box .sub-category-box-item p:hover {
+.sub-category-box .sub-category-box-item button:hover {
     background-color: rgba(0, 0, 0, 0.04);
 }
 

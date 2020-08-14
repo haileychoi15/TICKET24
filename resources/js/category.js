@@ -26,7 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
     box.addEventListener('click', (event) => {
 
         let target = event.target;
-        if(target.nodeName === 'P'){ // 버튼 역할하는 태그
+        if(target.nodeName === 'BUTTON'){
 
             console.log(target);
 
