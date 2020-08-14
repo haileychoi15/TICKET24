@@ -17,4 +17,6 @@ public interface InterBoardDAO {
 
 	int qnaAdd(HashMap<String, String> paraMap); // Qna 문의 등록하기
 
+	List<HashMap<String, String>> reserveTitleList(int idx); // 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
+
 }

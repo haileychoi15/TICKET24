@@ -69,5 +69,12 @@ public class BoardService implements InterBoardService {
 		int n = dao.qnaAdd(paraMap);
 		return n;
 	}
+
+	// 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
+	@Override
+	public List<HashMap<String, String>> reserveTitleList(int idx) {
+		List<HashMap<String, String>> reserveTitleList = dao.reserveTitleList(idx);
+		return reserveTitleList;
+	}
 	
 }

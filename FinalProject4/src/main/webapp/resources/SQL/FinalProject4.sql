@@ -108,7 +108,7 @@ values(seq_member.nextval, 'eomjh', '엄정화', '9695b88a59a1610320897fa84cb7e1
 
 
 update yes_member set pwd = '4d4f26369171994f3a46776ee2d88494fb9955800a5bb6261c016c4bb9f30b56'
-where userid = 'admin';
+where userid = 'eomjh';
 -- qwer1234 비밀번호
 
 select * from yes_member;
@@ -1499,6 +1499,7 @@ create table yes_qna
 ,constraint  CK_qna_adminread check( adminread in (0,1) )
 ,constraint  CK_qna_adminans check( adminans in (0,1) )
 );
+--user_id 컬럼 필요(seq)
 
 
 alter table yes_qna 
@@ -1516,8 +1517,74 @@ nocache;
 
 select * from yes_qna;
 
+select * 
+from yes_qna Q left join yes_reserve R 
+on Q.fk_rev_id = R.rev_id
+left join view_rev_showInfo I
+on R.prod_id = I.prod_id;
+-- 예매한 공연목록을 합쳐서 QNA 나타내기
+
+select qna_id, fk_userid, name, category, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
+        ,fk_rev_id, I.prod_id, rev_email, rev_qnty, rev_date, rev_price, prod_img, prod_title
+from yes_qna Q left join yes_reserve R 
+on Q.fk_rev_id = R.rev_id
+left join view_rev_showInfo I
+on R.prod_id = I.prod_id;
+
+create or replace view view_qna_info
+as
+select qna_id, fk_userid, name, category, qna_cate_name, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
+      ,fk_rev_id, nvl(I.prod_id, 0) as prod_id, nvl(rev_email, ' ') as rev_email, nvl(prod_img, ' ') as prod_img, nvl(prod_title, ' ') as prod_title
+from yes_qna Q left join yes_reserve R 
+on Q.fk_rev_id = R.rev_id
+left join view_rev_showInfo I
+on R.prod_id = I.prod_id
+left join yes_qna_cate C
+on Q.category = C.qna_cate_code;
+-- 예매한 공연목록문의 합쳐진 QNA 리스트 나타내기
+
+select * from view_qna_info
+where status = 1;
+-- 예매한 공연목록문의 합쳐진 QNA 리스트 나타내기 (status = 1 인 목록만 출력)
+
+select *
+from yes_reserve;
+
+select * 
+from yes_reserve R join view_rev_showInfo I
+on R.prod_id = I.prod_id;
+
+create or replace view view_rev_memberInfo
+as
+select rev_id, R.prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status, prod_img, prod_title, info_grade, info_run_time, map_name, idx, userid, name
+from yes_reserve R join view_rev_showInfo I
+on R.prod_id = I.prod_id
+join yes_member M
+on R.user_id = M.idx;
+
+select *
+from view_rev_memberInfo
+where userid = 'kimjy';
+-- where idx = 1;
+-- 'kimjy' 이 예매한 공연목록
+
+select distinct prod_title, prod_id
+from view_rev_memberInfo
+where userid = 'kimjy';
+-- where idx = 1;
+-- 'kimjy' 이 예매한 공연목록중 중복을 제거하고 공연이름과 공연정보코드만 가져오기
 
 
+select *
+from yes_reserve R join view_rev_showInfo I
+on R.prod_id = I.prod_id
+join yes_member M
+on R.user_id = M.idx;
+-- ### --
+
+select *
+from view_rev_showInfo
+where prod_id = 2;
 ----------------------------------- 공지 게시판 테이블 -----------------------------------
 
 

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.common.FileManager;
 import com.spring.common.MyUtil;
 import com.spring.model.FaqVO;
+import com.spring.model.MemberVO;
 import com.spring.model.NoticeVO;
 import com.spring.service.InterBoardService;
 
@@ -338,7 +339,27 @@ public class BoardController {
 	@RequestMapping(value = "/qnaAddClick.action", produces="text/plain;charset=UTF-8")
 	public String qnaAddClick(HttpServletRequest request) {
 		
-		return "안녕하세요, 안안안안".toString(); 
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		int idx = loginuser.getIdx();
+		
+		// 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
+		List<HashMap<String, String>> reserveTitleList = service.reserveTitleList(idx);
+		
+		JSONArray jsonArr = new JSONArray();
+		
+		if(reserveTitleList != null) {
+			for (HashMap<String, String> reserveTitle : reserveTitleList) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("prod_title", reserveTitle.get("prod_title"));
+				jsonObj.put("prod_id", reserveTitle.get("prod_id"));
+				jsonArr.put(jsonObj);
+			}
+		}
+		
+		return jsonArr.toString(); 
+	//	return "안녕하세요, 안안안안".toString(); 
 		
 	//	mav.setViewName("notice/notice.tiles1");
 	//	return mav;
@@ -350,7 +371,7 @@ public class BoardController {
 	public ModelAndView qnaAdd(HttpServletRequest request, ModelAndView mav) {
 		
 		String category = request.getParameter("qna-category");
-		String product = request.getParameter("qna-product");
+		String fk_rev_id = request.getParameter("qna-product");
 		String subject = request.getParameter("qna-title");
 		String content = request.getParameter("qna-content");
 		String fk_userid = request.getParameter("fk_userid");
@@ -359,7 +380,7 @@ public class BoardController {
 		
 		
 		System.out.println("category : "+category);
-		System.out.println("product : "+product);
+		System.out.println("fk_rev_id : "+fk_rev_id);
 		System.out.println("subject : "+subject);
 		System.out.println("content : "+content);
 		System.out.println("fk_userid : "+fk_userid);
@@ -368,7 +389,7 @@ public class BoardController {
 		
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("category", category);
-		paraMap.put("product", product);
+		paraMap.put("fk_rev_id", fk_rev_id);
 		paraMap.put("subject", subject);
 		paraMap.put("content", content);
 		paraMap.put("fk_userid", fk_userid);
