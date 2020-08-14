@@ -137,6 +137,15 @@ public class MainController {
 		//return jsonArr.toString();
 		return "";
 	}
+	
+	// == 상세페이지 == //
+	@RequestMapping(value="/showDetailInfo.action")
+	public ModelAndView showDetailInfo(ModelAndView mav) {
+		
+		mav.setViewName("main/detail.tiles1");
+		
+		return mav;
+	}
 	   
    @RequestMapping(value="/prodMain.action")
    public ModelAndView final_prodMain(ModelAndView mav, HttpServletRequest request) {
