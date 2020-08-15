@@ -206,6 +206,7 @@ $(document).ready(function(){
     showLocation.innerHTML = '${getShowRsvInfo.map_name}';
     showGrade.innerHTML = '만 ' + '${getShowRsvInfo.info_grade}';
     showTime.innerHTML = '${getShowRsvInfo.info_run_time}';
+    
 });
 
 function roundChange(round) {
@@ -235,6 +236,7 @@ function reset() {
 function seatSelComplete() {
     let selSeat = document.getElementsByClassName('selSeat');
     let ticketPrice = document.getElementById('ticketPrice');
+    let ticketPriceDisplay = document.getElementById('ticketPriceDisplay');
     var seatType = "";
     var i = 0;
     var sumPrice = 0;
@@ -262,18 +264,36 @@ function seatSelComplete() {
         change(step2);
         ticketPrice.innerHTML += sumPrice;
         
+        let ticketPriceResult = document.getElementById('ticketPrice').innerText;
+        ticketPriceDisplay.innerText = money(Number(ticketPriceResult));
+        
      	// 예매 정보 출력 (side bar)
         let ticketPriceInner = ticketPrice.innerText;
         let ticketCommission = document.getElementById('ticketCommission').innerText;
         let sum = Number(ticketPriceInner) + Number(ticketCommission);
 
         let totalPrice = document.getElementById('totalPrice');
+        let totalPriceDisplay = document.getElementById('totalPriceDisplay');
         totalPrice.innerText = sum;
+        totalPriceDisplay.innerText = money(sum);
         document.getElementById('paySum').value = sum;
+        
+        let dc1 = document.getElementById('dc1');
+        let dc1Display = document.getElementById('dc1Display');
+        dc1.innerText = Number(ticketPriceInner) * 0.25;
+        dc1Display.innerText = money(Number(ticketPriceInner) * 0.25);
+        
+        let dc2 = document.getElementById('dc2');
+        let dc2Display = document.getElementById('dc2Display');
+        dc2.innerText = Number(ticketPriceInner) * 0.25;
+        dc2Display.innerText = money(Number(ticketPriceInner) * 0.25);
+        
+        let dc3 = document.getElementById('dc3');
+        let dc3Display = document.getElementById('dc3Display');
+        dc3.innerText = Number(ticketPriceInner) * 0.15;
+        dc3Display.innerText = money(Number(ticketPriceInner) * 0.15);
     }
 }
-
-
 
 // 화면 전환
 function change(step) {
@@ -344,15 +364,47 @@ function change(step) {
 function deliverySel() {
     let receive = document.getElementsByName('receive');
     let deliveryInfo = document.getElementById('deliveryInfo');
+    let deliveryFee = document.getElementById('deliveryFee');
+    let deliveryFeeDisplay = document.getElementById('deliveryFeeDisplay');
+    
+    let ticketPrice = document.getElementById('ticketPrice').innerText;
+    let dcPrice = document.getElementById('dcPrice').innerText;
+    let dcCoupon = document.getElementById('dcCoupon').innerText;
+    let ticketCommission = document.getElementById('ticketCommission').innerText;
+    
+    let prevPrice = Number(ticketPrice) - Number(dcPrice) - Number(dcCoupon) + Number(ticketCommission);
+    let resultDeliveryFee = 0;
+    
+    let totalPrice = document.getElementById('totalPrice');
+    let totalPriceDisplay = document.getElementById('totalPriceDisplay');
+        
     let checkedReceive = null;
     for(let i=0; i<receive.length; i++) {
         if(receive[i].checked === true)
             checkedReceive = receive[i].value;
     }
-    if(checkedReceive == '0')
+    if(checkedReceive == '0') {
         deliveryInfo.style.display = 'none';
-    else if(checkedReceive == '1')
+        deliveryFee.innerText = '0';
+        deliveryFeeDisplay.innerText = money(0);   
+  
+        resultDeliveryFee = 0;
+        let resultPrice = prevPrice + resultDeliveryFee; 
+         
+        totalPrice.innerText = resultPrice;
+        totalPriceDisplay.innerText = money(resultPrice);
+    }
+    else if(checkedReceive == '1') {
         deliveryInfo.style.display = 'block';
+        deliveryFee.innerText = '2500';
+        deliveryFeeDisplay.innerText = money(2500);
+  
+        resultDeliveryFee = 2500;
+        let resultPrice = prevPrice + resultDeliveryFee; 
+         
+        totalPrice.innerText = resultPrice;
+        totalPriceDisplay.innerText = money(resultPrice);
+    }
 }
 
 // 배송 주의사항
@@ -530,23 +582,56 @@ function Pay() {
 
 //가격할인
 function changeDC() {
+	
+	let dcCheck1 = document.getElementById('dcCheck1');
+	let dcCheck2 = document.getElementById('dcCheck2');
+	let dcCheck3 = document.getElementById('dcCheck3');
 
-    let dcSel1 = document.getElementById('dcSel1');
-    let dcSel2 = document.getElementById('dcSel2');
-    let dcSel3 = document.getElementById('dcSel3');
     let dc1 = document.getElementById('dc1').innerText;
     let dc2 = document.getElementById('dc2').innerText;
     let dc3 = document.getElementById('dc3').innerText;
-
-    let selValue1 = dcSel1.options[dcSel1.selectedIndex].value;
-    let selValue2 = dcSel1.options[dcSel2.selectedIndex].value;
-    let selValue3 = dcSel1.options[dcSel3.selectedIndex].value;
+    
+    let selValue1 = 0;
+    let selValue2 = 0;
+    let selValue3 = 0;
+    
+    if(dcCheck1.checked) {
+    	selValue1 = 1;
+    	selValue2 = 0;
+    	selValue3 = 0;
+    	if(dcCheck2.checked || dcCheck3.checked) {
+        	alert('할인은 하나만 선택이 가능합니다.');
+        	dcCheck2.checked = false;
+        	dcCheck3.checked = false;
+    	}
+    }
+    if(dcCheck2.checked) {
+    	selValue1 = 0;
+    	selValue2 = 1;
+    	selValue3 = 0;
+    	if(dcCheck1.checked || dcCheck3.checked) {
+        	alert('할인은 하나만 선택이 가능합니다.');
+        	dcCheck1.checked = false;
+        	dcCheck3.checked = false;
+    	}
+    }
+    if(dcCheck3.checked) {
+    	selValue1 = 0;
+    	selValue2 = 0;
+    	selValue3 = 1;
+    	if(dcCheck1.checked || dcCheck2.checked) {
+        	alert('할인은 하나만 선택이 가능합니다.');
+        	dcCheck1.checked = false;
+        	dcCheck2.checked = false;
+    	}
+    }    
 
     let resultDC = (Number(dc1) * Number(selValue1)) + (Number(dc2) * Number(selValue2)) + (Number(dc3) * Number(selValue3));
 
     let dcPrice = document.getElementById('dcPrice');
+    let dcPriceDisplay = document.getElementById('dcPriceDisplay');
     dcPrice.innerText = resultDC;
-    let dcPriceInner = dcPrice.innerText;
+    dcPriceDisplay.innerText = money(resultDC);
 
     // 총 결제금액 변경
     let ticketPrice = document.getElementById('ticketPrice').innerText;
@@ -554,11 +639,13 @@ function changeDC() {
     let sum = Number(ticketPrice) + Number(ticketCommission);
 
     let totalPrice = document.getElementById('totalPrice');
+    let totalPriceDisplay = document.getElementById('totalPriceDisplay');
     totalPrice.innerHTML = sum;
+    totalPriceDisplay.innerHTML = money(sum);
 
-    let totalPriceInner = totalPrice.innerText;
-    let resultPrice = Number(totalPriceInner) - Number(dcPriceInner);
+    let resultPrice = sum - resultDC;
     totalPrice.innerText = resultPrice;
+    totalPriceDisplay.innerText = money(resultPrice);
 
     document.getElementById('paySum').value = resultPrice;
 }
@@ -568,12 +655,15 @@ function changeCoupon() {
 
     let couponCheck1 = document.getElementById('couponCheck1');
     let dcCoupon = document.getElementById('dcCoupon');
+    let dcCouponDisplay = document.getElementById('dcCouponDisplay');
     if(couponCheck1.checked) {
         dcCoupon.innerText = couponCheck1.value;
+        dcCouponDisplay.innerText = money(couponCheck1.value)
     }
     if(!couponCheck1.checked) {
         let dcCouponInner = dcCoupon.innerText;
         dcCoupon.innerText = Number(dcCouponInner) - Number(couponCheck1.value);
+        dcCouponDisplay.innerText = money(dcCoupon.innerText);
     }
 
     let dcCouponInner = dcCoupon.innerText;
@@ -583,12 +673,13 @@ function changeCoupon() {
     let ticketCommission = document.getElementById('ticketCommission').innerText;
     let sum = Number(ticketPrice) + Number(ticketCommission);
 
-    let totalPrice = document.getElementById(  'totalPrice');
-    totalPrice.innerHTML = sum;
+    let totalPrice = document.getElementById('totalPrice');
+    let totalPriceDisplay = document.getElementById('totalPriceDisplay');
 
     let totalPriceInner = totalPrice.innerText;
-    let resultPrice = Number(totalPriceInner) - Number(dcCouponInner);
+    let resultPrice = Number(totalPriceInner) - Number(dcCoupon.innerText);
     totalPrice.innerText = resultPrice;
+    totalPriceDisplay.innerText = money(resultPrice);
     
     document.getElementById('paySum').value = resultPrice;
 }
