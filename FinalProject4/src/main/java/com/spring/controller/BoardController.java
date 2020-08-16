@@ -1,9 +1,13 @@
 package com.spring.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -13,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.common.FileManager;
@@ -588,6 +594,12 @@ public class BoardController {
 		QnaVO qnavo = null;
 		
 		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+
+		String userid = null; // 로그인을 하면 loginuser 가 있지만, 로그인을 하지않으면 loginuser 는 null 이다.
+		if(loginuser != null) {
+			userid = loginuser.getUserid();
+		}
 	
 		/*
 		// 위의 글목록보기 #69. 에서 session.setAttribute("readCountPermission", "yes"); 해두었다.
@@ -606,7 +618,7 @@ public class BoardController {
 		}
 		*/
 		
-		qnavo = service.getQnaViewWithNoAddCount(seq); 
+		qnavo = service.getQnaViewWithNoAddCount(seq, userid); 
 		
 		if(qnavo == null) {
 			// 존재하지 않는 글번호의 글내용을 조회하려는 경우
@@ -649,7 +661,6 @@ public class BoardController {
 		mav.setViewName("qna/qnaAddAdmin.tiles1");
 		
 		return mav; 
-		
 	}
 	
 	// Qna 답변 등록하기
@@ -674,10 +685,171 @@ public class BoardController {
 
 		mav.setViewName("msg");
 		
-		
 		return mav; 
-		
 	}
 	
+	
+	// 공지글쓰기 페이지로 이동
+	@RequestMapping(value = "/noticeAdd.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView noticeAdd(HttpServletRequest request, ModelAndView mav) {
+		
+		mav.setViewName("notice/noticeAdd.tiles1");
+		
+		return mav; 
+	}
+	
+	// 공지글 등록하기
+	@RequestMapping(value = "/noticeAddEnd.action", produces="text/plain;charset=UTF-8", method= {RequestMethod.POST})
+	public String noticeAddEnd(MultipartHttpServletRequest mrequest, ModelAndView mav, NoticeVO notivo) {		
+		
+		
+		// === 사용자가 쓴 글에 파일이 첨부되어 있는 것인지 아니면 파일첨부가 안된 것인지 구분을 지어주어야 한다. === 
+		// === !!! 첨부파일이 있는지 없는지 알아오기 시작 !!! === //
+		MultipartFile attach = notivo.getAttach();
+		
+		if( !attach.isEmpty() ) {
+			// 첨부파일이 있는 경우라면
+			
+			/*
+				1. 사용자가 보낸 파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다.
+				>>> 파일이 업로드 되어질 특정 경로(폴더) 지정해주기
+					우리는  WAS 의 webapp/resources/files 라는 폴더로 지정해준다.
+				FileManager 의 path 가 그 경로이다.
+			*/
+			
+			// WAS 의 webapp 의 절대경로를 알아와야 한다.
+			HttpSession session = mrequest.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			
+			String path = root + "resources" + File.separator + "files" ;
+
+			// 절대경로는 C:\springworkspace\Board\src\main\webapp\resources 이 아니라
+			// C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources 이다. 
+			
+			/*
+				2. 파일첨부를 위한 변수의 설정 및 값을 초기화 한 후 파일올리기
+			*/
+			String newFileName = ""; // WAS(톰캣)의 디스크에 저장될 파일명
+			
+			byte[] bytes = null; // 첨부파일을 WAS(톰캣)의 디스크에 저장할 때 사용되는 용도
+			
+			long fileSize = 0; // 파일크기를 읽어오기 위한 용도
+			
+			try {
+				bytes = attach.getBytes();
+
+				newFileName = fileManager.doFileUpload(bytes, attach.getOriginalFilename(), path); // 파일올리기를 해주는 것이다. 
+				
+				System.out.println(">>>> 확인용 newFileName ==> "+newFileName);
+				
+				/*
+					3. NoticeVO notivo 에 fileName 값과 orgFilename 값과 fileSize 값을 넣어주기
+				*/
+				
+				notivo.setFileName(newFileName);
+				
+				notivo.setOrgFilename(attach.getOriginalFilename()); 
+				
+				fileSize = attach.getSize();
+				notivo.setFileSize(String.valueOf(fileSize));
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		// 첨부파일이 없다면 그냥 원래대로 진행하면 된다. 
+		// === !!! 첨부파일이 있는지 없는지 알아오기 끝 !!! === //
+		
+		int n = 0;
+		
+		if( attach.isEmpty() ) {
+			// 첨부파일이 없는 경우라면
+			n = service.noticeAdd(notivo); // Qna 답변 등록하기
+		}
+		else {
+			// 첨부파일이 있는 경우라면
+			// myBatis 에서 if 를 사용해도 되지만, 뜯어 고치기 귀찮다면 새로 만드는 방법도 있다.
+			n = service.noticeAdd_withFile(notivo); // Qna 답변 등록하기(첨부파일 O)
+		}
+		
+		return "notice/notice.tiles1";
+		
+		/*
+		String loc = request.getContextPath()+"/noticeMain.action";
+
+		String msg = "";
+		
+		if(n==1) {
+			msg = "공지글이 등록되었습니다.";
+		}
+		else {
+			msg = "공지등록에 실패했습니다.";
+		}
+		
+		mav.addObject("loc", loc);
+		mav.addObject("msg", msg);
+
+		mav.setViewName("msg");
+		
+		return mav; 
+		*/
+	}
+	
+	
+	// ===== #159. 첨부파일 다운로드 받기 =====
+	@RequestMapping(value="/download.action") 
+	public void requiredLogin_download(HttpServletRequest request, HttpServletResponse response) {
+		
+		String seq = request.getParameter("seq"); 
+		// 첨부파일이 있는 글번호
+		
+		NoticeVO vo = service.getNoticeViewWithNoAddCount(seq); 
+		
+		String fileName = vo.getFileName(); 
+		
+		String orgFilename = vo.getOrgFilename(); 
+		
+		// 첨부파일이 저장되어 있는 
+		// WAS(톰캣)의 디스크 경로명을 알아와야만 다운로드를 해줄수 있다. 
+		// 이 경로는 우리가 파일첨부를 위해서
+		//    /addEnd.action 에서 설정해두었던 경로와 똑같아야 한다.
+		// WAS 의 webapp 의 절대경로를 알아와야 한다. 
+		HttpSession session = request.getSession();
+		
+		String root = session.getServletContext().getRealPath("/"); 
+		String path = root + "resources"+File.separator+"files";
+		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다. 
+		
+		// **** 다운로드 하기 **** //
+		// 다운로드가 실패할 경우 메시지를 띄워주기 위해서
+		// boolean 타입 변수 flag 를 선언한다.
+		boolean flag = false;
+		
+		flag = fileManager.doFileDownload(fileName, orgFilename, path, response);
+		// 다운로드가 성공이면 true 를 반납해주고,
+		// 다운로드가 실패이면 false 를 반납해준다.
+		
+		if(!flag) {
+			// 다운로드가 실패할 경우 메시지를 띄워준다.
+			
+			response.setContentType("text/html; charset=UTF-8"); 
+			PrintWriter writer = null;
+			
+			try {
+				writer = response.getWriter();
+				// 웹브라우저상에 메시지를 쓰기 위한 객체생성.
+			} catch (IOException e) {
+				
+			}
+			
+			writer.println("<script type='text/javascript'>alert('파일 다운로드가 불가능합니다.')</script>");       
+			
+		}
+		 
+	} // end of void download(HttpServletRequest req, HttpServletResponse res)---------
+
+	
+
 	
 }

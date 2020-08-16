@@ -110,5 +110,33 @@ public class BoardDAO implements InterBoardDAO {
 		int n = sqlsession.insert("finalproject4.qnaAddAdmin", qvo);
 		return n;
 	}
+
+	// 공지사항 글 등록하기(첨부파일 X)
+	@Override
+	public int noticeAdd(NoticeVO notivo) {
+		int n = sqlsession.insert("finalproject4.noticeAdd", notivo);
+		return n;
+	}
+
+	// 공지사항 글 등록하기(첨부파일 O)
+	@Override
+	public int noticeAdd_withFile(NoticeVO notivo) {
+		int n = sqlsession.insert("finalproject4.noticeAdd_withFile", notivo);
+		return n;
+	}
+
+	// 관리자가 Qna 글 1개 보기 클릭시 Adminread 상태를 0 -> 1로 바꿈.
+	@Override
+	public void setAdminRead(String seq) {
+		sqlsession.update("finalproject4.setAdminRead", seq);
+		
+	}
+
+	// 관리자가 답변등록시 해당 참조글번호 fk_seq 의 문의글을 답변완료로 업데이트
+	@Override
+	public void updateAdminans(String fk_seq) {
+		sqlsession.update("finalproject4.updateAdminans", fk_seq);
+		
+	}
 	
 }

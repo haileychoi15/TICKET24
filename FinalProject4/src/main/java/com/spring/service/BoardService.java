@@ -115,7 +115,12 @@ public class BoardService implements InterBoardService {
 	
 	// qna 글 1개 보기 페이지로 이동(조회수 증가 없음)
 	@Override
-	public QnaVO getQnaViewWithNoAddCount(String seq) {
+	public QnaVO getQnaViewWithNoAddCount(String seq, String userid) {
+		
+		if("admin".equals(userid)) {
+			dao.setAdminRead(seq); // 관리자가 Qna 글 1개 보기 클릭시 Adminread 상태를 0 -> 1로 바꿈.
+		}
+		
 		QnaVO qnavo = dao.getQnaView(seq);
 		return qnavo;
 	}
@@ -124,7 +129,22 @@ public class BoardService implements InterBoardService {
 	@Override
 	public int qnaAddAdmin(QnaVO qvo) {
 		int n = dao.qnaAddAdmin(qvo);
+		dao.updateAdminans(qvo.getFk_seq()); // 관리자가 답변등록시 해당 참조글번호 fk_seq 의 문의글을 답변완료로 업데이트
 		return n;
+	}
+
+	// 공지사항 글 등록하기(첨부파일 X)
+	@Override
+	public int noticeAdd(NoticeVO notivo) {
+		int n = dao.noticeAdd(notivo); // 첨부파일이 없는 경우
+		return 0;
+	}
+
+	// 공지사항 글 등록하기(첨부파일 O)
+	@Override
+	public int noticeAdd_withFile(NoticeVO notivo) {
+		int n = dao.noticeAdd_withFile(notivo); // 첨부파일이 있는 경우
+		return 0;
 	}
 	
 }

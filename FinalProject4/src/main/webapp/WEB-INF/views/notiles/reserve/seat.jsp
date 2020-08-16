@@ -135,7 +135,7 @@
                                         <td class="row1">[YES마니아] 예매수수료 면제쿠폰 (예매수수료 면제)</td>
                                         <td class="row2">1,000</td>
                                         <td class="row3">
-                                            <input type="checkbox" id="couponCheck1" value="1000" onclick="changeCoupon()">
+                                            <input type="checkbox" id="couponCheck1" value="1000" onchange="changeCoupon()">
                                         </td>
                                     </tr>
                                     </tbody>
@@ -159,7 +159,7 @@
                         <h3>수령 방법을 선택하세요</h3>
                         <div id="radioDiv">
                             <input type="radio" id="willCall" name="receive" value="0" onclick="deliverySel()" checked>&nbsp;<label for="willCall">현장수령</label>
-                            <input type="radio" id="delivery" name="receive" value="1" onclick="deliverySel()">&nbsp;<label for="delivery">배송(2,500원)</label>
+                            <span id="deliverySpan"><input type="radio" id="delivery" name="receive" value="1" onclick="deliverySel()">&nbsp;<label for="delivery">배송(2,500원)</label></span>
                         </div>
                         <div class="selectInfo">
                             <div id="ordererInfo">

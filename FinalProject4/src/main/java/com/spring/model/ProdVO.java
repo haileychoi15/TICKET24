@@ -2,32 +2,33 @@ package com.spring.model;
 
 public class ProdVO {
 
-   private String prod_id;             // -- 공연정보코드 (시퀀스)
-   private String fk_category_id;         // -- 카테고리코드
-   private String category_name;         // -- 카테고리명
-   private String fk_category_detail_id;   // -- 세부카테고리코드
-   private String prod_title;            // -- 공연명
-   private String prod_img;            // -- 대표이미지
-   private String prod_detail_img;         // -- 상세이미지
-   private String date_start;            // -- 공연시작날짜
-   private String date_end;            // -- 공연종료날짜
-   private String info_open_date;         // -- 티켓오픈일시
-   private String info_close_date;         // -- 티켓마감일시
-   private String info_rev_status;         // -- 예매가능상태
-   private String info_grade;            // -- 관람등급
-   private String info_run_time;         // -- 관람시간
-   private String info_qnty;            // -- 판매량
-   private String map_address;            // -- 공연장소주소
-   private String map_name;            // -- 공연장소명
-   private String status;
-   private String map_id;               // -- 공연장소코드
+   private String prod_id;             		// -- 공연정보코드 (시퀀스)
+   private String fk_category_id;      		// -- 카테고리코드
+   private String category_name;         	// -- 카테고리명
+   private String fk_category_detail_id;	// -- 세부카테고리코드
+   private String prod_title;            	// -- 공연명
+   private String prod_img;            		// -- 대표이미지
+   private String prod_detail_img;          // -- 상세이미지
+   private String date_start;            	// -- 공연시작날짜
+   private String date_end;            		// -- 공연종료날짜
+   private String info_open_date;           // -- 티켓오픈일시
+   private String info_close_date;          // -- 티켓마감일시
+   private String info_rev_status;          // -- 예매가능상태
+   private String info_grade;            	// -- 관람등급
+   private String info_run_time;         	// -- 관람시간
+   private String info_qnty;            	// -- 판매량
+   private String map_address;              // -- 공연장소주소
+   private String map_name;            		// -- 공연장소명
+   private String local;            		// -- 공연지역
+   private String status;					// -- 공연상태 (1: 판매중 0: 판매중아님)
+   private String map_id;               	// -- 공연장소코드
    
    public ProdVO() {}
    
    public ProdVO(String prod_id, String fk_category_id, String category_name, String fk_category_detail_id,
 		String prod_title, String prod_img, String prod_detail_img, String date_start, String date_end,
 		String info_open_date, String info_close_date, String info_rev_status, String info_grade, String info_run_time,
-		String info_qnty, String map_address, String map_name, String status, String map_id) {
+		String info_qnty, String map_address, String map_name, String local, String status, String map_id) {
 	   super();
 	   this.prod_id = prod_id;
 	   this.fk_category_id = fk_category_id;
@@ -46,12 +47,13 @@ public class ProdVO {
 	   this.info_qnty = info_qnty;
 	   this.map_address = map_address;
 	   this.map_name = map_name;
+	   this.local = local;
 	   this.status = status;
 	   this.map_id = map_id;
    }
 
-   
-   public String getProd_id() {
+
+	public String getProd_id() {
       return prod_id;
    }
 
@@ -201,6 +203,14 @@ public class ProdVO {
 
 	public void setMap_id(String map_id) {
 		this.map_id = map_id;
+	}
+	
+    public String getLocal() {
+		return local;
+	}
+	
+	public void setLocal(String local) {
+		this.local = local;
 	}
    
 }
