@@ -54,13 +54,13 @@ body{
 }
 
 .tab-section .find-tab li:first-child a{
-    color: #fff;
-    background-color: #d96f1c;
+    color: #d96f1c;
+    background-color: #fff;
 }
 
 .tab-section .find-tab li:last-child a{
-    color: #d96f1c;
-    background-color: #fff;
+    color: #fff;
+    background-color: #d96f1c;
 }
 
 /* Main */
@@ -93,36 +93,79 @@ body{
     color: #6a6a6a;
 }
 
-.main .info-box .input-group{
+.main .input-group{
     display: flex;
     align-items: center;
     margin-bottom: 30px;
 }
 
-.main .info-box .name-group{
+.main .info-box .userid-group{
     margin-bottom: 10px;
 }
 
-.main .info-box label{
+.main .input-group label{
     display: inline-block;
     width: 50px;
     margin-right: 10px;
 }
 
-.main .info-box input{
+.main .input-group input{
     flex-grow: 1;
     height: 40px;
     border: 1px solid rgb(229, 229, 230);
     padding: 0 10px;
 }
 
-.main .info-box input.wrong{
+.main .input-group input.wrong{
     border: 1px solid rgb(212, 0, 0);
     background-color: rgba(212, 0, 0, 0.1);
 }
 
-.main .info-box input::placeholder{
+.main .input-group input::placeholder{
+    font-size: 14px;
+}
+
+.main .response{
+    margin-bottom: 30px;
+    text-align: center;
+    color: #000;
+}
+
+.main .response p{
     font-size: 15px;
+    font-weight: 600;
+}
+
+.main .response .no-result{
+    color: #fd472b;
+}
+
+.main .response .yes-result{
+    color: green;
+}
+
+.main .info-box .send-code-button{
+    display: block;
+    width: 120px;
+    height: 40px;
+    border: 1px solid rgb(229, 229, 230);
+    border-radius: 20px;
+    margin: 0 auto 30px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: box-shadow 150ms ease-in-out;
+}
+
+.main .info-box .send-code-button:hover{
+    box-shadow: 0 2px 3px rgba(229, 229, 230, 0.9);
+}
+
+.main .code-group{
+    display: none;
+}
+
+.main .code-group label{
+    width: 65px;
 }
 
 .main .button-group{
@@ -139,7 +182,6 @@ body{
     align-items: center;
     width: 100%;
     height: 50px;
-    font-size: 14px;
     border-radius: 6px;
     font-size: 15px;
     cursor: pointer;
@@ -159,34 +201,6 @@ body{
     color: #fff;
     border: solid 1px #d96f1c;
     background-color: #d96f1c;
-}
-
-.main .response{
-    margin-bottom: 30px;
-    text-align: center;
-    color: #000;
-}
-
-.main .response p{
-    font-size: 15px;
-}
-
-.main .response .no-result{
-    font-weight: 600;
-    color: #fd472b;
-}
-
-.main .response .yes-result{
-    color: #000;
-}
-
-.main .response .yes-result a{
-    font-style: italic;
-    color: #d96f1c;
-}
-
-.main .response .yes-result a:hover{
-    text-decoration: underline;
 }
 
 /* main-footer */
@@ -247,12 +261,13 @@ body{
         font-size: 16px;
     }
 
+    .main .response p{
+        font-size: 16px;
+    }
+
     .main .button-group li a,
     .main .button-group li button{
         font-size: 16px;
     }
 
-    .main .response p{
-        font-size: 16px;
-    }
 }
