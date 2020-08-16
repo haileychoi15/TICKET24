@@ -67,6 +67,7 @@ body{
 .main{
     padding: 30px 20px;
     border: 1px solid rgb(229, 229, 230);
+    margin-bottom: 30px;
     background-color: #fff;
 }
 
@@ -115,6 +116,11 @@ body{
     padding: 0 10px;
 }
 
+.main .info-box input.wrong{
+    border: 1px solid rgb(212, 0, 0);
+    background-color: rgba(212, 0, 0, 0.1);
+}
+
 .main .info-box input::placeholder{
     font-size: 15px;
 }
@@ -155,20 +161,56 @@ body{
     background-color: #d96f1c;
 }
 
-/* Footer */
-.footer p{
+.main .response{
+    margin-bottom: 30px;
+    text-align: center;
+    color: #000;
+}
+
+.main .response p{
+    font-size: 15px;
+}
+
+.main .response .no-result{
+    font-weight: 600;
+    color: #fd472b;
+}
+
+.main .response .yes-result{
+    color: #000;
+}
+
+.main .response .yes-result a{
+    font-style: italic;
+    color: #d96f1c;
+}
+
+.main .response .yes-result a:hover{
+    text-decoration: underline;
+}
+
+/* main-footer */
+.main-footer p{
     font-size: 14px;
     color: #989898;
 }
 
-.footer p em{
+.main-footer p em{
     font-style: normal;
     color: #d96f1c;
 }
 
-.footer p em:hover{
+.main-footer p em:hover{
     text-decoration: underline;
     cursor: pointer;
+}
+
+/* Footer */
+.footer{
+    margin-bottom: 30px;
+    font-size: 12px;
+    text-align: center;
+    color: #777;
 }
 
 
@@ -198,6 +240,7 @@ body{
     /* Main */
     .main{
         padding: 50px 50px;
+        margin-bottom: 50px;
     }
 
     .main header p{
@@ -206,6 +249,10 @@ body{
 
     .main .button-group li a,
     .main .button-group li button{
+        font-size: 16px;
+    }
+
+    .main .response p{
         font-size: 16px;
     }
 }
