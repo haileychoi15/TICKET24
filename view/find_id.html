@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="container">
-    <section class="tab-section">
+    <header class="tab-section">
         <h1 class="section-title">
             <a href="#">TICKET24</a>
         </h1>
@@ -23,15 +23,21 @@
                 <a href="#" role="button">비밀번호 찾기</a>
             </li>
         </ul>
-    </section>
-    <main>
+    </header>
+    <main class="main">
         <header>
             <h1>아이디 찾기</h1>
-            <p>내 정보에 등록한 이메일로 아이디를 찾을 수 있습니다.</p>
+            <p>내 정보에 등록한 휴대폰 번호로 아이디를 찾을 수 있습니다.</p>
         </header>
         <div class="info-box">
-            <strong>이메일</strong>
-            <input type="email" placeholder="회원가입할 때 등록한 이메일을 입력해주세요.">
+            <div class="name-group input-group">
+                <label for="name">이름</label>
+                <input id="name" type="email" placeholder="">
+            </div>
+            <div class="mobile-group input-group">
+                <label for="mobile">휴대폰</label>
+                <input id="mobile" type="email" placeholder="&quot;-&quot; 없이 입력해주세요.">
+            </div>
         </div>
         <ul class="button-group">
             <li role="tab" aria-selected="true">
@@ -41,8 +47,8 @@
                 <button type="button" class="ok-button">확인</button>
             </li>
         </ul>
-        <footer>
-            <p>개인 이메일로 아이디와 비밀번호를 찾을 수 없을 경우, 고객센터에 문의해 주세요.</p>
+        <footer class="footer">
+            <p>휴대폰 번호로 아이디와 비밀번호를 찾을 수 없을 경우, <em>고객센터</em>에 문의해 주세요.</p>
         </footer>
     </main>
 </div>
