@@ -618,5 +618,13 @@
 		where userid = #{userid}
 	</update>
 	
+	
+	<!-- 쿠폰 관련 SQL -->
+	<select id="getCouponIs" parameterType="HashMap" resultType="Integer">
+		select count(*)
+		from yes_coupon
+		where fk_userid=#{userid} and coupon_name=#{couponName}
+	</select>
+	
 
 </mapper>

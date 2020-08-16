@@ -21,9 +21,6 @@
 
 <link rel="stylesheet" href="resources/css/header.css">
 
-<link rel="stylesheet" href="resources/css/main.css">
-<link rel="stylesheet" href="resources/css/category.css">
-
 
 <link rel="stylesheet" href="resources/css/footer.css">
 <link rel="stylesheet" href="resources/css/grid.min.css">

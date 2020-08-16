@@ -2,14 +2,21 @@
     pageEncoding="UTF-8"%>
     
 <script src="resources/js/footer.js"></script>
-
+<script>
+function reservePopUp() {
+	var url = "<%= request.getContextPath()%>/reservePopUp.action";
+	var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, status = no";
+	window.open(url, "", option);
+}
+</script>
 <footer class="footer">
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-9">
                 <ul class="footer-category list-group">
                     <li class="footer-category-item">
-                        <a href="#">회사소개</a>
+                        <span onclick="reservePopUp();">회사소개</span>
+                        <!-- <a href="">회사소개</a> -->
                     </li>
                     <span class="category-border">|</span>
                     <li class="footer-category-item">

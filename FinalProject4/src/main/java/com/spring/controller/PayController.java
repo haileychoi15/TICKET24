@@ -30,7 +30,8 @@ public class PayController {
 	
 	// == 예매하기 클릭 시, 좌석선택 및 시간, 할인 팝업창 띄우기 == //
 	@RequestMapping(value="/reservePopUp.action")
-	public ModelAndView requiredLogin_reservePopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	/*public ModelAndView requiredLogin_reservePopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
+	public ModelAndView reservePopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 /*
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
@@ -66,7 +67,8 @@ public class PayController {
 	// == 시간, 회차에 따른 좌석상태 ajax == //
 	@ResponseBody
 	@RequestMapping(value="/seatStatus.action", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
-	public String requiredLogin_seatStatus(HttpServletRequest request, HttpServletResponse response) {
+	/*public String requiredLogin_seatStatus(HttpServletRequest request, HttpServletResponse response) {*/
+	public String seatStatus(HttpServletRequest request, HttpServletResponse response) {
 	
 		String jsonStr = "";
 		String showDay = request.getParameter("showDay");
@@ -106,7 +108,8 @@ public class PayController {
 	
 	// == 결제 실행 API 띄우기 == //
 	@RequestMapping(value="/payPopUp.action")
-	public ModelAndView requiredLogin_payPopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	/*public ModelAndView requiredLogin_payPopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
+	public ModelAndView payPopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 	/*
 		HttpSession session = request.getSession();
@@ -134,7 +137,8 @@ public class PayController {
 	
 	// == 결제 실행 API 띄우기 == //
 		@RequestMapping(value="/payComplete.action")
-		public ModelAndView requiredLogin_payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		/*public ModelAndView requiredLogin_payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
+		public ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 			
 		/*
 			HttpSession session = request.getSession();

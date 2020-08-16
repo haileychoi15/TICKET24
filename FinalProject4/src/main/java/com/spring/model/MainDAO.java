@@ -94,5 +94,12 @@ public class MainDAO implements InterMainDAO {
 		return getTotalCnt;
 	}
 
+	// 쿠폰이 존재하는지 확인
+	@Override
+	public int getCouponIs(HashMap<String, String> couponMap) {
+		int n = sqlsession.selectOne("finalproject4.getCouponIs", couponMap);
+		return n;
+	}
+
 
 }
