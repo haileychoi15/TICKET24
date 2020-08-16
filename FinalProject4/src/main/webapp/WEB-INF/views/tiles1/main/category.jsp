@@ -190,4 +190,4 @@
         </div>
     </div>
 </main>
-<script src="resources/js/category1.js"></script>
+<script src="resources/js/category.js"></script>

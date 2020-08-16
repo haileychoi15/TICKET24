@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded', (event) => {
 
     ajaxProduct(event.currentTarget);
-
+    
     // 카테고리 박스 눌렀을 때 이벤트
     let subCategoryButton = document.querySelector('.category-box-button');
     subCategoryButton.addEventListener('click', (event) => {
@@ -60,7 +60,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         ajaxProduct(event.currentTarget);
     });
-
+    
 });
 
 function getCategoryId(category) {
@@ -137,6 +137,7 @@ function ajaxProduct(target) {
     }
 
     function getResponse() {
+    	
     	  
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
@@ -180,13 +181,10 @@ function ajaxProduct(target) {
 
             	console.log('target', target.nodeName); // 확인용
             	
-            	untilCount.value = Number(untilCount.value) + 8;
-            	console.log('상품 나오고 나서 until count :',untilCount.value);
-            	console.log(document.querySelector('.until-prod-count').value); // 내일 할거 !!!!!
-            	
-                
                 if(target.classList !== undefined && target.classList.contains('more-button')) { // 더보기 버튼 누른 것이라면
-                    
+                	untilCount.value = Number(untilCount.value) + 8;
+                	console.log('상품 나오고 나서 until count :',untilCount.value);
+                	console.log(document.querySelector('.until-prod-count').value); // 내일 할거 !!!!!
                 }
                 else{
                     prodGroup.innerHTML = ''; // 상품리스트 비우기
