@@ -29,8 +29,12 @@ public interface InterBoardService {
 
 	int getTotalQnaCount(HashMap<String, String> paraMap); // 총 qna 건수
 
-	QnaVO getQnaViewWithNoAddCount(String seq); // qna 글 1개 보기 페이지로 이동
+	QnaVO getQnaViewWithNoAddCount(String seq, String userid); // qna 글 1개 보기 페이지로 이동
 
 	int qnaAddAdmin(QnaVO qvo); // Qna 답변 등록하기
+
+	int noticeAdd(NoticeVO notivo); // 공지사항 글 등록하기(첨부파일 X)
+
+	int noticeAdd_withFile(NoticeVO notivo); // 공지사항 글 등록하기(첨부파일 O)
 
 }

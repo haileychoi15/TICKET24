@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -100,6 +101,14 @@
                 <span class="next-group"></span>
             </div>
         </div>
+        
+        <%-- ### admin 으로 로그인했을 때만 공지등록 버튼 표시 --%>
+        <c:if test="${sessionScope.loginuser.userid == 'admin'}">
+	        <div>
+	        	<button type="button" style="float:right;" onclick="location.href='noticeAdd.action'">공지등록</button>
+	        </div>
+        </c:if>
+        
     </div>
 </section>
 <script src="resources/js/notice.js"></script> <%-- ### --%>

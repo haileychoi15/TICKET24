@@ -14,7 +14,7 @@ $(document).ready(function(){
     let changeRound = document.getElementById('changeRound');
     let seatArea = document.getElementById('seatArea');
     let eachSeat = document.getElementsByClassName('eachSeat');
-
+    
     <c:forEach var="item" items="${getShowDay}">
     	changeDate.innerHTML += '<option>${item}</option>';
     </c:forEach>
@@ -591,42 +591,41 @@ function changeDC() {
     let dc2 = document.getElementById('dc2').innerText;
     let dc3 = document.getElementById('dc3').innerText;
     
-    let selValue1 = 0;
-    let selValue2 = 0;
-    let selValue3 = 0;
+    let deliverySpan = document.getElementById('deliverySpan');
+    
+    let resultDC = 0;
     
     if(dcCheck1.checked) {
-    	selValue1 = 1;
-    	selValue2 = 0;
-    	selValue3 = 0;
+    	resultDC = Number(dc1);
     	if(dcCheck2.checked || dcCheck3.checked) {
         	alert('할인은 하나만 선택이 가능합니다.');
         	dcCheck2.checked = false;
         	dcCheck3.checked = false;
     	}
+    	deliverySpan.style.display = 'none';
     }
     if(dcCheck2.checked) {
-    	selValue1 = 0;
-    	selValue2 = 1;
-    	selValue3 = 0;
+    	resultDC = Number(dc2);
     	if(dcCheck1.checked || dcCheck3.checked) {
         	alert('할인은 하나만 선택이 가능합니다.');
         	dcCheck1.checked = false;
         	dcCheck3.checked = false;
     	}
+    	deliverySpan.style.display = 'none';
     }
     if(dcCheck3.checked) {
-    	selValue1 = 0;
-    	selValue2 = 0;
-    	selValue3 = 1;
+    	resultDC = Number(dc3);
     	if(dcCheck1.checked || dcCheck2.checked) {
         	alert('할인은 하나만 선택이 가능합니다.');
         	dcCheck1.checked = false;
         	dcCheck2.checked = false;
     	}
-    }    
-
-    let resultDC = (Number(dc1) * Number(selValue1)) + (Number(dc2) * Number(selValue2)) + (Number(dc3) * Number(selValue3));
+    	deliverySpan.style.display = 'none';
+    }  
+    
+    if(!dcCheck1.checked && !dcCheck2.checked && !dcCheck3.checked) {
+    	deliverySpan.style.display = 'inline';
+    }
 
     let dcPrice = document.getElementById('dcPrice');
     let dcPriceDisplay = document.getElementById('dcPriceDisplay');
@@ -636,14 +635,13 @@ function changeDC() {
     // 총 결제금액 변경
     let ticketPrice = document.getElementById('ticketPrice').innerText;
     let ticketCommission = document.getElementById('ticketCommission').innerText;
-    let sum = Number(ticketPrice) + Number(ticketCommission);
+    let dcCoupon = document.getElementById('dcCoupon').innerText;
+    let dcPoint = document.getElementById('dcPoint').innerText;
+    let resultPrice = Number(ticketPrice) + Number(ticketCommission) - Number(resultDC) - Number(dcCoupon) - Number(dcPoint);
 
     let totalPrice = document.getElementById('totalPrice');
     let totalPriceDisplay = document.getElementById('totalPriceDisplay');
-    totalPrice.innerHTML = sum;
-    totalPriceDisplay.innerHTML = money(sum);
 
-    let resultPrice = sum - resultDC;
     totalPrice.innerText = resultPrice;
     totalPriceDisplay.innerText = money(resultPrice);
 
@@ -658,30 +656,28 @@ function changeCoupon() {
     let dcCouponDisplay = document.getElementById('dcCouponDisplay');
     if(couponCheck1.checked) {
         dcCoupon.innerText = couponCheck1.value;
-        dcCouponDisplay.innerText = money(couponCheck1.value)
+        dcCouponDisplay.innerText = money(couponCheck1.value);
     }
-    if(!couponCheck1.checked) {
-        let dcCouponInner = dcCoupon.innerText;
-        dcCoupon.innerText = Number(dcCouponInner) - Number(couponCheck1.value);
+    else if(!couponCheck1.checked) {
+        dcCoupon.innerText = Number(dcCoupon.innerText) - Number(couponCheck1.value);
         dcCouponDisplay.innerText = money(dcCoupon.innerText);
     }
-
-    let dcCouponInner = dcCoupon.innerText;
 
     // 총 결제금액 변경
     let ticketPrice = document.getElementById('ticketPrice').innerText;
     let ticketCommission = document.getElementById('ticketCommission').innerText;
-    let sum = Number(ticketPrice) + Number(ticketCommission);
+    let dcPrice = document.getElementById('dcPrice').innerText;
+    let dcPoint = document.getElementById('dcPoint').innerText;
+    let resultPrice = Number(ticketPrice) + Number(ticketCommission) - Number(dcPrice) - Number(dcCoupon.innerText) - Number(dcPoint);
 
     let totalPrice = document.getElementById('totalPrice');
     let totalPriceDisplay = document.getElementById('totalPriceDisplay');
 
-    let totalPriceInner = totalPrice.innerText;
-    let resultPrice = Number(totalPriceInner) - Number(dcCoupon.innerText);
     totalPrice.innerText = resultPrice;
     totalPriceDisplay.innerText = money(resultPrice);
-    
+
     document.getElementById('paySum').value = resultPrice;
+    
 }
 
 </script>
