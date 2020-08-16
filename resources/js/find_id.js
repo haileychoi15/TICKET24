@@ -18,12 +18,13 @@ function validateInput() {
         return false;
     }
 
-    if(mobile.value.trim() === ''){
+    console.log(mobile.value.length);
+
+    if(mobile.value.length !== 11){
         mobile.classList.add('wrong');
         return false;
     }
 
-    console.log(123123);
     ajaxInfo(name.value, mobile.value);
 
     name.value = '';
@@ -33,19 +34,25 @@ function validateInput() {
 function ajaxInfo(name, mobile) {
 
     let httpRequest = new XMLHttpRequest();
-    makeRequest('/findid', name, mobile); // ###
+    makeRequest('/finalproject4/findIDEnd.action', name, mobile); // ###
 
     function makeRequest(url, name, mobile) {
 
         httpRequest.onreadystatechange = getResponse;
         httpRequest.open('GET', `${url}?name=${name}&mobile=${mobile}`);
+        //httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //httpRequest.send(`name=${name}&mobile=${mobile}`);
         httpRequest.send();
+
     }
 
     function getResponse() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 let response = httpRequest.responseText;
+
+                console.log('response : ',response);
+
 
                 let html = '';
                 if(response.length > 0){
