@@ -65,77 +65,60 @@ public class MainController {
 			}
 		}
 		
-		
-//		if(categoryDetail == null) {
-//			
-//		}
-//		else {
-//			
-//		}
-		
-		mav.addObject("categoryDetailName", categoryDetailName);
 		mav.addObject("detailCategoryNameList", detailCategoryNameList);
+		mav.addObject("categoryDetail", categoryDetail);
+		mav.addObject("categoryDetailName", categoryDetailName);
 		mav.addObject("categoryName", categoryName);
 		mav.setViewName("main/category.tiles1");
 		return mav;
 	}
 	
-	// == 시간, 회차에 따른 좌석상태 ajax == //
+	// == 카테고리 페이지 공연 정보 ajax == //
 	@ResponseBody
 	@RequestMapping(value="/selectList.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
-	public String requiredLogin_seatStatus(HttpServletRequest request, HttpServletResponse response) {
+	public String selectList(HttpServletRequest request, HttpServletResponse response) {
 	
 		String jsonStr = "";
-		String selectNum = request.getParameter("selectNum");
-		String categoryNum = request.getParameter("categoryNum");
-		String detailCategoryNum = request.getParameter("detailCategoryNum");
+		String selectNum = request.getParameter("order");
+		String categoryNum = request.getParameter("category");
+		String detailCategoryNum = request.getParameter("subCategory");
+		String untilCnt = request.getParameter("untilCount");
+		String startCnt = String.valueOf(Integer.parseInt(untilCnt) + 1);
+		String endCnt = String.valueOf(Integer.parseInt(untilCnt) + 8);
 		
-		System.out.println("ㅋㅋㅋ");
-		
-		//List<HashMap<String, String>> selectedShowList = service.getSelectedShowList();
-		
-		switch (selectNum) {
-		case "1":
-			
-			break;
-		case "2":
-			
-			break;
-		case "3":
-	
-			break;
-		case "4":
-			
-			break;
+		if("1".equals(detailCategoryNum) || "5".equals(detailCategoryNum) || "9".equals(detailCategoryNum) || "14".equals(detailCategoryNum) || "17".equals(detailCategoryNum) || "21".equals(detailCategoryNum)) {
+			detailCategoryNum = "";
 		}
 		
-//		HashMap<String, String> seatMap = new HashMap<>();
-//		seatMap.put("showDay", showDay);
-//		String dateID = service.getDateId(seatMap);
-//		
-//		JSONArray jsonArr = new JSONArray();
-//		
-//		List<HashMap<String, String>> getSeatStatus = service.getSeatStatus(dateID);
-//		
-//		if(getSeatStatus != null) {
-//			for(HashMap<String, String> seatStatus : getSeatStatus ) {
-//				JSONObject jsonObj = new JSONObject();
-//				jsonObj.put("date_id", seatStatus.get("date_id"));
-//				jsonObj.put("prod_id", seatStatus.get("prod_id"));
-//				jsonObj.put("seattype_id", seatStatus.get("seattype_id"));
-//				jsonObj.put("seat_type", seatStatus.get("seat_type"));
-//				jsonObj.put("seat_name", seatStatus.get("seat_name"));
-//				jsonObj.put("seat_price", seatStatus.get("seat_price"));
-//				jsonObj.put("seat_status", seatStatus.get("seat_status"));
-//				jsonObj.put("date_id", seatStatus.get("date_id"));
-//				jsonObj.put("seat_color", seatStatus.get("seat_color"));
-//				
-//				jsonArr.put(jsonObj);
-//			}
-//		}
+		HashMap<String, String> showInfoMap = new HashMap<>();
+		showInfoMap.put("selectNum", selectNum);
+		showInfoMap.put("categoryNum", categoryNum);
+		showInfoMap.put("detailCategoryNum", detailCategoryNum);
+		showInfoMap.put("startCnt", startCnt);
+		showInfoMap.put("endCnt", endCnt);
 		
-		//return jsonArr.toString();
-		return "";
+		List<HashMap<String, String>> selectedShowList = service.getSelectedShowList(showInfoMap);
+		String totalCnt = service.getTotalCnt(showInfoMap);
+		
+		JSONArray jsonArr = new JSONArray();
+		
+		if(selectedShowList != null) {
+			for(HashMap<String, String> selectedShow : selectedShowList ) {
+				JSONObject jsonObj = new JSONObject();
+				
+				jsonObj.put("RNO", selectedShow.get("RNO"));
+				jsonObj.put("prod_id", selectedShow.get("prod_id"));
+				jsonObj.put("prod_title", selectedShow.get("prod_title"));
+				jsonObj.put("prod_img", selectedShow.get("prod_img"));
+				jsonObj.put("map_name", selectedShow.get("map_name"));
+				jsonObj.put("prod_discount", selectedShow.get("prod_discount"));
+				jsonObj.put("totalCount", totalCnt);
+				
+				jsonArr.put(jsonObj);
+			}
+		}
+		
+		return jsonArr.toString();
 	}
 	
 	// == 상세페이지 == //

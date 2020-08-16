@@ -26,6 +26,9 @@
 }
 
 /* Category */
+.category{
+    margin-top: 16px;
+}
 
 /* Category - Header */
 .category-header{
@@ -33,7 +36,7 @@
     flex-direction: column;
     align-items: center;
     padding: 20px 0;
-    margin: 16px 0 30px;
+    margin-bottom: 30px;
     background-color: #ec7d2c;
 }
 
@@ -51,11 +54,12 @@
 
 .sub-category .category-box-button{
     position: relative;
-    width: 116px;
+    width: 155px;
     padding: 8px 12px;
     border: 1px solid #fff;
     border-radius: 20px;
-    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
     background-color: rgba(0, 0, 0, 0);
 }
 
@@ -73,6 +77,12 @@
     top: 3px;
 }
 
+.sub-category .category-box-button .sub-category-title{
+    font-size: 15px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0);
+}
+
 .sub-category-box{
     position: absolute;
     top: 60px;
@@ -81,7 +91,7 @@
     flex-direction: column;
     justify-content: center;
     width: 240px;
-    height: 180px;
+    padding: 10px 0;
     border: 1px solid #ddd;
     border-radius: 12px;
     background-color: #fff;
@@ -95,16 +105,18 @@
     text-align: left;
 }
 
-.sub-category-box .sub-category-box-item p{
+.sub-category-box .sub-category-box-item button{
     display: inline-block;
     width: 100%;
     height: 40px;
     padding-left: 10%;
     font-size: 14px;
     line-height: 40px;
+    text-align: left;
+    background-color: #fff;
 }
 
-.sub-category-box .sub-category-box-item p:hover {
+.sub-category-box .sub-category-box-item button:hover {
     background-color: rgba(0, 0, 0, 0.04);
 }
 
@@ -213,6 +225,17 @@
     color: #000;
 }
 
+.more-button{
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ec7d2c;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #fff;
+    background-color: #ec7d2c;
+}
+
 @media screen and (min-width: 768px){
 
     .common-image{
@@ -230,11 +253,16 @@
     }
 
     /* Category */
+    .category{
+        margin-top: 121px;
+    }
+
+    /* Category Header */
     .category-header{
         flex-direction: row;
         justify-content: center;
         padding: 50px 0;
-         margin: 116px 0 50px;
+        margin-buttom: 50px;
     }
 
     .main-category{
@@ -292,5 +320,12 @@
 
     .card:first-child{
         margin-right: 30px;
+    }
+
+    .more-button{
+        width: 100px;
+        border-radius: 20px;
+        margin-bottom: 40px;
+        font-size: 16px;
     }
 }

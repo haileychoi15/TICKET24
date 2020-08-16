@@ -45,6 +45,118 @@
 		where category_id = #{category}
 	</select>
 	
+	<!-- 카테고리 select show list -->
+	<resultMap type="HashMap" id="selectOneMap">
+		<result property="RNO"				column="RNO"			javaType="String"/>
+		<result property="prod_id"			column="prod_id"		javaType="String"/>
+		<result property="prod_title"		column="prod_title"		javaType="String"/>
+		<result property="prod_img"			column="prod_img"		javaType="String"/>
+		<result property="map_name"			column="map_name"		javaType="String"/>
+		<result property="prod_discount"	column="prod_discount"	javaType="String"/>
+	</resultMap>
+	<select id="selectOne" parameterType="HashMap" resultMap="selectOneMap">
+		select RNO, prod_id, prod_title, prod_img, map_name, prod_discount
+		from
+		(
+		    select rownum AS RNO, prod_id, prod_title, prod_img, map_name, prod_discount
+		    from
+		    (
+		        select P.prod_id, P.prod_title, P.prod_img, M.map_name, P.prod_discount
+		        from prod P join yes_show_map M
+		        on P.map_id = M.map_id
+		        where fk_category_id like '%'||#{categoryNum}||'%' and fk_category_detail_id like '%'||#{detailCategoryNum}||'%'
+		        order by info_qnty desc
+		    ) V
+		) T
+		where T.RNO between #{startCnt} and #{endCnt}
+	</select>
+	
+	<resultMap type="HashMap" id="selectTwoMap">
+		<result property="RNO"				column="RNO"			javaType="String"/>
+		<result property="prod_id"			column="prod_id"		javaType="String"/>
+		<result property="prod_title"		column="prod_title"		javaType="String"/>
+		<result property="prod_img"			column="prod_img"		javaType="String"/>
+		<result property="map_name"			column="map_name"		javaType="String"/>
+		<result property="prod_discount"	column="prod_discount"	javaType="String"/>
+	</resultMap>
+	<select id="selectTwo" parameterType="HashMap" resultMap="selectTwoMap">
+		select RNO, prod_id, prod_title, prod_img, map_name, prod_discount
+		from
+		(
+		    select rownum AS RNO, prod_id, prod_title, prod_img, map_name, prod_discount
+		    from
+		    (
+		        select P.prod_id, P.prod_title, P.prod_img, M.map_name, P.prod_discount
+		        from prod P join yes_show_map M
+		        on P.map_id = M.map_id
+		        where fk_category_id like '%'||#{categoryNum}||'%' and fk_category_detail_id like '%'||#{detailCategoryNum}||'%'
+		        order by info_open_date desc
+		    ) V
+		) T
+		where T.RNO between #{startCnt} and #{endCnt}
+	</select>
+	
+	<resultMap type="HashMap" id="selectThreeMap">
+		<result property="RNO"				column="RNO"			javaType="String"/>
+		<result property="prod_id"			column="prod_id"		javaType="String"/>
+		<result property="prod_title"		column="prod_title"		javaType="String"/>
+		<result property="prod_img"			column="prod_img"		javaType="String"/>
+		<result property="map_name"			column="map_name"		javaType="String"/>
+		<result property="prod_discount"	column="prod_discount"	javaType="String"/>
+	</resultMap>
+	<select id="selectThree" parameterType="HashMap" resultMap="selectThreeMap">
+		select RNO, prod_id, prod_title, prod_img, map_name, prod_discount
+		from
+		(
+		    select rownum AS RNO, prod_id, prod_title, prod_img, map_name, prod_discount
+		    from
+		    (
+		        select P.prod_id, P.prod_title, P.prod_img, M.map_name, P.prod_discount
+		        from prod P join yes_show_map M
+		        on P.map_id = M.map_id
+		        where fk_category_id like '%'||#{categoryNum}||'%' and fk_category_detail_id like '%'||#{detailCategoryNum}||'%'
+		        order by info_close_date
+		    ) V
+		) T
+		where T.RNO between #{startCnt} and #{endCnt}
+	</select>
+	
+	<resultMap type="HashMap" id="selectFourMap">
+		<result property="RNO"				column="RNO"			javaType="String"/>
+		<result property="prod_id"			column="prod_id"		javaType="String"/>
+		<result property="prod_title"		column="prod_title"		javaType="String"/>
+		<result property="prod_img"			column="prod_img"		javaType="String"/>
+		<result property="map_name"			column="map_name"		javaType="String"/>
+		<result property="prod_discount"	column="prod_discount"	javaType="String"/>
+	</resultMap>
+	<select id="selectFour" parameterType="HashMap" resultMap="selectFourMap">
+		select RNO, prod_id, prod_title, prod_img, map_name, prod_discount
+		from
+		(
+		    select rownum AS RNO, prod_id, prod_title, prod_img, map_name, prod_discount
+		    from
+		    (
+		        select P.prod_id, P.prod_title, P.prod_img, M.map_name, P.prod_discount
+		        from prod P join yes_show_map M
+		        on P.map_id = M.map_id
+		        where fk_category_id like '%'||#{categoryNum}||'%' and fk_category_detail_id like '%'||#{detailCategoryNum}||'%'
+		        order by prod_title
+		    ) V
+		) T
+		where T.RNO between #{startCnt} and #{endCnt}
+	</select>
+	
+	<select id="getTotalCnt" parameterType="HashMap" resultType="String">
+		select count(*)
+		    from
+		    (
+		        select P.prod_id, P.prod_title, P.prod_img, M.map_name, P.prod_discount
+		        from prod P join yes_show_map M
+		        on P.map_id = M.map_id
+		        where fk_category_id like '%'||#{categoryNum}||'%' and fk_category_detail_id like '%'||#{detailCategoryNum}||'%'
+		    ) V
+	</select>
+	
 	
 	<!-- === Pay(예매하기) 관련 === -->
 	<resultMap type="HashMap" id="resShowInfo">
@@ -112,7 +224,6 @@
 		from yes_show_date
 		where prod_id = #{showNum} and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') = #{showDay} and date_showtime = #{showRound}
 	</select>
-	
 	
 	
 	

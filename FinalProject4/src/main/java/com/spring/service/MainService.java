@@ -51,6 +51,30 @@ public class MainService implements InterMainService {
 		return getdetailCategoryName;
 	}
 
+	// == 카테고리 페이지 공연 정보 ajax == //
+	@Override
+	public List<HashMap<String, String>> getSelectedShowList(HashMap<String, String> showInfoMap) {
+		String num = showInfoMap.get("selectNum");
+		List<HashMap<String, String>> getSelectedShowList = null;
+		
+		switch (num) {
+		case "1":
+			getSelectedShowList = dao.selectOne(showInfoMap);
+			break;
+		case "2":
+			getSelectedShowList = dao.selectTwo(showInfoMap);
+			break;
+		case "3":
+			getSelectedShowList = dao.selectThree(showInfoMap);
+			break;
+		case "4":
+			getSelectedShowList = dao.selectFour(showInfoMap);
+			break;
+		}
+		
+		return getSelectedShowList;
+	}
+	
 	@Override
 	public int getTotalProdCount(HashMap<String, String> paraMap) {
 		int n = dao.getTotalProdCount(paraMap);
@@ -63,10 +87,12 @@ public class MainService implements InterMainService {
 		return prodList;
 	}
 
-	
+	@Override
+	public String getTotalCnt(HashMap<String, String> showInfoMap) {
+		String getTotalCnt = dao.getTotalCnt(showInfoMap);
+		return getTotalCnt;
+	}
 
-
-	
 	
 
 }

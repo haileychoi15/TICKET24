@@ -3,41 +3,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="resources/css/category.css">
     <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
-    
 </head>
 <body>
 <section class="category">
     <header class="category-header">
         <h1 class="main-category">${categoryName}</h1>
         <h2 class="sub-category">
-            <button type="button" class="category-box-button">
-                <span class="sub-category-title">${categoryDetailName}</span> 
+            <div type="button" class="category-box-button">
+                <button class="sub-category-title" value="${categoryDetail}">${categoryDetailName}</button>
                 <ul class="sub-category-box hide">
                     <c:forEach var="item" items="${detailCategoryNameList}">
-                    <li class="sub-category-box-item">
-                        <p role="button">
-                            ${item.category_detail_name}
-                        </p>
-                    </li>
+                        <li class="sub-category-box-item">
+                            <button type="button" value="${item.category_detail_id}">
+                                    ${item.category_detail_name}
+                            </button>
+                        </li>
                     </c:forEach>
-<%--                    <li class="sub-category-box-item">
-                        <p role="button">
+                    <%-- 주석 처리 시작 --%>
+                    <!-- <li class="sub-category-box-item">
+                        <button type="button" value="1">
+                            전체보기
+                        </button>
+                    </li>
+                    <li class="sub-category-box-item">
+                        <button type="button" value="2">
                             국내뮤지션
-                        </p>
+                        </button>
                     </li>
                     <li class="sub-category-box-item">
-                        <p role="button">
+                        <button type="button" value="3">
                             해외뮤지션
-                        </p>
+                        </button>
                     </li>
                     <li class="sub-category-box-item">
-                        <p role="button">
+                        <button type="button" value="4">
                             페스티벌
-                        </p>
-                    </li>--%>
+                        </button>
+                    </li> -->
+                        <%-- 주석 처리 끝 --%>
                 </ul>
-            </button>
+            </div>
         </h2>
     </header>
     <div class="container">
@@ -45,10 +56,10 @@
             <div class="col-12 col-md-12">
                 <div class="order">
                     <div class="order-group">
-                        <button type="button" class="selected" onclick="getProductTemplate(1)">주간랭킹순</button>
-                        <button type="button" onclick="getProductTemplate(2)">신상품순</button>
-                        <button type="button" onclick="getProductTemplate(3)">종료임박순</button>
-                        <button type="button" onclick="getProductTemplate(4)">상품명순</button>
+                        <button type="button" class="selected" value="1">주간랭킹순</button>
+                        <button type="button" value="2">신상품순</button>
+                        <button type="button" value="3">종료임박순</button>
+                        <button type="button" value="4">상품명순</button>
                     </div>
                 </div>
             </div>
@@ -56,13 +67,9 @@
     </div>
 </section>
 <main class="product">
-    <div class="container">
+    <h2 class="main-title">상품리스트</h2>
+    <div class="container product-group">
         <div class="row">
-            <div class="col-12">
-                <h2 class="main-title">상품리스트</h2>
-            </div>
-        </div>
-        <div class="row product-group">
             <div class="col12 col-md-6">
                 <ul class="card-list list-group">
                     <li class="card">
@@ -173,5 +180,14 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <button class="more-button">더보기</button>
+                <input type="text" class="until-prod-count" value="0">
+                <input type="text" class="total-prod-count" value="0">
+            </div>
+        </div>
+    </div>
 </main>
-<script src="resources/js/category.js"></script> 
+<script src="resources/js/category1.js"></script>

@@ -133,6 +133,7 @@ function ajaxBoard(page) {
     }
 
     function getResponse() {
+    	
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 let response = JSON.parse(httpRequest.responseText);

@@ -22,12 +22,13 @@ public interface InterMainService {
 	// == category 페이지 detailCategoryName 가져오기 == //
 	List<HashMap<String, String>> getdetailCategoryName(String category);
 	
+	// == 카테고리 페이지 공연 정보 ajax == //
+	List<HashMap<String, String>> getSelectedShowList(HashMap<String, String> showInfoMap);
+	
 	int getTotalProdCount(HashMap<String, String> paraMap);
 
 	List<ProdVO> prodList(HashMap<String, String> paraMap);
 
-	
-
-
+	String getTotalCnt(HashMap<String, String> showInfoMap);
 
 }

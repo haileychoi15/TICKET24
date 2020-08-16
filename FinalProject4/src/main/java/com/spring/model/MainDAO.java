@@ -48,6 +48,33 @@ public class MainDAO implements InterMainDAO {
 		List<HashMap<String, String>> getdetailCategoryName = sqlsession.selectList("finalproject4.getdetailCategoryName", category);
 		return getdetailCategoryName;
 	}
+	
+	// == category 공연 리스트 ajax - 주간랭킹순 == //
+	@Override
+	public List<HashMap<String, String>> selectOne(HashMap<String, String> showInfoMap) {
+		List<HashMap<String, String>> selectOne = sqlsession.selectList("finalproject4.selectOne", showInfoMap);
+		
+		
+		return selectOne;
+	}
+	// == category 공연 리스트 ajax - 신상품순 == //
+	@Override
+	public List<HashMap<String, String>> selectTwo(HashMap<String, String> showInfoMap) {
+		List<HashMap<String, String>> selectTwo = sqlsession.selectList("finalproject4.selectTwo", showInfoMap);
+		return selectTwo;
+	}
+	// == category 공연 리스트 ajax - 종료임박순 == //
+	@Override
+	public List<HashMap<String, String>> selectThree(HashMap<String, String> showInfoMap) {
+		List<HashMap<String, String>> selectThree = sqlsession.selectList("finalproject4.selectThree", showInfoMap);
+		return selectThree;
+	}
+	// == category 공연 리스트 ajax - 상품명순 == //
+	@Override
+	public List<HashMap<String, String>> selectFour(HashMap<String, String> showInfoMap) {
+		List<HashMap<String, String>> selectFour = sqlsession.selectList("finalproject4.selectFour", showInfoMap);
+		return selectFour;
+	}
 
 	@Override
 	public int getTotalProdCount(HashMap<String, String> paraMap) {
@@ -60,5 +87,12 @@ public class MainDAO implements InterMainDAO {
 		List<ProdVO> prodList = sqlsession.selectList("board.prodList", paraMap);
 		return prodList;
 	}
+
+	@Override
+	public String getTotalCnt(HashMap<String, String> showInfoMap) {
+		String getTotalCnt = sqlsession.selectOne("finalproject4.getTotalCnt", showInfoMap);
+		return getTotalCnt;
+	}
+
 
 }
