@@ -34,7 +34,11 @@ public interface InterMainDAO {
 	List<ProdVO> prodList(HashMap<String, String> paraMap);
 
 	String getTotalCnt(HashMap<String, String> showInfoMap);
-
 	
+	// 쿠폰이 존재하는지 확인
+	int getCouponIs(HashMap<String, String> couponMap);
+
+	// 쿠폰 발급하기
+	int getCoupon(HashMap<String, String> couponMap);
 	
 }

@@ -114,25 +114,29 @@ function ajaxProduct(target) {
 	
 	let untilCount = document.querySelector('.until-prod-count');
     let totalCount = document.querySelector('.total-prod-count');
+    
+    if(target.classList === undefined || !target.classList.contains('more-button')){ // 더보기 버튼이 아닐 때
+    	untilCount.innerText = 0;
+    }
 
     let category = document.querySelector('.main-category').innerText;
     category = getCategoryId(category); // 메인 카테고리를 id 값으로 바꿔주기
     let subCategory = document.querySelector('.sub-category-title').value;
     let order = document.querySelector('.order-group button.selected').value;
-    let untilCountValue = untilCount.value;
+    let untilCountNum = untilCount.innerText;
 
     console.log('메인 카테고리 : ',category);
     console.log('서브 카테고리 : ',subCategory);
     console.log('정렬 순서 : ',order);
-    console.log('현재까지 상품 수 : ',untilCountValue);
+    console.log('현재까지 상품 수 : ',untilCountNum);
 
     let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/selectList.action', category, subCategory, order, untilCountValue); // ####
+    makeRequest('/finalproject4/selectList.action', category, subCategory, order, untilCountNum); // ####
 
     function makeRequest(url, category, subCategory, order, untilCountValue) {
 
         httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('GET', `${url}?category=${category}&subCategory=${subCategory}&order=${order}&untilCount=${untilCountValue}`);
+        httpRequest.open('GET', `${url}?category=${category}&subCategory=${subCategory}&order=${order}&untilCount=${untilCountNum}`);
         httpRequest.send();
     }
 
@@ -176,25 +180,26 @@ function ajaxProduct(target) {
 
                     totalProdCount = item.totalCount;
                 });
-
+                
                 let prodGroup = document.querySelector('.product-group');
-
-            	console.log('target', target.nodeName); // 확인용
             	
-                if(target.classList !== undefined && target.classList.contains('more-button')) { // 더보기 버튼 누른 것이라면
-                	untilCount.value = Number(untilCount.value) + 8;
-                	console.log('상품 나오고 나서 until count :',untilCount.value);
-                	console.log(document.querySelector('.until-prod-count').value); // 내일 할거 !!!!!
-                }
-                else{
-                    prodGroup.innerHTML = ''; // 상품리스트 비우기
-                    untilCount.value = 0;
-                    totalCount.value = totalProdCount;
-                }
+            	 if(target.classList === undefined || !target.classList.contains('more-button')){ // 더보기 버튼이 아닐 때
+            		 console.log('totalProdCount : ',totalProdCount);
+            		 console.log('더보기 버튼 아님 !!!');
+                     prodGroup.innerHTML = ''; // 상품리스트 비우기
+                 	 untilCount.innerText = 8;
+                     totalCount.innerText = totalProdCount;
+                 }
+            	 else{
+                 	untilCount.innerText = Number(untilCount.innerText) + 8;
+            	 }
+                
+            	 console.log('untilCount.innerText',untilCount.innerText);
+            	 
                 prodGroup.insertAdjacentHTML('beforeend', html);
 
             	let moreButton = document.querySelector('.more-button');
-                if(Number(untilCount.value) + 8 >= totalProdCount){
+                if(Number(untilCount.innerText) >= totalProdCount){
                 	 moreButton.style.display = 'none';
                 }
                 else{

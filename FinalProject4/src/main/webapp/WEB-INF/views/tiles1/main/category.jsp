@@ -183,9 +183,11 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <button class="more-button">더보기</button>
-                <input type="text" class="until-prod-count" value="0">
-                <input type="text" class="total-prod-count" value="0">
+                <button class="more-button">
+                	더보기
+               	    <span class="until-prod-count">0</span>
+            		<span class="total-prod-count">0</span>
+               	</button>
             </div>
         </div>
     </div>

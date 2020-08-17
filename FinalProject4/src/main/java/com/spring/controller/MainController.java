@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.model.MemberVO;
 import com.spring.model.ProdVO;
 import com.spring.service.InterMainService;
 
@@ -97,8 +99,17 @@ public class MainController {
 		showInfoMap.put("startCnt", startCnt);
 		showInfoMap.put("endCnt", endCnt);
 		
+		System.out.println(selectNum + "정렬번호 <<");
+		System.out.println(categoryNum + "대분류<<");
+		System.out.println(detailCategoryNum + "소분류 <<");
+		System.out.println(startCnt + "공연시작번호 <<");
+		System.out.println(endCnt + "공연끝번호 <<");
+		
 		List<HashMap<String, String>> selectedShowList = service.getSelectedShowList(showInfoMap);
 		String totalCnt = service.getTotalCnt(showInfoMap);
+		
+		System.out.println(totalCnt + "개수 <<<");
+		System.out.println(selectedShowList.size() + "사이즈<<<");
 		
 		JSONArray jsonArr = new JSONArray();
 		
@@ -129,7 +140,99 @@ public class MainController {
 		
 		return mav;
 	}
+	
+	// == 쿠폰 이벤트 페이지 == //
+	@RequestMapping(value="/coupon.action")
+	/*public ModelAndView requiredLogin_coupon(ModelAndView mav) {*/
+	public ModelAndView coupon(ModelAndView mav) {
+		
+		mav.setViewName("main/coupon.tiles1");
+		return mav;
+	}
 	   
+	// == 쿠폰 받기 ajax == //
+	@ResponseBody
+	@RequestMapping(value="/getCoupon.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String getCoupon(HttpServletRequest request, HttpServletResponse response) {
+	
+		String jsonStr = "";
+		String couponDC = "";
+		String couponName = "";
+		int resultNum = 0;
+		
+//		HttpSession session = request.getSession();
+//		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+//		
+//		String userid = loginuser.getUserid();
+		String userid = "guzi10";
+		String couponNum = request.getParameter("couponNum");
+		
+		System.out.println(userid + " 아이디");
+		System.out.println(couponNum + " 쿠폰번호");
+		
+		switch (couponNum) {
+		case "1":
+			couponDC = "1000";
+			couponName = "수수료면제";
+			break;
+		case "2":
+			couponDC = "3000";
+			couponName = "3000원할인";
+			break;
+		case "3":
+			couponDC = "5000";
+			couponName = "5000원할인";
+			break;
+		case "4":
+			couponDC = "10000";
+			couponName = "10000원할인";
+			break;
+		}
+		
+		HashMap<String, String> couponMap = new HashMap<>();
+		couponMap.put("userid", userid);
+		couponMap.put("couponDC", couponDC);
+		couponMap.put("couponName", couponName);
+		
+		int n = service.getCouponIs(couponMap);
+		
+		if(n>0) {
+			// ajax n = 1 반환 이미 존재하는 쿠폰입니다.
+			resultNum = 1;
+		}
+		else {
+			// 쿠폰 insert
+			int m = service.getCoupon(couponMap);
+			
+			if(m == 1) {
+				resultNum = 0;
+			}
+			else {
+				resultNum = 2;
+			}
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("resultNum", resultNum);
+		jsonObj.put("couponName", couponName);
+		
+		return jsonObj.toString();
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
    @RequestMapping(value="/prodMain.action")
    public ModelAndView final_prodMain(ModelAndView mav, HttpServletRequest request) {
       

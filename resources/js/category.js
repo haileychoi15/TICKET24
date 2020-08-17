@@ -88,14 +88,19 @@ function getCategoryId(category) {
     return category;
 }
 
-function getProdTemplate(id, title, img, place) {
+function getProdTemplate(id, title, img, place, discount) {
 
     // #### 주소 바꾸기 ####
     let template = `<li class="card">
                         <a href="<%=ctxPath%>/?prodId=${id}"> 
                             <div class="card-image common-image">
-                                <img src="${img}" alt="${title}" />
-                            </div>
+                                <img src="${img}" alt="${title}" />`;
+
+    if(discount !== undefined){ // 할인율이 있으면
+        template += `<strong class="notice-sticker">${discount}</strong>`;
+    }
+
+    template +=            `</div>
                             <div class="card-desc">
                                 <h3 class="card-title common-title">${title}</h3>
                                 <strong class="card-content common-content">${place}</strong>
@@ -107,67 +112,92 @@ function getProdTemplate(id, title, img, place) {
 
 function ajaxProduct(target) {
 
+    let untilCount = document.querySelector('.until-prod-count');
+    let totalCount = document.querySelector('.total-prod-count');
+
     let category = document.querySelector('.main-category').innerText;
     category = getCategoryId(category); // 메인 카테고리를 id 값으로 바꿔주기
     let subCategory = document.querySelector('.sub-category-title').value;
     let order = document.querySelector('.order-group button.selected').value;
+    let untilCountValue = untilCount.value;
 
     console.log('메인 카테고리 : ',category);
     console.log('서브 카테고리 : ',subCategory);
     console.log('정렬 순서 : ',order);
+    console.log('현재까지 상품 수 : ',untilCountValue);
 
-    //let httpRequest = new XMLHttpRequest();
-    //makeRequest('/category', category, subCategory, order); // ####
+    let httpRequest = new XMLHttpRequest();
+    makeRequest('/category', category, subCategory, order, untilCountValue); // ####
 
-    function makeRequest(url, category, subCategory, order) {
+    function makeRequest(url, category, subCategory, order, untilCountValue) {
 
         httpRequest.onreadystatechange = getResponse;
-        httpRequest.open('GET', `${url}?category=${category}&subCategory=${subCategory}&order=${order}`);
+        httpRequest.open('GET', `${url}?category=${category}&subCategory=${subCategory}&order=${order}&untilCount=${untilCountValue}`);
         httpRequest.send();
     }
 
     function getResponse() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-                let response = JSON.parse(httpRequest.responseText);
+        if (httpRequest.status === 200) {
+            let response = JSON.parse(httpRequest.responseText);
 
-                console.log(response.computedString);
-                //ajax 성공시 코드
+            console.log(response.computedString);
+            //ajax 성공시 코드
+            // *********** 해야 할 것 ************
+            // ajax 부를 때마다 input hidden 에 값 꼽아 두기
+            // 더보기로 ajax 보낸 거라면 value 에 8씩 더하기
+            // 총개수보다 지금까지 나온 개수가 같거나 크다면 더보기 버튼 없애기
+            // ajax 실행할때마다 더보기 버튼 나오게 하기
 
-                let html = '';
-                response.forEach((item, index) => {
+            let html = '';
+            let totalProdCount = 0;
+            response.forEach((item, index) => {
 
-                    if(index%4 === 0){ // 0 번째
-                        html += '<div class="row">';
-                    }
-
-                    if(index%2 === 0){ // index가 짝수일 때
-                        html += `<div class="col12 col-md-6">
-                                 <ul class="card-list list-group">`;
-                    }
-
-                    html += getProdTemplate(item.prodId, item.prodTitle, item.prodImg, item.infoPlace);
-
-                    if(index%2 === 1){ // index가 홀수일 때
-                        html += `</ul>
-                                 </div>`;
-                    }
-
-                    if(index%4 === 3){
-                        html += `</div>`;
-                    }
-                });
-
-                let prodGroup = document.querySelector('.product-group');
-                if(!target.classList.contains('more-button')){ // 더보기 버튼 누른 것이 아니라면 상품리스트 비우기
-                    prodGroup.innerHTML = '';
+                if(index%4 === 0){ // 0 번째
+                    html += '<div class="row">';
                 }
-                prodGroup.insertAdjacentHTML('beforeend', html);
 
-            } else {
-                alert('There was a problem with the request.');
+                if(index%2 === 0){ // index가 짝수일 때
+                    html += `<div class="col12 col-md-6">
+                                 <ul class="card-list list-group">`;
+                }
+
+                html += getProdTemplate(item.prod_id, item.prod_title, item.prod_img, item.map_name, item.prod_discount);
+
+                if(index%2 === 1){ // index가 홀수일 때
+                    html += `</ul>
+                                 </div>`;
+                }
+
+                if(index%4 === 3){
+                    html += `</div>`;
+                }
+
+                totalProdCount = item.totalCount;
+            });
+
+            let prodGroup = document.querySelector('.product-group');
+
+            if(target.classList.contains('more-button')) { // 더보기 버튼 누른 것이라면
+                untilCount.value = Number(untilCount.value) + 8;
             }
-        }
+            else{
+                prodGroup.innerHTML = ''; // 상품리스트 비우기
+                untilCount.value = 0;
+                totalCount.value = totalProdCount;
+            }
+            prodGroup.insertAdjacentHTML('beforeend', html);
 
+            if(Number(untilCount.value) + 8 >= totalProdCount){
+                target.style.display = 'none';
+            }
+            else{
+                target.style.display = 'block';
+            }
+
+        } else {
+            alert('There was a problem with the request.');
+        }
     }
+  }
 }
