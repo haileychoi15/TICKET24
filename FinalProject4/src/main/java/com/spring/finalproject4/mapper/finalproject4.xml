@@ -225,7 +225,15 @@
 		where prod_id = #{showNum} and to_char(date_showday, 'yyyy-mm-dd') || ' ' || to_char(date_showday, 'day') = #{showDay} and date_showtime = #{showRound}
 	</select>
 	
-	
+	<resultMap type="HashMap" id="takeCoupon">
+		<result property="coupon_dc"			column="coupon_dc"		javaType="String"/>
+		<result property="coupon_name"			column="coupon_name"	javaType="String"/>
+	</resultMap>
+	<select id="takeCoupon" parameterType="String" resultMap="takeCoupon">
+		select coupon_dc, coupon_name
+		from yes_coupon
+		where fk_userid = #{userid2} and coupon_status = 1
+	</select>
 	
 	
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
@@ -489,7 +497,7 @@
 	<!-- ===== Member ===== -->
 	<!-- === #47. 로그인 처리하기 === -->
 	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.model.MemberVO">
-		select idx, userid, name, email
+		select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -506,7 +514,7 @@
 	
 	<!-- API 회원으로 등록이 되어있는지 확인 -->
 	<select id="kakaoMember" resultType="com.spring.model.MemberVO" parameterType="HashMap">
-		select idx, userid, name, email
+		select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 		     , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -518,7 +526,7 @@
 	<select id="idDuplicateCheck" resultType="String" parameterType="String">
 		select userid 
 		from yes_member
-		where status = 1 and userid = #{userid}
+		where userid = #{userid}
 	</select>
 
 	<!-- 카카오 회원가입 -->
@@ -616,7 +624,7 @@
      
     <!-- 유효기간이 남아 있으면서 해당 sessionId를 가지는 사용자 정보를 꺼내오는 부분 -->
     <select id="checkUserWithSessionKey" resultType="com.spring.model.MemberVO">
-        select idx, userid, name, email
+        select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
         from yes_member
@@ -629,6 +637,203 @@
 		set status = 0
 		where idx = #{idx} and pwd = #{pwd} 
 	</update>
+	
+	<!-- 아이디 찾기 -->
+	<select id="findID" parameterType="HashMap" resultType="String">
+		select userid
+		from yes_member
+		where status = 1 and name = #{name} and (trim(hp1) || trim(hp2) || trim(hp3)) = #{mobile}
+	</select>
+	
+	<!-- 비밀번호 찾기 -->
+	<select id="findPW" parameterType="HashMap" resultType="String">
+		select userid
+		from yes_member
+		where status = 1 and userid = #{userid} and email = #{email}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePW" parameterType="HashMap">
+		update yes_member
+		set pwd = #{pwd}
+		where status = 1 and userid = #{userid}
+	</update>
+	
+	
+	<resultMap type="HashMap" id="pointMap">
+		<result property="point_id"  		column="point_id" 		javaType="String"/>
+		<result property="fk_userid" 		column="fk_userid"      javaType="String"/>
+		<result property="content" 	   		column="content"     	javaType="String"/>
+		<result property="fk_rev_date"      column="fk_rev_date"    javaType="String"/>
+		<result property="fk_rev_id"        column="fk_rev_id"      javaType="String"/>
+		<result property="point"        column="point"      javaType="String"/>
+	</resultMap>
+	<select id="pointList" parameterType="String" resultMap="pointMap">
+		select point_id, fk_userid, content, point, to_char(fk_rev_date, 'yyyy.mm.dd hh24:mi:ss') AS fk_rev_date, fk_rev_id 
+		from yes_point 
+		where fk_userid = #{userid}
+		order by fk_rev_date desc
+	</select>
+	
+	
+	
+	<resultMap type="HashMap" id="qnaMap">
+		<result property="qna_cate_name" column="qna_cate_name" javaType="String"/>
+		<result property="subject" 		 column="subject"       javaType="String"/>
+		<result property="regDate" 	   	 column="regDate"     	javaType="String"/>
+		<result property="adminans"      column="adminans"   	javaType="String"/>
+		<result property="content"       column="content"   	javaType="String"/>
+	</resultMap>
+	<select id="qnaList3" parameterType="String" resultMap="qnaMap">
+		select A.qna_cate_name AS qna_cate_name
+		     , B.subject AS subject
+		     , to_char(B.regDate, 'yyyy.mm.dd hh24:mi:ss') AS regDate
+		     , B.adminans AS adminans
+		     , B.content AS content
+		from yes_qna_cate A, yes_qna B
+		where A.qna_cate_code = B.category and B.fk_userid = #{userid}
+		order by regDate asc
+	</select>
+	
+	<select id="qnaCount" resultType="String" parameterType="String">
+		select count(*)
+		from yes_qna
+		where fk_userid = #{userid}
+	</select>
+	
+	<select id="couponCount" resultType="String" parameterType="String">
+		select count(*)
+		from yes_coupon
+		where fk_userid = #{userid}
+	</select>
+	
+	
+	<resultMap type="HashMap" id="couponMap">
+		<result property="coupon_id" 		column="coupon_id" 			javaType="String"/>
+		<result property="coupon_dc" 		column="coupon_dc"      	javaType="String"/>
+		<result property="coupon_olddate" 	column="coupon_olddate" 	javaType="String"/>
+		<result property="coupon_condition" column="coupon_condition"   javaType="String"/>
+		<result property="coupon_name"      column="coupon_name"   		javaType="String"/>
+	</resultMap>
+	<select id="couponList" parameterType="String" resultMap="couponMap">
+		select coupon_id, coupon_dc, to_char(coupon_olddate, 'yyyy.mm.dd hh24:mi:ss') as coupon_olddate, coupon_condition, coupon_name
+		from yes_coupon
+		where coupon_status = 1 and fk_userid = #{userid}
+		order by coupon_olddate asc
+	</select>
+	
+	
+	<resultMap type="HashMap" id="qnaMap2">
+		<result property="user_subject" 		column="user_subject" 			javaType="String"/>
+		<result property="user_content"      	column="user_content"   		javaType="String"/>
+		<result property="admin_content"      	column="admin_content"   		javaType="String"/>
+		<result property="user_regDate"      	column="user_regDate"   		javaType="String"/>
+		<result property="admin_regDate"      	column="admin_regDate"   		javaType="String"/>
+	</resultMap>
+	<select id="qnaList2" parameterType="String" resultMap="qnaMap2">
+		select A.subject as user_subject
+			 , A.content as user_content
+			 , B.content as admin_content
+			 , to_char(A.regDate, 'yyyy.mm.dd hh24:mi:ss') as user_regDate
+			 , to_char(B.regDate, 'yyyy.mm.dd hh24:mi:ss') as admin_regDate
+		from yes_qna A left outer join yes_qna B
+		on A.qna_id = B.fk_seq 
+		where A.fk_userid = #{userid}
+		order by user_regDate asc
+	</select>
+	
+	
+	<!-- 내 예매 내역 -->
+	<resultMap type="HashMap" id="myReserveMap">
+		<result property="rev_date" 	column="rev_date" 		javaType="String"/>
+		<result property="prod_title" 	column="prod_title" 	javaType="String"/>
+		<result property="prod_img" 	column="prod_img" 		javaType="String"/>
+		<result property="date_start" 	column="date_start" 	javaType="String"/>
+		<result property="date_end" 	column="date_end" 		javaType="String"/>
+		<result property="rev_id" 		column="rev_id" 		javaType="String"/>
+		<result property="rev_qnty" 	column="rev_qnty" 		javaType="String"/>
+		<result property="map_name" 	column="map_name" 		javaType="String"/>
+		<result property="date_showday" column="date_showday" 	javaType="String"/>
+		<result property="cancel_day" 	column="cancel_day" 	javaType="String"/>
+		<result property="status" 		column="status" 		javaType="String"/>
+	</resultMap>
+	<select id="myReserveList" parameterType="String" resultMap="myReserveMap">
+		select to_char(R.rev_date, 'yyyy.mm.dd') AS rev_date
+		       , P.prod_title AS prod_title
+		       , P.prod_img AS prod_img
+		       , to_char(P.date_start, 'yyyy,mm.dd') AS date_start
+		       , to_char(P.date_end, 'yyyy,mm.dd') AS date_end 
+		       , R.rev_id AS rev_id
+		       , R.rev_qnty AS rev_qnty
+		       , M.map_name AS map_name
+		       , to_char(D.date_showday, 'yyyy.mm.dd') || '(' || to_char(D.date_showday, 'dy')   || ') ' || to_char(D.date_showday, 'hh24:mm') AS date_showday
+		       , to_char(D.date_showday - 1, 'yyyy.mm.dd') || '(' || to_char(D.date_showday - 1, 'dy')   || ') ' || to_char(D.date_showday - 1, 'hh24:mm') AS cancel_day
+		       , S.status AS status
+		from yes_reserve R join prod P
+		on R.prod_id = P.prod_id
+		join yes_show_map M
+		on P.prod_id = M.prod_id
+		join yes_show_date D
+		on R.date_id = D.date_id
+		join yes_rev_status S
+		on R.rev_id = S.rev_id
+		where R.user_id = #{userid}
+	</select>
+	
+	<!-- 내 예매 개수 -->
+	<select id="reserveCount" parameterType="String" resultType="String">
+		select count(*)
+		from yes_reserve R, yes_rev_status S 
+		where R.rev_id = S.rev_id and S.status = 1 and R.user_id = #{userid}
+	</select>
+
+
+	<resultMap type="HashMap" id="myReviewMap">
+		<result property="prod_img" 	column="prod_img" 	javaType="String"/>
+		<result property="prod_title" 	column="prod_title" javaType="String"/>
+		<result property="regDate" 		column="regDate" 	javaType="String"/>
+		<result property="content" 		column="content" 	javaType="String"/>
+		<result property="review_id" 	column="review_id" 	javaType="String"/>
+	</resultMap>
+	<!-- 내 리뷰 내역 -->
+	<select id="myReviewList" parameterType="String" resultMap="myReviewMap">
+		select p.prod_img as prod_img
+		      , p.prod_title as prod_title
+		      , to_char(V.regDate, 'yyyy.mm.dd') as regDate
+		      , V.content  as content
+		      , V.review_id as review_id
+		from prod P, yes_review V
+		where P.prod_id = V.parentProdId  and V.status = 1 and fk_userid = #{userid}
+	</select>
+
+
+	<!-- 내 리뷰 개수 -->
+	<select id="reviewCount" parameterType="String" resultType="String">
+		select count(*)
+		from yes_review
+		where status = 1 and fk_userid = #{userid}
+	</select>
+	
+	
+	
+	<resultMap type="HashMap" id="myLikeMap">
+		<result property="prod_img" column="prod_img" javaType="String" />
+		<result property="prod_id"  column="prod_id"  javaType="String" />
+	</resultMap>
+	<!-- 내 선호 공연 내역 -->
+	<select id="myLikeList" parameterType="String" resultMap="myLikeMap">
+		select P.prod_img as prod_img, P.prod_id as prod_id
+		from prod P, like_prod L
+		where P.prod_id = L.fk_parentProdId and L.fk_userid = #{userid} 
+	</select>
+	
+	
+	<!-- 선호공연 개수 -->
+	<select id="likeCount" parameterType="String" resultType="String">
+		select count(*)
+		from like_prod
+		where fk_userid = #{userid}
+	</select>
 	
 	
 	<!-- AOP pointPlus -->

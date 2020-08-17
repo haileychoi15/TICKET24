@@ -373,7 +373,34 @@ function change(step) {
         nextStep.innerHTML = '다음 단계';
         nextStep.setAttribute('onclick', 'change(step3)');
         
-        
+        // 좌석 정보 받아오기
+	   	$.ajax({
+			url:"<%= request.getContextPath()%>/takeCoupon.action",
+			type:"POST",
+			dataType:"JSON",
+			success:function(json){
+				var html = "";
+				
+				if(json.length > 0) {
+					$.each(json, function(index, item) {
+						// alert("111");
+						html += "<tr>"
+							  + "<td class='row1'>" + item.coupon_name + "</td>"
+							  + "<td class='row2'>" + item.coupon_dc + "</td>"
+							  + "<td class='row3'><input type='checkbox' id='couponCheck" + index + "' value='" + item.coupon_dc + "' onchange='changeCoupon()'>"
+							  + "</td>";
+					});
+				}
+				else {
+					html = "<p style='text-align: center;'>사용 가능한 쿠폰이 없습니다.</p>";
+				}
+				
+				$(".couponList").html(html);
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+		});
     }
     else if(step === step3) {
         step1.style.display = 'none';

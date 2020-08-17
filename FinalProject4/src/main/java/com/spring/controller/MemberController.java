@@ -516,16 +516,23 @@ public class MemberController {
 	
 	@RequestMapping(value="/findID.action")
 	public ModelAndView findID(HttpServletRequest request, ModelAndView mav) {
+	//public String findID(HttpServletRequest request, ModelAndView mav) {
 		
 		String method = request.getMethod();
 		
+		String userid ="";
+		
 		if("get".equalsIgnoreCase(method)) {
-			mav.setViewName("member/findID.notiles");	
+			mav.setViewName("member/find.notiles");	
+			//return "member/find.notiles";
 		}
 		else {
 			
 			String name = request.getParameter("name");
 			String mobile = request.getParameter("mobile");
+			
+			System.out.println("name : " + name);
+			System.out.println("mobile : " + mobile);
 			
 			try {
 				mobile = mobile.substring(0,3) + aes.encrypt(mobile.substring(3,7)) + aes.encrypt( mobile.substring(7));
@@ -538,11 +545,15 @@ public class MemberController {
 			paraMap.put("name", name);
 			paraMap.put("mobile", mobile);
 			
-			String userid = service.findID(paraMap);
+			userid = service.findID(paraMap);
+			
+			System.out.println("userid : " + userid);
 			
 			if(userid != null) {
 				mav.addObject("userid", userid);
-				mav.setViewName("member/findIDResult.notiles");
+				mav.setViewName("member/find.notiles");
+				
+				//return userid;
 			}
 			else {
 				String loc = "javascript:history.back()";
@@ -552,13 +563,40 @@ public class MemberController {
 				mav.addObject("msg", msg);
 				mav.setViewName("msg");
 				
+				
 			}
-			
 		}
-		
 		
 		return mav;
 	}
+	
+
+	@ResponseBody
+	@RequestMapping(value="/findIDEnd.action", produces="text/plain;charset=UTF-8")
+	public String findIDEnd(HttpServletRequest request) {
+		
+		String name = request.getParameter("name");
+		String mobile = request.getParameter("mobile");
+		
+		System.out.println("name : " + name);
+		System.out.println("mobile : " + mobile);
+		
+		try {
+			mobile = mobile.substring(0,3) + aes.encrypt(mobile.substring(3,7)) + aes.encrypt( mobile.substring(7));
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+		
+		HashMap<String, String> paraMap = new HashMap<String,String>();
+		
+		paraMap.put("name", name);
+		paraMap.put("mobile", mobile);
+		
+		String userid = service.findID(paraMap);
+		
+		return userid;
+	}
+	
 	
 	
 	@RequestMapping(value="/findPW.action")
@@ -630,9 +668,74 @@ public class MemberController {
 			
 		}
 		
-		mav.setViewName("member/findPW.notiles");
+		mav.setViewName("member/pwfind.notiles");
 		
 		return mav;
+	}
+	
+	
+
+	@ResponseBody
+	@RequestMapping(value="/findPWEnd.action", produces="text/plain;charset=UTF-8")
+	public String findPWEnd(HttpServletRequest request) {
+		
+		String userid = request.getParameter("userid");
+		String email = request.getParameter("email");
+		
+		System.out.println("userid : " + userid);
+		
+		HashMap<String, String> paraMap = new HashMap<String, String>();
+		
+		try {
+			paraMap.put("userid", userid);
+			paraMap.put("email", aes.encrypt(email));
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+		
+		String findPW = service.findPW(paraMap);
+		
+		// System.out.println("findPW : " + findPW);
+		
+		int n = 0;
+		
+		if(findPW != null) {
+			n = 1;
+			
+			Random rnd = new Random();
+			String certificationCode = "";
+			
+			char randchar = ' ';
+			for(int i = 0; i<5; i++) {
+				randchar = (char) (rnd.nextInt('z' - 'a' + 1) + 'a');
+				certificationCode += randchar;
+			}
+		
+			int randnum = 0;
+			for(int i=0;i<7;i++) {
+				randnum = rnd.nextInt(9 - 0 + 1) + 0;
+				certificationCode += randnum;
+			}
+			
+			GoogleMail mail = new GoogleMail();
+			
+			HttpSession session = request.getSession();
+			
+			try {
+				mail.sendmail(email, certificationCode);
+				session.setAttribute("userid", userid);
+				session.setAttribute("certificationCode", certificationCode);
+			} catch (Exception e) {
+				e.printStackTrace();
+				n = -1;
+			}
+			
+		}
+		else {
+			n = 0;
+		}
+		
+		return String.valueOf(n);
 	}
 	
 	
@@ -668,6 +771,33 @@ public class MemberController {
 	}
 	
 	
+	// == 인증코드 검사 == //
+	@ResponseBody
+	@RequestMapping(value="/verifyCertificationAjax.action")
+	public String verifyCertificationAjax(HttpServletRequest request ) {
+		
+		//String userid = request.getParameter("userid");
+		String code = request.getParameter("code");
+		
+		HttpSession session = request.getSession();
+		String certificationCode = (String) session.getAttribute("certificationCode");
+		
+		String msg = "";
+	 	String loc = "";
+	 	
+	 	String n = "";
+	 	
+	 	if( certificationCode.equals(code) ) {
+	 		n = "1";
+	 	}
+	 	else {
+	 		n = "0";
+	 	}
+	 	
+		return n;
+	}
+	
+	
 	@RequestMapping(value="/updatePW.action")
 	public ModelAndView updatePW(HttpServletRequest request ,ModelAndView mav) {
 		
@@ -675,7 +805,7 @@ public class MemberController {
 		String userid = request.getParameter("userid");
 		
 		if("post".equalsIgnoreCase(method)) {
-			String pwd = request.getParameter("pwd");
+			String pwd = request.getParameter("userpw");
 			
 			HashMap<String, String> paraMap = new HashMap<>();
 			
@@ -702,7 +832,7 @@ public class MemberController {
 		}
 		else {
 			
-			mav.setViewName("member/updatePW.notiles");
+			mav.setViewName("member/pwupdate.notiles");
 			
 		}
 		
@@ -723,12 +853,23 @@ public class MemberController {
 		
 		if(loginuser != null || loginCookie != null) {
 		
+			String qnaCount = service.qnaCount(loginuser.getUserid());
+			String couponCount = service.couponCount(loginuser.getUserid());
+			
 			List<HashMap<String,String>> pointList = service.pointList(loginuser.getUserid());
+			List<HashMap<String,String>> qnaList = service.qnaList(loginuser.getUserid());
+			List<HashMap<String,String>> couponList = service.couponList(loginuser.getUserid());
+			List<HashMap<String,String>> qnaList2 = service.qnaList2(loginuser.getUserid());
 			
 			//System.out.println("pointList : " + pointList.size());
 			//System.out.println(pointList.get(0).get("fk_rev_date"));
 			
+			mav.addObject("qnaCount", qnaCount);
+			mav.addObject("couponCount", couponCount);
 			mav.addObject("pointList", pointList);
+			mav.addObject("couponList", couponList);
+			mav.addObject("qnaList", qnaList);
+			mav.addObject("qnaList2", qnaList2);
 			mav.setViewName("member/myPage.tiles1");
 		}
 		else {
@@ -737,6 +878,46 @@ public class MemberController {
 		
 		return mav;
 	}
+	
+	
+	@RequestMapping(value="/myTicket.action")
+	public ModelAndView myTicket(HttpServletRequest request, ModelAndView mav) {
+		
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+		
+		if(loginuser != null || loginCookie != null) {
+		
+			String reserveCount = service.reserveCount(loginuser.getUserid());
+			String reviewCount = service.reviewCount(loginuser.getUserid());
+			String likeCount = service.likeCount(loginuser.getUserid());
+			
+			List<HashMap<String,String>> myReserveList = service.myReserveList(loginuser.getUserid());	// 내 예매 내역
+			List<HashMap<String,String>> myReviewList = service.myReviewList(loginuser.getUserid());	// 내 리뷰 내역
+			List<HashMap<String,String>> myLikeList = service.myLikeList(loginuser.getUserid());		// 선호 공연
+			
+			mav.addObject("reserveCount", reserveCount);
+			mav.addObject("reviewCount", reviewCount);
+			mav.addObject("likeCount", likeCount);
+			
+			mav.addObject("myReviewList", myReviewList);
+			mav.addObject("myReserveList", myReserveList);
+			mav.addObject("myLikeList", myLikeList);
+			mav.setViewName("member/myTicket.tiles1");
+		}
+		else {
+			mav.setViewName("member/login.notiles");
+		}
+		
+		return mav;
+		
+		
+	}
+	
+	
 	
 	
 }

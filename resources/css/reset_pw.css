@@ -26,43 +26,6 @@ body{
     background-size: contain;
 }
 
-.tab-section .find-tab{
-    width: 90%;
-    margin: 0 auto;
-}
-
-.tab-section .find-tab::after{
-    content: "";
-    display: block;
-    clear: left;
-}
-
-.tab-section .find-tab li{
-    float: left;
-    width: 50%;
-}
-
-.tab-section .find-tab li a{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 50px;
-    font-size: 14px;
-    border: 1px solid #d96f1c;
-    cursor: pointer;
-}
-
-.tab-section .find-tab li:first-child a{
-    color: #d96f1c;
-    background-color: #fff;
-}
-
-.tab-section .find-tab li:last-child a{
-    color: #fff;
-    background-color: #d96f1c;
-}
-
 /* Main */
 .main{
     padding: 30px 20px;
@@ -94,26 +57,37 @@ body{
 }
 
 .main .input-group{
+    position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
 }
 
-.main .info-box .userid-group{
+.main .info-box .userpw-group{
     margin-bottom: 10px;
 }
 
 .main .input-group label{
-    display: inline-block;
-    width: 65px;
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    width: 115px;
     margin-right: 10px;
+    color: #999;
+    transition: all 250ms ease-in-out;
+}
+
+.main .input-group label.on{
+    transform: scale(0.7);
+    top: 5px;
+    left: -5px;
 }
 
 .main .input-group input{
     flex-grow: 1;
-    height: 40px;
+    height: 60px;
     border: 1px solid rgb(229, 229, 230);
-    padding: 0 10px;
+    border-radius: 6px;
+    padding: 10px 10px 0;
 }
 
 .main .input-group input.wrong{
@@ -125,15 +99,42 @@ body{
     font-size: 14px;
 }
 
+.main .input-group .password-button{
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+
+.main .input-group .password-button:hover{
+    background-color: rgba(0,0,0,0.05);
+}
+
+.main .input-group .password-button.hide::after{
+    content: "\f070";
+}
+
+.main .input-group .password-button.show::after{
+    content: "\f06e";
+}
+
+.main .input-group .password-button.hide::after,
+.main .input-group .password-button.show::after{
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
 .main .response{
-    margin-bottom: 30px;
-    text-align: center;
+    margin-top: 5px;
     color: #000;
 }
 
 .main .response p{
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 12px;
 }
 
 .main .response .no-result{
@@ -144,27 +145,11 @@ body{
     color: green;
 }
 
-.main .info-box .send-code-button{
-    display: block;
-    width: 120px;
-    height: 40px;
-    border: 1px solid rgb(229, 229, 230);
-    border-radius: 20px;
-    margin: 0 auto 30px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: box-shadow 150ms ease-in-out;
-}
-
-.main .info-box .send-code-button:hover{
-    box-shadow: 0 2px 3px rgba(229, 229, 230, 0.9);
-}
-
 .main .button-group{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-top: 30px;
 }
 
 .main .button-group li a,
@@ -195,22 +180,6 @@ body{
     background-color: #d96f1c;
 }
 
-/* main-footer */
-.main-footer p{
-    font-size: 14px;
-    color: #989898;
-}
-
-.main-footer p em{
-    font-style: normal;
-    color: #d96f1c;
-}
-
-.main-footer p em:hover{
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 /* Footer */
 .footer{
     margin-bottom: 30px;
@@ -239,10 +208,6 @@ body{
         margin: 0 auto 40px;
     }
 
-    .tab-section .find-tab li a{
-        font-size: 16px;
-    }
-
     /* Main */
     .main{
         padding: 50px 50px;
@@ -254,7 +219,7 @@ body{
     }
 
     .main .response p{
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .main .button-group li a,

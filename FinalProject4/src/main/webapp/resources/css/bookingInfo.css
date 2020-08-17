@@ -1,0 +1,191 @@
+#container {
+    width: 980px;
+    margin: 50px auto 20px auto;
+    font-size: 14px;
+    color: #666;
+}
+
+#showInfoBox {
+    border: solid 1px #ddd;
+    padding: 20px;
+    height: 250px;
+}
+
+#showInfoBox img {
+    vertical-align: middle;
+}
+
+#showInfo {
+    display: inline-block;
+    height: 250px;
+    width: 730px;
+    vertical-align: middle;
+}
+
+#showName {
+    font-size: 25px;
+    margin: 15px 0 10px 20px;
+}
+
+#showInfoText {
+    margin: 60px 0 0 40px;
+}
+
+dt, dd {
+    display: inline-block;
+}
+
+#showInfoText dt {
+    width: 70px;
+}
+
+#showInfoText dd {
+    width: 175px;
+    margin-left: 20px;
+}
+
+.color {
+    color: #ec7d2c;
+}
+
+.title {
+    margin: 30px 0 15px 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.seat {
+    display: inline-block;
+}
+
+.allSel {
+    text-align: right;
+    width: 845px;
+}
+
+#seatInfo {
+    border: solid 1px #e9e9e9;
+}
+
+#seatInfo table {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+#seatInfo td {
+    height: 50px;
+    line-height: 50px;
+}
+
+#tblTop {
+    background-color: #fafafa;
+}
+
+.tblContent td, .cancelBtn td {
+    border-top: solid 1px #e9e9e9;
+}
+
+#cancelTime {
+    height: 30px;
+    font-style: normal;
+    font-size: 20px;
+    color: #ec7d2c;
+    margin: 5px 0 0 0;
+}
+
+.cancelBtn em {
+    font-style: normal;
+    font-size: 13px;
+}
+
+.cancelBtn button {
+    width: 130px;
+    height: 50px;
+    line-height: 50px;
+    background-color: #ec7d2c;
+    border: solid 1px #ec7d2c;
+    color: white;
+    font-size: 15px;
+    float: left;
+}
+
+#receipt {
+    border: solid 1px #e9e9e9;
+    display: grid;
+    grid-template-columns: 300px 39px 300px 39px 300px;
+}
+
+.receiptItem {
+    padding: 30px;
+}
+
+.receiptItem dt {
+    margin: 0 30px 15px 10px;
+    width: 75px;
+}
+
+.receiptItem dd {
+    font-size: 22px;
+    width: 70px;
+    text-align: right;
+}
+
+.receiptItem dt.small {
+    font-size: 12px;
+    color: #868686;
+}
+
+.receiptItem dd.small {
+    font-size: 18px;
+    color: #868686;
+}
+
+.plus {
+    width: 39px;
+    padding: 0;
+    background-image: url("http://cdnticket.melon.co.kr/resource/image/web/common/ico_buy01.png");
+    background-repeat: no-repeat;
+    background-position-x: 9px;
+    background-position-y: 51px;
+}
+
+.equals {
+    width: 39px;
+    padding: 0;
+    background-image: url("http://cdnticket.melon.co.kr/resource/image/web/common/ico_buy02.png");
+    background-repeat: no-repeat;
+    background-position-x: 9px;
+    background-position-y: 51px;
+}
+
+#caution {
+    background-color: #fafafa;
+    padding: 10px;
+}
+
+#caution ul {
+    margin: 20px 0;
+}
+
+#caution li {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+#listBtn {
+    text-align: center;
+    margin: 50px auto;
+}
+
+#listBtn button {
+    width: 170px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    background-color: white;
+    border: solid 1px #c6c5c5;
+}

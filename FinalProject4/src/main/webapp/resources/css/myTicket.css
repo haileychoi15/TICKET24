@@ -1,0 +1,375 @@
+#container {
+    width: 942px;
+    margin: 150px auto 20px auto;
+    font-size: 14px;
+}
+
+a:link, a:visited, a:active, a:hover {
+    text-decoration: none;
+    color: #333333;
+}
+
+#top {
+    display: grid;
+    grid-template-columns: 50% 16.6% 16.6% 16.6%;
+    grid-template-rows: 100%;
+    width: 900px;
+    height: 120px;
+    padding: 20px;
+    margin: 0 auto;
+    border: solid 1px #d5d5d5;
+}
+
+.title {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.myInfo {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.imgDiv {
+    width: 80px;
+    height: 80px;
+    padding: 20px;
+}
+
+#idDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    height: 100px;
+    padding: 10px;
+}
+
+#myID {
+    height: 30px;
+    line-height: 28px;
+    font-size: 25px;
+    color: #ec7d2c;
+}
+
+#logout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 5px;
+}
+
+.aDiv {
+    margin-top: 5px;
+}
+
+#modifyInfo {
+    font-size: 14px;
+}
+
+#modifyInfo::before {
+    content: " \f101";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #666;
+    line-height: 24px;
+}
+
+.myInfo button {
+    border: solid 1px #c2c2c2;
+    border-radius: 13px;
+    background-color: white;
+    width: 65px;
+    height: 21px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+#myBooking, #myPreferredShow, #myReview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+#top > div > img {
+    display: block;
+    margin: 0 auto;
+}
+
+#myPreferredShow, #myBooking, #myReview {
+    border-left: solid 1px #e9e9e9;
+}
+
+.emDiv {
+    color: #ec7d2c;
+}
+
+.em {
+    font-size: 25px;
+}
+
+/* 최근 예매 내역 */
+#bookingDiv {
+    width: 100%;
+    font-size: 12px;
+    margin: 0 auto;
+}
+
+.tableTitle {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 50px 0 15px 20px;
+    color: #333;
+}
+
+.bookingTitle::after {
+    content: " \f101";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 17px;
+    color: #444;
+    line-height: 24px;
+}
+
+table {
+    width: 100%;
+    margin: 0 auto;
+    color: #333;
+}
+
+th, td {
+    border-bottom: solid 1px #e9e9e9;
+}
+th {
+    height: 40px;
+    font-weight: normal;
+    font-size: 14px;
+    color: #333;
+    border-top: solid 1px #e9e9e9;
+}
+tbody tr {
+    height: 175px;
+}
+
+#bookingDate {
+    width: 15%;
+}
+#showInfo {
+    width: 45%;
+}
+#bookingInfo {
+    width: 25%;
+}
+#bookingStatus {
+    width: 15%;
+}
+
+.bookingDate {
+    text-align: center;
+    font-size: 14px;
+}
+
+.show_poster, .showInfoText {
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.showInfoText {
+    width: 270px;
+    height: 120px;
+    margin-left: 10px;
+}
+
+.showTitle {
+    height: 30px;
+    font-size: 14px;
+    margin-top: 20px;
+    color: #333;
+}
+
+.showDate {
+    margin-top: 20px;
+}
+
+dt, dd {
+    display: inline-block;
+}
+
+dt {
+    width: 70px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+.bookingNo {
+    color: #ec7d2c;
+}
+
+.bookingStatus {
+    font-size: 14px;
+    text-align: center;
+}
+.bookingStatus p {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+.bookingStatus button {
+    height: 25px;
+    border: solid 1px #cdcdcd;
+    background-color: white;
+    font-size: 12px;
+    vertical-align: middle;
+    color: #666;
+}
+
+.bookingDetail::after {
+    content: " \f054";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 13px;
+    color: #bfbfbf;
+}
+
+.pageBar {
+    margin: 30px auto;
+    width: 100%;
+    text-align: center;
+}
+
+.pageBtn {
+    display: inline-block;
+    width: 34px;
+    height: 24px;
+    margin: 0 1px;
+    border: solid 1px #c2c2c2;
+    border-radius: 13px;
+}
+
+.prevFist::after {
+    content: " \f100";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #bfbfbf;
+    line-height: 24px;
+}
+
+.prev::after {
+    content: " \f104";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #bfbfbf;
+    line-height: 24px;
+}
+
+.next::after {
+    content: " \f105";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #bfbfbf;
+    line-height: 24px;
+}
+
+.nextLast::after {
+    content: " \f101";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #bfbfbf;
+    line-height: 24px;
+}
+
+#prev {
+    margin-right: 10px;
+}
+#next {
+    margin-left: 10px;
+}
+
+.pageLink {
+    font-size: 16px;
+    font-style: normal;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+em.pageLink {
+    color: #ec7d2c;
+}
+
+/* 나의 리뷰 */
+#reviewDiv {
+    font-size: 13px;
+    color: #666;
+}
+
+.reviewBox {
+    width: 900px;
+    border: solid 1px #e9e9e9;
+    padding: 20px;
+    margin: 10px auto;
+    overflow: visible;
+}
+
+.reviewBox img {
+    vertical-align: top;
+}
+
+.review {
+    width: 87%;
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.review h3 {
+    margin: 5px 0;
+    color: #333;
+}
+
+.date {
+    height: 20px;
+}
+
+.reviewText {
+    min-height: 40px;
+    font-size: 14px;
+    overflow: visible;
+    margin-top: 10px;
+}
+
+.btnArea {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.btnArea button {
+    width: 50px;
+    height: 25px;
+    border: solid 1px #c2c2c2;
+    border-radius: 13px;
+    background-color: white;
+}
+
+/* 선호공연 */
+#preferredArea {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    grid-template-rows: 100%;
+    width: 900px;
+    height: 250px;
+    padding: 20px;
+    border: solid 1px darkgreen;
+}
+
+.preferredItem {
+    border: solid 1px lightgrey;
+}
