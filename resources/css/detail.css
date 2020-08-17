@@ -72,6 +72,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    cursor: pointer;
 }
 
 .main .notice-file-group dt{
@@ -176,11 +177,11 @@
     border: 1px solid rgb(216, 222, 226);
     border-radius: 20px;
     margin: 0 auto;
-    background-color: rgb(229, 229, 230);
+    background-color: rgb(240, 240, 240);
 }
 
 .main .list-button-group a:hover{
-    box-shadow: 0 2px 4px rgba(229, 229, 230, 0.8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 @media screen and (min-width: 768px){
