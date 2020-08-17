@@ -101,5 +101,12 @@ public class MainDAO implements InterMainDAO {
 		return n;
 	}
 
+	// 쿠폰 발급하기
+	@Override
+	public int getCoupon(HashMap<String, String> couponMap) {
+		int m = sqlsession.insert("finalproject4.getCoupon", couponMap);
+		return m;
+	}
+
 
 }

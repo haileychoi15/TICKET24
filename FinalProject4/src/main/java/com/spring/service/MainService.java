@@ -100,6 +100,13 @@ public class MainService implements InterMainService {
 		return n;
 	}
 
+	// 쿠폰 발급하기
+	@Override
+	public int getCoupon(HashMap<String, String> couponMap) {
+		int m = dao.getCoupon(couponMap);
+		return m;
+	}
+
 	
 
 }

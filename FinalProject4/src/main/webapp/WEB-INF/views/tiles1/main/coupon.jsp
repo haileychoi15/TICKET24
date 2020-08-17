@@ -21,6 +21,12 @@
    					if(json.resultNum == 1) {
    						alert("이미 발급받으셨습니다.");
    					}
+   					else if(json.resultNum == 0) {
+   						alert(json.couponName + " 쿠폰을 발급받으셨습니다!!");
+   					}
+   					else {
+   						alert("쿠폰 발급에 실패하셨습니다. 고객센터로 문의해주세요.")
+   					}
    				},
    				error: function(request, status, error){
    					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);

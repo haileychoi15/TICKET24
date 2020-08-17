@@ -623,8 +623,14 @@
 	<select id="getCouponIs" parameterType="HashMap" resultType="Integer">
 		select count(*)
 		from yes_coupon
-		where fk_userid=#{userid} and coupon_name=#{couponName}
+		where fk_userid=#{userid} and coupon_name=#{couponName} and coupon_status=1
 	</select>
+	
+	<!-- 쿠폰 발급받기 -->
+	<insert id="getCoupon" parameterType="HashMap">
+		insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+		values(seq_coupon.nextval, #{couponDC}, 1, sysdate, null, sysdate+7, #{couponName}, default, #{userid}) 
+	</insert>
 	
 
 </mapper>
