@@ -9,6 +9,7 @@
 window.resizeTo(850, 617);
 
 $(document).ready(function(){
+		
     // 상단 관람일/회차 변경
     let changeDate = document.getElementById('changeDate');
     let changeRound = document.getElementById('changeRound');
@@ -16,8 +17,20 @@ $(document).ready(function(){
     let eachSeat = document.getElementsByClassName('eachSeat');
     
     <c:forEach var="item" items="${getShowDay}">
-    	changeDate.innerHTML += '<option>${item}</option>';
+    	changeDate.innerHTML += '<option class="changeShowDay">${item}</option>';
     </c:forEach>
+    
+    document.convey.showdate.value = opener.document.convey.showdate.value;
+
+	let changeShowDay = document.getElementsByClassName('changeShowDay');
+	for(let i=0; i<changeShowDay.length; i++) {
+		if(changeShowDay[i].innerText.substr(0,10) === document.convey.showdate.value) {
+			changeShowDay[i].setAttribute('selected', 'selected');
+		}
+	}
+    
+    let selectedDate = changeDate.options[changeDate.selectedIndex].value;
+    roundChange(selectedDate);
     
     $("#changeDate").change(function(){
     	var round = $(this).val();
@@ -26,173 +39,25 @@ $(document).ready(function(){
     	roundChange(round);
     });
     
+	document.convey.showtime.value = opener.document.convey.showtime.value;
+	
+	let changeShowTime = document.getElementsByClassName('changeShowTime');
+	for(let i=0; i<changeShowTime.length; i++) {
+		if(changeShowTime[i].innerText === document.convey.showtime.value) {
+			changeShowTime[i].setAttribute('selected', 'selected');
+		}
+	}
+	
+	var dateSel = changeDate.options[changeDate.selectedIndex].value;
+	var roundSel = changeRound.options[changeRound.selectedIndex].value;
+	
+	seatSelAjax(dateSel, roundSel);
+    
     $("#changeRound").change(function(){
     	var day = $("#changeDate").val();
     	var round = $(this).val();
-    	reset();
-    	
-    	// 좌석 정보 받아오기
-    	$.ajax({
-			url:"<%= request.getContextPath()%>/seatStatus.action",
-			type:"POST",
-			data:{"showDay":day
-				 ,"showRound":round
-				 ,"prodID":"${showNum}"},
-			dataType:"JSON",
-			success:function(json){
-				seatArea.innerHTML = ""; 
-
-				// 1층 1~9열
-				for(var j=0; j<9; j++) {
-			        for(var i=0; i<37; i++) {
-			            var top = 162 + 12*j;
-			            if(i<8) {
-			                var left = 71 + 11*i;
-			                var area = "A";
-			                var no = i+1;
-			            }
-			            else if(i<29) {
-			                left = 180 + 11*(i-8);
-			                area = "B";
-			                no = (i+1) - 8;
-			            }
-			            else {
-			                left = 433 + 11*(i-29);
-			                area = "C";
-			                no = (i+1) - 29;
-			            }
-			            
-			            var seatTitle = "1층 "+area+"구역 0"+(j+1)+"열 0"+numberPad(no, 2)+"번";
-			            $.each(json, function(index, item){
-			            	if(item.seat_name == seatTitle) {
-			            		if(item.seat_status == 1) {
-			            			seatArea.innerHTML += "<div class='soldout' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 0"+(j+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px;'></div>";
-			            		}
-			            		else {
-			            			seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' grade='" + item.seat_type + "' title='1층 "+area+"구역 0"+(j+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px; background-color: " + item.seat_color + ";'></div>";
-			            		}
-			            		return false;
-			            	}
-			            });
-			        }
-			    }
-
-			    // 1층 10열
-			    for(var i=0; i<37; i++) {
-			        if(i<8) {
-			            left = 71 + 11*i;
-			            area = "A";
-			            no = i+1;
-			        }
-			        else if( i<11 || (i>25 && i<29) ) {
-			            left = 180 + 11*(i-8);
-			            area = "B";
-			            no = (i+1) - 8;
-			        }
-			        else if(i>28) {
-			            left = 433 + 11*(i-29);
-			            area = "C";
-			            no = (i+1) - 29;
-			        }
-
-			        if(i<11 || i>25){
-			        	var seatTitle = "1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번";
-			            $.each(json, function(index, item){
-			            	if(item.seat_name == seatTitle) {
-			            		if(item.seat_status == 1) {
-			            			seatArea.innerHTML += "<div class='soldout' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: 281px;'></div>";
-			            		}
-			            		else {
-			            			seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' grade='" + item.seat_type + "' title='1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: 281px; background-color: " + item.seat_color + ";'></div>";
-			            		}
-			            		return false;
-			            	}
-			            });
-			        }
-			            
-			    }
-
-			    // 2층
-			    for(let y=0; y<6; y++) {
-			        for(let x=0; x<35; x++) {
-			            top = 346 + 12*y;
-			            if(x<10) {
-			                left = 83 + 11*x;
-			                area = "A";
-			                no = x+1;
-			            }
-			            else if(x<25) {
-			                left = 191 + 11*(x-8);
-			                area = "B";
-			                no = (x+1) - 10;
-			            }
-			            else {
-			                left = 376 + 11*(x-23);
-			                area = "C";
-			                no = (x+1) - 25;
-			            }
-			            
-			            var seatTitle = "2층 "+area+"구역 0"+(y+1)+"열 0"+numberPad(no, 2)+"번";
-			            $.each(json, function(index, item){
-			            	if(item.seat_name == seatTitle) {
-			            		if(item.seat_status == 1) {
-			            			seatArea.innerHTML += "<div class='soldout' id='t"+numberPad(eachSeat.length+1, 3)+"' title='2층 "+area+"구역 0"+(y+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px;'></div>";
-			            		}
-			            		else {
-			            			seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' grade='" + item.seat_type + "' title='2층 "+area+"구역 0"+(y+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px; background-color: " + item.seat_color + ";'></div>";
-			            		}
-			            		return false;
-			            	}
-			            });
-			        }
-			    }
-			    
-			// 좌석 클릭 이벤트
-		    for(let i=0; i<eachSeat.length; i++) {
-		        eachSeat[i].addEventListener('click', function () {
-		        	if($("#changeRound").val() == "회차 선택") {
-		        		alert("일자 / 시간을 선택해주세요.");
-		        		return false;
-		        	}
-
-		        	this.className === 'eachSeat'? this.className = 'selSeat' : this.className = 'eachSeat';
-
-		            let title = this.getAttribute('title');
-		            let selectedSeat = document.getElementById('selectedSeat');
-		            let pTagID = this.id;
-		            let pTag = document.getElementById('p'+pTagID);
-
-		            let seat = document.getElementById('seat');
-		            let spanTag = document.getElementById('span'+pTagID);
-
-		            if(this.className === 'eachSeat') {
-		                pTag.parentNode.removeChild(pTag);
-		                spanTag.parentNode.removeChild(spanTag);
-		            }
-		            else {
-		                selectedSeat.innerHTML += '<p id=p'+pTagID+' class="selseatCnt">'+title+'</p>';
-		                seat.innerHTML += '<span id=span'+pTagID+' style="display: block">'+title+'</span>'
-		            }
-		        });
-		    }
-			},
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			}
-		});
-    	
-    	// 시간 회차 입력
-    	let showDate1 = document.getElementById('showDate1');
-    	let showDate2 = document.getElementById('showDate2');
-    	showDate1.innerHTML = day;
-    	showDate2.innerHTML = round;
+    	seatSelAjax(day, round);
     });
-    
-    // 숫자 형식
-    function numberPad(n, width) {
-        n = n + '';
-        return n.length >= width ? n:new Array(width - n.length + 1).join('0') + n;
-    }
 
     // 공연 정보 불러오기
     let showName = document.getElementsByClassName('showName');
@@ -207,13 +72,14 @@ $(document).ready(function(){
     showGrade.innerHTML = '만 ' + '${getShowRsvInfo.info_grade}';
     showTime.innerHTML = '${getShowRsvInfo.info_run_time}';
     
+	
 });
 
 function roundChange(round) {
 	<c:forEach var="item" items="${getShowTime}">
 		var showday = '${item.date_showday}';
 		if(round == showday) {
-			document.getElementById('changeRound').innerHTML += '<option>${item.date_showtime}</option>';
+			document.getElementById('changeRound').innerHTML += '<option class="changeShowTime">${item.date_showtime}</option>';
 		}
 	</c:forEach>
 }
@@ -230,6 +96,176 @@ function reset() {
     selectedSeat.innerHTML = "";
     let seat = document.getElementById('seat');
     seat.innerHTML = "";
+}
+
+// 숫자 형식
+function numberPad(n, width) {
+    n = n + '';
+    return n.length >= width ? n:new Array(width - n.length + 1).join('0') + n;
+}
+
+// 좌석창 변경 ajax
+function seatSelAjax(day, round) {
+	
+    let seatArea = document.getElementById('seatArea');
+    let eachSeat = document.getElementsByClassName('eachSeat');
+	reset();
+	
+	// 좌석 정보 받아오기
+	$.ajax({
+		url:"<%= request.getContextPath()%>/seatStatus.action",
+		type:"POST",
+		data:{"showDay":day
+			 ,"showRound":round
+			 ,"prodID":"${showNum}"},
+		dataType:"JSON",
+		success:function(json){
+			seatArea.innerHTML = ""; 
+
+			// 1층 1~9열
+			for(var j=0; j<9; j++) {
+		        for(var i=0; i<37; i++) {
+		            var top = 162 + 12*j;
+		            if(i<8) {
+		                var left = 71 + 11*i;
+		                var area = "A";
+		                var no = i+1;
+		            }
+		            else if(i<29) {
+		                left = 180 + 11*(i-8);
+		                area = "B";
+		                no = (i+1) - 8;
+		            }
+		            else {
+		                left = 433 + 11*(i-29);
+		                area = "C";
+		                no = (i+1) - 29;
+		            }
+		            
+		            var seatTitle = "1층 "+area+"구역 0"+(j+1)+"열 0"+numberPad(no, 2)+"번";
+		            $.each(json, function(index, item){
+		            	if(item.seat_name == seatTitle) {
+		            		if(item.seat_status == 1) {
+		            			seatArea.innerHTML += "<div class='soldout' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 0"+(j+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px;'></div>";
+		            		}
+		            		else {
+		            			seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' grade='" + item.seat_type + "' title='1층 "+area+"구역 0"+(j+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px; background-color: " + item.seat_color + ";'></div>";
+		            		}
+		            		return false;
+		            	}
+		            });
+		        }
+		    }
+
+		    // 1층 10열
+		    for(var i=0; i<37; i++) {
+		        if(i<8) {
+		            left = 71 + 11*i;
+		            area = "A";
+		            no = i+1;
+		        }
+		        else if( i<11 || (i>25 && i<29) ) {
+		            left = 180 + 11*(i-8);
+		            area = "B";
+		            no = (i+1) - 8;
+		        }
+		        else if(i>28) {
+		            left = 433 + 11*(i-29);
+		            area = "C";
+		            no = (i+1) - 29;
+		        }
+
+		        if(i<11 || i>25){
+		        	var seatTitle = "1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번";
+		            $.each(json, function(index, item){
+		            	if(item.seat_name == seatTitle) {
+		            		if(item.seat_status == 1) {
+		            			seatArea.innerHTML += "<div class='soldout' id='t"+numberPad(eachSeat.length+1, 3)+"' title='1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: 281px;'></div>";
+		            		}
+		            		else {
+		            			seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' grade='" + item.seat_type + "' title='1층 "+area+"구역 10열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: 281px; background-color: " + item.seat_color + ";'></div>";
+		            		}
+		            		return false;
+		            	}
+		            });
+		        }
+		            
+		    }
+
+		    // 2층
+		    for(let y=0; y<6; y++) {
+		        for(let x=0; x<35; x++) {
+		            top = 346 + 12*y;
+		            if(x<10) {
+		                left = 83 + 11*x;
+		                area = "A";
+		                no = x+1;
+		            }
+		            else if(x<25) {
+		                left = 191 + 11*(x-8);
+		                area = "B";
+		                no = (x+1) - 10;
+		            }
+		            else {
+		                left = 376 + 11*(x-23);
+		                area = "C";
+		                no = (x+1) - 25;
+		            }
+		            
+		            var seatTitle = "2층 "+area+"구역 0"+(y+1)+"열 0"+numberPad(no, 2)+"번";
+		            $.each(json, function(index, item){
+		            	if(item.seat_name == seatTitle) {
+		            		if(item.seat_status == 1) {
+		            			seatArea.innerHTML += "<div class='soldout' id='t"+numberPad(eachSeat.length+1, 3)+"' title='2층 "+area+"구역 0"+(y+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px;'></div>";
+		            		}
+		            		else {
+		            			seatArea.innerHTML += "<div class='eachSeat' id='t"+numberPad(eachSeat.length+1, 3)+"' grade='" + item.seat_type + "' title='2층 "+area+"구역 0"+(y+1)+"열 0"+numberPad(no, 2)+"번' style='left: "+left+"px; top: "+top+"px; background-color: " + item.seat_color + ";'></div>";
+		            		}
+		            		return false;
+		            	}
+		            });
+		        }
+		    }
+		    
+		// 좌석 클릭 이벤트
+	    for(let i=0; i<eachSeat.length; i++) {
+	        eachSeat[i].addEventListener('click', function () {
+	        	if($("#changeRound").val() == "회차 선택") {
+	        		alert("일자 / 시간을 선택해주세요.");
+	        		return false;
+	        	}
+
+	        	this.className === 'eachSeat'? this.className = 'selSeat' : this.className = 'eachSeat';
+
+	            let title = this.getAttribute('title');
+	            let selectedSeat = document.getElementById('selectedSeat');
+	            let pTagID = this.id;
+	            let pTag = document.getElementById('p'+pTagID);
+
+	            let seat = document.getElementById('seat');
+	            let spanTag = document.getElementById('span'+pTagID);
+
+	            if(this.className === 'eachSeat') {
+	                pTag.parentNode.removeChild(pTag);
+	                spanTag.parentNode.removeChild(spanTag);
+	            }
+	            else {
+	                selectedSeat.innerHTML += '<p id=p'+pTagID+' class="selseatCnt">'+title+'</p>';
+	                seat.innerHTML += '<span id=span'+pTagID+' style="display: block">'+title+'</span>'
+	            }
+	        });
+	    }
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});
+	
+	// 시간 회차 입력
+	let showDate1 = document.getElementById('showDate1');
+	let showDate2 = document.getElementById('showDate2');
+	showDate1.innerHTML = day;
+	showDate2.innerHTML = round;
 }
 
 // 좌석 선택 완료 여부

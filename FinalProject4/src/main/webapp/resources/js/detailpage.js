@@ -263,16 +263,6 @@ const starRate=()=> {
     });
 }
 
-function moveBooking() {
-	let fk_userid = document.getElementById('fk_userid');
-	if(fk_userid.value === '') {
-		alert('공연 예매는 로그인이 필요합니다.');
-		return false;
-	}
-		
-	window.open('/finalproject4/reservePopUp.action', '공연 예매', 'toolbar=no, menubar=no, scrollbars=no');
-	
-}
 
 const bookingFetch=()=>{
 
