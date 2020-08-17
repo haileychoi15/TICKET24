@@ -125,19 +125,12 @@
                                 <table>
                                     <thead align="center">
                                     <tr>
-                                        <td class="row1">할인명</td>
+                                        <td class="row1">쿠폰명</td>
                                         <td class="row2">할인 금액</td>
                                         <td class="row3">사용</td>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td class="row1">[YES마니아] 예매수수료 면제쿠폰 (예매수수료 면제)</td>
-                                        <td class="row2">1,000</td>
-                                        <td class="row3">
-                                            <input type="checkbox" id="couponCheck1" value="1000" onchange="changeCoupon()">
-                                        </td>
-                                    </tr>
+                                    <tbody class="couponList">
                                     </tbody>
                                 </table>
                             </div>

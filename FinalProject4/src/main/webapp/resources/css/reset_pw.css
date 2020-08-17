@@ -1,0 +1,230 @@
+body{
+    background-color: #f6f6f9;
+}
+
+.container{
+    width: 100%;
+}
+
+/* Section */
+.tab-section{
+    margin: 40px 0 20px;
+}
+
+.tab-section .section-title a{
+    display: block;
+    width: 176px;
+    height: 50px;
+    margin: 0 auto 30px;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 50px;
+    text-align: right;
+    background-image: url("../images/ticket.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: contain;
+}
+
+/* Main */
+.main{
+    padding: 30px 20px;
+    border: 1px solid rgb(229, 229, 230);
+    margin-bottom: 30px;
+    background-color: #fff;
+}
+
+.main header{
+    margin: 0 auto 30px;
+    border-bottom: 1px solid rgb(229, 229, 230);
+    text-align: center;
+}
+
+.main header h1,
+.main header p{
+    text-align: center;
+}
+
+.main header h1{
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.main header p{
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: #6a6a6a;
+}
+
+.main .input-group{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.main .info-box .userpw-group{
+    margin-bottom: 10px;
+}
+
+.main .input-group label{
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    width: 115px;
+    margin-right: 10px;
+    color: #999;
+    transition: all 250ms ease-in-out;
+}
+
+.main .input-group label.on{
+    transform: scale(0.7);
+    top: 5px;
+    left: -5px;
+}
+
+.main .input-group input{
+    flex-grow: 1;
+    height: 60px;
+    border: 1px solid rgb(229, 229, 230);
+    border-radius: 6px;
+    padding: 10px 10px 0;
+}
+
+.main .input-group input.wrong{
+    border: 1px solid rgb(212, 0, 0);
+    background-color: rgba(212, 0, 0, 0.1);
+}
+
+.main .input-group input::placeholder{
+    font-size: 14px;
+}
+
+.main .input-group .password-button{
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+
+.main .input-group .password-button:hover{
+    background-color: rgba(0,0,0,0.05);
+}
+
+.main .input-group .password-button.hide::after{
+    content: "\f070";
+}
+
+.main .input-group .password-button.show::after{
+    content: "\f06e";
+}
+
+.main .input-group .password-button.hide::after,
+.main .input-group .password-button.show::after{
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+.main .response{
+    margin-top: 5px;
+    color: #000;
+}
+
+.main .response p{
+    font-size: 12px;
+}
+
+.main .response .no-result{
+    color: #fd472b;
+}
+
+.main .response .yes-result{
+    color: green;
+}
+
+.main .button-group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.main .button-group li a,
+.main .button-group li button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.main .button-group li{
+    width: 48%;
+}
+
+.main .button-group li a{
+    color: #000;
+    border: solid 1px #c9c9c9;
+    background-color: rgb(229, 229, 230);
+}
+
+.main .button-group li button{
+    color: #fff;
+    border: solid 1px #d96f1c;
+    background-color: #d96f1c;
+}
+
+/* Footer */
+.footer{
+    margin-bottom: 30px;
+    font-size: 12px;
+    text-align: center;
+    color: #777;
+}
+
+
+
+
+
+@media screen and (min-width: 768px){
+
+    .container{
+        width: 560px;
+        margin: 0 auto;
+    }
+
+    /* Section */
+    .tab-section{
+        margin: 60px 0 20px;
+    }
+
+    .tab-section .section-title a{
+        margin: 0 auto 40px;
+    }
+
+    /* Main */
+    .main{
+        padding: 50px 50px;
+        margin-bottom: 50px;
+    }
+
+    .main header p{
+        font-size: 16px;
+    }
+
+    .main .response p{
+        font-size: 14px;
+    }
+
+    .main .button-group li a,
+    .main .button-group li button{
+        font-size: 16px;
+    }
+
+}

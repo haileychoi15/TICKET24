@@ -45,7 +45,7 @@
 					<input type="password" name="pwd2" id="pwd2"  maxlength="20" required placeholder="새 비밀번호 확인" />
 				</li>
 			</ul>
-			<input type="hidden" name="userid" id="userid" value="${userid}" />
+			<input type="text" name="userid" id="userid" value="${sessionScope.userid}" />
 		</form>
 			
 		<button type="button" class="updateBtn">SUBMIT</button>

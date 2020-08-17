@@ -56,4 +56,11 @@ public class PayDAO implements InterPayDAO {
 		return dateId;
 	}
 
+	// == 결제창 사용가능 쿠폰 가져오기 == //
+	@Override
+	public List<HashMap<String, String>> takeCoupon(String userid2) {
+		List<HashMap<String, String>> takeCoupon = sqlsession.selectList("finalproject4.takeCoupon", userid2);
+		return takeCoupon;
+	}
+
 }

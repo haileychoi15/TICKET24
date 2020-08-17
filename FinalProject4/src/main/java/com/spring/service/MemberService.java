@@ -214,11 +214,89 @@ public class MemberService implements InterMemberService {
 	}
 
 
-
-	// 포인트 추가
+	// 나의 문의 내역
 	@Override
-	public void pointPlus(HashMap<String, String> paraMap) {
-		dao.pointPlus(paraMap);
+	public List<HashMap<String, String>> qnaList(String userid) {
+		List<HashMap<String, String>> qnaList = dao.qnaList(userid);
+		return qnaList;
+	}
+
+	// 내 문의 개수
+	@Override
+	public String qnaCount(String userid) {
+		String qnaCount = dao.qnaCount(userid);
+		return qnaCount;
+	}
+
+	// 내 쿠폰 개수
+	@Override
+	public String couponCount(String userid) {
+		String couponCount = dao.couponCount(userid);
+		return couponCount;
+	}
+
+	// 쿠폰 내역
+	@Override
+	public List<HashMap<String, String>> couponList(String userid) {
+		List<HashMap<String, String>> couponList = dao.couponList(userid);
+		return couponList;
+	}
+
+
+
+	// 관리자 답변 내역
+	@Override
+	public List<HashMap<String, String>> qnaList2(String userid) {
+		List<HashMap<String, String>> qnaList2 = dao.qnaList2(userid);
+		return qnaList2;
+	}
+
+
+
+	// 내 예매 내역
+	@Override
+	public List<HashMap<String, String>> myReserveList(String userid) {
+		List<HashMap<String, String>> myReserveList = dao.myReserveList(userid);
+		return myReserveList;
+	}
+
+
+	// 내 예매 개수
+	@Override
+	public String reserveCount(String userid) {
+		String reserveCount = dao.reserveCount(userid);
+		return reserveCount;
+	}
+
+
+	// 내 리뷰 내역
+	@Override
+	public List<HashMap<String, String>> myReviewList(String userid) {
+		List<HashMap<String, String>> myReviewList = dao.myReviewList(userid);
+		return myReviewList;
+	}
+
+
+	// 내 리뷰 개수
+	@Override
+	public String reviewCount(String userid) {
+		String reviewCount = dao.reviewCount(userid);
+		return reviewCount;
+	}
+
+	// 내 선호 공연 내역
+	@Override
+	public List<HashMap<String, String>> myLikeList(String userid) {
+		List<HashMap<String, String>> myLikeList = dao.myLikeList(userid);
+		return myLikeList;
+	}
+
+
+	// 선호 공연 개수
+	@Override
+	public String likeCount(String userid) {
+		String likeCount = dao.likeCount(userid);
+		return likeCount;
 	}
 
 
