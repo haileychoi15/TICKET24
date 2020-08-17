@@ -109,11 +109,11 @@ function ajaxInfo(userid, email) {
                 let code = document.querySelector('#code');
                 if(Number(response) === 1){
                     html += '<p class="yes-result">이메일로 인증번호가 발송되었습니다.</p>';
-                    code.readOnly = true;
+                    code.readOnly = false;
                 }
                 else{
                     html += '<p class="no-result">존재하지 않는 아이디입니다.</p>';
-                    code.readOnly = false;
+                    code.readOnly = true;
                 }
                 document.querySelector('.response').innerHTML = html;
 
