@@ -438,10 +438,29 @@
 		values(qnaSeq.nextval, #{fk_userid}, #{name}, #{category}, #{subject}, #{content}, #{groupno}, #{fk_seq}, #{depthno})
 	</insert>
 	
-	
+	<!-- 공지사항 글 등록하기(첨부파일 O) -->
+
+	<insert id="noticeAdd_withFile">
+		insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content, fileName, orgFilename, fileSize)
+		values(noticeSeq.nextval, #{fk_userid}, #{category}, #{ticketopenday}, #{subject}, #{content}, #{fileName}, #{orgFilename}, #{fileSize})
+	</insert>
+
+	<!-- 관리자가 Qna 글 1개 보기 클릭시 Adminread 상태를 0 -> 1로 바꿈. -->
+
+	<update id="setAdminRead" parameterType="String">
+		update yes_qna set adminread = 1
+		where qna_id = #{seq}
+	</update>
+
+	<!-- 관리자가 답변등록시 해당 참조글번호 fk_seq 의 문의글을 답변완료로 업데이트 -->
+
+	<update id="updateAdminans" parameterType="String">
+		update yes_qna set adminans = 1
+		where qna_id = #{fk_seq}
+	</update>
+
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
-	
-	
+
 	<select id="getTotalProdCount" parameterType="HashMap" resultType="int">
 		select count(*)
       	from prod
@@ -450,7 +469,7 @@
       	and lower(prod_title) like '%'|| lower(#{searchWord}) || '%'
       	</if>
    	</select>
-   
+
    	<select id="prodList" parameterType="HashMap" resultType="com.spring.model.ProdVO">
       	select RNO, prod_id, category_name, fk_category_id, prod_title, prod_img, date_start, date_end, info_open_date, info_close_date, info_rev_status, info_qnty, map_address, map_id
       	from (
@@ -837,5 +856,213 @@
 		values(seq_coupon.nextval, #{couponDC}, 1, sysdate, null, sysdate+7, #{couponName}, default, #{userid}) 
 	</insert>
 	
+
+	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
+
+	<!-- 상품상세페이지로 이동 -->
+
+	<select id="prodDetail" parameterType="String" resultType="com.spring.model.ProdVO">
+
+		select prod_id, prod_img, prod_detail_img, prod_title, info_open_date, info_close_date, info_grade, info_run_time
+
+    		 , map_name, map_address, local 
+
+		from view_detail_prod
+
+		where prod_id = #{seq}
+
+	</select>
+
+	
+
+	<!-- 상품의 좌석종류정보 -->
+
+	<resultMap type="HashMap" id="seattypeListMap">
+
+		<result property="seat_type"  column="seat_type"  javaType="String" />	
+
+		<result property="seat_price" column="seat_price" javaType="String" />	
+
+		<result property="seat_color" column="seat_color" javaType="String" />	
+
+	</resultMap>
+
+	<select id="seattypeList" parameterType="String" resultMap="seattypeListMap">
+
+		select seat_type, seat_price, seat_color
+
+		from yes_seat_type
+
+		where prod_id = #{seq}
+
+	</select>
+
+	
+
+	<!-- 상품의 날짜정보 -->
+
+	<resultMap type="HashMap" id="dateListMap">
+
+		<result property="date_id"  column="date_id"  javaType="String" />	
+
+		<result property="date_showday"  column="date_showday"  javaType="String" />	
+
+		<result property="date_showtime" column="date_showtime" javaType="String" />	
+
+	</resultMap>
+
+	<select id="dateList" parameterType="String" resultMap="dateListMap">
+
+		select distinct date_id, to_char(date_showday, 'yyyy-mm-dd') || ' (' || to_char(date_showday, 'dy') || ')' as date_showday, date_showtime
+
+		from yes_show_date
+
+		where prod_id = #{seq}
+
+		order by date_showday
+
+		<!-- select date_id, date_showday, date_showtime
+
+		from yes_show_date
+
+		where prod_id =#{seq} -->
+
+		<!-- select distinct to_char(date_showday, 'yyyy-mm-dd') as date_showday
+
+		from yes_show_date -->
+
+	</select>
+
+	
+
+	
+
+	<!-- 달력의 선택날짜와 같은 showdateList 를 보여주는 정보 -->
+
+	<resultMap type="HashMap" id="showDateListMap">
+
+		<result property="date_id"  	 column="date_id"  		javaType="String" />	
+
+		<result property="prod_id"  	 column="prod_id"  		javaType="String" />
+
+		<result property="date_showday"  column="date_showday"  javaType="String" />	
+
+		<result property="date_showtime" column="date_showtime" javaType="String" />	
+
+	</resultMap>
+
+	<select id="showDateList" parameterType="HashMap" resultMap="showDateListMap">
+
+		select date_id, prod_id, date_showday, date_showtime
+
+		from yes_show_date
+
+		where prod_id=#{seq} and to_char(date_showday, 'yyyy-mm-dd') = #{date}
+
+	</select>
+
+	
+
+	
+
+	<!-- 리뷰등록하기 -->
+
+	<insert id="addReview" parameterType="HashMap">
+
+		insert into yes_review (review_id, fk_userid, name, content, star, parentProdId)
+
+		values(reviewSeq.nextval, #{fk_userid}, #{name}, #{content}, #{star}, #{parentProdId})
+
+	</insert>
+
+	
+
+	<!-- 해당 상품에 달린 리뷰목록 가져오기 -->
+
+	<select id="reviewList" parameterType="HashMap" resultType="com.spring.model.ReviewVO">
+
+		<!-- select review_id, fk_userid, name, content, star, regDate, parentProdId, status
+
+		from yes_review
+
+		where status = 1 and parentProdId = #{parentProdId}
+
+		order by review_id desc -->
+
+		select rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
+
+		from(
+
+			select rownum as rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
+
+			from yes_review
+
+			where status = 1 and parentProdId = #{parentProdId}
+
+			order by review_id desc
+
+		) T
+
+		where rno between #{startRno} and #{endRno}
+
+	</select>
+
+	
+
+	
+
+	<!-- 해당 상품(parentProdId) 에 해당하는 총 리뷰수 알아오기 -->
+
+	<select id="getReviewTotalCount" parameterType="HashMap" resultType="int">
+
+		select count(*)
+
+		from yes_review
+
+		where status = 1 and parentProdId = #{parentProdId}
+
+	</select>
+
+	
+
+	<!-- 해당 상품(parentProdId) 에 해당하는 평점 알아오기 -->
+
+	<select id="getReviewAvgStar" parameterType="HashMap" resultType="double">
+
+		select round(sum(star)/count(*),2)
+
+		from 
+
+		(
+
+		    select * 
+
+		    from yes_review
+
+		    where status = 1
+
+		) V
+
+		group by parentProdId
+
+		having(parentProdId = #{parentProdId})
+
+	</select>
+
+	
+
+	<!-- 리뷰 삭제하기 -->
+
+	<update id="delReview" parameterType="HashMap">
+
+		update yes_review set status = 0 
+
+		where review_id = #{review_id} and fk_userid = #{fk_userid}
+
+	</update>
+
+	
+
+	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 
 </mapper>
