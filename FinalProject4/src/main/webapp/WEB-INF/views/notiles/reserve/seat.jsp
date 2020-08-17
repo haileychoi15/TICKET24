@@ -171,22 +171,21 @@
                                 <div class="infoTitle">주문자 정보</div>
                                 <div id="ordererName">
                                     <div class="ordererRow1">이름</div>
-                                    <div class="ordererRow2"><input type="text" size="15"></div>
+                                    <div class="ordererRow2"><input type="text" size="15" id="conveyName"></div>
                                 </div>
                                 <div id="ordererCall">
                                     <div class="ordererRow1">연락처</div>
-                                    <div class="ordererRow2"><input type="text" size="3" maxlength="3"> - <input type="text" size="4" maxlength="4"> - <input type="text" size="4" maxlength="4"></div>
+                                    <div class="ordererRow2"><input type="text" size="3" maxlength="3" id="conveyHP1"> - <input type="text" size="4" maxlength="4" id="conveyHP2"> - <input type="text" size="4" maxlength="4" id="conveyHP3"></div>
                                 </div>
                                 <div id="ordererEmail">
                                     <div class="ordererRow1">이메일</div>
-                                    <div class="ordererRow2"><input type="text" size="8"> @ <input type="text" size="10"></div>
+                                    <div class="ordererRow2"><input type="text" size="20" id="conveyEmail"></div>
                                 </div>
                             </div><br>
                             <div id="deliveryInfo" style="display: none;">
                                 <div class="infoTitle">배송지 정보 <span id="exclamation" onmouseenter="deliveryCaution()" onmouseleave="deliveryCautionEnd()">!</span>
                                     <div id="deliveryRadio">
                                         <input type="radio" id="same" name="address" onclick="ChangeAddressInfo(1)"><label for="same">주문자 정보와 동일</label>
-                                        <input type="radio" id="latest" name="address" onclick="ChangeAddressInfo(2)"><label for="latest">최근 배송지</label>
                                         <input type="radio" id="new" name="address" onclick="ChangeAddressInfo(3)"><label for="new">새로 입력</label>
                                     </div>
                                 </div>

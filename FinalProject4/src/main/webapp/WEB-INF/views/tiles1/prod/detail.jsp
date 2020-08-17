@@ -591,9 +591,14 @@
 </div>
 
 
-<form name="convey" method="post">
-<input type="text" name="showdate" id="showdate" value="" />
-<input type="text" name="showtime" id="showtime" value="" />
+<form name="convey">
+	<input type="text" name="showdate" id="showdate" value="" />
+	<input type="text" name="showtime" id="showtime" value="" />
+	<input type="hidden" name="conveyName" value="${sessionScope.loginuser.name}">
+	<input type="hidden" name="conveyEmail" value="${sessionScope.loginuser.email}">
+	<input type="hidden" name="conveyHP1" value="${sessionScope.loginuser.hp1}">
+	<input type="hidden" name="conveyHP2" value="${sessionScope.loginuser.hp2}">
+<input type="hidden" name="conveyHP3" value="${sessionScope.loginuser.hp3}">
 </form>
 					<!-- finalproject4/reservePopUp.action 으로 예매하기 데이터 넘기는 부분 -->
 					

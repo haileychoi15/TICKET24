@@ -72,6 +72,11 @@ $(document).ready(function(){
     showGrade.innerHTML = '만 ' + '${getShowRsvInfo.info_grade}';
     showTime.innerHTML = '${getShowRsvInfo.info_run_time}';
     
+    document.getElementById('conveyName').value = opener.document.convey.conveyName.value;
+    document.getElementById('conveyEmail').value = opener.document.convey.conveyEmail.value;
+    document.getElementById('conveyHP1').value = opener.document.convey.conveyHP1.value;
+    document.getElementById('conveyHP2').value = opener.document.convey.conveyHP2.value;
+    document.getElementById('conveyHP3').value = opener.document.convey.conveyHP3.value;
 	
 });
 
