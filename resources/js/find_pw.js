@@ -12,7 +12,12 @@ function validateCode() {
 
     let code = document.querySelector('#code');
 
-    if(code.value.length !== 6){
+    if(code.readOnly){
+        let response = document.querySelector('.response');
+        response.innerHTML = '<p class="no-result">인증번호를 먼저 발송해주세요.</p>';
+    }
+
+    if(code.value.length !== 12){
         code.classList.add('wrong');
         return false;
     }
@@ -41,11 +46,12 @@ function ajaxCode(code) {
 
                 console.log('response : ',response);
 
-                let html = '';
-                if(Number(response) === 0){ // 인증번호가 일치하지 않으면
-                    html += '<p class="no-result">인증번호가 틀렸습니다.</p>';
+                if(Number(response) === 1){
+                    window.location.href = '';
                 }
-                document.querySelector('.response').innerHTML = html;
+                else{ // 인증번호가 일치하지 않으면
+                    code.classList.add('wrong');
+                }
 
             } else {
                 alert('There was a problem with the request.');
@@ -72,6 +78,9 @@ function validateInput() {
         return false;
     }
 
+    let code = document.querySelector('#code');
+    code.classList.remove('wrong');
+
     ajaxInfo(userid.value, email.value);
 }
 
@@ -97,14 +106,14 @@ function ajaxInfo(userid, email) {
                 console.log('response : ',response);
 
                 let html = '';
-                let codeGroup = document.querySelector('.code-group');
+                let code = document.querySelector('#code');
                 if(Number(response) === 1){
                     html += '<p class="yes-result">이메일로 인증번호가 발송되었습니다.</p>';
-                    codeGroup.style.display = 'block';
+                    code.readOnly = true;
                 }
                 else{
                     html += '<p class="no-result">존재하지 않는 아이디입니다.</p>';
-                    codeGroup.style.display = 'block';
+                    code.readOnly = false;
                 }
                 document.querySelector('.response').innerHTML = html;
 

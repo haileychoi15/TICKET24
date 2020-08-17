@@ -105,7 +105,7 @@ body{
 
 .main .input-group label{
     display: inline-block;
-    width: 50px;
+    width: 65px;
     margin-right: 10px;
 }
 
@@ -158,14 +158,6 @@ body{
 
 .main .info-box .send-code-button:hover{
     box-shadow: 0 2px 3px rgba(229, 229, 230, 0.9);
-}
-
-.main .code-group{
-    display: none;
-}
-
-.main .code-group label{
-    width: 65px;
 }
 
 .main .button-group{
