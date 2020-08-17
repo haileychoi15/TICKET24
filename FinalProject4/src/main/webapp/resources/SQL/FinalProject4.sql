@@ -2272,7 +2272,28 @@ nominvalue
 nocycle
 nocache;
 
+select *
+from like_prod;
 
+select count(*)
+from like_prod;
+
+insert into  like_prod (seq, fk_userid, fk_parentProdId)
+values (likeProdSeq.nextval, 'leess', 1);
+
+delete from like_prod;
+commit;
+
+select count(*)
+		from like_prod
+		where fk_parentProdId = 1
+	
+-- 해당상품의 관심상품 수 --	
+	
+-- 해당상품의 관심상품 누른 사람 목록 --
+		select fk_userid
+		from like_prod
+		where fk_parentProdId = 1
 
 
 drop view view_seat_info;

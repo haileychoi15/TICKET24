@@ -42,5 +42,33 @@ public class ProdService implements InterProdService {
 		List<HashMap<String, String>> showDateList = dao.showDateList(paraMap);
 		return showDateList;
 	}
+
+	// 관심상품 등록하기
+	@Override
+	public int likeProd(HashMap<String, String> paraMap) {
+		int n = dao.likeProd(paraMap);
+		return n;
+	}
+
+	// 관심상품 해제하기
+	@Override
+	public int dislikeProd(HashMap<String, String> paraMap) {
+		int n = dao.dislikeProd(paraMap);
+		return n;
+	}
+	
+	// 해당상품의 관심상품 등록수 
+	@Override
+	public int likeProdCnt(HashMap<String, String> paraMap) {
+		int n = dao.likeProdCnt(paraMap);
+		return n;
+	}
+	
+	// 해당상품의 관심상품 누른 사람 목록
+	@Override
+	public List<String> likeProdUserList(HashMap<String, String> paraMap) {
+		List<String> likeProdUserList = dao.likeProdUserList(paraMap);
+		return likeProdUserList;
+	}
 	
 }

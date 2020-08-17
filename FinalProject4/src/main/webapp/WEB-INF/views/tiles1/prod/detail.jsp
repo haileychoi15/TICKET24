@@ -56,6 +56,18 @@
        // 	document.getElementById('fk_userid').value = loginuserid;
         	
 
+			var existlike = $("#existlike").val();
+			console.log("existlike : "+existlike);
+			
+			
+			/* goLikeProdCnt();
+			
+			var loginuserid = "${sessionScope.loginuser.userid}";
+			if(loginuserid != "") {
+				goLikeProdUser();
+			} */
+			
+		
 			goReviewList("1");
         	
         	var showdate = document.getElementById('showdate');
@@ -237,17 +249,13 @@
         }
         
         function prevPageBar(page) {
-        	
         	var prevPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-left'></i></a></li>";
-			
         	return prevPageBar;
         }
         
 
         function nextPageBar(page) {
-			
         	var nextPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-right'></i></a></li>";
-        
         	return nextPageBar;
         }
         
@@ -321,9 +329,7 @@
     				
     					var num = Number(json.avgStar) / 5 * 100;
     					$(".star-rating-width").css('width', num+'%');
-
     					$(".totalReviewCount").html(json.totalCount);
-    					
     					$(".star").html(json.avgStar);
     					
     				}
@@ -331,9 +337,7 @@
     					$(".review-pagination").empty();
     					
     					$(".star-rating-width").css('width', '0%');
-    					
     					$(".totalReviewCount").html(0);
-    					
     					$(".star").html(0);
     				}
     			
@@ -427,7 +431,6 @@
     	
     	
 		function goEditEndReview() {
-
         	
         	$.ajax({
 				url:"<%= request.getContextPath()%>/editReview.action",
@@ -461,6 +464,132 @@
 			});
         	
         }
+		
+		// 관심상품 등록하기
+		function goLikeProd(prod_id) {
+			
+			var loginuserid = "${sessionScope.loginuser.userid}";
+			
+			if(loginuserid == "") {
+				alert("관심상품등록은 로그인 후 가능합니다.");
+				return;
+			}
+			
+			var existlike = $("#existlike").val();
+			console.log(existlike);
+			
+			 if(existlike == '1') {
+				alert("이미 추천한 글입니다.");
+				return;
+			}  
+			
+			// 관심상품 등록하기
+			$.ajax({
+				url:"<%= request.getContextPath()%>/likeProd.action",
+				type:"GET",
+				data:{"prod_id":prod_id,
+					  "fk_userid":loginuserid,
+					  "existlike":existlike},
+				dataType:"JSON",
+				success:function(json) {
+					
+					if(json.m == "추천") { 
+						if(json.n == 1) {
+							alert("글 추천 성공!");
+							/* goLikeProdCnt();
+							goLikeProdUser();
+							$("#likeuser").css("color","blue"); */
+							$("#existlike").val("1");
+						}
+						else {
+							alert("글 추천 실패!");
+						}
+					 }
+					else {
+						if(json.n == 1) {
+							alert("글 추천 취소 성공!");
+							/* goLikeProdCnt();
+							goLikeProdUser();
+							$("#likeuser").css("color","black"); */
+							$("#existlike").val("0");
+						}
+						else {
+							alert("글 추천취소 실패!");
+						}
+					} 
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	   
+			
+		}
+		
+		
+		
+		function goLikeProdCnt(){
+			
+			$.ajax({
+				url:"<%= ctxPath%>/likeProdCnts.action",
+				type:"GET",
+				data:{"prod_id":"${pvo.prod_id}"},  
+				dataType:"JSON",
+				success:function(json) {
+					
+					if(json.likeCnt != 0) {
+						$("#likecnt").html(json.likeCnt);
+					}
+					else {
+						$("#likecnt").html(json.likeCnt);
+					}
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	   
+			
+		}
+		
+		
+		function goLikeProdUser(){
+			$.ajax({
+				url:"<%= ctxPath%>/likeProdUser.action",
+				type:"GET",
+				data:{"prod_id":"${pvo.prod_id}"},  
+				dataType:"JSON",
+				success:function(json) {
+					
+					if(json.length > 0){
+
+				 		var html = "";
+				/*		$.each(json, function(index, item){
+							html += item.likeUser;
+						});
+						$("#likeuser").html(html); */
+						
+						var loginuserid = "${sessionScope.loginuser.userid}";
+						$.each(json, function(index, item){
+							if(loginuserid == item.likeUser) {
+							//	alert("좋아요누른사람");
+								$("#likeuser").css("color","blue");
+								$("#existlike").val("1");
+							}
+						});	
+							
+					}
+					else {
+						$("#likeuser").css("color","black");
+						$("#existlike").val("0");
+					}
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	 
+		}
     	
     	
 
@@ -527,14 +656,23 @@
                 </div>
 
                 <div class="main-rate">
+                	<%-- <div class="like">
+                		<span onclick="goLikeProd('${pvo.prod_id}')">
+                        <i class="fas fa-heart colored-heart"></i>
+                        </span>
+                	</div> --%>
                     <div class="main-likes">
-                        <!-- <i class="far fa-heart noncolored-heart"></i>
-                        <i class="fas fa-heart colored-heart"></i> -->
-                        <span onclick="goLikeProd('${pvo.prod_id}')"><i class="fas fa-heart colored-heart"></i></span>
+                  	  	<span id="likeuser">
+						<span id="likecnt"></span>
+                    	<span onclick="goLikeProd('${pvo.prod_id}')">
+	                        <i class="far fa-heart noncolored-heart"></i>
+	                        <!-- <i class="fas fa-heart colored-heart"></i> -->
+	                    </span>
+	                    </span>
                         <strong class="main-likes-number">
                             118
                         </strong>
-                    </div>
+                    </div> 
                     <div class="main-reviews">
                         <a href="#review" class="main-review-link">
                             <strong class="star">
@@ -553,7 +691,7 @@
                     <dl>
                         <div>
                             <dt>등급</dt>
-                            <dd>${pvo.info_grade}</dd>
+                            <dd>${pvo.info_grade}<i class="fas fa-heart colored-heart"></i></dd>
                         </div>
                         <div>
                             <dt>관람시간</dt>
@@ -665,6 +803,10 @@
                     <input type="text" name="showdate" id="showdate" value="" />
 					<input type="text" name="showtime" id="showtime" value="" />
 					<!-- finalproject4/reservePopUp.action 으로 예매하기 데이터 넘기는 부분 -->
+					
+					
+					<input type="text" id="existlike" value="0" />
+					<!-- 관심상품이 이미 눌러져있는지 여부를 판단하는 부분 -->
 					
 
 </section>
@@ -894,12 +1036,12 @@
                                     <div class="re-row re-datestar">
                                         <div class="re-table-title">관람일시</div>
                                         <div class="re-table-content">관람 내역이 없습니다.</div>
+                                        <input type="hidden" name="review_id" id="review_id" value="" />
                                     </div>
-                                    <div class="row datestar">
+                                    <%-- <div class="row datestar">
                                         <div class="table-title">작성자명</div>
                                         <div class="table-content"><input type="text" name="name" value="${sessionScope.loginuser.name}" readonly /></div>
-                                        <input type="text" name="review_id" id="review_id" value="" />
-                                    </div>
+                                    </div> --%>
                                     <div class="re-row re-datestar">
                                         <div class="re-table-title">별점</div>
                                         <div class="re-table-content re-starlist">

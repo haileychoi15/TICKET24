@@ -785,7 +785,35 @@
 		where status = 1 and review_id = #{review_id}
 	</update>
 	
+	<!-- 관심상품 등록하기 -->
+	<insert id="likeProd">
+		insert into like_prod(seq, fk_userid, fk_parentProdId)
+		values(likeProdSeq.nextval, #{fk_userid}, #{prod_id})
+	</insert>
 	
+	<!-- 관심상품 해제하기 -->
+	<delete id="dislikeProd">
+		delete from like_prod
+		where fk_parentProdId = #{prod_id} and fk_userid = #{fk_userid}
+	</delete>
+	
+	
+	<!-- 해당상품의 관심상품 등록수  -->
+	<select id="LikeProdCnt" parameterType="HashMap" resultType="int">
+		select count(*)
+		from like_prod
+		where fk_parentProdId = #{prod_id}
+	</select>
+	
+	
+	<!-- 해당상품의 관심상품 누른 사람 목록 -->
+	<select id="likeProdUserList" parameterType="HashMap" resultType="String">
+		select fk_userid
+		from like_prod
+		where fk_parentProdId = #{prod_id}
+	</select>	
+		
+		
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 	
 

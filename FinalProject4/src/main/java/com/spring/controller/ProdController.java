@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.model.NoticeVO;
 import com.spring.model.ProdVO;
+import com.spring.model.ReviewVO;
 import com.spring.service.InterProdService;
 
 @Component
@@ -81,5 +82,89 @@ public class ProdController {
 	
 		return jsonArr.toString();
 	}
+	
+	
+	// 관심상품 등록하기
+	@ResponseBody
+	@RequestMapping(value="/likeProd.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String likeProd(HttpServletRequest request) {	
+		
+		String fk_userid = request.getParameter("fk_userid");
+		String prod_id = request.getParameter("prod_id");
+		String existlike = request.getParameter("existlike");
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("fk_userid", fk_userid);
+		paraMap.put("prod_id", prod_id);
+		
+		// 같은 아이디의 같은 글번호의 추천이 존재하는지 확인
+		int n = 0;
+		String m = "";
+		
+		System.out.println(existlike);
+		
+		if(existlike.equals("0")) { // 사용자에 해당 글번호에 대한 추천이 존재하지 않는다면
+			n = service.likeProd(paraMap);
+			m = "추천";
+		}
+		else { // 사용자에 해당 글번호에 대한 추천이 존재한다면
+			n = service.dislikeProd(paraMap);
+			m = "추천취소";
+		}
+
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("n", n);
+		jsonObj.put("m", m);
+
+		return jsonObj.toString();  
+	}
+	
+	
+	// 해당상품의 관심상품 등록수 
+	@ResponseBody
+	@RequestMapping(value="/LikeProdCnts.action", produces="text/plain;charset=UTF-8")      
+	public String LikeProdCnt(HttpServletRequest request) {
+
+		String prod_id = request.getParameter("prod_id");
+		System.out.println(prod_id);
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("prod_id", prod_id);
+
+		int LikeProdCnt = service.likeProdCnt(paraMap);
+
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("LikeProdCnt", LikeProdCnt);
+
+		return jsonObj.toString();  
+
+	} 
+
+
+	// 해당상품의 관심상품 누른 사람 목록
+	@ResponseBody
+	@RequestMapping(value="/likeProdUser.action", produces="text/plain;charset=UTF-8")      
+	public String likeProdUser(HttpServletRequest request) {
+
+		String prod_id = request.getParameter("prod_id");
+
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("prod_id", prod_id);
+
+		List<String> likeProdUserList = service.likeProdUserList(paraMap);
+
+		JSONArray jsonArr = new JSONArray(); // jsonArr 는 이미 생성되었기 때문에 null 은 아니다. 따라서 json.length > 0, == 0 으로 구분한다. 
+
+		if(likeProdUserList != null) {
+			for(String likeUser : likeProdUserList) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("likeUser", likeUser);
+				jsonArr.put(jsonObj);
+			}
+		}
+
+		return jsonArr.toString();  
+
+	} 
 	
 }

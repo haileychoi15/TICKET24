@@ -6,6 +6,7 @@
 body{
     font-family:"DM Sans", sans-serif;
     height: 100%;
+    width:100%;
 }
 
 .return-top-button{
@@ -773,18 +774,16 @@ button,input,textarea{
 
 /* revision */
 
-
-    
- .revision{
-    position: absolute;
-   /* display: flex;*/
-   	display: none;
+.revision {
     justify-content: center;
     align-items: center;
+    display: none;
     z-index: 100;
     background-color: #fff;
-    width: 100%;
+    /* position: fixed; */
+    padding: 20px 15px;
 }
+
 
 .revision-title{
     display: flex;
@@ -798,7 +797,6 @@ button,input,textarea{
 .re-title{
     font-size: 30px;
     font-weight: 700;
-    margin-bottom: 0;
 }
 
 .close-revision-button {
@@ -817,11 +815,11 @@ button,input,textarea{
 }
 
 .revision-table {
-	width: 100%; /*670px*/
+    width: 100%; 670px
     margin: 0 auto;
 }
 
-.revision-table .revision-title .re-table-title {
+.re-table-title {
     width: 20%;
     margin-right: 2%;
     font-weight: 700;
@@ -968,18 +966,19 @@ button,input,textarea{
 
 /*modal*/
 
-/*revision 같이 쓸 수 있나..? 리뷰 등록 폼 그대로 ? */
 
 .modal{
-    position: absolute;
+   /*  position: absolute; */
    /* display: flex;*/
    	display: none;
     justify-content: center;
     align-items: center;
     z-index: 100;
     background-color: #fff;
-    width: 100%;
+   /*  width: 100%; */
 }
+
+
 
 .modal-title{
     display: flex;
@@ -1085,8 +1084,6 @@ button,input,textarea{
 }
 
 
-
-/* 미디어쿼리부분 */
 
 
 
@@ -1320,6 +1317,19 @@ button,input,textarea{
         display: initial;
 
     }
+    
+    .revision {
+   
+    display: none;
+    z-index: 100;
+    background-color: #fff;
+    position: fixed;
+    width: 80%;
+    bottom: 10%;
+    right: 10%;
+    padding: 20px 15px;
+}
+    
 
     /*.review .review-desc .review-register {
         display: none;
@@ -1327,42 +1337,32 @@ button,input,textarea{
     /*modal*/
 
 
-    .modal{
+   /*  .modal{
         width: 600px;
     }
     .modal .modal-form .modal-table .row {
       width: 100%;
-    }
-    
-   .revision {/* 
+    } */
+   /*  
+   .revision {
         position: absolute;
         top: 0;
         left: 0;
         justify-content: center;
         align-items: center;
-        width: 600px;
         width: 100%;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.3);
-        z-index: 100; */
-	    position: absolute;
-	   /* display: flex;*/
-	   	display: none;
-	    justify-content: center;
-	    align-items: center;
-	    z-index: 100;
-	    background-color: #fff;
-	    width: 100%;
+        background-color: #fff;
+        z-index: 100;
     }
 
 
-    .revision-group {/* 
+    .revision-group {
         width: 60%;
         background-color: #ffffff;
         margin: 0 auto;
-        padding: 10px 50px; */
+        padding: 10px 50px;
 
-    	width: 100%;
     }
 
     .close-revision-button {
@@ -1381,9 +1381,12 @@ button,input,textarea{
     }
 
     .revision-title{
-	    display: flex;
-	    justify-content: space-between;
-	    align-items: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 25px;
+        font-weight: 700;
+        border-bottom: 1px solid black;
     }
 
 
@@ -1401,12 +1404,11 @@ button,input,textarea{
 
 
     .re-row {
-	    display: flex;
-	    justify-content: flex-start;
-	    align-items: center;
-	    border-bottom: 1px solid black;
-	    font-size: 15px;
-	    padding: 0 15px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        border-bottom: 1px solid black;
+        font-size: 15px;
     }
 
     .re-datestar {
@@ -1449,7 +1451,7 @@ button,input,textarea{
     } 
 
 }
-
+ */
 
 }/*end of mediaQuery*/
 

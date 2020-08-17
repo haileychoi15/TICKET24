@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded',()=>{
 
-    addLikes();
+/*    addLikes();*/
     showShareBox();
     showcancel();
     registerReview();
@@ -39,14 +39,14 @@ const closerevision=()=>{
     })
 
 }*/
-
+/*
 
 //좋아요 버튼 (main, review 둘 다)
 const addLikes=()=>{
 
     const noncoloredHeart=document.querySelectorAll(".noncolored-heart");
     const coloredHeart=document.querySelectorAll(".colored-heart");
-    /*const likesNumber=document.querySelectorAll(".main-likes-number");*/
+    const likesNumber=document.querySelectorAll(".main-likes-number");
 
     coloredHeart.forEach(item=>{
         item.style.display="none";})
@@ -74,15 +74,15 @@ const addLikes=()=>{
             //좋아요 수 감소
             target.nextElementSibling.textContent=String(count-1);
 
-            /* coloredHeart[i].style.display = "initial";
+             coloredHeart[i].style.display = "initial";
 
              /!*누르면 숫자 +1*!/
              let count = Number(likesNumber[i].textContent);
              likesNumber[i].textContent = String(count + 1);
-            */
+            
         });
     }
-    }
+    }*/
 
 
 //공유 sns 채널 박스
