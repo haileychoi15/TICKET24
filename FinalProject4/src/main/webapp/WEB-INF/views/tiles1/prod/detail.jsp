@@ -2,6 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<%
+	String ctxPath = request.getContextPath();
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +18,24 @@
     <link rel="stylesheet" href="resources/css/respstyle.css">
     <link rel="stylesheet" href="resources/css/fullcalendar/main.css">
     
+    <style type="text/css">
+    a {text-decoration: none !important;}
+	
+	#star_grade a{
+        text-decoration: none;
+        color: gray;
+    }
+    
+    #star_grade a.on{
+        color: red;
+    }
+    
+    .star-rating { width:103px; }
+	.star-rating,.star-rating span { display:inline-block; height:19px; overflow:hidden; background:url(<%= ctxPath%>/resources/images/star_resize.png)no-repeat; color: orange;}
+	.star-rating span{ background-position:left bottom; line-height:0; vertical-align:top; }
+	
+    </style>
+    
     <script src="https://kit.fontawesome.com/3625c042d9.js" crossorigin="anonymous"></script>
    	<script src='resources/js/fullcalendar/main.js'></script>
     <script src="resources/js/fullcalendar/ko.js"></script>
@@ -22,6 +45,9 @@
         	/* 
         	var loginuserid = "${sessionScope.loginuser.userid}";
         	document.getElementById('fk_userid').value = loginuserid; */
+        	
+
+			goReviewList(1);
         	
         	var showdate = document.getElementById('showdate');
         	var showtime = document.getElementById('showtime');
@@ -77,6 +103,7 @@
 
         
         function goReview() {
+
         	
         	var form_data = $("form[name=reviewFrm]").serialize();
         	
@@ -93,9 +120,14 @@
 					else {
 						alert("실패");
 					}
-					
+					/* 
 					$(".modal").addClass("hide");
-					$(".modal").removeClass("show");
+					$(".modal").removeClass("show"); */
+
+					$("#content").val("");
+					$(".modal").css("display","none");
+					
+					goReviewList();
 					
 				},
 				error: function(request, status, error){
@@ -105,17 +137,37 @@
         	
         }
         
-        <%-- 
-        function goReviewList(){
+        
+        function goReviewList(page){
         	
         	$.ajax({
 				url:"<%= request.getContextPath()%>/reviewList.action",
-				data:{"seq":"${pvo.prod_id}"},
+				data:{"parentProdId":"${pvo.prod_id}"
+					 ,"fk_userid":"${sessionScope.loginuser.userid}"
+					 ,"page":page},
 				type:"GET",
 				dataType:"JSON",
 				success:function(json){
 					
+					var html = "";
+					html += "<ul class='review-comments-list'>";
+					if(json.length > 0) {
+						
+						$.each(json, function(index, item){
+							html += getReviewTemplate(item.review_id, item.fk_userid, item.name, item.star, item.regDate, item.content);
+						});
+						
+						
+					}
+					else {
+						html += "<li>관람후기가 없습니다.<li>";
+					}
 					
+					html += "</ul>"
+					$(".review-comments").html(html);
+
+					makeCommentPageBar(page);
+                    
 				},
 				error: function(request, status, error){
 					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -123,8 +175,204 @@
 			});
         	
         }
-         --%>
         
+        
+        function getReviewTemplate(review_id, fk_userid, name, star, regDate, content) {
+        
+        var fk_userid_sub = fk_userid.substring(0,fk_userid.length-2) + '**';                
+        var template = '<li>'+
+        			   '<div class="review-comment-badge">'+
+	        				'<span class="reservationbadge">예매자</span>'+
+	                        '<span class="writerself">본인</span>'+
+	                    '</div>'+
+	                    '<div class="review-comment-star">'+
+	                        '<span class="reviewer">'+fk_userid_sub+'</span>'+
+	                        '<span class="reviewer">'+regDate+'</span>'+
+	                        '<span class="reviewer">';
+	                        
+	                        for(var i=0; i<star; i++){
+								template += "<span><i class='fas fa-star reviewstar' style='color:orange;'></i></span>";
+							}
+							for(var i=0; i<5-star; i++){
+								template += "<span><i class='far fa-star reviewstar' style='color:orange;'></i></span>";
+							}
+	                        
+             template += '</span>'+
+                    '</div>'+
+                    '<div class="review-comment-desc">'+
+                    '<span>(관람일:2020.08.02)</span>'+
+                    '<p>'+
+                    content+
+                    '</p>'+
+                '</div>'+
+                '<div class="review-comment-bottom">'+
+                    '<div class="review-comment-like">'+
+                        '<i class="far fa-heart noncolored-heart"></i>'+
+                        '<i class="fas fa-heart colored-heart"></i>'+
+                        '<strong class="main-likes-number">'+
+                            '118'+
+                        '</strong>'+
+                    '</div>'+
+                    '<div class="review-comment-revision">'+
+                        '<span class="rev revisionButton1" onclick="goEditReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+star+'\''+','+'\''+content+'\''+')">수정</span>'+
+                        '<span class="rev" onclick="goDelReview('+review_id+','+'\''+fk_userid+'\''+')" style="color:blue;">삭제</span>'+
+                    '</div>'+
+                '</div>'+
+            '</li>';
+            	
+            return template;
+        }
+        
+        
+        function makeCommentPageBar(page) {
+    		
+    		$.ajax({
+    			url:"<%= request.getContextPath()%>/getReviewTotalPage.action",
+    			data:{"parentProdId":"${pvo.prod_id}"
+					 ,"fk_userid":"${sessionScope.loginuser.userid}"
+    				 ,"sizePerPage":"5"
+    				 ,"page":page},
+    			type:"GET",
+    			dataType:"JSON",
+    			success:function(json){
+    			
+    				if(json.totalPage > 0) { // 댓글이 있는 경우
+    				
+    					var pageBarHTML = "<ul style='list-style: none;'>"; 
+    					var blockSize = 10;
+    					var loop = 1;
+    				
+    					// page 는 넘버타입일 때와 문자열타입일 때를 구분하여, 문자열타입일때는 넘버타입으로 바꿔야 숫자연산가능하다.
+    					// page 가 넘버타입이 아니라 문자열타입이면 넘버타입으로 형변환시킨다.
+    					if(typeof page == "string") {
+    						page = Number(page);
+    					}
+    					
+    					var pageNo = Math.floor((page - 1)/blockSize) * blockSize + 1;
+    					
+    					// === [이전 <<] 만들기 === //
+    					if(pageNo != 1) { // 맨 처음이 아니라면 [이전]을 보인다. 
+    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(pageNo-1)+"\")'><i class='fas fa-angle-double-left'></i></a></li>";
+    					}
+
+    					if(page == 1) {
+    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(1)+"\")'><i class='fas fa-angle-left'></i></a></li>";
+    					}
+    					else{
+    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(page-1)+"\")'><i class='fas fa-angle-left'></i></a></li>";
+    					}
+    					
+    					// 10 개를 넘거나 총 페이지보다 커지면 탈출
+    					while( !(loop > blockSize || pageNo > json.totalPage) ) {
+    						
+    						// 현재페이지에서는 링크를 안건다. 
+    						if(pageNo == page) {
+    							pageBarHTML += "<li style='display:inline-block; width:30px; border:solid 1px gray; color:red; padding:2px 4px;'>"+pageNo+"</li>";
+    						}
+    						else {
+    							pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(pageNo)+"\")'>"+pageNo+"</a></li>";
+    						}
+    						
+    						loop++;
+    						pageNo++;
+    					}
+    					
+    					if(page >= json.totalPage) {
+    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(json.totalPage)+"\")'><i class='fas fa-angle-right'></i></a></li>";
+    					}
+    					else{
+    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(page+1)+"\")'><i class='fas fa-angle-right'></i></a></li>";
+    					}
+    					
+    					// === [다음 >>] 만들기 === //
+    					if( !(pageNo > json.totalPage) ) { 
+    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(pageNo)+"\")'><i class='fas fa-angle-double-right'></i></a></li>";
+    					}
+    					
+    					pageBarHTML += "</ul>";
+    					$(".review-pagination").html(pageBarHTML);
+    				
+    					var num = Number(json.avgStar) / 5 * 100;
+    					$(".star-rating-width").css('width', num+'%');
+
+    					$(".totalReviewCount").html(json.totalCount);
+    					
+    					$(".star").html(json.avgStar);
+    					
+    				}
+    				else { // 댓글이 없는 경우
+    					var pateBarHTML = "";
+    					$(".review-pagination").html(pageBarHTML);
+    					
+    					$(".star-rating-width").css('width', '0%');
+    					
+    					$(".totalReviewCount").html(0);
+    					
+    					$(".star").html(0);
+    				}
+    			
+    			},
+    			error: function(request, status, error){
+    				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+    			}
+    		});
+    		
+    	}// end of function makeCommentPageBar(currentShowPageNo) --------------------
+    	
+        
+    	function goDelReview(review_id, fk_userid){
+    		var bool = confirm("리뷰글을 정말로 삭제하시겠습니까?");
+    		if(bool) {
+    			
+    			$.ajax({
+    				url:"<%= ctxPath%>/delReview.action",
+    				type:"GET",
+    				data:{"review_id":review_id,
+    					  "fk_userid":fk_userid},
+    				dataType:"JSON",
+    				success:function(json) {
+    					
+    					if(json.n == 1) {
+    						alert("삭제 성공");
+    					}
+    					else {
+    						alert("삭제 실패");
+    					}
+    					
+    					goReviewList(1);
+    				},
+    				error: function(request, status, error){
+    					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+    				}
+    			});	
+    			
+    		}
+    	}
+    	
+    	
+    	function goEditReview(review_id, fk_userid, star, content) {
+    		// 수정 모달 띄우기
+    		
+    		/* console.log(review_id);
+    		console.log(fk_userid);
+    		console.log(star);
+    		console.log(content); */
+    		$("#input-content").val(content);
+    		$("#re-star").val(star);
+    		
+    		var restarval = $("#re-star").val();
+    		console.log("restarval"+restarval);
+    		
+
+    		$(".revision").css("display","inline-block");
+    		
+    		$(".close-revision-button").click(function(){
+    			$(".revision").css("display","none");
+    		});
+
+    	}
+    	
+    	
 
     </script>
 </head>
@@ -199,7 +447,7 @@
                     <div class="main-reviews">
                         <a href="#review" class="main-review-link">
                             <strong>
-                                4.94
+                                <span class='star-rating'><span class='star-rating-width' style ='width:0%'></span></span>4.94
                             </strong>
                             <span>
                                 (203)
@@ -316,7 +564,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <a onclick="moveBooking()" class="booking-button">예매하기</a>
+            <a href="#" class="booking-button">예매하기</a>
             <a href="#" class="booking-button-invert">Booking</a>
         </div>
     </div>
@@ -325,6 +573,8 @@
 
                     <input type="text" name="showdate" id="showdate" value="" />
 					<input type="text" name="showtime" id="showtime" value="" />
+					<!-- finalproject4/reservePopUp.action 으로 예매하기 데이터 넘기는 부분 -->
+					
 
 </section>
 <section class="maincategory">
@@ -359,9 +609,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="detail-image">
-                    <img src="resources/images/assets/phantomsingerdetail.jpg" alt="상세설명1">
-                    <img src="resources/images/assets/phantomsingerdetail2.jpg" alt="상세설명2">
-                    <img src="resources/images/assets/phantomsingerdetail3.jpg" alt="상세설명3">
+                    <img src="resources/images/${pvo.prod_detail_img}" alt="상세설명1">
+                    <!-- <img src="resources/images/assets/phantomsingerdetail2.jpg" alt="상세설명2">
+                    <img src="resources/images/assets/phantomsingerdetail3.jpg" alt="상세설명3"> -->
                 </div>
             </div>
         </div>
@@ -488,12 +738,12 @@
                     </p>
                     <div class="review-register">
                         <dl>
-                            <dt>평점</dt>
+                            <dt>평점<span class="rev revisionButton">수정</span></dt>
                             <dd class="star">4.94</dd>
                         </dl>
                         <dl>
                             <dt>리뷰</dt>
-                            <dd>108</dd>
+                            <dd class="totalReviewCount">108</dd>
                         </dl>
                         <span class="review-ok-button">
                             리뷰작성
@@ -531,7 +781,7 @@
                                     <div class="row">
                                         <div class="table-title">관람후기</div>
                                         <div class="table-content">
-                                            <textarea name="content" class="input-content" maxlength="2000" minlength="50" cols="30" rows="10" placeholder="내용을 작성해주세요.(최소 20byte/최대 2,000byte)"></textarea>
+                                            <textarea id="content" name="content" class="input-content" maxlength="2000" minlength="50" cols="30" rows="10" placeholder="내용을 작성해주세요.(최소 20byte/최대 2,000byte)"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -542,17 +792,21 @@
                         </div>
                     </section>
 
-                   <!-- <section class="revision hide">
+                   <section class="revision hide">
                         <div class="revision-group">
-                            <form class="revision-form">
+                            <form name="reviewEditFrm" class="revision-form">
                                 <div class="revision-table">
                                     <div class="revision-title">
-                                        <p class="re-title">세상은 한 장의 손수건</p>
+                                        <p class="re-title">${pvo.prod_title}</p>
                                         <button type="button" class="close-revision-button" ><span>+</span></button>
                                     </div>
                                     <div class="re-row re-datestar">
                                         <div class="re-table-title">관람일시</div>
                                         <div class="re-table-content">관람 내역이 없습니다.</div>
+                                    </div>
+                                    <div class="row datestar">
+                                        <div class="table-title">작성자명</div>
+                                        <div class="table-content"><input type="text" name="name" value="${sessionScope.loginuser.name}" readonly /></div>
                                     </div>
                                     <div class="re-row re-datestar">
                                         <div class="re-table-title">별점</div>
@@ -568,7 +822,7 @@
                                     <div class="re-row">
                                         <div class="re-table-title">관람후기</div>
                                         <div class="re-table-content">
-                                            <textarea name="input-content" class="re-input-content" maxlength="2000" minlength="50" cols="30" rows="10" placeholder="내용을 작성해주세요.(최소 20byte/최대 2,000byte)"></textarea>
+                                            <textarea name="input-content" id="input-content" class="re-input-content" maxlength="2000" minlength="50" cols="30" rows="10" placeholder="내용을 작성해주세요.(최소 20byte/최대 2,000byte)"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -577,90 +831,17 @@
                                 </div>
                             </form>
                         </div>
-                    </section>    -->
+                    </section>  
 
-                </div>
+                </div><!-- review-desc끝 -->
                 <div class="review-comments">
-                    <ul class="review-comments-list">
-                        <li>
-                            <div class="review-comment-badge">
-                                <span class="reservationbadge">예매자</span>
-                                <span class="writerself">본인</span>
-                            </div>
-                            <div class="review-comment-star">
-                                <span class="reviewer">nokwon**</span>
-                                <span class="reviewer">2020.08.01</span>
-                                <span class="reviewer">
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                </span>
-                            </div>
-                            <div class="review-comment-desc">
-                                <span>(관람일:2020.08.02)</span>
-                                <p>
-                                    무대 배경이 되는 프로이트의 서재의 디테일에 놀랐습니다.엔틱하고 다양한 종교상들이 옹기종기~~ 서로의 이야기에 조금씩 공감하는 부분은 있지만 결국 둘은 자신의 소신을 지키는 걸로~~ 작년 ‘에쿠우스’에서 받은 느낌이 강렬해 이석준 배우님 연기도 보고 싶네요. 다른 페어는 어떨까 궁금해지는 공연입니다.
-                                </p>
-                            </div>
-                            <div class="review-comment-bottom">
-                                <div class="review-comment-like">
-                                    <i class="far fa-heart noncolored-heart"></i>
-                                    <i class="fas fa-heart colored-heart"></i>
-                                    <strong class="main-likes-number">
-                                        118
-                                    </strong>
-                                </div>
-                                <div class="review-comment-revision">
-                                    <span class="revision revisionButton">수정</span>
-                                    <span class="revision">삭제</span>
-                                </div>
-                            </div>
-                        </li>
-                        
-                        <li>
-                            <div class="review-comment-badge">
-                                <span class="reservationbadge">예매자</span>
-                                <span class="writerself">본인</span>
-                            </div>
-                            <div class="review-comment-star">
-                                <span class="reviewer">nokwon**</span>
-                                <span class="reviewer">2020.08.01</span>
-                                <span class="reviewer">
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                    <span><i class="fas fa-star reviewstar"></i></span>
-                                </span>
-                            </div>
-                            <div class="review-comment-desc">
-                                <span>(관람일:2020.08.02)</span>
-                                <p>
-                                    무대 배경이 되는 프로이트의 서재의 디테일에 놀랐습니다.엔틱하고 다양한 종교상들이 옹기종기~~ 서로의 이야기에 조금씩 공감하는 부분은 있지만 결국 둘은 자신의 소신을 지키는 걸로~~ 작년 ‘에쿠우스’에서 받은 느낌이 강렬해 이석준 배우님 연기도 보고 싶네요. 다른 페어는 어떨까 궁금해지는 공연입니다.
-                                </p>
-                            </div>
-                            <div class="review-comment-bottom">
-                                <div class="review-comment-like">
-                                    <i class="far fa-heart noncolored-heart"></i>
-                                    <i class="fas fa-heart colored-heart"></i>
-                                    <strong class="main-likes-number">
-                                        118
-                                    </strong>
-                                </div>
-                                <div class="review-comment-revision">
-                                    <span class="revision revisionButton">수정</span>
-                                    <span class="revision">삭제</span>
-                                </div>
-                            </div>
-                        </li>
-
-
-                    </ul>
+                    
+                    
+                
+                    
                 </div>
-                <div class="review-pagination">
-                    <a href="#">
+                <div class="review-pagination" style="margin-bottom: 100px;">
+                    <!-- <a href="#">
                         <i class="fas fa-chevron-left"></i>
                     </a>
                     <div>
@@ -697,7 +878,7 @@
                     </div>
                     <a href="#">
                         <i class="fas fa-chevron-right"></i>
-                    </a>
+                    </a> -->
                 </div>
             </div>
         </div>

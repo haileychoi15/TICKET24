@@ -96,7 +96,7 @@ button,input,textarea{
     display: inline-block;
     width: 14px;
     height: 14px;
-    background-image: url("/finalproject4/resources/images/assets/backward-arrow.svg");
+    background-image: url("../images/assets/backward-arrow.svg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size:contain;
@@ -125,7 +125,7 @@ button,input,textarea{
     border-radius: 50%;
     border: none;
     background-color: #ffffff;
-    background-image: url("/finalproject4/resources/images/assets/icon-share.svg");
+    background-image: url("../images/assets/icon-share.svg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 24px 24px;
@@ -165,6 +165,10 @@ button,input,textarea{
     font-size: 25px;
 }
 
+
+.landing-title{
+    margin-top: 100px;
+}
 
 /*.landing-content{
     justify-content: center;
@@ -210,7 +214,7 @@ button,input,textarea{
     border-radius: 50%;
     border: none;
     background-color: #ffffff;
-    background-image: url("../assets/icon-share.svg");
+    background-image: url("../images/assets/icon-share.svg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 24px 24px;
@@ -252,13 +256,13 @@ button,input,textarea{
     justify-content: center;
     align-items: center;
 }
-.main .noncolored-heart{
+ .noncolored-heart{
   /* !* width: 34px;
     height: 34px;
     border-radius: 50%;*!
     border: none;
     background-color: #ffffff;
-    background-image: url("../assets/icon-favorite.svg");
+    background-image: url("../images/assets/icon-favorite.svg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 20px 20px;
@@ -269,8 +273,8 @@ button,input,textarea{
     margin-right: 8px;
 }
 
-.main .colored-heart{
-    display: none;
+ .colored-heart{
+
     cursor:pointer;
     size: 15px;
     color: orange;
@@ -297,7 +301,7 @@ button,input,textarea{
     display: inline-block;
     width: 16px;
     height: 16px;
-    background-image: url("/finalproject4/resources/images/assets/icon-orangestar.svg");
+    background-image: url("../images/assets/icon-orangestar.svg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size:contain;
@@ -384,11 +388,13 @@ button,input,textarea{
 }
 
 /*달력 api*/
-.ticketing .datepicker{
+.ticketing #calendar{
     width: 100%;
-    height: 150px;
+    /* height: 150px; */
     border: 1px solid red;
     margin-bottom: 15px;
+    padding:8px;
+    font-size:10px;
 }
 
 /*.ticketing .col-12:nth-child(2){
@@ -671,7 +677,7 @@ button,input,textarea{
     display: inline-block;
     width: 13px;
     height: 13px;
-    background-image: url("/finalproject4/resources/images/assets/icon-orangestar.svg");
+    background-image: url("../images/assets/icon-orangestar.svg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size:contain;
@@ -689,8 +695,9 @@ button,input,textarea{
 }
 
 
-.review .review-comment-star span{
+.review .review-comment-star .reviewer{
     margin-right: 10px;
+    position: relative;
 }
 
 
@@ -718,7 +725,7 @@ button,input,textarea{
 
 }
 
-.review .revision{
+.review .rev{
     display: inline-block;
     font-size: 11px;
     border: 1px solid #333333;
@@ -739,11 +746,10 @@ button,input,textarea{
     margin-bottom: 0;
 }*/
 
-.review .review-comment-star span{
-    position: relative;
-}
 
-.review .review-comment-star span:nth-child(2)::before {
+.review .review-comment-star span:nth-child(2)::before,
+.review .review-comment-star span:nth-child(3)::before
+{
     content: '';
     display: block;
     width: 1px;
@@ -761,10 +767,126 @@ button,input,textarea{
     align-items: center;
 }
 
-.review .review-comment-star span:last-child img{
-    width: 13px;
-    height: 13px;
+.review .review-comment-star .reviewer i{
+   font-size: 13px;
 }
+
+/* revision */
+ .revision{
+   
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    background-color: #fff;
+    width: 100%;
+}
+
+.revision-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.revision-group{
+    width: 100%;
+}
+
+.re-title{
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.close-revision-button {
+    transform: rotate(45deg);
+    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    font-size: 30px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: 0;
+}
+
+.revision-table {
+    width: 100%; 670px
+    margin: 0 auto;
+}
+
+.re-table-title {
+    width: 20%;
+    margin-right: 2%;
+    font-weight: 700;
+
+}
+
+
+.re-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid black;
+    font-size: 15px;
+}
+
+.re-datestar {
+    height: 70px;
+}
+
+.re-datestar a {
+    text-decoration: none;
+    font-size: 25px;
+    color: #ec7d2c;
+}
+.re-datestar i
+{
+    font-size: 25px;
+    color: #333333;
+}
+
+
+.re-datestar .staron
+{
+    color:#ec7d2c;
+}
+
+
+.re-table-content {
+    width: 75%;
+    margin: 10px 0;
+}
+
+.re-table-content textarea {
+    width: 100%;
+    height: 200px;
+}
+
+
+.re-post-buttons {
+    width: 30%;
+    border: 1px solid #ec7d2c;
+    margin: 20px auto;
+
+}
+
+
+.re-post-buttons .re-post-ok-button {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: #ec7d2c;
+    color: white;
+    border: 1px solid #ec7d2c;
+
+}
+
+ 
 
 .review .review-pagination{
     padding: 0 15px;
@@ -789,20 +911,19 @@ button,input,textarea{
 
 }
 
-.review .like-button{
+/*.review .like-button{
     width: 34px;
     height: 34px;
     border-radius: 50%;
     border: none;
     background-color: #ffffff;
-    background-image: url("/finalproject4/resources/images/assets/icon-favorite.svg");
+    background-image: url("../images/assets/icon-favorite.svg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 20px 20px;
     cursor: pointer;
     padding-left: 0;
-}
-
+}*/
 .review .review-ok-button{
     cursor: pointer;
 }
@@ -845,10 +966,12 @@ button,input,textarea{
 
 /*modal*/
 
+/*revision 같이 쓸 수 있나..? 리뷰 등록 폼 그대로 ? */
 
 .modal{
     position: absolute;
    /* display: flex;*/
+   	display: none;
     justify-content: center;
     align-items: center;
     z-index: 100;
@@ -868,7 +991,7 @@ button,input,textarea{
     margin-bottom: 0;
 }
 
-.modal-group{
+.modal-group {
     width: 100%;
 }
 
@@ -887,19 +1010,22 @@ button,input,textarea{
     outline: 0;
 }
 
-.modal .modal-form .modal-table {
+.modal .modal-form .modal-table
+{
     width: 100%; /*670px*/
     margin: 0 auto;
 }
 
-.modal .modal-form .modal-table .table-title {
+.modal .modal-form .modal-table .table-title
+{
     width: 20%;
     margin-right: 2%;
     font-weight: 700;
 }
 
 
-.modal .modal-form .modal-table .row {
+.modal .modal-form .modal-table .row
+{
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -908,18 +1034,21 @@ button,input,textarea{
     padding: 0 15px;
 }
 
-.modal .modal-form .modal-table .datestar {
+.modal .modal-form .modal-table .datestar
+{
     height: 70px;
 }
 
 
-.modal .modal-form .modal-table .datestar i {
+.modal .modal-form .modal-table .datestar i
+{
     font-size: 25px;
     color: #333333;
 }
 
 
-.modal .modal-form .modal-table .datestar .staron{
+.modal .modal-form .modal-table .datestar .staron
+{
     color:#ec7d2c;
 }
 
@@ -1045,6 +1174,15 @@ button,input,textarea{
         border-bottom: 1px solid #000;
         padding: 20px 0;
     }
+    
+    
+    
+    /*calendar*/
+    
+     #calendar{
+    font-size:initial;
+    } 
+    
 
     /*ticketing*/
     .ticketing {
@@ -1075,7 +1213,7 @@ button,input,textarea{
         padding: 20px 0;
     }
 
-    .ticketing .datepicker {
+    .ticketing #calendar {
         margin-bottom: 0;
         margin-right: 20px;
         position: relative;
@@ -1086,7 +1224,7 @@ button,input,textarea{
     }
 
     /*
-      .ticketing .datepicker::after{
+      .ticketing #calendar::after{
           content: '';
           display: inline-block;
           width: 1px;
@@ -1191,6 +1329,114 @@ button,input,textarea{
     .modal .modal-form .modal-table .row {
       width: 100%;
     }
+    
+   .revision {
+        position: absolute;
+        top: 0;
+        left: 0;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
+
+
+    .revision-group {
+        width: 60%;
+        background-color: #ffffff;
+        margin: 0 auto;
+        padding: 10px 50px;
+
+    }
+
+    .close-revision-button {
+        transform: rotate(45deg);
+        cursor: pointer;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        background-color: #fff;
+        font-size: 30px;
+        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        outline: 0;
+    }
+
+    .revision-title{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 25px;
+        font-weight: 700;
+        border-bottom: 1px solid black;
+    }
+
+
+    .revision-table {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .re-table-title {
+        width: 20%;
+        margin-right: 2%;
+        font-weight: 700;
+
+    }
+
+
+    .re-row {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        border-bottom: 1px solid black;
+        font-size: 15px;
+    }
+
+    .re-datestar {
+        height: 70px;
+    }
+
+   .modal .modal-form .modal-table .datestar a {
+        text-decoration: none;
+        font-size: 25px;
+        color: #ec7d2c;
+    }
+
+    .re-table-content {
+        width: 75%;
+        margin: 10px 0;
+    }
+
+    .re-table-content textarea {
+        width: 100%;
+        height: 200px;
+    }
+
+
+    .re-post-buttons {
+        width: 30%;
+        border: 1px solid #ec7d2c;
+        margin: 20px auto;
+
+    }
+
+
+    .re-post-ok-button {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background-color: #ec7d2c;
+        color: white;
+        border: 1px solid #ec7d2c;
+
+    } 
+
+}
 
 
 }/*end of mediaQuery*/
