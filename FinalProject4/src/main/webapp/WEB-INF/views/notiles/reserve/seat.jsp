@@ -20,11 +20,11 @@
                     <div id="changeArea">
                         <span>관람일 변경</span>
                         <select id="changeDate">
-                            <option selected>날짜 선택</option>
+                            <option>날짜 선택</option>
                         </select>
                         <span>회차 변경</span>
                         <select id="changeRound">
-                            <option selected>회차 선택</option>
+                            <option>회차 선택</option>
                         </select>
                     </div>
                     <div class="showName" id="mobileTitle"></div>
@@ -66,6 +66,11 @@
                         <button id="reset" onclick="reset()">좌석 다시 선택</button>
                         <button id="next" onclick="seatSelComplete()">좌석 선택 완료</button>
                     </div>
+                    
+                    <form name="convey" style="display: none">
+                    	<input type="text" name="showdate" id="showdate" value="">
+                    	<input type="text" name="showtime" id="showtime" value="">
+                    </form>
                 </div>
             </div>
         </div>

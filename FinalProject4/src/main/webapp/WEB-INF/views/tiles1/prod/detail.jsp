@@ -57,7 +57,7 @@
                 initialView: 'dayGridMonth',
                 locale:'ko',
                 dateClick: function(info) {
-                    alert('Date: ' + info.dateStr); // 선택한 달력의 값
+                    // alert('Date: ' + info.dateStr); // 선택한 달력의 값
                     // 달력을 선택하면 Ajax로 달력의 값이 date_showday 와 같은 경우 회차정보를 불러오도록 한다. 
                     
                     $.ajax({
@@ -175,6 +175,26 @@
 			});
         	
         }
+        
+        function moveBooking() {
+            
+            let showdate = document.getElementById('showdate');
+            let showtime = document.getElementById('showtime');
+           
+            if(showdate.value === '' || showtime.value === '') {
+            alert('날짜와 회차를 모두 선택하여 주세요.');
+            return false;
+            }
+             
+             let fk_userid = document.getElementById('fk_userid');
+             if(fk_userid.value === '') {
+             alert('공연 예매는 로그인이 필요합니다.');
+             return false;
+             }
+            
+             window.open("/finalproject4/reservePopUp.action", "popUp", 'toolbar=no, menubar=no, scrollbars=no');
+            
+            }
         
         
         function getReviewTemplate(review_id, fk_userid, name, star, regDate, content) {
@@ -564,15 +584,17 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <a href="#" class="booking-button">예매하기</a>
+            <a onclick="moveBooking()" class="booking-button">예매하기</a>
             <a href="#" class="booking-button-invert">Booking</a>
         </div>
     </div>
 </div>
 
 
-                    <input type="text" name="showdate" id="showdate" value="" />
-					<input type="text" name="showtime" id="showtime" value="" />
+<form name="convey" method="post">
+<input type="text" name="showdate" id="showdate" value="" />
+<input type="text" name="showtime" id="showtime" value="" />
+</form>
 					<!-- finalproject4/reservePopUp.action 으로 예매하기 데이터 넘기는 부분 -->
 					
 

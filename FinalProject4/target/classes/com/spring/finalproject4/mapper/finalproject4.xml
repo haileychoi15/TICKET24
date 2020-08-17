@@ -178,14 +178,14 @@
 		<result property="date_showtime"	column="date_showtime"	javaType="String"/>
 	</resultMap>
 	<select id="getShowTime" resultMap="resShowTime" parameterType="String">
-		select prod_id, to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday, date_showtime
+		select prod_id, to_char(date_showday, 'yyyy-mm-dd') || ' ' || to_char(date_showday, 'day') as date_showday, date_showtime
 		from yes_show_date
 		where prod_id = #{showNum}
 		order by date_showday, date_showtime
 	</select>
 	
 	<select id="getShowDay" resultType="String" parameterType="String">
-		select distinct to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday
+		select distinct to_char(date_showday, 'yyyy-mm-dd') || ' ' || to_char(date_showday, 'day') as date_showday
 		from yes_show_date
 		where prod_id = #{showNum}
 		order by date_showday
@@ -203,7 +203,7 @@
 		<result property="seat_color"		column="seat_color"		javaType="String"/>
 	</resultMap>
 	<select id="getSeatStatus" parameterType="String" resultMap="seatStatus">
-		select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id, seat_color
+		select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, seat_color
 		from view_seat_info
 		where prod_id = #{showNum}
 	</select>
@@ -222,7 +222,7 @@
 	<select id="getDateId" parameterType="HashMap" resultType="String">
 		select date_id
 		from yes_show_date
-		where prod_id = #{showNum} and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') = #{showDay} and date_showtime = #{showRound}
+		where prod_id = #{showNum} and to_char(date_showday, 'yyyy-mm-dd') || ' ' || to_char(date_showday, 'day') = #{showDay} and date_showtime = #{showRound}
 	</select>
 	
 	<resultMap type="HashMap" id="takeCoupon">
