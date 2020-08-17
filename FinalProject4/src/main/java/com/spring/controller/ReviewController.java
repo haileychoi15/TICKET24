@@ -109,8 +109,6 @@ public class ReviewController {
 		String parentProdId = request.getParameter("parentProdId");
 		String sizePerPage = request.getParameter("sizePerPage");
 		
-		System.out.println("parentProdId" + parentProdId);
-		
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("parentProdId", parentProdId);
 		
@@ -119,9 +117,6 @@ public class ReviewController {
 
 		// 총페이지(totalPage)수 구하기
 		int totalPage = (int) Math.ceil((double)totalCount / Integer.parseInt(sizePerPage));
-		
-		System.out.println("totalCount" + totalCount);
-		System.out.println("totalPage"+totalPage);
 		
 		double avgStar = 0;
 		
@@ -149,7 +144,6 @@ public class ReviewController {
 		paraMap.put("fk_userid", rvo.getFk_userid());
 		paraMap.put("review_id", rvo.getReview_id());
 		
-		
 		int n = service.delReview(paraMap);
 		
 		JSONObject jsonObj = new JSONObject();
@@ -157,6 +151,30 @@ public class ReviewController {
 		
 		return jsonObj.toString();
 	}
+	
+	
+	// 리뷰수정하기
+	@ResponseBody
+	@RequestMapping(value="/editReview.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String editReview(HttpServletRequest request) {	
+
+		String review_id = request.getParameter("review_id");
+		String star = request.getParameter("star");
+		String content = request.getParameter("content");
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("review_id", review_id);
+		paraMap.put("star", star);
+		paraMap.put("content", content);
+		
+		int n = service.editReview(paraMap);
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("n", n);
+		
+		return jsonObj.toString();
+	}
+	
 	
 	
 }

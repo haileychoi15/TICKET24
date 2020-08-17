@@ -779,6 +779,13 @@
 		where review_id = #{review_id} and fk_userid = #{fk_userid}
 	</update>
 	
+	<!-- 리뷰 수정하기 -->
+	<update id="editReview" parameterType="HashMap">
+		update yes_review set content = #{content}, star = #{star}
+		where status = 1 and review_id = #{review_id}
+	</update>
+	
+	
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 	
 

@@ -772,12 +772,13 @@ button,input,textarea{
 }
 
 /* revision */
+
+
+    
  .revision{
-   
-    justify-content: center;
-    align-items: center;
     position: absolute;
-    display: none;
+   /* display: flex;*/
+   	display: none;
     justify-content: center;
     align-items: center;
     z-index: 100;
@@ -797,6 +798,7 @@ button,input,textarea{
 .re-title{
     font-size: 30px;
     font-weight: 700;
+    margin-bottom: 0;
 }
 
 .close-revision-button {
@@ -815,11 +817,11 @@ button,input,textarea{
 }
 
 .revision-table {
-    width: 100%; 670px
+	width: 100%; /*670px*/
     margin: 0 auto;
 }
 
-.re-table-title {
+.revision-table .revision-title .re-table-title {
     width: 20%;
     margin-right: 2%;
     font-weight: 700;
@@ -1084,6 +1086,8 @@ button,input,textarea{
 
 
 
+/* 미디어쿼리부분 */
+
 
 
 
@@ -1330,25 +1334,35 @@ button,input,textarea{
       width: 100%;
     }
     
-   .revision {
+   .revision {/* 
         position: absolute;
         top: 0;
         left: 0;
         justify-content: center;
         align-items: center;
+        width: 600px;
         width: 100%;
         height: 100vh;
         background-color: rgba(0, 0, 0, 0.3);
-        z-index: 100;
+        z-index: 100; */
+	    position: absolute;
+	   /* display: flex;*/
+	   	display: none;
+	    justify-content: center;
+	    align-items: center;
+	    z-index: 100;
+	    background-color: #fff;
+	    width: 100%;
     }
 
 
-    .revision-group {
+    .revision-group {/* 
         width: 60%;
         background-color: #ffffff;
         margin: 0 auto;
-        padding: 10px 50px;
+        padding: 10px 50px; */
 
+    	width: 100%;
     }
 
     .close-revision-button {
@@ -1367,12 +1381,9 @@ button,input,textarea{
     }
 
     .revision-title{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 25px;
-        font-weight: 700;
-        border-bottom: 1px solid black;
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
     }
 
 
@@ -1390,11 +1401,12 @@ button,input,textarea{
 
 
     .re-row {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        border-bottom: 1px solid black;
-        font-size: 15px;
+	    display: flex;
+	    justify-content: flex-start;
+	    align-items: center;
+	    border-bottom: 1px solid black;
+	    font-size: 15px;
+	    padding: 0 15px;
     }
 
     .re-datestar {

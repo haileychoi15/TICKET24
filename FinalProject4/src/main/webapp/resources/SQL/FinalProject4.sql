@@ -3087,3 +3087,11 @@ from
 group by parentProdId
 having(parentProdId = 1)
 -- 총 평균평점
+
+
+desc yes_review;
+
+update yes_review set content = 'ㅎㅎ', star = 3
+		where status = 1 and review_id = 1;
+        
+        rollback;
