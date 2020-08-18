@@ -600,9 +600,17 @@ function Pay(payNum) {
 	}
 	document.getElementById('seatIdes').value = seatId;  */
 	
-	var x = document.getElementByClassName('selseatCnt').innerText;
+	document.getElementById('Email').value = document.getElementById('conveyEmail').value;
 	
-	alert(x + "zz");
+	var receiveMethod = "";
+	if($("input:radio[id='willCall']").prop('checked') == true) {
+    	receiveMethod = "1";	
+    }
+    else if($("input:radio[id='delivery']").prop('checked') == true) {
+    	receiveMethod = "2";
+    }
+	document.getElementById('receiveMethod').value = receiveMethod;
+	
 	
 	var frm = document.payFrm;
 	frm.method = "POST";

@@ -164,15 +164,15 @@
                                 <div class="infoTitle">주문자 정보</div>
                                 <div id="ordererName">
                                     <div class="ordererRow1">이름</div>
-                                    <div class="ordererRow2"><input type="text" size="15" id="conveyName" readonly></div>
+                                    <div class="ordererRow2"><input type="text" size="15" id="conveyName"></div>
                                 </div>
                                 <div id="ordererCall">
                                     <div class="ordererRow1">연락처</div>
-                                    <div class="ordererRow2"><input type="text" size="3" maxlength="3" id="conveyHP1" readonly> - <input type="text" size="4" maxlength="4" id="conveyHP2" readonly> - <input type="text" size="4" maxlength="4" id="conveyHP3" readonly></div>
+                                    <div class="ordererRow2"><input type="text" size="3" maxlength="3" id="conveyHP1"> - <input type="text" size="4" maxlength="4" id="conveyHP2"> - <input type="text" size="4" maxlength="4" id="conveyHP3"></div>
                                 </div>
                                 <div id="ordererEmail">
                                     <div class="ordererRow1">이메일</div>
-                                    <div class="ordererRow2"><input type="text" size="20" id="conveyEmail" readonly></div>
+                                    <div class="ordererRow2"><input type="text" size="20" id="conveyEmail"></div>
                                 </div>
                             </div><br>
                             <div id="deliveryInfo" style="display: none;">
@@ -373,7 +373,10 @@
     	<input type="hidden" name="paySum" value="" id="paySum" />
     	<input type="hidden" name="payNum" value="" id="payNum" />
     	<input type="hidden" name="seatIdes" value="" id="seatIdes" />
-    	<input type="hidden" name="" value=""/>
+    	<input type="hidden" name="Email" value="" id="Email"/>
+    	<input type="hidden" name="showDay" value="" id="showDay"/>
+    	<input type="hidden" name="showRound" value="" id="showRound"/>
+    	
     </form>
 </body>
 <jsp:include page="../../../../resources/js/seatSelScript.jsp"/>

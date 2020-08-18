@@ -121,26 +121,25 @@ public class PayController {
 		
 		String payMethodNum = request.getParameter("payNum"); // 결제 방법
 		
-		String payShowName = request.getParameter("payShowName"); // 공연 코드
+		String showNum = request.getParameter("payShowName"); // 공연 코드
 		String paySum = request.getParameter("paySum"); // 공연 금액 다시 확인해봐야 함
 		String seatId = request.getParameter("seatId"); // 좌석코드
 		String payStatus = "1"; // ( 무통장입금이면 결제대기, 바로 결제완료라면 결제완료, 취소할경우 취소 )
-		String email = "";
+		String email = request.getParameter("Email"); // 예매 이메일
 		
+		String[] seatArr = seatId.split(",");
+		String seatCnt = String.valueOf(seatArr.length); // 예매 수
 		
-		/*
-		좌석코드		예매페이지 ( 여러개일 경우 : 데이터 여러개 )
-		공연일시코드	예매페이지
-		예매자이메일	예매페이지
-		예매수		예매페이지
-		예매일자		default
-		예매가격		예매페이지
-		수령방법		예매페이지
-		결제방법		예매페이지 
-		*/
+		String showDay = request.getParameter("showDay");
+		String showRound = request.getParameter("showRound");
 		
-		System.out.println("공연이름 :" + seatId);
+		HashMap<String, String> dateMap = new HashMap<>();
+		dateMap.put("showDay", showDay);
+		dateMap.put("showRound", showRound);
+		dateMap.put("showNum", showNum);
+		String dateID = service.getDateId(dateMap);
 		
+		String receiveMethod = request.getParameter("receiveMethod");
 		
 		
 		if("1".equals(payMethodNum)) { // 신용카드 결제일 경우
@@ -149,7 +148,6 @@ public class PayController {
 		else { // 무통장입금일 경우
 			
 			// 무통장입금일 경우 트랜잭션
-			
 			mav.setViewName("reserve/payComplete.notiles");
 		}
 		
