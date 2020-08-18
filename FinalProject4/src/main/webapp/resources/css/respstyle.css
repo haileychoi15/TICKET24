@@ -282,6 +282,21 @@ button,input,textarea{
     margin-right: 8px;
 }
 
+.tnoncolored-heart{
+    cursor:pointer;
+    size: 15px;
+    color: orange;
+    margin-right: 8px;
+}
+
+ .tcolored-heart{
+
+    cursor:pointer;
+    size: 15px;
+    color: orange;
+    margin-right: 8px;
+}
+
 .main .main-rate{
     display: flex;
     justify-content: flex-start;

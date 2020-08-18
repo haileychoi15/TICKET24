@@ -2278,6 +2278,32 @@ from like_prod;
 select count(*)
 from like_prod;
 
+select count(*)
+from like_prod
+where fk_parentProdId = 1 and fk_userid = 'kkimsg93';
+-- 관심상품 중복확인
+
+select prod_id, prod_img, prod_detail_img, prod_title, info_open_date, info_close_date, info_grade, info_run_time
+    , map_name, map_address, local 
+from view_detail_prod;
+
+select fk_userid, prod_id, prod_img, prod_detail_img, prod_title, info_open_date, info_close_date, info_grade, info_run_time
+    , map_name, map_address, local 
+from like_prod L join view_detail_prod D
+on L.fk_parentProdId = D.prod_id;
+-- 관심상품정보
+
+
+select *
+from(
+select fk_userid, prod_id, prod_img, prod_detail_img, prod_title, info_open_date, info_close_date, info_grade, info_run_time
+    , map_name, map_address, local 
+from like_prod L join view_detail_prod D
+on L.fk_parentProdId = D.prod_id
+)T
+where fk_userid = 'kkimsg93';
+-- kkimsg93 의 관심상품목록 조회
+
 insert into  like_prod (seq, fk_userid, fk_parentProdId)
 values (likeProdSeq.nextval, 'leess', 1);
 

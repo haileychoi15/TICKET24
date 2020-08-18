@@ -64,11 +64,12 @@ public class ProdService implements InterProdService {
 		return n;
 	}
 	
-	// 해당상품의 관심상품 누른 사람 목록
+	// 같은 아이디의 같은 관심상품이 존재하는지 확인
 	@Override
-	public List<String> likeProdUserList(HashMap<String, String> paraMap) {
-		List<String> likeProdUserList = dao.likeProdUserList(paraMap);
-		return likeProdUserList;
+	public int existlike(HashMap<String, String> paraMap) {
+		int n = dao.existlike(paraMap);
+		return n;
 	}
+	
 	
 }

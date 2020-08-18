@@ -59,8 +59,9 @@
 			var existlike = $("#existlike").val();
 			console.log("existlike : "+existlike);
 			
+			goLikeProdCnt();
 			
-			/* goLikeProdCnt();
+		/* 	goLikeProdCnt();
 			
 			var loginuserid = "${sessionScope.loginuser.userid}";
 			if(loginuserid != "") {
@@ -477,29 +478,30 @@
 			
 			var existlike = $("#existlike").val();
 			console.log(existlike);
-			
+			/* 
 			 if(existlike == '1') {
 				alert("이미 추천한 글입니다.");
 				return;
-			}  
+			}   */
 			
 			// 관심상품 등록하기
 			$.ajax({
 				url:"<%= request.getContextPath()%>/likeProd.action",
 				type:"GET",
 				data:{"prod_id":prod_id,
-					  "fk_userid":loginuserid,
-					  "existlike":existlike},
+					  "fk_userid":loginuserid},
+				   // "existlike":existlike},
 				dataType:"JSON",
 				success:function(json) {
 					
 					if(json.m == "추천") { 
 						if(json.n == 1) {
 							alert("글 추천 성공!");
-							/* goLikeProdCnt();
-							goLikeProdUser();
-							$("#likeuser").css("color","blue"); */
+					 		goLikeProdCnt(); 
 							$("#existlike").val("1");
+							
+							$("#likeProdMain").removeClass("far");
+							$("#likeProdMain").addClass("fas");
 						}
 						else {
 							alert("글 추천 실패!");
@@ -508,10 +510,10 @@
 					else {
 						if(json.n == 1) {
 							alert("글 추천 취소 성공!");
-							/* goLikeProdCnt();
-							goLikeProdUser();
-							$("#likeuser").css("color","black"); */
+					 		goLikeProdCnt();
 							$("#existlike").val("0");
+							$("#likeProdMain").removeClass("fas");
+							$("#likeProdMain").addClass("far");
 						}
 						else {
 							alert("글 추천취소 실패!");
@@ -527,21 +529,31 @@
 		}
 		
 		
-		
 		function goLikeProdCnt(){
 			
+			var loginuserid = "${sessionScope.loginuser.userid}";
+			
 			$.ajax({
-				url:"<%= ctxPath%>/likeProdCnts.action",
+				url:"<%= request.getContextPath()%>/likeProdCnt.action",
 				type:"GET",
-				data:{"prod_id":"${pvo.prod_id}"},  
+				data:{"prod_id":"${pvo.prod_id}",
+					  "fk_userid":loginuserid},  
 				dataType:"JSON",
 				success:function(json) {
 					
-					if(json.likeCnt != 0) {
-						$("#likecnt").html(json.likeCnt);
+					if(json.likeProdCnt != 0) {
+						$(".main-likes-number").html(json.likeProdCnt);
+						if(json.existlike == 1) {
+							$("#likeProdMain").removeClass("far");
+							$("#likeProdMain").addClass("fas");
+						}
+						else {
+							$("#likeProdMain").removeClass("fas");
+							$("#likeProdMain").addClass("far");
+						}
 					}
 					else {
-						$("#likecnt").html(json.likeCnt);
+						$(".main-likes-number").html(json.likeProdCnt);
 					}
 					
 				},
@@ -552,46 +564,6 @@
 			
 		}
 		
-		
-		function goLikeProdUser(){
-			$.ajax({
-				url:"<%= ctxPath%>/likeProdUser.action",
-				type:"GET",
-				data:{"prod_id":"${pvo.prod_id}"},  
-				dataType:"JSON",
-				success:function(json) {
-					
-					if(json.length > 0){
-
-				 		var html = "";
-				/*		$.each(json, function(index, item){
-							html += item.likeUser;
-						});
-						$("#likeuser").html(html); */
-						
-						var loginuserid = "${sessionScope.loginuser.userid}";
-						$.each(json, function(index, item){
-							if(loginuserid == item.likeUser) {
-							//	alert("좋아요누른사람");
-								$("#likeuser").css("color","blue");
-								$("#existlike").val("1");
-							}
-						});	
-							
-					}
-					else {
-						$("#likeuser").css("color","black");
-						$("#existlike").val("0");
-					}
-					
-				},
-				error: function(request, status, error){
-					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				}
-			});	 
-		}
-    	
-    	
 
     </script>
 </head>
@@ -656,18 +628,10 @@
                 </div>
 
                 <div class="main-rate">
-                	<%-- <div class="like">
-                		<span onclick="goLikeProd('${pvo.prod_id}')">
-                        <i class="fas fa-heart colored-heart"></i>
-                        </span>
-                	</div> --%>
                     <div class="main-likes">
-                  	  	<span id="likeuser">
 						<span id="likecnt"></span>
                     	<span onclick="goLikeProd('${pvo.prod_id}')">
-	                        <i class="far fa-heart noncolored-heart"></i>
-	                        <!-- <i class="fas fa-heart colored-heart"></i> -->
-	                    </span>
+                    		<i id="likeProdMain" class="far fa-heart" style="color:orange;"></i>
 	                    </span>
                         <strong class="main-likes-number">
                             118
@@ -691,13 +655,13 @@
                     <dl>
                         <div>
                             <dt>등급</dt>
-                            <dd>${pvo.info_grade}<i class="fas fa-heart colored-heart"></i></dd>
+                            <dd>${pvo.info_grade}</dd>
                         </div>
                         <div>
                             <dt>관람시간</dt>
                             <dd>${pvo.info_run_time}</dd>
                         </div>
-                      <!--  <div>
+                        <!--  <div>
                             <dt>출연</dt>
                             <dd>라포엠</dd>
                         </div>-->
@@ -1171,19 +1135,19 @@
 </section>
 
 
-<!-- <div style="margin-left:30px;">
-	<span><i class="fas fa-star" style="color:orange;"></i></span>
-	<span><i class="fas fa-star" style="color:orange;"></i></span>
-	<span><i class="fas fa-star" style="color:orange;"></i></span>
-	<span><i class="fas fa-star" style="color:orange;"></i></span>
-	<span><i class="fas fa-star" style="color:orange;"></i></span>
+<div style="margin-left:30px;">
+	<span><i class="far fa-star" style="color:orange;"></i></span>
+	<span><i class="far fa-star" style="color:orange;"></i></span>
+	<span><i class="far fa-star" style="color:orange;"></i></span>
+	<span><i class="far fa-star" style="color:orange;"></i></span>
+	<span><i class="far fa-star" style="color:orange;"></i></span>
 <div style="margin-left:30px;"></div>
-	<span><i class="far fa-star" style="color:orange;"></i></span>
-	<span><i class="far fa-star" style="color:orange;"></i></span>
-	<span><i class="far fa-star" style="color:orange;"></i></span>
-	<span><i class="far fa-star" style="color:orange;"></i></span>
-	<span><i class="far fa-star" style="color:orange;"></i></span>
-</div> -->
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+</div>
 
 
 <!-- 

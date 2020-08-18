@@ -799,19 +799,19 @@
 	
 	
 	<!-- 해당상품의 관심상품 등록수  -->
-	<select id="LikeProdCnt" parameterType="HashMap" resultType="int">
+	<select id="likeProdCnt" parameterType="HashMap" resultType="int">
 		select count(*)
 		from like_prod
 		where fk_parentProdId = #{prod_id}
 	</select>
 	
 	
-	<!-- 해당상품의 관심상품 누른 사람 목록 -->
-	<select id="likeProdUserList" parameterType="HashMap" resultType="String">
-		select fk_userid
+	<!-- 같은 아이디의 같은 관심상품이 존재하는지 확인 -->
+	<select id="existlike" parameterType="HashMap" resultType="int">
+		select count(*)
 		from like_prod
-		where fk_parentProdId = #{prod_id}
-	</select>	
+		where fk_parentProdId = #{prod_id} and fk_userid = #{fk_userid}
+	</select>
 		
 		
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->

@@ -62,14 +62,14 @@ public class ProdDAO implements InterProdDAO {
 		int n = sqlsession.selectOne("finalproject4.likeProdCnt", paraMap);
 		return n;
 	}
-
-	// 해당상품의 관심상품 누른 사람 목록
-	@Override
-	public List<String> likeProdUserList(HashMap<String, String> paraMap) {
-		List<String> likeProdUserList = sqlsession.selectList("finalproject4.likeProdUserList", paraMap);
-		return likeProdUserList;
-	}
 	
+	// 같은 아이디의 같은 관심상품이 존재하는지 확인
+	@Override
+	public int existlike(HashMap<String, String> paraMap) {
+		int n = sqlsession.selectOne("finalproject4.existlike", paraMap);
+		return n;
+	}
+
 	
 	
 }
