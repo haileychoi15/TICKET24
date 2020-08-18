@@ -164,15 +164,15 @@
                                 <div class="infoTitle">주문자 정보</div>
                                 <div id="ordererName">
                                     <div class="ordererRow1">이름</div>
-                                    <div class="ordererRow2"><input type="text" size="15" id="conveyName"></div>
+                                    <div class="ordererRow2"><input type="text" size="15" id="conveyName" readonly></div>
                                 </div>
                                 <div id="ordererCall">
                                     <div class="ordererRow1">연락처</div>
-                                    <div class="ordererRow2"><input type="text" size="3" maxlength="3" id="conveyHP1"> - <input type="text" size="4" maxlength="4" id="conveyHP2"> - <input type="text" size="4" maxlength="4" id="conveyHP3"></div>
+                                    <div class="ordererRow2"><input type="text" size="3" maxlength="3" id="conveyHP1" readonly> - <input type="text" size="4" maxlength="4" id="conveyHP2" readonly> - <input type="text" size="4" maxlength="4" id="conveyHP3" readonly></div>
                                 </div>
                                 <div id="ordererEmail">
                                     <div class="ordererRow1">이메일</div>
-                                    <div class="ordererRow2"><input type="text" size="20" id="conveyEmail"></div>
+                                    <div class="ordererRow2"><input type="text" size="20" id="conveyEmail" readonly></div>
                                 </div>
                             </div><br>
                             <div id="deliveryInfo" style="display: none;">
@@ -184,7 +184,7 @@
                                 </div>
                                 <div id="deliveryName">
                                     <div class="deliveryRow1">받으시는 분</div>
-                                    <div class="deliveryRow2"><input type="text" size="15" value=""></div>
+                                    <div class="deliveryRow2"><input type="text" size="15" id="deliveryName" value=""></div>
                                 </div>
                                 <div id="deliveryCall">
                                     <div class="deliveryRow1">연락처</div>
@@ -193,14 +193,14 @@
                                 <div id="deliveryAddress">
                                     <div class="deliveryRow1">주소</div>
                                     <div class="deliveryRow2">
-                                        <input id="postNo" type="text" size="5">&nbsp;
-                                        <input id="address" type="text" size="25">&nbsp;
+                                        <input id="postNo" type="text" size="5" id="deliveryPostNo">&nbsp;
+                                        <input id="address" type="text" size="25" id="deliveryAddress">&nbsp;
                                         <button class="btn" onclick="setAddress()">우편번호검색</button>
                                     </div>
                                 </div>
                                 <div id="deliveryDetailAddress">
                                     <div class="deliveryRow1">상세주소</div>
-                                    <div class="deliveryRow2"><input id="detailAddress" type="text" size="20"></div>
+                                    <div class="deliveryRow2"><input id="detailAddress" type="text" size="20" id="deliveryDetailAddress"></div>
                                 </div>
                             </div>
                             <div id="caution" style="display: none;">

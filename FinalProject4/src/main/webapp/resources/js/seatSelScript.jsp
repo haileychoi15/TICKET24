@@ -20,14 +20,14 @@ $(document).ready(function(){
     	changeDate.innerHTML += '<option class="changeShowDay">${item}</option>';
     </c:forEach>
     
-    document.convey.showdate.value = opener.document.convey.showdate.value;
+    /* document.convey.showdate.value = opener.document.convey.showdate.value;
 
 	let changeShowDay = document.getElementsByClassName('changeShowDay');
 	for(let i=0; i<changeShowDay.length; i++) {
 		if(changeShowDay[i].innerText.substr(0,10) === document.convey.showdate.value) {
 			changeShowDay[i].setAttribute('selected', 'selected');
 		}
-	}
+	} */
     
     let selectedDate = changeDate.options[changeDate.selectedIndex].value;
     roundChange(selectedDate);
@@ -39,14 +39,14 @@ $(document).ready(function(){
     	roundChange(round);
     });
     
-	document.convey.showtime.value = opener.document.convey.showtime.value;
+	/* document.convey.showtime.value = opener.document.convey.showtime.value;
 	
 	let changeShowTime = document.getElementsByClassName('changeShowTime');
 	for(let i=0; i<changeShowTime.length; i++) {
 		if(changeShowTime[i].innerText === document.convey.showtime.value) {
 			changeShowTime[i].setAttribute('selected', 'selected');
 		}
-	}
+	} */
 	
 	var dateSel = changeDate.options[changeDate.selectedIndex].value;
 	var roundSel = changeRound.options[changeRound.selectedIndex].value;
@@ -72,12 +72,13 @@ $(document).ready(function(){
     showGrade.innerHTML = '만 ' + '${getShowRsvInfo.info_grade}';
     showTime.innerHTML = '${getShowRsvInfo.info_run_time}';
     
-    document.getElementById('conveyName').value = opener.document.convey.conveyName.value;
+    // 부모창에서 받아온 값 넣기
+    /* document.getElementById('conveyName').value = opener.document.convey.conveyName.value;
     document.getElementById('conveyEmail').value = opener.document.convey.conveyEmail.value;
     document.getElementById('conveyHP1').value = opener.document.convey.conveyHP1.value;
     document.getElementById('conveyHP2').value = opener.document.convey.conveyHP2.value;
-    document.getElementById('conveyHP3').value = opener.document.convey.conveyHP3.value;
-	
+    document.getElementById('conveyHP3').value = opener.document.convey.conveyHP3.value; */
+
 });
 
 function roundChange(round) {
@@ -387,7 +388,7 @@ function change(step) {
 						html += "<tr>"
 							  + "<td class='row1'>" + item.coupon_name + "</td>"
 							  + "<td class='row2'>" + item.coupon_dc + "</td>"
-							  + "<td class='row3'><input type='checkbox' id='couponCheck" + index + "' value='" + item.coupon_dc + "' onchange='changeCoupon()'>"
+							  + "<td class='row3'><input type='checkbox' class='couponCheck' value='" + item.coupon_dc + "' onchange='changeCoupon()'>"
 							  + "</td>";
 					});
 				}
@@ -574,13 +575,13 @@ function ChangeAddressInfo(num) {
 	
 	switch (num) {
 	case 1:
-		alert("주문자정보동일");
-		break;
-	case 2:
-		alert("최근배송지");
+		document.getElementById('deliveryName').value = document.getElementById('conveyName').value;
+		document.getElementById('deliveryPostNo').value = opener.document.convey.conveyPostcode.value;
+		document.getElementById('deliveryAddress').value = opener.document.convey.conveyAddress.value;
+		document.getElementById('detailAddress').value = opener.document.convey.conveyDetailAddress.value;
 		
 		break;
-	case 3:
+	case 2:
 		alert("새로고침");
 		console.log(children);
 		children.value = "";
@@ -717,11 +718,20 @@ function changeDC() {
 }
 
 // 쿠폰할인
-function changeCoupon() {
-
-    let couponCheck1 = document.getElementById('couponCheck1');
+function changeCoupon() {	
+	
+	let couponCheck = document.getElementsByClassName('couponCheck');
     let dcCoupon = document.getElementById('dcCoupon');
     let dcCouponDisplay = document.getElementById('dcCouponDisplay');
+    let sumCoupon = 0;
+	for(let i=0; i<couponCheck.length; i++) {
+		if(couponCheck[i].checked) {
+			alert(couponCheck[i].value);
+		}
+		
+	}
+
+   /* let couponCheck1 = document.getElementById('couponCheck1');
     if(couponCheck1.checked) {
         dcCoupon.innerText = couponCheck1.value;
         dcCouponDisplay.innerText = money(couponCheck1.value);
@@ -729,7 +739,7 @@ function changeCoupon() {
     else if(!couponCheck1.checked) {
         dcCoupon.innerText = Number(dcCoupon.innerText) - Number(couponCheck1.value);
         dcCouponDisplay.innerText = money(dcCoupon.innerText);
-    }
+    }*/
 
     // 총 결제금액 변경
     let ticketPrice = document.getElementById('ticketPrice').innerText;
