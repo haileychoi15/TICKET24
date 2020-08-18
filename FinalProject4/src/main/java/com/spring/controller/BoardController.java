@@ -54,9 +54,9 @@ public class BoardController {
 		String searchWord = request.getParameter("searchWord");
 		String str_currentShowPageNo = request.getParameter("page");
 		
-		System.out.println(category +"category");
-		System.out.println(searchWord +"searchWord");
-		System.out.println(str_currentShowPageNo +"page");
+	//	System.out.println(category +"category");
+	//	System.out.println(searchWord +"searchWord");
+	//	System.out.println(str_currentShowPageNo +"page");
 		
 	// 	if(category == "0") {
 		if(category.equals("0")) {
@@ -341,6 +341,7 @@ public class BoardController {
 		//	mav.addObject("gobackURL", gobackURL);
 			mav.addObject("notivo", notivo); // 글 1개 boardvo 를 뷰단으로 넘겨준다. 
 			mav.setViewName("notice/noticeView.tiles1");
+			System.out.println(notivo.getContent()+" : content");
 		//	mav.addObject("gobackURL", gobackURL);
 		}
 

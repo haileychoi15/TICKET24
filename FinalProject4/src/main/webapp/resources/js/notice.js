@@ -192,6 +192,8 @@ function setPageList(pageGroup, page, recodes) { // 현재 누른 페이지, 총
 
 function getBoardTemplate(seq, category, title, date, view, file) {
 
+	
+	
     let template = `<div class="row">
                     <span class="table-category">
                         ${category}
@@ -206,11 +208,13 @@ function getBoardTemplate(seq, category, title, date, view, file) {
                     </span>
                     <span class="table-view">
                         ${view}
-                    </span>
-                    <span class="table-file">
-                        ${file}
-                    </span>
-                </div>`;
+                    </span>`;
+    
+    if(file != '') {
+    	template += `<span class="table-file yes">
+                	 </span>`;
+    	}
+    	template += `</div>`;
 
     return template;
 }

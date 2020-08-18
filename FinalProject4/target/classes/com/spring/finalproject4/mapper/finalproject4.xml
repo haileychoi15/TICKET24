@@ -308,9 +308,9 @@
 	
 	<!-- 공지사항 글 1개 보기 페이지로 이동(조회수 증가 없음) -->
 	<select id="getView" parameterType="HashMap" resultType="com.spring.model.NoticeVO">
-		select previousseq, previoussubject
-		       , notice_id,fk_userid,category, ticketopenday, subject,readCount
-		       , regDate
+		<!-- select previousseq, previoussubject
+		       , notice_id,fk_userid,category, ticketopenday, subject, readCount
+		       , content, regDate
 		       , fileName,orgFilename,fileSize
 			   , nextseq, nextsubject
 				from
@@ -320,12 +320,38 @@
 				       
 				       , notice_id, fk_userid, category, subject, readCount
 		               , nvl(ticketopenday, ' ') as ticketopenday
-				       , to_char(regDate, 'yyyy-mm-dd') as regDate
+				       , content, to_char(regDate, 'yyyy-mm-dd') as regDate
 				       , status, fileName, orgFilename, fileSize
 				       
 				       , lead(notice_id, 1) over(order by notice_id desc) as nextseq
 				       , lead(subject, 1) over(order by notice_id desc) as nextsubject
 		                from yes_notice
+		                where status = 1
+				    ) V
+		where notice_id = #{seq} -->
+		select previousseq, previoussubject
+		       , notice_id,fk_userid,no_cate_name,category, ticketopenday, subject, readCount
+		       , content, regDate
+		       , fileName,orgFilename,fileSize
+			   , nextseq, nextsubject
+				from
+				    (
+		                select lag(notice_id, 1) over(order by notice_id desc) as previousseq
+				       , lag(subject, 1) over(order by notice_id desc) as previoussubject
+				       
+				       , notice_id, fk_userid, no_cate_name, category, subject, readCount
+		               , nvl(ticketopenday, ' ') as ticketopenday
+				       , content, to_char(regDate, 'yyyy-mm-dd') as regDate
+				       , status, fileName, orgFilename, fileSize
+				       
+				       , lead(notice_id, 1) over(order by notice_id desc) as nextseq
+				       , lead(subject, 1) over(order by notice_id desc) as nextsubject
+		                from 
+                        (
+	                        select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,content,pw,readCount,regDate,status,fileName,orgFilename,fileSize
+	                        from yes_notice N join yes_notice_cate C
+	                        on N.category = C.no_cate_code
+                        ) T
 		                where status = 1
 				    ) V
 		where notice_id = #{seq}
@@ -426,9 +452,28 @@
 	
 	<!-- qna 글 1개 보기 페이지로 이동 -->
 	<select id="getQnaView" parameterType="String" resultType="com.spring.model.QnaVO">
-		select qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
+		<!-- select qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
         	  ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
 		from view_qna_info
+		where qna_id = #{seq} -->
+		select previousseq, previoussubject
+		       , qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
+		       , fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		       , nextseq, nextsubject
+		        from
+		            (
+		               select lag(qna_id, 1) over(order by qna_id desc) as previousseq
+		               , lag(subject, 1) over(order by qna_id desc) as previoussubject
+		               
+		               , qna_id, fk_userid, name, category, qna_cate_name, subject, content, to_char(regDate, 'yy/mm/dd') as regDate, adminread, adminans, groupno, fk_seq, depthno
+		               , fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		               
+		               , lead(qna_id, 1) over(order by qna_id desc) as nextseq
+		               , lead(subject, 1) over(order by qna_id desc) as nextsubject
+		               
+		                from view_qna_info
+		                where status = 1 and fk_userid != 'admin'
+		            ) V
 		where qna_id = #{seq}
 	</select>
 	
