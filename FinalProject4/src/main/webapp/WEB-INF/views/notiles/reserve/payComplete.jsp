@@ -1,16 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
 <link rel="stylesheet" href="resources/css/seatComplete.css">
-<body>
     <div id="container">
         <div id="title">결제가 정상적으로 완료되었습니다.</div>
-        <div id="caution"><em>2020년 8월 14일 23시 59분</em>까지 입금이 되어야 결제가 완료됩니다.<br>
+        <div id="caution">무통장입금 <em>2020년 8월 14일 23시 59분</em>까지 농협은행 230-910059-41205 입금 되어야 결제가 완료됩니다.<br>
         예매 상세 내역은 마이티켓 > 예매확인/취소에서 확인하실 수 있습니다.</div>
         <table>
             <tr>
@@ -45,8 +38,6 @@
 
         <div id="btnArea">
             <a id="move" href="">예매내역확인</a>
-            <a id="close" href="">닫기</a>
+            <a id="close" href="javascript: self.close();">닫기</a>
         </div>
     </div>
-</body>
-</html>

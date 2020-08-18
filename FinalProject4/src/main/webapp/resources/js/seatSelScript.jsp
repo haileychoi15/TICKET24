@@ -318,7 +318,6 @@ function seatSelComplete() {
         let totalPriceDisplay = document.getElementById('totalPriceDisplay');
         totalPrice.innerText = sum;
         totalPriceDisplay.innerText = money(sum);
-        document.getElementById('paySum').value = sum;
         
         let dc1 = document.getElementById('dc1');
         let dc1Display = document.getElementById('dc1Display');
@@ -504,12 +503,13 @@ function payment() {
     }
 
     if(check1 && check2) {
-        alert('결제로 이동');
         if($("input:radio[id='card']").prop('checked') == true) {
-        	Pay();
+        	alert("신용카드 결제");
+        	Pay(1);
         }
         else if($("input:radio[id='deposit']").prop('checked') == true) {
         	alert("계좌이체 정보알림페이지로 이동");
+        	Pay(2);
         }
     }
     else {
@@ -589,7 +589,21 @@ function ChangeAddressInfo(num) {
 	}
 }
 
-function Pay() {
+function Pay(payNum) {
+	
+	document.getElementById('paySum').value = document.getElementById('totalPrice').innerText;
+	document.getElementById('payNum').value = payNum;
+	var seatId = "";
+	
+	/* for(var i=0; i<$('.selseatCnt').length; i++) {
+		seatId += document.getElementByClassName("selseatCnt")[i].innerText;
+	}
+	document.getElementById('seatIdes').value = seatId;  */
+	
+	var x = document.getElementByClassName('selseatCnt').innerText;
+	
+	alert(x + "zz");
+	
 	var frm = document.payFrm;
 	frm.method = "POST";
 	frm.action = "<%= request.getContextPath()%>/payPopUp.action";
@@ -714,7 +728,6 @@ function changeDC() {
     totalPrice.innerText = resultPrice;
     totalPriceDisplay.innerText = money(resultPrice);
 
-    document.getElementById('paySum').value = resultPrice;
 }
 
 // 쿠폰할인
@@ -754,7 +767,6 @@ function changeCoupon() {
     totalPrice.innerText = resultPrice;
     totalPriceDisplay.innerText = money(resultPrice);
 
-    document.getElementById('paySum').value = resultPrice;
     
 }
 

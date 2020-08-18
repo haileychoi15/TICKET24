@@ -97,7 +97,7 @@ function getProdTemplate(id, title, img, place, discount) {
                                 <img src="resources/images/${img}" alt="${title}" />`;
 
     if(discount !== '0'){ // 할인율이 있으면
-        template += `<strong class="notice-sticker">${discount}</strong>`;
+        template += `<strong class="notice-sticker">${discount}%</strong>`;
     }
 
     template +=            `</div>

@@ -217,6 +217,15 @@
     background-color: #ec7d2c;
 }
 
+.product .notice-count{
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+.product .notice-count strong{
+    color: #ec7d2c;
+}
+
 .product .card-title{
     color: #888;
 }
@@ -237,9 +246,8 @@
     background-color: #ec7d2c;
 }
 
-.until-prod-count,
-.total-prod-count{
-	position: absolute;
+.until-prod-count{
+	position: absolut	e;
 	top: 0;
 	left: 0;
 	opacity: 0;

@@ -117,22 +117,42 @@ public class PayController {
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
 		mav.addObject("loginuser", loginuser);
-		
-		String showNum = request.getAttribute("showNum");
-		ShowVO show = service.getShowInfo(showNum); // 공연 전체 정보를 집어넣을 필요 있을까?
-		
-		mav.addObject("show", show);
 */
-//		HashMap<String, String> payMap = new HashMap<>(); // 결제창에 보낼 정보 여러개일까..?
-//		mav.addObject("payMap", payMap);
 		
-		String payShowName = request.getParameter("payShowName");
-		String paySum = request.getParameter("paySum");
+		String payMethodNum = request.getParameter("payNum"); // 결제 방법
+		
+		String payShowName = request.getParameter("payShowName"); // 공연 코드
+		String paySum = request.getParameter("paySum"); // 공연 금액 다시 확인해봐야 함
+		String seatId = request.getParameter("seatId"); // 좌석코드
+		String payStatus = "1"; // ( 무통장입금이면 결제대기, 바로 결제완료라면 결제완료, 취소할경우 취소 )
+		String email = "";
 		
 		
-		mav.addObject("payShowName", payShowName);
+		/*
+		좌석코드		예매페이지 ( 여러개일 경우 : 데이터 여러개 )
+		공연일시코드	예매페이지
+		예매자이메일	예매페이지
+		예매수		예매페이지
+		예매일자		default
+		예매가격		예매페이지
+		수령방법		예매페이지
+		결제방법		예매페이지 
+		*/
 		
-		mav.setViewName("reserve/paymentGateway.notiles");
+		System.out.println("공연이름 :" + seatId);
+		
+		
+		
+		if("1".equals(payMethodNum)) { // 신용카드 결제일 경우
+			mav.setViewName("reserve/paymentGateway.notiles");
+		}
+		else { // 무통장입금일 경우
+			
+			// 무통장입금일 경우 트랜잭션
+			
+			mav.setViewName("reserve/payComplete.notiles");
+		}
+		
 		return mav;
 	}
 	
@@ -155,6 +175,8 @@ public class PayController {
 //			HashMap<String, String> payMap = new HashMap<>(); // 결제창에 보낼 정보 여러개일까..?
 //			mav.addObject("payMap", payMap);
 		
+		
+		// 결제 성공했을 경우 트랜잭션
 		
 		mav.setViewName("reserve/payComplete.notiles");
 		return mav;
