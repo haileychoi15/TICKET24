@@ -17,4 +17,6 @@ public interface InterReviewService {
 
 	int delReview(HashMap<String, String> paraMap); // 리뷰 삭제하기
 
+	int editReview(HashMap<String, String> paraMap); // 리뷰 수정하기
+
 }

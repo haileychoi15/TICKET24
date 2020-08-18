@@ -184,6 +184,9 @@ String ctxPath = request.getContextPath();
                     <li class="user-box-item">
                         <a href="<%=ctxPath%>/qna.action"> 고객센터 </a>
                     </li>
+                    <li class="user-box-item">
+                        <a href="<%=ctxPath%>/noticeMain.action"> 공지사항 </a>
+                    </li>
                 </ul>
             </button>
         </div>

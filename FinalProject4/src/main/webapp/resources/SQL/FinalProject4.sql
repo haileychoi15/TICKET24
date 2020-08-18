@@ -108,6 +108,10 @@ values(seq_member.nextval, 'leess', '이순신', '4d4f26369171994f3a46776ee2d884
 insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
 values(seq_member.nextval, 'eomjh', '엄정화', '4d4f26369171994f3a46776ee2d88494fb9955800a5bb6261c016c4bb9f30b56', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
 
+insert into yes_member(idx, userid, name, pwd, email, hp1, hp2, hp3, postcode, address, detailAddress, extraAddress, gender, birthday, coin, point, registerday, status, lastlogindate, lastpwdchangedate, clientip, kakaoStatus, naverStatus) 
+values(seq_member.nextval, 'guzi10', '구지', '4d4f26369171994f3a46776ee2d88494fb9955800a5bb6261c016c4bb9f30b56', 'KaDz2RcfIWg51HF/fFWvOxLoX5Y6H9S5+AmisF8ovv0=' , '010', '5vlo5ZBnIbLMyMz3NtK38A==', 'TYENQOsy0AExa9/mtma0ow==', '50234', '서울 송파구 오금로 95', '337동 708호', '오금동 현대아파트', '1', '19960920', default, default, default, default, default, default, '127.0.0.1', '1', default);
+
+commit;
 
 update yes_member
 set point = 1000
@@ -730,6 +734,9 @@ nominvalue
 nocycle
 nocache;
 
+select *
+from yes_show_seat
+where seat_status = 1;
 
 
 update yes_show_seat set seat_status = 1 where seat_id = 17;
@@ -1310,9 +1317,10 @@ drop table yes_reserve;
 create table yes_reserve
 (rev_id         number(10)                  -- 예매코드
 ,prod_id        number                      -- 공연코드(FK)
-,user_id        number                      -- 회원코드(FK)
+,user_id        number                      -- 회원코드(FK)  --> user_id        varchar2(20)                -- 회원코드(FK) 변경해야함
 ,seat_id        number                      -- 좌석코드(FK)
 ,status_id      number                      -- 상태코드(FK)
+--, date_id        number                      -- 공연일시 코드(FK) 추가해야함
 ,rev_email      varchar2(20)                -- 예매자이메일
 ,rev_qnty       number(6)                   -- 예매수
 ,rev_date       date        default sysdate -- 예매일자
@@ -1324,8 +1332,68 @@ create table yes_reserve
 ,constraint FK_prod_id_rev foreign key(prod_id) references prod(prod_id) on delete cascade
 ,constraint FK_user_id_rev foreign key(user_id) references yes_member(idx) on delete cascade
 ,constraint FK_seat_id_rev foreign key(seat_id) references yes_show_seat(seat_id) on delete cascade
+-- ,constraint FK_user_id_rev foreign key(user_id) references yes_member(userid) on delete cascade 로 바꿔야함.
+-- ,constraint FK_date_id_rev foreign key(date_id) references yes_show_date(date_id) on delete cascade 추가해야함.
 --,constraint FK_status_id_rev foreign key(status_id) references yes_status(status_id) on delete cascade
 );
+
+alter table yes_reserve 
+add date_id number; 
+
+alter table yes_reserve 
+ADD CONSTRAINT FK_date_id_rev
+foreign key(date_id) references yes_show_date(date_id) on delete cascade;  
+-- 변경
+
+alter table yes_reserve
+drop constraint FK_USER_ID_REV;
+
+delete from yes_reserve;
+commit;
+
+alter table yes_reserve 
+modify user_id varchar2(20);
+
+alter table yes_reserve 
+ADD CONSTRAINT FK_user_id_rev
+foreign key(user_id) references yes_member(userid) on delete cascade;  
+
+-- 나의예매리스트 date_id 필요함.
+-- 예매 테이블 아래처럼 수정됨.
+
+drop table yes_reserve;
+create table yes_reserve
+(rev_id         number(10)                  -- 예매코드
+,prod_id        number                      -- 공연코드(FK)
+,user_id        varchar2(20)                -- 회원코드(FK)
+,seat_id        number                      -- 좌석코드(FK)
+,status_id      number                      -- 상태코드(FK)
+,date_id        number                      -- 공연일시 코드(FK)
+,rev_email      varchar2(20)                -- 예매자이메일
+,rev_qnty       number(6)                   -- 예매수
+,rev_date       date        default sysdate -- 예매일자
+,rev_price      number(10)                  -- 예매가격
+,rev_ship_method    number(1)               -- 수령방법
+,rev_pay_method     number(1)               -- 결제방법
+,rev_pay_status     number(1)               -- 결제상태
+,constraint PK_rev_id primary key(rev_id)
+,constraint FK_prod_id_rev foreign key(prod_id) references prod(prod_id) on delete cascade
+,constraint FK_user_id_rev foreign key(user_id) references yes_member(userid) on delete cascade
+,constraint FK_seat_id_rev foreign key(seat_id) references yes_show_seat(seat_id) on delete cascade
+,constraint FK_date_id_rev foreign key(date_id) references yes_show_date(date_id) on delete cascade
+--,constraint FK_status_id_rev foreign key(status_id) references yes_rev_status(status_id) on delete cascade
+);
+
+
+drop sequence seq_reserve;
+create sequence seq_reserve
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
 
 drop sequence seq_reserve;
 create sequence seq_reserve
@@ -1337,19 +1405,63 @@ nocycle
 nocache;
 
 select *
-from yes_reserve;
+from yes_reserve
+order by rev_id;
 
-insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
-values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+delete from yes_reserve;
 
-insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
-values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, date_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
+values(seq_reserve.nextval, 1, 'kkimsg93', 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
 
-insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
-values(seq_reserve.nextval, 2, 2, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, date_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
+values(seq_reserve.nextval, 1, 'kkimsg93', 2, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
 
-insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
-values(seq_reserve.nextval, 2, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, date_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
+values(seq_reserve.nextval, 2, 'kkimsg93', 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, date_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
+values(seq_reserve.nextval, 2, 'kkimsg93', 2, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
+
+commit;
+
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, date_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status   )
+values(seq_reserve.nextval, 1, 'guzi10', 3, 1, 1, 'guzi1010@naver.com', 1, sysdate, 50000, 0, 0, 0 );
+
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, date_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status   )
+values(seq_reserve.nextval, 2, 'guzi10', 4, 1, 6, 'guzi1010@naver.com', 2, sysdate, 30000, 0, 0, 0 );
+
+insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, date_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status   )
+values(seq_reserve.nextval, 3, 'guzi10', 1, 1, 6, 'guzi1010@naver.com', 1, sysdate, 30000, 0, 0, 0 );
+
+select *
+from yes_rev_status;
+
+delete from yes_rev_status;
+
+insert into yes_rev_status(status_id, rev_id, status, status_cng_date )
+values(seq_rev_status.nextval, 1, 1, sysdate);
+insert into yes_rev_status(status_id, rev_id, status, status_cng_date )
+values(seq_rev_status.nextval, 2, 1, sysdate);
+insert into yes_rev_status(status_id, rev_id, status, status_cng_date )
+values(seq_rev_status.nextval, 3, 1, sysdate);
+insert into yes_rev_status(status_id, rev_id, status, status_cng_date )
+values(seq_rev_status.nextval, 4, 0, sysdate);
+
+commit;
+
+/*
+insert into yes_rev_status(status_id, rev_id, status, status_cng_date )
+values(seq_rev_status.nextval, 1, 1, sysdate);
+
+insert into yes_rev_status(status_id, rev_id, status, status_cng_date )
+values(seq_rev_status.nextval, 2, 1, sysdate);
+
+insert into yes_rev_status(status_id, rev_id, status, status_cng_date )
+values(seq_rev_status.nextval, 3, 0, sysdate);
+*/ 
+-- insert 예시
+
+commit;
 
 -- 상태 테이블
 drop table yes_rev_status;
@@ -1373,9 +1485,6 @@ nocache;
 
 select *
 from yes_rev_status;
-
-insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
-values(seq_reserve.nextval, 1, 1, 1, 1, 'hyunho2005@naver.com', 2, 50000, 0, 0, 0);
 
 commit;
 
@@ -1660,7 +1769,7 @@ select rev_id, R.prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_
 from yes_reserve R join view_rev_showInfo I
 on R.prod_id = I.prod_id
 join yes_member M
-on R.user_id = M.idx;
+on R.user_id = M.userid;
 
 select *
 from view_rev_memberInfo
@@ -2272,7 +2381,54 @@ nominvalue
 nocycle
 nocache;
 
+select *
+from like_prod;
 
+select count(*)
+from like_prod;
+
+select count(*)
+from like_prod
+where fk_parentProdId = 1 and fk_userid = 'kkimsg93';
+-- 관심상품 중복확인
+
+select prod_id, prod_img, prod_detail_img, prod_title, info_open_date, info_close_date, info_grade, info_run_time
+    , map_name, map_address, local 
+from view_detail_prod;
+
+select fk_userid, prod_id, prod_img, prod_detail_img, prod_title, info_open_date, info_close_date, info_grade, info_run_time
+    , map_name, map_address, local 
+from like_prod L join view_detail_prod D
+on L.fk_parentProdId = D.prod_id;
+-- 관심상품정보
+
+
+select *
+from(
+select fk_userid, prod_id, prod_img, prod_detail_img, prod_title, info_open_date, info_close_date, info_grade, info_run_time
+    , map_name, map_address, local 
+from like_prod L join view_detail_prod D
+on L.fk_parentProdId = D.prod_id
+)T
+where fk_userid = 'kkimsg93';
+-- kkimsg93 의 관심상품목록 조회
+
+insert into  like_prod (seq, fk_userid, fk_parentProdId)
+values (likeProdSeq.nextval, 'leess', 1);
+
+delete from like_prod;
+commit;
+
+select count(*)
+		from like_prod
+		where fk_parentProdId = 1
+	
+-- 해당상품의 관심상품 수 --	
+	
+-- 해당상품의 관심상품 누른 사람 목록 --
+		select fk_userid
+		from like_prod
+		where fk_parentProdId = 1
 
 
 drop view view_seat_info;
@@ -3089,32 +3245,78 @@ having(parentProdId = 1)
 -- 총 평균평점
 
 
+desc yes_review;
+
+update yes_review set content = 'ㅎㅎ', star = 3
+where status = 1 and review_id = 1;
+
+rollback;
+    
 drop table yes_coupon purge;
 create table yes_coupon
 (coupon_id          varchar2(10)  not null  -- 쿠폰번호
-    ,coupon_dc          number(10)    not null  -- 할인금액
-    ,coupon_status      number(1)     not null  -- 사용상태
-    ,coupon_newdate     date default sysdate -- 발급일자
-    ,coupon_usedate     date                 -- 사용일자
-    ,coupon_olddate     date                 -- 사용기한(만료날짜)
-    ,coupon_name        varchar2(100) not null  -- 쿠폰명
-    ,coupon_condition   varchar2(100) default '모든 공연 가능'       -- 사용조건
-    ,fk_userid          varchar2(20)  not null  -- 사용가능회원코드
-    ,fk_prod_id         number        not null  -- 사용가능공연코드
-    ,constraint PK_coupon_id primary key(coupon_id)
-    ,constraint fk_prod_id_coupon foreign key(fk_prod_id) references prod(prod_id)
+,coupon_dc          number(10)    not null  -- 할인금액
+,coupon_status      number(1)     not null  -- 사용상태
+,coupon_newdate     date default sysdate -- 발급일자
+,coupon_usedate     date                 -- 사용일자
+,coupon_olddate     date                 -- 사용기한(만료날짜)
+,coupon_name        varchar2(100) not null  -- 쿠폰명
+,coupon_condition   varchar2(100) default '모든 공연 가능'       -- 사용조건
+,fk_userid          varchar2(20)  not null  -- 사용가능회원코드
+,constraint PK_coupon_id primary key(coupon_id)
+,constraint fk_userid_coupon foreign key(fk_userid) references yes_member(userid)
 );
 
-insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id)
-values('AB3C212C3D', 5000, 1, sysdate, null, sysdate +4, '[2020 캣츠 내한공연] 5천원 할인 쿠폰', default, 'guzi10', 1);
+drop sequence seq_coupon;
+create sequence seq_coupon
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+    
+delete from yes_coupon where coupon_id = 1;
+update yes_coupon set coupon_status = 0 where coupon_id = 1;
+commit;
 
-insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id)
-values('AB4C212C3D', 10000, 1, sysdate, null, sysdate +2, '[2020 특별재난쿠폰] 코로나 재난쿠폰', default, 'guzi10', 2);
+select *
+from yes_coupon
+where fk_userid = 'guzi10';
 
-insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id)
-values('AB5C212C3D', 4000, 1, sysdate, null, sysdate +10, '김밥일번가 쿠폰', default, 'guzi10', 3);
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+values(seq_coupon.nextval, 1000, 1, sysdate, null, sysdate+7, '수수료면제', default, 'guzi10');
 
-insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id)
-values('AB6C212C3D', 2500, 1, sysdate, null, sysdate +7, 'MOMO 커피 쿠폰', default, 'guzi10', 4);
+
+
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+values(seq_coupon.nextval, 3000, 1, sysdate, null, sysdate+7, '3000원할인', default, 'guzi10');
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+values(seq_coupon.nextval, 5000, 1, sysdate, null, sysdate+7, '5000원할인', default, 'guzi10');
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+values(seq_coupon.nextval, 10000, 1, sysdate, null, sysdate+7, '10000원할인', default, 'guzi10');
+
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+values(seq_coupon.nextval, 1000, 1, sysdate, null, sysdate+7, '수수료면제', default, 'kkimsg93');
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+values(seq_coupon.nextval, 3000, 1, sysdate, null, sysdate+7, '3000원할인', default, 'kkimsg93');
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+values(seq_coupon.nextval, 5000, 1, sysdate, null, sysdate+7, '5000원할인', default, 'kkimsg93');
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+values(seq_coupon.nextval, 10000, 1, sysdate, null, sysdate+7, '10000원할인', default, 'kkimsg93');
 
 commit;
+
+
+select prod_id, prod_img, prod_detail_img, prod_title, to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_grade, info_run_time
+     , map_name, map_address, local 
+from view_detail_prod
+where prod_id = 1;
+

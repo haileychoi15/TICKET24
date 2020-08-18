@@ -151,7 +151,7 @@
 								<td class="point">답변대기</td>
 							</c:if>
 							<c:if test="${qna.adminans == '1' }">
-								<td class="point">답변완료</td>
+								<td class="point" style="color:#568ade;">답변완료</td>
 							</c:if>
 						</tr>
 					 </c:forEach>

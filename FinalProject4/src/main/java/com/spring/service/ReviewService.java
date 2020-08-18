@@ -50,5 +50,12 @@ public class ReviewService implements InterReviewService {
 		int n = dao.delReview(paraMap);
 		return n;
 	}
+
+	// 리뷰 수정하기
+	@Override
+	public int editReview(HashMap<String, String> paraMap) {
+		int n = dao.editReview(paraMap);
+		return n;
+	}
 	
 }

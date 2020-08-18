@@ -6,24 +6,24 @@
 
 	<!-- === MainPage === -->
 	<select id="getProdList" parameterType="String" resultType="com.spring.model.ProdVO">
-		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
-		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, to_char(date_start, 'yyyy-mm-dd') as date_start, to_char(date_end, 'yyyy-mm-dd') as date_end
+		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
 		from prod
 		where fk_category_id = #{category}
 		order by info_open_date desc
 	</select>
 	
 	<select id="getHotProdList" parameterType="String" resultType="com.spring.model.ProdVO">
-		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
-		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, to_char(date_start, 'yyyy-mm-dd') as date_start, to_char(date_end, 'yyyy-mm-dd') as date_end
+		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
 		from prod
 		where fk_category_id = #{category}
 		order by info_qnty desc
 	</select>
 	
 	<select id="getlocalRecProdList" parameterType="String" resultType="com.spring.model.ProdVO">
-		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
-		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, to_char(date_start, 'yyyy-mm-dd') as date_start, to_char(date_end, 'yyyy-mm-dd') as date_end
+		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
 		from prod
 		where fk_category_id = #{category}
 		order by info_qnty desc
@@ -860,7 +860,7 @@
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 	<!-- 상품상세페이지로 이동 -->
 	<select id="prodDetail" parameterType="String" resultType="com.spring.model.ProdVO">
-		select prod_id, prod_img, prod_detail_img, prod_title, info_open_date, info_close_date, info_grade, info_run_time
+		select prod_id, prod_img, prod_detail_img, prod_title, to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_grade, info_run_time
     		 , map_name, map_address, local 
 		from view_detail_prod
 		where prod_id = #{seq}
@@ -959,6 +959,42 @@
 		update yes_review set status = 0 
 		where review_id = #{review_id} and fk_userid = #{fk_userid}
 	</update>
+	
+	<!-- 리뷰 수정하기 -->
+	<update id="editReview" parameterType="HashMap">
+		update yes_review set content = #{content}, star = #{star}
+		where status = 1 and review_id = #{review_id}
+	</update>
+	
+	<!-- 관심상품 등록하기 -->
+	<insert id="likeProd">
+		insert into like_prod(seq, fk_userid, fk_parentProdId)
+		values(likeProdSeq.nextval, #{fk_userid}, #{prod_id})
+	</insert>
+	
+	<!-- 관심상품 해제하기 -->
+	<delete id="dislikeProd">
+		delete from like_prod
+		where fk_parentProdId = #{prod_id} and fk_userid = #{fk_userid}
+	</delete>
+	
+	
+	<!-- 해당상품의 관심상품 등록수  -->
+	<select id="likeProdCnt" parameterType="HashMap" resultType="int">
+		select count(*)
+		from like_prod
+		where fk_parentProdId = #{prod_id}
+	</select>
+	
+	
+	<!-- 같은 아이디의 같은 관심상품이 존재하는지 확인 -->
+	<select id="existlike" parameterType="HashMap" resultType="int">
+		select count(*)
+		from like_prod
+		where fk_parentProdId = #{prod_id} and fk_userid = #{fk_userid}
+	</select>
+		
+		
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 
 </mapper>

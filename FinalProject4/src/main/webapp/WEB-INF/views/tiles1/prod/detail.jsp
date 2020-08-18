@@ -30,9 +30,18 @@
         color: red;
     }
     
-    .star-rating { width:103px; }
+	<%-- .star-rating { width:103px; }
 	.star-rating,.star-rating span { display:inline-block; height:19px; overflow:hidden; background:url(<%= ctxPath%>/resources/images/star_resize.png)no-repeat; color: orange;}
-	.star-rating span{ background-position:left bottom; line-height:0; vertical-align:top; }
+	.star-rating span{ background-position:left bottom; line-height:0; vertical-align:top; } --%>
+	
+	<%-- .star-rating { width:115px; }
+	.star-rating,.star-rating span { display:inline-block; height:22px; overflow:hidden; background:url(<%= ctxPath%>/resources/images/orange_star.PNG)no-repeat; color: orange;}
+	.star-rating span{ background-position:left bottom; line-height:0; vertical-align:top; } --%>
+	
+	li.pageBarStyle {
+		display:inline-block; 
+		width:30px;
+	}
 	
     </style>
     
@@ -42,12 +51,25 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function() {
-        	/* 
+        	
         	var loginuserid = "${sessionScope.loginuser.userid}";
-        	document.getElementById('fk_userid').value = loginuserid; */
+       // 	document.getElementById('fk_userid').value = loginuserid;
         	
 
-			goReviewList(1);
+			var existlike = $("#existlike").val();
+			console.log("existlike : "+existlike);
+			
+			goLikeProdCnt();
+			
+		/* 	goLikeProdCnt();
+			
+			var loginuserid = "${sessionScope.loginuser.userid}";
+			if(loginuserid != "") {
+				goLikeProdUser();
+			} */
+			
+		
+			goReviewList("1");
         	
         	var showdate = document.getElementById('showdate');
         	var showtime = document.getElementById('showtime');
@@ -115,10 +137,10 @@
 				success:function(json){
 					var html = "";
 					if(json.n == 1) {
-						alert("성공");
+						alert("리뷰가 등록되었습니다.");
 					}
 					else {
-						alert("실패");
+						alert("리뷰등록에 실패했습니다.");
 					}
 					/* 
 					$(".modal").addClass("hide");
@@ -127,7 +149,7 @@
 					$("#content").val("");
 					$(".modal").css("display","none");
 					
-					goReviewList();
+					goReviewList("1");
 					
 				},
 				error: function(request, status, error){
@@ -156,7 +178,6 @@
 						$.each(json, function(index, item){
 							html += getReviewTemplate(item.review_id, item.fk_userid, item.name, item.star, item.regDate, item.content);
 						});
-						
 						
 					}
 					else {
@@ -200,12 +221,17 @@
         
         function getReviewTemplate(review_id, fk_userid, name, star, regDate, content) {
         
+        var loginuserid = "${sessionScope.loginuser.userid}";
         var fk_userid_sub = fk_userid.substring(0,fk_userid.length-2) + '**';                
         var template = '<li>'+
         			   '<div class="review-comment-badge">'+
-	        				'<span class="reservationbadge">예매자</span>'+
-	                        '<span class="writerself">본인</span>'+
-	                    '</div>'+
+	        				'<span class="reservationbadge">예매자</span>';
+	        				
+		if(fk_userid == loginuserid){
+            template += '<span class="writerself">본인</span>';
+        }
+		
+	        template += '</div>'+
 	                    '<div class="review-comment-star">'+
 	                        '<span class="reviewer">'+fk_userid_sub+'</span>'+
 	                        '<span class="reviewer">'+regDate+'</span>'+
@@ -235,13 +261,24 @@
                         '</strong>'+
                     '</div>'+
                     '<div class="review-comment-revision">'+
-                        '<span class="rev revisionButton1" onclick="goEditReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+star+'\''+','+'\''+content+'\''+')">수정</span>'+
+                        '<span class="rev revisionButton" onclick="goEditReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+star+'\''+','+'\''+content+'\''+')">수정</span>'+
                         '<span class="rev" onclick="goDelReview('+review_id+','+'\''+fk_userid+'\''+')" style="color:blue;">삭제</span>'+
                     '</div>'+
                 '</div>'+
             '</li>';
             	
             return template;
+        }
+        
+        function prevPageBar(page) {
+        	var prevPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-left'></i></a></li>";
+        	return prevPageBar;
+        }
+        
+
+        function nextPageBar(page) {
+        	var nextPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-right'></i></a></li>";
+        	return nextPageBar;
         }
         
         
@@ -263,72 +300,66 @@
     					var blockSize = 10;
     					var loop = 1;
     				
-    					// page 는 넘버타입일 때와 문자열타입일 때를 구분하여, 문자열타입일때는 넘버타입으로 바꿔야 숫자연산가능하다.
-    					// page 가 넘버타입이 아니라 문자열타입이면 넘버타입으로 형변환시킨다.
     					if(typeof page == "string") {
     						page = Number(page);
     					}
     					
     					var pageNo = Math.floor((page - 1)/blockSize) * blockSize + 1;
     					
-    					// === [이전 <<] 만들기 === //
-    					if(pageNo != 1) { // 맨 처음이 아니라면 [이전]을 보인다. 
-    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(pageNo-1)+"\")'><i class='fas fa-angle-double-left'></i></a></li>";
-    					}
+    					
+    					/* // === [이전 <<] 만들기 === //
+    					if(pageNo != 1) {
+    						pageBarHTML += prevPageBar(pageNo-1);
+    					} */
 
+    					// === [이전 <] 만들기 === //
     					if(page == 1) {
-    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(1)+"\")'><i class='fas fa-angle-left'></i></a></li>";
+    						pageBarHTML += prevPageBar(1);
     					}
     					else{
-    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(page-1)+"\")'><i class='fas fa-angle-left'></i></a></li>";
+    						pageBarHTML += prevPageBar(page-1);
     					}
     					
-    					// 10 개를 넘거나 총 페이지보다 커지면 탈출
     					while( !(loop > blockSize || pageNo > json.totalPage) ) {
     						
-    						// 현재페이지에서는 링크를 안건다. 
     						if(pageNo == page) {
-    							pageBarHTML += "<li style='display:inline-block; width:30px; border:solid 1px gray; color:red; padding:2px 4px;'>"+pageNo+"</li>";
+    							pageBarHTML += "<li class='pageBarStyle' style='color:red;'>"+pageNo+"</li>";
     						}
     						else {
-    							pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(pageNo)+"\")'>"+pageNo+"</a></li>";
+    							pageBarHTML += "<li class='pageBarStyle'><a href='javascript:goReviewList(\""+(pageNo)+"\")'>"+pageNo+"</a></li>";
     						}
     						
     						loop++;
     						pageNo++;
     					}
-    					
+
+    					// === [다음 >] 만들기 === //
     					if(page >= json.totalPage) {
-    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(json.totalPage)+"\")'><i class='fas fa-angle-right'></i></a></li>";
+    						pageBarHTML += nextPageBar(json.totalPage);
     					}
     					else{
-    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(page+1)+"\")'><i class='fas fa-angle-right'></i></a></li>";
+    						pageBarHTML += nextPageBar(page+1);
     					}
-    					
-    					// === [다음 >>] 만들기 === //
+
+    					/* // === [다음 >>] 만들기 === //
     					if( !(pageNo > json.totalPage) ) { 
-    						pageBarHTML += "<li style='display:inline-block; width:30px;'><a href='javascript:goReviewList(\""+(pageNo)+"\")'><i class='fas fa-angle-double-right'></i></a></li>";
-    					}
+    						pageBarHTML += nextPageBar(pageNo);
+    					} */
     					
     					pageBarHTML += "</ul>";
     					$(".review-pagination").html(pageBarHTML);
     				
     					var num = Number(json.avgStar) / 5 * 100;
     					$(".star-rating-width").css('width', num+'%');
-
     					$(".totalReviewCount").html(json.totalCount);
-    					
     					$(".star").html(json.avgStar);
     					
     				}
     				else { // 댓글이 없는 경우
-    					var pateBarHTML = "";
-    					$(".review-pagination").html(pageBarHTML);
+    					$(".review-pagination").empty();
     					
     					$(".star-rating-width").css('width', '0%');
-    					
     					$(".totalReviewCount").html(0);
-    					
     					$(".star").html(0);
     				}
     			
@@ -342,6 +373,13 @@
     	
         
     	function goDelReview(review_id, fk_userid){
+    		
+    		var loginuserid = "${sessionScope.loginuser.userid}";
+    		if(fk_userid != loginuserid) {
+    			alert("댓글삭제는 본인만 가능합니다.");
+    			return;
+    		}
+    		
     		var bool = confirm("리뷰글을 정말로 삭제하시겠습니까?");
     		if(bool) {
     			
@@ -354,10 +392,10 @@
     				success:function(json) {
     					
     					if(json.n == 1) {
-    						alert("삭제 성공");
+    						alert("리뷰가 삭제되었습니다.");
     					}
     					else {
-    						alert("삭제 실패");
+    						alert("리뷰삭제를 할 수 없습니다.");
     					}
     					
     					goReviewList(1);
@@ -374,26 +412,179 @@
     	function goEditReview(review_id, fk_userid, star, content) {
     		// 수정 모달 띄우기
     		
-    		/* console.log(review_id);
-    		console.log(fk_userid);
-    		console.log(star);
-    		console.log(content); */
-    		$("#input-content").val(content);
-    		$("#re-star").val(star);
+    		var loginuserid = "${sessionScope.loginuser.userid}";
+    		if(fk_userid != loginuserid) {
+    			alert("댓글수정은 본인만 가능합니다.");
+    			return;
+    		}
     		
-    		var restarval = $("#re-star").val();
-    		console.log("restarval"+restarval);
-    		
-
-    		$(".revision").css("display","inline-block");
+    	//	$(".revision").css("display","inline-block");
+    		$(".revision").css("display","initial");
     		
     		$(".close-revision-button").click(function(){
     			$(".revision").css("display","none");
     		});
+    		
+			$("#review_id").val(review_id);
+    		$("#input-content").val(content);
+    		
+    		
+    		// 초기 별점셋팅
+    		$(".re-starlist i").removeClass("staron");
+    		$(".re-starlist i").eq(star).prevAll("i").addClass("staron"); // eq(index=star) 인 star+1번째 별 전에 모두 on 시키기
+    		$("#re-star").val(star);
+    		
+    		// 별점 주기
+    		$(".re-starlist i").click(function(){
+                $(this).parent().children("i").removeClass("staron");  /* 별점의 on 클래스 전부 제거 */ 
+                $(this).addClass("staron").prevAll("i").addClass("staron"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
+                
+            //  var hasClassLen = $(this).siblings().hasClass("on");
+            //  console.log(hasClassLen);	// true  
+            
+            	var hasClassLen = $(".re-starlist i.staron").length;
+            //  alert(hasClassLen);
+            	$("#re-star").val(hasClassLen);
 
+                return false;
+            });
+    		
     	}
     	
     	
+		function goEditEndReview() {
+        	
+        	$.ajax({
+				url:"<%= request.getContextPath()%>/editReview.action",
+				data:{"review_id":$("#review_id").val(),
+				  	  "star":$("#re-star").val(),
+				  	  "content":$("#input-content").val()},
+				type:"GET",
+				dataType:"JSON",
+				success:function(json){
+					var html = "";
+					if(json.n == 1) {
+						alert("수정되었습니다.");
+					}
+					else {
+						alert("수정할 수 없습니다.");
+					}
+					/* 
+					$(".revision").addClass("hide");
+					$(".revision").removeClass("show"); */
+
+					$("#input-content").val("");
+					$("#re-star").val("");
+					$(".revision").css("display","none");
+					
+					goReviewList("1");
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});
+        	
+        }
+		
+		// 관심상품 등록하기
+		function goLikeProd(prod_id) {
+			
+			var loginuserid = "${sessionScope.loginuser.userid}";
+			
+			if(loginuserid == "") {
+				alert("관심상품등록은 로그인 후 가능합니다.");
+				return;
+			}
+			
+			var existlike = $("#existlike").val();
+			console.log(existlike);
+			/* 
+			 if(existlike == '1') {
+				alert("이미 추천한 글입니다.");
+				return;
+			}   */
+			
+			// 관심상품 등록하기
+			$.ajax({
+				url:"<%= request.getContextPath()%>/likeProd.action",
+				type:"GET",
+				data:{"prod_id":prod_id,
+					  "fk_userid":loginuserid},
+				   // "existlike":existlike},
+				dataType:"JSON",
+				success:function(json) {
+					
+					if(json.m == "추천") { 
+						if(json.n == 1) {
+							alert("글 추천 성공!");
+					 		goLikeProdCnt(); 
+							$("#existlike").val("1");
+							
+							$("#likeProdMain").removeClass("far");
+							$("#likeProdMain").addClass("fas");
+						}
+						else {
+							alert("글 추천 실패!");
+						}
+					 }
+					else {
+						if(json.n == 1) {
+							alert("글 추천 취소 성공!");
+					 		goLikeProdCnt();
+							$("#existlike").val("0");
+							$("#likeProdMain").removeClass("fas");
+							$("#likeProdMain").addClass("far");
+						}
+						else {
+							alert("글 추천취소 실패!");
+						}
+					} 
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	   
+			
+		}
+		
+		
+		function goLikeProdCnt(){
+			
+			var loginuserid = "${sessionScope.loginuser.userid}";
+			
+			$.ajax({
+				url:"<%= request.getContextPath()%>/likeProdCnt.action",
+				type:"GET",
+				data:{"prod_id":"${pvo.prod_id}",
+					  "fk_userid":loginuserid},  
+				dataType:"JSON",
+				success:function(json) {
+					
+					if(json.likeProdCnt != 0) {
+						$(".main-likes-number").html(json.likeProdCnt);
+						if(json.existlike == 1) {
+							$("#likeProdMain").removeClass("far");
+							$("#likeProdMain").addClass("fas");
+						}
+						else {
+							$("#likeProdMain").removeClass("fas");
+							$("#likeProdMain").addClass("far");
+						}
+					}
+					else {
+						$(".main-likes-number").html(json.likeProdCnt);
+					}
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	   
+			
+		}
+		
 
     </script>
 </head>
@@ -459,20 +650,22 @@
 
                 <div class="main-rate">
                     <div class="main-likes">
-                        <i class="far fa-heart noncolored-heart"></i>
-                        <i class="fas fa-heart colored-heart"></i>
+						<span id="likecnt"></span>
+                    	<span onclick="goLikeProd('${pvo.prod_id}')">
+                    		<i id="likeProdMain" class="far fa-heart" style="color:orange;"></i>
+	                    </span>
                         <strong class="main-likes-number">
                             118
                         </strong>
-                    </div>
+                    </div> 
                     <div class="main-reviews">
                         <a href="#review" class="main-review-link">
-                            <strong>
-                                <span class='star-rating'><span class='star-rating-width' style ='width:0%'></span></span>4.94
-                            </strong>
-                            <span>
-                                (203)
-                            </span>
+                            <strong class="star">
+                                <span class='star-rating'><span class='star-rating-width' style ='width:0%'></span></span>
+                            </strong>&nbsp;
+                            (<span class="totalReviewCount">
+                                
+                            </span>개)
                         </a>
                     </div>
                 </div>
@@ -489,7 +682,7 @@
                             <dt>관람시간</dt>
                             <dd>${pvo.info_run_time}</dd>
                         </div>
-                      <!--  <div>
+                        <!--  <div>
                             <dt>출연</dt>
                             <dd>라포엠</dd>
                         </div>-->
@@ -605,6 +798,10 @@
 	<input type="hidden" name="conveyDetailAddress" value="${sessionScope.loginuser.detailAddress}">
 </form>
 					<!-- finalproject4/reservePopUp.action 으로 예매하기 데이터 넘기는 부분 -->
+					
+					
+					<input type="text" id="existlike" value="0" />
+					<!-- 관심상품이 이미 눌러져있는지 여부를 판단하는 부분 -->
 					
 
 </section>
@@ -769,7 +966,7 @@
                     </p>
                     <div class="review-register">
                         <dl>
-                            <dt>평점<span class="rev revisionButton">수정</span></dt>
+                            <dt>평점</dt>
                             <dd class="star">4.94</dd>
                         </dl>
                         <dl>
@@ -812,7 +1009,7 @@
                                     <div class="row">
                                         <div class="table-title">관람후기</div>
                                         <div class="table-content">
-                                            <textarea id="content" name="content" class="input-content" maxlength="2000" minlength="50" cols="30" rows="10" placeholder="내용을 작성해주세요.(최소 20byte/최대 2,000byte)"></textarea>
+                                            <textarea id="content" name="content" class="input-content" maxlength="2000" minlength="10" cols="30" rows="10" placeholder="내용을 작성해주세요.(최소 20byte/최대 2,000byte)"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -834,31 +1031,32 @@
                                     <div class="re-row re-datestar">
                                         <div class="re-table-title">관람일시</div>
                                         <div class="re-table-content">관람 내역이 없습니다.</div>
+                                        <input type="hidden" name="review_id" id="review_id" value="" />
                                     </div>
-                                    <div class="row datestar">
+                                    <%-- <div class="row datestar">
                                         <div class="table-title">작성자명</div>
                                         <div class="table-content"><input type="text" name="name" value="${sessionScope.loginuser.name}" readonly /></div>
-                                    </div>
+                                    </div> --%>
                                     <div class="re-row re-datestar">
                                         <div class="re-table-title">별점</div>
                                         <div class="re-table-content re-starlist">
-                                            <span><i class="fas fa-star"></i></span>
-                                            <span><i class="fas fa-star"></i></span>
-                                            <span><i class="fas fa-star"></i></span>
-                                            <span><i class="fas fa-star"></i></span>
-                                            <span><i class="fas fa-star"></i></span>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
                                             <input type="hidden" name="re-star" id="re-star" value="" />
                                         </div>
                                     </div>
                                     <div class="re-row">
                                         <div class="re-table-title">관람후기</div>
                                         <div class="re-table-content">
-                                            <textarea name="input-content" id="input-content" class="re-input-content" maxlength="2000" minlength="50" cols="30" rows="10" placeholder="내용을 작성해주세요.(최소 20byte/최대 2,000byte)"></textarea>
+                                            <textarea name="input-content" id="input-content" class="re-input-content" maxlength="2000" minlength="10" cols="30" rows="10" placeholder="내용을 작성해주세요.(최소 20byte/최대 2,000byte)"></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="re-post-buttons">
-                                    <button type="submit" class="re-post-ok-button">등록</button>
+                                    <button type="button" class="re-post-ok-button" onclick="goEditEndReview();">수정</button>
                                 </div>
                             </form>
                         </div>
@@ -966,6 +1164,22 @@
         </div>
     </div>
 </section>
+
+
+<div style="margin-left:30px;">
+	<span><i class="far fa-star" style="color:orange;"></i></span>
+	<span><i class="far fa-star" style="color:orange;"></i></span>
+	<span><i class="far fa-star" style="color:orange;"></i></span>
+	<span><i class="far fa-star" style="color:orange;"></i></span>
+	<span><i class="far fa-star" style="color:orange;"></i></span>
+<div style="margin-left:30px;"></div>
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+	<span><i class="fas fa-star" style="color:orange;"></i></span>
+</div>
+
 
 <!-- 
 <button type="button" class="return-top-button" aria-label="Back to top">
