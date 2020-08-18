@@ -1337,6 +1337,9 @@ create table yes_reserve
 --,constraint FK_status_id_rev foreign key(status_id) references yes_status(status_id) on delete cascade
 );
 
+delete from yes_reserve;
+commit;
+
 alter table yes_reserve 
 add date_id number; 
 
@@ -1348,8 +1351,6 @@ foreign key(date_id) references yes_show_date(date_id) on delete cascade;
 alter table yes_reserve
 drop constraint FK_USER_ID_REV;
 
-delete from yes_reserve;
-commit;
 
 alter table yes_reserve 
 modify user_id varchar2(20);
@@ -2744,6 +2745,36 @@ select previousseq, previoussubject
                 -- 관리자 게시판에서 관리자의 답글이 아닌 회원들의 글만 이전글/다음글로 보고싶은 경우
             ) V
 where qna_id = 2;
+
+
+select previousseq, previoussubject
+		       , notice_id,fk_userid,no_cate_name, category, ticketopenday, subject, readCount
+		       , content, regDate
+		       , fileName,orgFilename,fileSize
+			   , nextseq, nextsubject
+				from
+				    (
+		                select lag(notice_id, 1) over(order by notice_id desc) as previousseq
+				       , lag(subject, 1) over(order by notice_id desc) as previoussubject
+				       
+				       , notice_id, fk_userid, no_cate_name, category, subject, readCount
+		               , nvl(ticketopenday, ' ') as ticketopenday
+				       , content, to_char(regDate, 'yyyy-mm-dd') as regDate
+				       , status, fileName, orgFilename, fileSize
+				       
+				       , lead(notice_id, 1) over(order by notice_id desc) as nextseq
+				       , lead(subject, 1) over(order by notice_id desc) as nextsubject
+		                from 
+                        (
+                        select notice_id,fk_userid,no_cate_name,category,ticketopenday,subject,content,pw,readCount,regDate,status,fileName,orgFilename,fileSize
+                        from yes_notice N join yes_notice_cate C
+                        on N.category = C.no_cate_code
+                        ) T
+		                where status = 1
+				    ) V
+		where notice_id = 3
+        -- 공지사항 카테 이전글/다음글 보기
+
 
 
 -------------------------------------------- YES_SHOW_MAP 새로 바뀐 것 ---------------------------------------
@@ -4929,5 +4960,370 @@ values(seq_show_date.nextval, 163, to_date('2020/09/30','yyyy/mm/dd'), '1회차 
 
 insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
 values(seq_show_date.nextval, 163, to_date('2020/09/30','yyyy/mm/dd'), '2회차 7시');
+
+commit;
+
+select * 
+from yes_show_date;
+
+
+
+update prod set fk_category_detail_id = 2 where prod_id = 1;
+
+update prod set fk_category_detail_id = 2 where prod_id = 2;
+
+update prod set fk_category_detail_id = 2 where prod_id = 3;
+
+update prod set fk_category_detail_id = 2 where prod_id = 4;
+
+update prod set fk_category_detail_id = 2 where prod_id = 5;
+
+update prod set fk_category_detail_id = 2 where prod_id = 6;
+
+update prod set fk_category_detail_id = 3 where prod_id = 7;
+
+update prod set fk_category_detail_id = 2 where prod_id = 8;
+
+update prod set fk_category_detail_id = 2 where prod_id = 9;
+
+update prod set fk_category_detail_id = 2 where prod_id = 10;
+
+commit;
+
+update prod set fk_category_detail_id = 6 where prod_id = 11;
+
+update prod set fk_category_detail_id = 6 where prod_id = 12;
+
+update prod set fk_category_detail_id = 6 where prod_id = 13;
+
+update prod set fk_category_detail_id = 6 where prod_id = 14;
+
+update prod set fk_category_detail_id = 6 where prod_id = 15;
+
+update prod set fk_category_detail_id = 8 where prod_id = 16;
+
+update prod set fk_category_detail_id = 6 where prod_id = 17;
+
+update prod set fk_category_detail_id = 6 where prod_id = 18;
+
+update prod set fk_category_detail_id = 7 where prod_id = 19;
+
+update prod set fk_category_detail_id = 8 where prod_id = 20;
+
+commit;
+
+update prod set fk_category_detail_id = 10 where prod_id = 21;
+
+update prod set fk_category_detail_id = 12 where prod_id = 22;
+
+update prod set fk_category_detail_id = 12 where prod_id = 23;
+
+update prod set fk_category_detail_id = 10 where prod_id = 24;
+
+update prod set fk_category_detail_id = 11 where prod_id = 25;
+
+update prod set fk_category_detail_id = 11 where prod_id = 26;
+
+update prod set fk_category_detail_id = 10 where prod_id = 27;
+
+update prod set fk_category_detail_id = 10 where prod_id = 28;
+
+update prod set fk_category_detail_id = 12 where prod_id = 29;
+
+update prod set fk_category_detail_id = 10 where prod_id = 30;
+
+commit;
+
+update prod set fk_category_detail_id = 15 where prod_id = 31;
+
+update prod set fk_category_detail_id = 16 where prod_id = 32;
+
+update prod set fk_category_detail_id = 16 where prod_id = 33;
+
+update prod set fk_category_detail_id = 16 where prod_id = 34;
+
+update prod set fk_category_detail_id = 16 where prod_id = 35;
+
+update prod set fk_category_detail_id = 15 where prod_id = 36;
+
+update prod set fk_category_detail_id = 15 where prod_id = 37;
+
+update prod set fk_category_detail_id = 15 where prod_id = 38;
+
+update prod set fk_category_detail_id = 16 where prod_id = 39;
+
+update prod set fk_category_detail_id = 15 where prod_id = 40;
+
+commit;
+
+update prod set fk_category_detail_id = 18 where prod_id = 41;
+
+update prod set fk_category_detail_id = 18 where prod_id = 42;
+
+update prod set fk_category_detail_id = 19 where prod_id = 43;
+
+update prod set fk_category_detail_id = 20 where prod_id = 44;
+
+update prod set fk_category_detail_id = 19 where prod_id = 45;
+
+update prod set fk_category_detail_id = 19 where prod_id = 46;
+
+update prod set fk_category_detail_id = 20 where prod_id = 47;
+
+update prod set fk_category_detail_id = 19 where prod_id = 48;
+
+update prod set fk_category_detail_id = 20 where prod_id = 49;
+
+update prod set fk_category_detail_id = 19 where prod_id = 50;
+
+commit;
+
+update prod set fk_category_detail_id = 21 where prod_id = 51;
+
+update prod set fk_category_detail_id = 21 where prod_id = 52;
+
+update prod set fk_category_detail_id = 21 where prod_id = 53;
+
+update prod set fk_category_detail_id = 21 where prod_id = 54;
+
+update prod set fk_category_detail_id = 21 where prod_id = 55;
+
+update prod set fk_category_detail_id = 21 where prod_id = 56;
+
+update prod set fk_category_detail_id = 21 where prod_id = 57;
+
+update prod set fk_category_detail_id = 21 where prod_id = 58;
+
+update prod set fk_category_detail_id = 21 where prod_id = 59;
+
+update prod set fk_category_detail_id = 21 where prod_id = 60;
+
+commit;
+
+update prod set fk_category_detail_id = 2 where prod_id = 61;
+
+update prod set fk_category_detail_id = 2 where prod_id = 62;
+
+update prod set fk_category_detail_id = 2 where prod_id = 63;
+
+update prod set fk_category_detail_id = 2 where prod_id = 64;
+
+update prod set fk_category_detail_id = 2 where prod_id = 65;
+
+update prod set fk_category_detail_id = 2 where prod_id = 66;
+
+update prod set fk_category_detail_id = 2 where prod_id = 67;
+
+update prod set fk_category_detail_id = 2 where prod_id = 68;
+
+update prod set fk_category_detail_id = 2 where prod_id = 69;
+
+update prod set fk_category_detail_id = 2 where prod_id = 70;
+
+commit;
+
+update prod set fk_category_detail_id = 2 where prod_id = 71;
+
+update prod set fk_category_detail_id = 2 where prod_id = 72;
+
+update prod set fk_category_detail_id = 2 where prod_id = 73;
+
+update prod set fk_category_detail_id = 2 where prod_id = 74;
+
+update prod set fk_category_detail_id = 2 where prod_id = 75;
+
+update prod set fk_category_detail_id = 2 where prod_id = 76;
+
+update prod set fk_category_detail_id = 2 where prod_id = 77;
+
+update prod set fk_category_detail_id = 2 where prod_id = 78;
+
+update prod set fk_category_detail_id = 3 where prod_id = 79;
+
+update prod set fk_category_detail_id = 2 where prod_id = 80;
+
+commit;
+
+update prod set fk_category_detail_id = 6 where prod_id = 81;
+
+update prod set fk_category_detail_id = 7 where prod_id = 82;
+
+update prod set fk_category_detail_id = 8 where prod_id = 83;
+
+update prod set fk_category_detail_id = 8 where prod_id = 84;
+
+update prod set fk_category_detail_id = 6 where prod_id = 85;
+
+update prod set fk_category_detail_id = 7 where prod_id = 86;
+
+update prod set fk_category_detail_id = 8 where prod_id = 87;
+
+update prod set fk_category_detail_id = 8 where prod_id = 88;
+
+update prod set fk_category_detail_id = 6 where prod_id = 89;
+
+update prod set fk_category_detail_id = 6 where prod_id = 90;
+
+commit;
+
+update prod set fk_category_detail_id = 6 where prod_id = 91;
+
+update prod set fk_category_detail_id = 6 where prod_id = 92;
+
+update prod set fk_category_detail_id = 8 where prod_id = 93;
+
+update prod set fk_category_detail_id = 8 where prod_id = 94;
+
+update prod set fk_category_detail_id = 12 where prod_id = 95;
+
+update prod set fk_category_detail_id = 12 where prod_id = 96;
+
+update prod set fk_category_detail_id = 12 where prod_id = 97;
+
+update prod set fk_category_detail_id = 11 where prod_id = 98;
+
+update prod set fk_category_detail_id = 10 where prod_id = 99;
+
+update prod set fk_category_detail_id = 12 where prod_id = 100;
+
+commit;
+
+update prod set fk_category_detail_id = 12 where prod_id = 101;
+
+update prod set fk_category_detail_id = 10 where prod_id = 102;
+
+update prod set fk_category_detail_id = 10 where prod_id = 103;
+
+update prod set fk_category_detail_id = 12 where prod_id = 104;
+
+update prod set fk_category_detail_id = 12 where prod_id = 105;
+
+update prod set fk_category_detail_id = 10 where prod_id = 106;
+
+update prod set fk_category_detail_id = 11 where prod_id = 107;
+
+update prod set fk_category_detail_id = 11 where prod_id = 108;
+
+update prod set fk_category_detail_id = 10 where prod_id = 109;
+
+update prod set fk_category_detail_id = 11 where prod_id = 110;
+
+commit;
+
+update prod set fk_category_detail_id = 12 where prod_id = 111;
+
+update prod set fk_category_detail_id = 10 where prod_id = 112;
+
+update prod set fk_category_detail_id = 10 where prod_id = 113;
+
+update prod set fk_category_detail_id = 12 where prod_id = 114;
+
+update prod set fk_category_detail_id = 15 where prod_id = 115;
+
+update prod set fk_category_detail_id = 16 where prod_id = 116;
+
+update prod set fk_category_detail_id = 16 where prod_id = 117;
+
+update prod set fk_category_detail_id = 15 where prod_id = 118;
+
+update prod set fk_category_detail_id = 16 where prod_id = 119;
+
+update prod set fk_category_detail_id = 16 where prod_id = 120;
+
+commit;
+
+update prod set fk_category_detail_id = 15 where prod_id = 121;
+
+update prod set fk_category_detail_id = 16 where prod_id = 122;
+
+update prod set fk_category_detail_id = 16 where prod_id = 123;
+
+update prod set fk_category_detail_id = 15 where prod_id = 124;
+
+update prod set fk_category_detail_id = 16 where prod_id = 125;
+
+update prod set fk_category_detail_id = 16 where prod_id = 126;
+
+update prod set fk_category_detail_id = 15 where prod_id = 127;
+
+update prod set fk_category_detail_id = 15 where prod_id = 128;
+
+update prod set fk_category_detail_id = 15 where prod_id = 129;
+
+update prod set fk_category_detail_id = 15 where prod_id = 130;
+
+commit;
+
+update prod set fk_category_detail_id = 15 where prod_id = 131;
+
+update prod set fk_category_detail_id = 15 where prod_id = 132;
+
+update prod set fk_category_detail_id = 16 where prod_id = 133;
+
+update prod set fk_category_detail_id = 15 where prod_id = 134;
+
+update prod set fk_category_detail_id = 19 where prod_id = 135;
+
+update prod set fk_category_detail_id = 19 where prod_id = 136;
+
+update prod set fk_category_detail_id = 20 where prod_id = 137;
+
+update prod set fk_category_detail_id = 19 where prod_id = 138;
+
+update prod set fk_category_detail_id = 19 where prod_id = 139;
+
+update prod set fk_category_detail_id = 19 where prod_id = 140;
+
+commit;
+
+update prod set fk_category_detail_id = 20 where prod_id = 141;
+
+update prod set fk_category_detail_id = 20 where prod_id = 142;
+
+update prod set fk_category_detail_id = 19 where prod_id = 143;
+
+update prod set fk_category_detail_id = 19 where prod_id = 144;
+
+update prod set fk_category_detail_id = 20 where prod_id = 145;
+
+update prod set fk_category_detail_id = 18 where prod_id = 146;
+
+update prod set fk_category_detail_id = 18 where prod_id = 147;
+
+update prod set fk_category_detail_id = 19 where prod_id = 148;
+
+update prod set fk_category_detail_id = 18 where prod_id = 149;
+
+update prod set fk_category_detail_id = 19 where prod_id = 150;
+
+commit;
+
+update prod set fk_category_detail_id = 19 where prod_id = 151;
+
+update prod set fk_category_detail_id = 19 where prod_id = 152;
+
+update prod set fk_category_detail_id = 19 where prod_id = 153;
+
+update prod set fk_category_detail_id = 20 where prod_id = 154;
+
+update prod set fk_category_detail_id = 21 where prod_id = 155;
+
+update prod set fk_category_detail_id = 21 where prod_id = 156;
+
+update prod set fk_category_detail_id = 21 where prod_id = 157;
+
+update prod set fk_category_detail_id = 21 where prod_id = 158;
+
+update prod set fk_category_detail_id = 21 where prod_id = 159;
+
+update prod set fk_category_detail_id = 21 where prod_id = 160;
+
+commit;
+
+update prod set fk_category_detail_id = 21 where prod_id = 161;
+
+update prod set fk_category_detail_id = 21 where prod_id = 162;
+
+update prod set fk_category_detail_id = 21 where prod_id = 163;
 
 commit;

@@ -158,22 +158,16 @@
      				var latitude = position.coords.latitude;   // 현위치의 위도
      				var longitude = position.coords.longitude; // 현위치의 경도
      				
-     			//	console.log("현위치의 위도: "+latitude+", 현위치의 경도: "+longitude); 
-     				
-     			
-     	
      			//	=== 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
      				
      			//	인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능함.
-     			
-     			// mapexam 부분 //
      			
      			$.ajax({
      				url:"<%= request.getContextPath()%>/mapInfo.action",
      				async:false, // !!!!!! 지도는 비동기 통신(async:true)이 아닌 동기통신(async:false)으로 해야한다.!!!!!!
      				// 동기와 비동기의 차이 : url 에 가서 데이터(json)를 받아올 때까지 가만히 대기하며 기다리는 것이 아니라, url 에 가서 데이터(json)를 받아올 때 까지 다른 것으로 넘어가서 진행하다가 다시 올라오는 것이 비동기이다.
      				// 동기를 해야 하는 이유는, 지도정보를 다 가지고 온 후에 처리 해야하므로 json 으로 지도정보를 다 가지고 올 때 까지 가만히 대기해서 기다려야 한다. 
-     				data:{"prod_id":"2"},
+     				data:{"prod_id":"${pvo.prod_id}"},
      				dataType:"json",
      				success:function(json){
      					
@@ -196,7 +190,6 @@
      				//  ## lat, lng 순서바뀜. ##
      									 
      					var iwPosition = new kakao.maps.LatLng(Number(json.map_lng), Number(json.map_lat));
-     				//	var iwPosition = new kakao.maps.LatLng(37.510338, 127.058518);
      					var iwZIndex = 1;
      						
      				//	removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됨
@@ -212,7 +205,6 @@
      				
      				//  마커 위치 지정해주기
      				//  마커가 표시될 위치를 geolocation으로 얻어온 현위치의 위.경도 좌표로 한다   
-     				//	var locPosition = new kakao.maps.LatLng(latitude, longitude);
      					var locPosition = new kakao.maps.LatLng(Number(json.map_lng), Number(json.map_lat));
      		
      				//	마커이미지를 기본이미지를 사용하지 않고 다른 이미지로 사용할 경우의 이미지 주소 
@@ -257,64 +249,62 @@
      		
      				
      			});
+     			
      			});
-     			}
+     		}
 
             	
-//            			== 마커 위에 인포윈도우를 표시하기 ==
-                    	//	infowindow.open(mapobj, marker);
+			//   == 마커 위에 인포윈도우를 표시하기 ==
+            //	infowindow.open(mapobj, marker);
                     	
-                    	//	== 마커 위에 인포윈도우를 표시하기 ==
-                    	//	마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-                    	//	이벤트 리스너로는 클로저(closure => 함수 내에서 함수를 정의하고 사용하도록 만든것)를 만들어 등록합니다 
-                    	//	for문에서 클로저(closure => 함수 내에서 함수를 정의하고 사용하도록 만든것)를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+            //	== 마커 위에 인포윈도우를 표시하기 ==
+            //	마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+            //	이벤트 리스너로는 클로저(closure => 함수 내에서 함수를 정의하고 사용하도록 만든것)를 만들어 등록합니다 
+            //	for문에서 클로저(closure => 함수 내에서 함수를 정의하고 사용하도록 만든것)를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
                     		
                     	
-                    	
-                    		//	================== 지도에 클릭 이벤트를 등록하기 ======================= //
-                    		//	지도를 클릭하면 클릭한 위치에 마커를 표시하면서 위,경도를 보여주도록 한다.
-                    			
-                    		//	== 마커 생성하기 == //
-                    		//	1. 마커이미지 변경
-                    			var imageSrc = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';       
+            //	================== 지도에 클릭 이벤트를 등록하기 ======================= //
+            //	지도를 클릭하면 클릭한 위치에 마커를 표시하면서 위,경도를 보여주도록 한다.
+            //	== 마커 생성하기 == //
+            //	1. 마커이미지 변경
+            var imageSrc = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';       
                     			        
-                    		//	2. 마커이미지의 크기 
-                    		    var imageSize = new kakao.maps.Size(34, 39);   
+            //	2. 마커이미지의 크기 
+            var imageSize = new kakao.maps.Size(34, 39);   
                     				      
-                    		//	3. 마커이미지의 옵션. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정한다. 
-                    			var imageOption = {offset: new kakao.maps.Point(15, 39)};   
+            //	3. 마커이미지의 옵션. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정한다. 
+            var imageOption = {offset: new kakao.maps.Point(15, 39)};   
                     		      
-                    		//	4. 이미지정보를 가지고 있는 마커이미지를 생성한다. 
-                    			var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            //	4. 이미지정보를 가지고 있는 마커이미지를 생성한다. 
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
                     				    
-                    		    var movingMarker = new kakao.maps.Marker({ 
-                    				map: mapobj, 
-                    				image: markerImage  // 마커이미지 설정
-                    			});
-                    		    
-                    		//	=== 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
-                    			var movingInfowindow = new kakao.maps.InfoWindow({
-                    				removable : false
-                    			//	removable : true   // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됨
-                    			});
+            var movingMarker = new kakao.maps.Marker({ 
+  				map: mapobj, 
+  				image: markerImage  // 마커이미지 설정
+  			});
+  		    
+  		//	=== 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
+  			var movingInfowindow = new kakao.maps.InfoWindow({
+  				removable : false
+  			//	removable : true   // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됨
+  			});
                     			
                     		    
-                    			kakao.maps.event.addListener(mapobj, 'click', function(mouseEvent) {         
-                    				    
-                    			//	클릭한 위도, 경도 정보를 가져옵니다 
-                    				var latlng = mouseEvent.latLng;
-                    				 
-                    			//	마커 위치를 클릭한 위치로 옮긴다.
-                    				movingMarker.setPosition(latlng);
-                    				 
-                    			//	인포윈도우의 내용물 변경하기 
-                    				movingInfowindow.setContent("<div style='padding:5px; font-size:9pt;'>여기가 어디에요?<br/><a href='https://map.kakao.com/link/map/여기,"+latlng.getLat()+","+latlng.getLng()+"' style='color:blue;' target='_blank'>큰지도</a> <a href='https://map.kakao.com/link/to/여기,"+latlng.getLat()+","+latlng.getLng()+"' style='color:blue' target='_blank'>길찾기</a></div>");  
-                    				 
-                    			// 	== 마커 위에 인포윈도우를 표시하기 == //
-                    				movingInfowindow.open(mapobj, movingMarker);
-                    			
-                    			});
-                    			
+			kakao.maps.event.addListener(mapobj, 'click', function(mouseEvent) {         
+				    
+			//	클릭한 위도, 경도 정보를 가져옵니다 
+				var latlng = mouseEvent.latLng;
+				 
+			//	마커 위치를 클릭한 위치로 옮긴다.
+				movingMarker.setPosition(latlng);
+				 
+			//	인포윈도우의 내용물 변경하기 
+				movingInfowindow.setContent("<div style='padding:5px; font-size:9pt;'>여기가 어디에요?<br/><a href='https://map.kakao.com/link/map/여기,"+latlng.getLat()+","+latlng.getLng()+"' style='color:blue;' target='_blank'>큰지도</a> <a href='https://map.kakao.com/link/to/여기,"+latlng.getLat()+","+latlng.getLng()+"' style='color:blue' target='_blank'>길찾기</a></div>");  
+				 
+			// 	== 마커 위에 인포윈도우를 표시하기 == //
+				movingInfowindow.open(mapobj, movingMarker);
+			
+			});  			
                     			
             
         }); // end of document.addEventListener('DOMContentLoaded', function() {})-----------------------
