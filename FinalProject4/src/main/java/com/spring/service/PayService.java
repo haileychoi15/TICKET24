@@ -56,4 +56,11 @@ public class PayService implements InterPayService {
 		return dateId;
 	}
 
+	// == 결제창 사용가능 쿠폰 가져오기 == //
+	@Override
+	public List<HashMap<String, String>> takeCoupon(String userid) {
+		List<HashMap<String, String>> takeCoupon = dao.takeCoupon(userid);
+		return takeCoupon;
+	}
+
 }

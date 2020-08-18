@@ -178,14 +178,14 @@
 		<result property="date_showtime"	column="date_showtime"	javaType="String"/>
 	</resultMap>
 	<select id="getShowTime" resultMap="resShowTime" parameterType="String">
-		select prod_id, to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday, date_showtime
+		select prod_id, to_char(date_showday, 'yyyy-mm-dd') || ' ' || to_char(date_showday, 'day') as date_showday, date_showtime
 		from yes_show_date
 		where prod_id = #{showNum}
 		order by date_showday, date_showtime
 	</select>
 	
 	<select id="getShowDay" resultType="String" parameterType="String">
-		select distinct to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') as date_showday
+		select distinct to_char(date_showday, 'yyyy-mm-dd') || ' ' || to_char(date_showday, 'day') as date_showday
 		from yes_show_date
 		where prod_id = #{showNum}
 		order by date_showday
@@ -203,7 +203,7 @@
 		<result property="seat_color"		column="seat_color"		javaType="String"/>
 	</resultMap>
 	<select id="getSeatStatus" parameterType="String" resultMap="seatStatus">
-		select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, date_id, seat_color
+		select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, seat_color
 		from view_seat_info
 		where prod_id = #{showNum}
 	</select>
@@ -222,13 +222,21 @@
 	<select id="getDateId" parameterType="HashMap" resultType="String">
 		select date_id
 		from yes_show_date
-		where prod_id = #{showNum} and to_char(date_showday, 'yy/mm/dd') || ' ' || to_char(date_showday, 'day') = #{showDay} and date_showtime = #{showRound}
+		where prod_id = #{showNum} and to_char(date_showday, 'yyyy-mm-dd') || ' ' || to_char(date_showday, 'day') = #{showDay} and date_showtime = #{showRound}
+	</select>
+	
+	<resultMap type="HashMap" id="takeCoupon">
+		<result property="coupon_dc"			column="coupon_dc"		javaType="String"/>
+		<result property="coupon_name"			column="coupon_name"	javaType="String"/>
+	</resultMap>
+	<select id="takeCoupon" parameterType="String" resultMap="takeCoupon">
+		select coupon_dc, coupon_name
+		from yes_coupon
+		where fk_userid = #{userid2} and coupon_status = 1
 	</select>
 	
 	
-	
-	
-<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
+	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
 	<!-- FAQ 리스트(검색어 있음) -->
 	<select id="faqList" parameterType="HashMap" resultType="com.spring.model.FaqVO">
 		select faq_id, fk_userid, subject, content, regDate, status, faq_cate_name
@@ -301,7 +309,7 @@
 	<!-- 공지사항 글 1개 보기 페이지로 이동(조회수 증가 없음) -->
 	<select id="getView" parameterType="HashMap" resultType="com.spring.model.NoticeVO">
 		select previousseq, previoussubject
-		       , notice_id,fk_userid,category, ticketopenday, subject, content, readCount
+		       , notice_id,fk_userid,category, ticketopenday, subject,readCount
 		       , regDate
 		       , fileName,orgFilename,fileSize
 			   , nextseq, nextsubject
@@ -310,7 +318,7 @@
 		                select lag(notice_id, 1) over(order by notice_id desc) as previousseq
 				       , lag(subject, 1) over(order by notice_id desc) as previoussubject
 				       
-				       , notice_id, fk_userid, category, subject, content, readCount
+				       , notice_id, fk_userid, category, subject, readCount
 		               , nvl(ticketopenday, ' ') as ticketopenday
 				       , to_char(regDate, 'yyyy-mm-dd') as regDate
 				       , status, fileName, orgFilename, fileSize
@@ -418,31 +426,10 @@
 	
 	<!-- qna 글 1개 보기 페이지로 이동 -->
 	<select id="getQnaView" parameterType="String" resultType="com.spring.model.QnaVO">
-		<!-- 
 		select qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
         	  ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
 		from view_qna_info
-		where qna_id = #{seq} 
-		-->
-		select previousseq, previoussubject
-       , qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
-       , fk_rev_id, prod_id, rev_email, prod_img, prod_title
-       , nextseq, nextsubject
-        from
-            (
-               select lag(qna_id, 1) over(order by qna_id desc) as previousseq
-               , lag(subject, 1) over(order by qna_id desc) as previoussubject
-               
-               , qna_id, fk_userid, name, category, qna_cate_name, subject, content, to_char(regDate, 'yy-mm-dd') as regDate, adminread, adminans, groupno, fk_seq, depthno
-               , fk_rev_id, prod_id, rev_email, prod_img, prod_title
-               
-               , lead(qna_id, 1) over(order by qna_id desc) as nextseq
-               , lead(subject, 1) over(order by qna_id desc) as nextsubject
-               
-                from view_qna_info
-                where status = 1
-            ) V
-		where qna_id = #{seq} 
+		where qna_id = #{seq}
 	</select>
 	
 	<!-- Qna 답변 등록하기 -->
@@ -451,38 +438,29 @@
 		values(qnaSeq.nextval, #{fk_userid}, #{name}, #{category}, #{subject}, #{content}, #{groupno}, #{fk_seq}, #{depthno})
 	</insert>
 	
-	
-	<!-- 공지사항 글 등록하기(첨부파일 X) -->
-	<insert id="noticeAdd">
-		insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content)
-		values(noticeSeq.nextval, #{fk_userid}, #{category}, #{ticketopenday}, #{subject}, #{content})
-	</insert>
-	
-	
 	<!-- 공지사항 글 등록하기(첨부파일 O) -->
+
 	<insert id="noticeAdd_withFile">
 		insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content, fileName, orgFilename, fileSize)
 		values(noticeSeq.nextval, #{fk_userid}, #{category}, #{ticketopenday}, #{subject}, #{content}, #{fileName}, #{orgFilename}, #{fileSize})
 	</insert>
-	
-	
+
 	<!-- 관리자가 Qna 글 1개 보기 클릭시 Adminread 상태를 0 -> 1로 바꿈. -->
+
 	<update id="setAdminRead" parameterType="String">
 		update yes_qna set adminread = 1
 		where qna_id = #{seq}
 	</update>
-	
-	
+
 	<!-- 관리자가 답변등록시 해당 참조글번호 fk_seq 의 문의글을 답변완료로 업데이트 -->
+
 	<update id="updateAdminans" parameterType="String">
 		update yes_qna set adminans = 1
 		where qna_id = #{fk_seq}
 	</update>
-	
-	
+
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
-	
-	
+
 	<select id="getTotalProdCount" parameterType="HashMap" resultType="int">
 		select count(*)
       	from prod
@@ -491,7 +469,7 @@
       	and lower(prod_title) like '%'|| lower(#{searchWord}) || '%'
       	</if>
    	</select>
-   
+
    	<select id="prodList" parameterType="HashMap" resultType="com.spring.model.ProdVO">
       	select RNO, prod_id, category_name, fk_category_id, prod_title, prod_img, date_start, date_end, info_open_date, info_close_date, info_rev_status, info_qnty, map_address, map_id
       	from (
@@ -519,7 +497,7 @@
 	<!-- ===== Member ===== -->
 	<!-- === #47. 로그인 처리하기 === -->
 	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.model.MemberVO">
-		select idx, userid, name, email
+		select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -536,7 +514,7 @@
 	
 	<!-- API 회원으로 등록이 되어있는지 확인 -->
 	<select id="kakaoMember" resultType="com.spring.model.MemberVO" parameterType="HashMap">
-		select idx, userid, name, email
+		select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 		     , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
 		from yes_member 
@@ -548,7 +526,7 @@
 	<select id="idDuplicateCheck" resultType="String" parameterType="String">
 		select userid 
 		from yes_member
-		where status = 1 and userid = #{userid}
+		where userid = #{userid}
 	</select>
 
 	<!-- 카카오 회원가입 -->
@@ -646,7 +624,7 @@
      
     <!-- 유효기간이 남아 있으면서 해당 sessionId를 가지는 사용자 정보를 꺼내오는 부분 -->
     <select id="checkUserWithSessionKey" resultType="com.spring.model.MemberVO">
-        select idx, userid, name, email
+        select idx, userid, name, email, point
 		     , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
 			 , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
         from yes_member
@@ -660,6 +638,203 @@
 		where idx = #{idx} and pwd = #{pwd} 
 	</update>
 	
+	<!-- 아이디 찾기 -->
+	<select id="findID" parameterType="HashMap" resultType="String">
+		select userid
+		from yes_member
+		where status = 1 and name = #{name} and (trim(hp1) || trim(hp2) || trim(hp3)) = #{mobile}
+	</select>
+	
+	<!-- 비밀번호 찾기 -->
+	<select id="findPW" parameterType="HashMap" resultType="String">
+		select userid
+		from yes_member
+		where status = 1 and userid = #{userid} and email = #{email}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePW" parameterType="HashMap">
+		update yes_member
+		set pwd = #{pwd}
+		where status = 1 and userid = #{userid}
+	</update>
+	
+	
+	<resultMap type="HashMap" id="pointMap">
+		<result property="point_id"  		column="point_id" 		javaType="String"/>
+		<result property="fk_userid" 		column="fk_userid"      javaType="String"/>
+		<result property="content" 	   		column="content"     	javaType="String"/>
+		<result property="fk_rev_date"      column="fk_rev_date"    javaType="String"/>
+		<result property="fk_rev_id"        column="fk_rev_id"      javaType="String"/>
+		<result property="point"        column="point"      javaType="String"/>
+	</resultMap>
+	<select id="pointList" parameterType="String" resultMap="pointMap">
+		select point_id, fk_userid, content, point, to_char(fk_rev_date, 'yyyy.mm.dd hh24:mi:ss') AS fk_rev_date, fk_rev_id 
+		from yes_point 
+		where fk_userid = #{userid}
+		order by fk_rev_date desc
+	</select>
+	
+	
+	
+	<resultMap type="HashMap" id="qnaMap">
+		<result property="qna_cate_name" column="qna_cate_name" javaType="String"/>
+		<result property="subject" 		 column="subject"       javaType="String"/>
+		<result property="regDate" 	   	 column="regDate"     	javaType="String"/>
+		<result property="adminans"      column="adminans"   	javaType="String"/>
+		<result property="content"       column="content"   	javaType="String"/>
+	</resultMap>
+	<select id="qnaList3" parameterType="String" resultMap="qnaMap">
+		select A.qna_cate_name AS qna_cate_name
+		     , B.subject AS subject
+		     , to_char(B.regDate, 'yyyy.mm.dd hh24:mi:ss') AS regDate
+		     , B.adminans AS adminans
+		     , B.content AS content
+		from yes_qna_cate A, yes_qna B
+		where A.qna_cate_code = B.category and B.fk_userid = #{userid}
+		order by regDate asc
+	</select>
+	
+	<select id="qnaCount" resultType="String" parameterType="String">
+		select count(*)
+		from yes_qna
+		where fk_userid = #{userid}
+	</select>
+	
+	<select id="couponCount" resultType="String" parameterType="String">
+		select count(*)
+		from yes_coupon
+		where fk_userid = #{userid}
+	</select>
+	
+	
+	<resultMap type="HashMap" id="couponMap">
+		<result property="coupon_id" 		column="coupon_id" 			javaType="String"/>
+		<result property="coupon_dc" 		column="coupon_dc"      	javaType="String"/>
+		<result property="coupon_olddate" 	column="coupon_olddate" 	javaType="String"/>
+		<result property="coupon_condition" column="coupon_condition"   javaType="String"/>
+		<result property="coupon_name"      column="coupon_name"   		javaType="String"/>
+	</resultMap>
+	<select id="couponList" parameterType="String" resultMap="couponMap">
+		select coupon_id, coupon_dc, to_char(coupon_olddate, 'yyyy.mm.dd hh24:mi:ss') as coupon_olddate, coupon_condition, coupon_name
+		from yes_coupon
+		where coupon_status = 1 and fk_userid = #{userid}
+		order by coupon_olddate asc
+	</select>
+	
+	
+	<resultMap type="HashMap" id="qnaMap2">
+		<result property="user_subject" 		column="user_subject" 			javaType="String"/>
+		<result property="user_content"      	column="user_content"   		javaType="String"/>
+		<result property="admin_content"      	column="admin_content"   		javaType="String"/>
+		<result property="user_regDate"      	column="user_regDate"   		javaType="String"/>
+		<result property="admin_regDate"      	column="admin_regDate"   		javaType="String"/>
+	</resultMap>
+	<select id="qnaList2" parameterType="String" resultMap="qnaMap2">
+		select A.subject as user_subject
+			 , A.content as user_content
+			 , B.content as admin_content
+			 , to_char(A.regDate, 'yyyy.mm.dd hh24:mi:ss') as user_regDate
+			 , to_char(B.regDate, 'yyyy.mm.dd hh24:mi:ss') as admin_regDate
+		from yes_qna A left outer join yes_qna B
+		on A.qna_id = B.fk_seq 
+		where A.fk_userid = #{userid}
+		order by user_regDate asc
+	</select>
+	
+	
+	<!-- 내 예매 내역 -->
+	<resultMap type="HashMap" id="myReserveMap">
+		<result property="rev_date" 	column="rev_date" 		javaType="String"/>
+		<result property="prod_title" 	column="prod_title" 	javaType="String"/>
+		<result property="prod_img" 	column="prod_img" 		javaType="String"/>
+		<result property="date_start" 	column="date_start" 	javaType="String"/>
+		<result property="date_end" 	column="date_end" 		javaType="String"/>
+		<result property="rev_id" 		column="rev_id" 		javaType="String"/>
+		<result property="rev_qnty" 	column="rev_qnty" 		javaType="String"/>
+		<result property="map_name" 	column="map_name" 		javaType="String"/>
+		<result property="date_showday" column="date_showday" 	javaType="String"/>
+		<result property="cancel_day" 	column="cancel_day" 	javaType="String"/>
+		<result property="status" 		column="status" 		javaType="String"/>
+	</resultMap>
+	<select id="myReserveList" parameterType="String" resultMap="myReserveMap">
+		select to_char(R.rev_date, 'yyyy.mm.dd') AS rev_date
+		       , P.prod_title AS prod_title
+		       , P.prod_img AS prod_img
+		       , to_char(P.date_start, 'yyyy,mm.dd') AS date_start
+		       , to_char(P.date_end, 'yyyy,mm.dd') AS date_end 
+		       , R.rev_id AS rev_id
+		       , R.rev_qnty AS rev_qnty
+		       , M.map_name AS map_name
+		       , to_char(D.date_showday, 'yyyy.mm.dd') || '(' || to_char(D.date_showday, 'dy')   || ') ' || to_char(D.date_showday, 'hh24:mm') AS date_showday
+		       , to_char(D.date_showday - 1, 'yyyy.mm.dd') || '(' || to_char(D.date_showday - 1, 'dy')   || ') ' || to_char(D.date_showday - 1, 'hh24:mm') AS cancel_day
+		       , S.status AS status
+		from yes_reserve R join prod P
+		on R.prod_id = P.prod_id
+		join yes_show_map M
+		on P.prod_id = M.prod_id
+		join yes_show_date D
+		on R.date_id = D.date_id
+		join yes_rev_status S
+		on R.rev_id = S.rev_id
+		where R.user_id = #{userid}
+	</select>
+	
+	<!-- 내 예매 개수 -->
+	<select id="reserveCount" parameterType="String" resultType="String">
+		select count(*)
+		from yes_reserve R, yes_rev_status S 
+		where R.rev_id = S.rev_id and S.status = 1 and R.user_id = #{userid}
+	</select>
+
+
+	<resultMap type="HashMap" id="myReviewMap">
+		<result property="prod_img" 	column="prod_img" 	javaType="String"/>
+		<result property="prod_title" 	column="prod_title" javaType="String"/>
+		<result property="regDate" 		column="regDate" 	javaType="String"/>
+		<result property="content" 		column="content" 	javaType="String"/>
+		<result property="review_id" 	column="review_id" 	javaType="String"/>
+	</resultMap>
+	<!-- 내 리뷰 내역 -->
+	<select id="myReviewList" parameterType="String" resultMap="myReviewMap">
+		select p.prod_img as prod_img
+		      , p.prod_title as prod_title
+		      , to_char(V.regDate, 'yyyy.mm.dd') as regDate
+		      , V.content  as content
+		      , V.review_id as review_id
+		from prod P, yes_review V
+		where P.prod_id = V.parentProdId  and V.status = 1 and fk_userid = #{userid}
+	</select>
+
+
+	<!-- 내 리뷰 개수 -->
+	<select id="reviewCount" parameterType="String" resultType="String">
+		select count(*)
+		from yes_review
+		where status = 1 and fk_userid = #{userid}
+	</select>
+	
+	
+	
+	<resultMap type="HashMap" id="myLikeMap">
+		<result property="prod_img" column="prod_img" javaType="String" />
+		<result property="prod_id"  column="prod_id"  javaType="String" />
+	</resultMap>
+	<!-- 내 선호 공연 내역 -->
+	<select id="myLikeList" parameterType="String" resultMap="myLikeMap">
+		select P.prod_img as prod_img, P.prod_id as prod_id
+		from prod P, like_prod L
+		where P.prod_id = L.fk_parentProdId and L.fk_userid = #{userid} 
+	</select>
+	
+	
+	<!-- 선호공연 개수 -->
+	<select id="likeCount" parameterType="String" resultType="String">
+		select count(*)
+		from like_prod
+		where fk_userid = #{userid}
+	</select>
+	
 	
 	<!-- AOP pointPlus -->
 	<update id="pointPlus" parameterType="HashMap">
@@ -672,10 +847,16 @@
 	<select id="getCouponIs" parameterType="HashMap" resultType="Integer">
 		select count(*)
 		from yes_coupon
-		where fk_userid=#{userid} and coupon_name=#{couponName}
+		where fk_userid=#{userid} and coupon_name=#{couponName} and coupon_status=1
 	</select>
 	
+	<!-- 쿠폰 발급받기 -->
+	<insert id="getCoupon" parameterType="HashMap">
+		insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid) 
+		values(seq_coupon.nextval, #{couponDC}, 1, sysdate, null, sysdate+7, #{couponName}, default, #{userid}) 
+	</insert>
 	
+
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 	<!-- 상품상세페이지로 이동 -->
 	<select id="prodDetail" parameterType="String" resultType="com.spring.model.ProdVO">
@@ -684,25 +865,27 @@
 		from view_detail_prod
 		where prod_id = #{seq}
 	</select>
-	
+
 	<!-- 상품의 좌석종류정보 -->
 	<resultMap type="HashMap" id="seattypeListMap">
 		<result property="seat_type"  column="seat_type"  javaType="String" />	
 		<result property="seat_price" column="seat_price" javaType="String" />	
 		<result property="seat_color" column="seat_color" javaType="String" />	
 	</resultMap>
+
 	<select id="seattypeList" parameterType="String" resultMap="seattypeListMap">
 		select seat_type, seat_price, seat_color
 		from yes_seat_type
 		where prod_id = #{seq}
 	</select>
-	
+
 	<!-- 상품의 날짜정보 -->
 	<resultMap type="HashMap" id="dateListMap">
 		<result property="date_id"  column="date_id"  javaType="String" />	
 		<result property="date_showday"  column="date_showday"  javaType="String" />	
 		<result property="date_showtime" column="date_showtime" javaType="String" />	
 	</resultMap>
+
 	<select id="dateList" parameterType="String" resultMap="dateListMap">
 		select distinct date_id, to_char(date_showday, 'yyyy-mm-dd') || ' (' || to_char(date_showday, 'dy') || ')' as date_showday, date_showtime
 		from yes_show_date
@@ -714,8 +897,7 @@
 		<!-- select distinct to_char(date_showday, 'yyyy-mm-dd') as date_showday
 		from yes_show_date -->
 	</select>
-	
-	
+
 	<!-- 달력의 선택날짜와 같은 showdateList 를 보여주는 정보 -->
 	<resultMap type="HashMap" id="showDateListMap">
 		<result property="date_id"  	 column="date_id"  		javaType="String" />	
@@ -723,13 +905,13 @@
 		<result property="date_showday"  column="date_showday"  javaType="String" />	
 		<result property="date_showtime" column="date_showtime" javaType="String" />	
 	</resultMap>
+
 	<select id="showDateList" parameterType="HashMap" resultMap="showDateListMap">
 		select date_id, prod_id, date_showday, date_showtime
 		from yes_show_date
 		where prod_id=#{seq} and to_char(date_showday, 'yyyy-mm-dd') = #{date}
 	</select>
-	
-	
+		
 	<!-- 리뷰등록하기 -->
 	<insert id="addReview" parameterType="HashMap">
 		insert into yes_review (review_id, fk_userid, name, content, star, parentProdId)
@@ -751,15 +933,14 @@
 		) T
 		where rno between #{startRno} and #{endRno}
 	</select>
-	
-	
+
 	<!-- 해당 상품(parentProdId) 에 해당하는 총 리뷰수 알아오기 -->
 	<select id="getReviewTotalCount" parameterType="HashMap" resultType="int">
 		select count(*)
 		from yes_review
 		where status = 1 and parentProdId = #{parentProdId}
 	</select>
-	
+
 	<!-- 해당 상품(parentProdId) 에 해당하는 평점 알아오기 -->
 	<select id="getReviewAvgStar" parameterType="HashMap" resultType="double">
 		select round(sum(star)/count(*),2)
@@ -772,7 +953,7 @@
 		group by parentProdId
 		having(parentProdId = #{parentProdId})
 	</select>
-	
+
 	<!-- 리뷰 삭제하기 -->
 	<update id="delReview" parameterType="HashMap">
 		update yes_review set status = 0 
@@ -815,6 +996,5 @@
 		
 		
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
-	
 
 </mapper>

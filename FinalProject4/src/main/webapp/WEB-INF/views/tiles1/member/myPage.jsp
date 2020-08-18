@@ -48,12 +48,12 @@
             <div id="myCoupon">
                 <img src="resources/images/coupon.png" alt="couponImg" width="30px">
                 <div class="title">쿠폰</div>
-                <div class="emDiv"><span class="em" id="coupon">3</span>개</div>
+                <div class="emDiv"><span class="em" id="coupon">${couponCount}</span>개</div>
             </div>
             <div id="myQNA">
                 <img src="resources/images/question.png" alt="qnaImg" width="30px">
                 <div class="title">나의 문의</div>
-                <div class="emDiv"><span class="em" id="qna">3</span>개</div>
+                <div class="emDiv"><span class="em" id="qna">${qnaCount}</span>개</div>
             </div>
         </div>
 
@@ -79,37 +79,6 @@
 							<td class="point"><fmt:formatNumber value="${point.point }" pattern="###,###" />원</td>
 						</tr>
 					</c:forEach>
-    <!--             
-                <tr>
-                    <td>2020.08.08 11:11</td>
-                    <td class="left">뮤지컬 〈모차르트！〉 10주년 기념공연 주문 적립</td>
-                    <td>Y1234567</td>
-                    <td class="point">1,000원</td>
-                </tr>
-                <tr>
-                    <td>2020.08.08 11:11</td>
-                    <td class="left">뮤지컬 〈모차르트！〉 10주년 기념공연 주문 적립</td>
-                    <td>Y1234567</td>
-                    <td class="point">1,000원</td>
-                </tr>
-                <tr>
-                    <td>2020.08.08 11:11</td>
-                    <td class="left">뮤지컬 〈모차르트！〉 10주년 기념공연 주문 적립</td>
-                    <td>Y1234567</td>
-                    <td class="point">1,000원</td>
-                </tr>
-                <tr>
-                    <td>2020.08.08 11:11</td>
-                    <td class="left">뮤지컬 〈모차르트！〉 10주년 기념공연 주문 적립</td>
-                    <td>Y1234567</td>
-                    <td class="point">1,000원</td>
-                </tr>
-                <tr>
-                    <td>2020.08.08 11:11</td>
-                    <td class="left">뮤지컬 〈모차르트！〉 10주년 기념공연 주문 적립</td>
-                    <td>Y1234567</td>
-                    <td class="point">1,000원</td>
-                </tr> -->
                 </tbody>
             </table>
 
@@ -137,36 +106,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td class="left name">[2020 캣츠 내한공연] 5천원 할인 쿠폰</td>
-                    <td class="point">5천원 할인</td>
-                    <td>[2020 캣츠 내한공연] 예매시</td>
-                    <td>2020.08.29 23:59까지</td>
-                </tr>
-                <tr>
-                    <td class="left name">[2020 캣츠 내한공연] 5천원 할인 쿠폰</td>
-                    <td class="point">5천원 할인</td>
-                    <td>[2020 캣츠 내한공연] 예매시</td>
-                    <td>2020.08.29 23:59까지</td>
-                </tr>
-                <tr>
-                    <td class="left name">[2020 캣츠 내한공연] 5천원 할인 쿠폰</td>
-                    <td class="point">5천원 할인</td>
-                    <td>[2020 캣츠 내한공연] 예매시</td>
-                    <td>2020.08.29 23:59까지</td>
-                </tr>
-                <tr>
-                    <td class="left name">[2020 캣츠 내한공연] 5천원 할인 쿠폰</td>
-                    <td class="point">5천원 할인</td>
-                    <td>[2020 캣츠 내한공연] 예매시</td>
-                    <td>2020.08.29 23:59까지</td>
-                </tr>
-                <tr>
-                    <td class="left name">[2020 캣츠 내한공연] 5천원 할인 쿠폰</td>
-                    <td class="point">5천원 할인</td>
-                    <td>[2020 캣츠 내한공연] 예매시</td>
-                    <td>2020.08.29 23:59까지</td>
-                </tr>
+	                
+	                <c:forEach var="coupon" items="${couponList}" varStatus="status">
+						<tr>
+		                    <td class="left name">${coupon.coupon_name }</td>
+		                    <td class="point"><fmt:formatNumber value="${coupon.coupon_dc }" pattern="###,###" />원 할인</td>
+		                    <td>${coupon.coupon_condition }</td>
+		                    <td>${coupon.coupon_olddate} 까지</td>
+		                </tr>
+					</c:forEach>
                 </tbody>
             </table>
 
@@ -194,36 +142,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>공연문의</td>
-                    <td class="left"><span onclick="modal()">캣츠 예매 관련하여 문의합니다.</span></td>
-                    <td>2020.08.29</td>
-                    <td class="point">답변완료</td>
-                </tr>
-                <tr>
-                    <td>공연문의</td>
-                    <td class="left"><span onclick="modal()">캣츠 예매 관련하여 문의합니다.</span></td>
-                    <td>2020.08.29</td>
-                    <td class="point">답변완료</td>
-                </tr>
-                <tr>
-                    <td>공연문의</td>
-                    <td class="left"><span onclick="modal()">캣츠 예매 관련하여 문의합니다.</span></td>
-                    <td>2020.08.29</td>
-                    <td class="point">답변완료</td>
-                </tr>
-                <tr>
-                    <td>공연문의</td>
-                    <td class="left"><span onclick="modal()">캣츠 예매 관련하여 문의합니다.</span></td>
-                    <td>2020.08.29</td>
-                    <td class="point">답변완료</td>
-                </tr>
-                <tr>
-                    <td>공연문의</td>
-                    <td class="left"><span onclick="modal()">캣츠 예매 관련하여 문의합니다.</span></td>
-                    <td>2020.08.29</td>
-                    <td class="point">답변완료</td>
-                </tr>
+	                <c:forEach var="qna" items="${qnaList}" varStatus="status">
+						<tr>
+							<td>${qna.qna_cate_name} </td>
+							<td class="left"><span onclick="modal('${status.index}')">${qna.subject}</span></td>
+							<td>${qna.regDate }</td>
+							<c:if test="${qna.adminans == '0' }">
+								<td class="point">답변대기</td>
+							</c:if>
+							<c:if test="${qna.adminans == '1' }">
+								<td class="point">답변완료</td>
+							</c:if>
+						</tr>
+					 </c:forEach>
                 </tbody>
             </table>
 
@@ -237,40 +168,75 @@
                 <a href="" class="pageBtn nextLast"></a>
             </div>
 
-            <div id="modalBack" style="display: none">
-                <div id="modal">
+
+			<c:forEach var="qna2" items="${qnaList2}" varStatus="status" >
+	            <div class="modalBack" style="display: none">
+	                <div class="modal">
+	                    <div class="modalTitle">
+	                        <div class="questionTitle">${qna2.user_subject}</div>
+	                        <div class="closeBtn" onclick="closeModal('${status.index}')"></div>
+	                        <div class="modalDate">${qna2.user_regDate }</div>
+	                    </div>
+	                    <div class="questionContent">${qna2.user_content }</div>
+	                
+	                 	<c:if test="${qna2.admin_content != null}">   
+		                    <div class="modalTitle answerDiv">
+		                        <div class="answerTitle"><img src="resources/images/TICKET24.png" alt="TICKET24" width="20px">&nbsp;TICKET24 고객센터</div>
+		                        <div class="modalDate">${qna2.admin_regDate }</div>
+		                    </div>
+		                    <br>
+		                    <div id="answerContent">${qna2.admin_content }</div>
+						</c:if>
+						
+						<c:if test="${qna2.admin_content == null}">   
+		                    <div class="modalTitle answerDiv">
+		                        <div class="answerTitle"><img src="resources/images/TICKET24.png" alt="TICKET24" width="20px">&nbsp;TICKET24 고객센터</div>
+		                        <%-- <div class="modalDate">${qna2.admin_regDate }</div> --%>
+		                    </div>
+		                    <br>
+		                    <div id="answerContent">답변 대기중입니다.</div>
+						</c:if>		                
+	                </div>
+	            </div>
+			</c:forEach>
+
+
+            <!-- <div class="modalBack" style="display: none">
+                <div class="modal">
                     <div class="modalTitle">
-                        <div id="questionTitle">캣츠 예매 관련하여 문의합니다.</div>
-                        <div id="closeBtn" onclick="closeModal()"></div>
+                        <div class="questionTitle">캣츠 예매 관련하여 문의합니다.</div>
+                        <div class="closeBtn" onclick="closeModal()"></div>
                         <div class="modalDate">2020.08.15</div>
                     </div>
-                    <div id="questionContent">공연 관람 당일 취소가 가능한가요?</div>
+                    <div class="questionContent">공연 관람 당일 취소가 가능한가요?</div>
                     <div class="modalTitle answerDiv">
-                        <div id="answerTitle"><img src="../img/TICKET24.png" alt="TICKET24" width="20px">&nbsp;TICKET24 고객센터</div>
+                        <div class="answerTitle"><img src="resources/images/TICKET24.png" alt="TICKET24" width="20px">&nbsp;TICKET24 고객센터</div>
                         <div class="modalDate">2020.08.16</div>
                     </div>
                     <div id="answerContent">기본적으로 공연 관람 당일 취소는 불가합니다.<br>
                         (관람일 당일 취소가 가능한 일부 공연의 경우 티켓 금액의 90%가 취소수수료로 부과됩니다.)<br>
                         공연의 특성에 따라 취소마감시간/취소수수료 정책이 달라질 수 있으니 예매 시 반드시 각 공연 상세페이지를 확인해주시기 바랍니다.</div>
                 </div>
-            </div>
+            </div> --> 
+            
+            
         </div>
     </div>
 </body>
 
 <script>
-    function modal() {
-        let modal = document.getElementById('modalBack');
+    function modal(index) {
+        let modal = document.getElementsByClassName('modalBack')[index];
         modal.style.display = 'block';
     }
 
-    function closeModal() {
-        let modal = document.getElementById('modalBack');
+    function closeModal(index) {
+        let modal = document.getElementsByClassName('modalBack')[index];
         modal.style.display = 'none';
     }
 
     window.onclick = function(event) {
-        let modal = document.getElementById('modalBack');
+        let modal = document.getElementsByClassName('modalBack');
         if (event.target == modal) {
             modal.style.display = "none";
         }

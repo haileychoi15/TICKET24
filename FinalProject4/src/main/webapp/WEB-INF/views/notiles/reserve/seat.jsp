@@ -20,11 +20,11 @@
                     <div id="changeArea">
                         <span>관람일 변경</span>
                         <select id="changeDate">
-                            <option selected>날짜 선택</option>
+                            <option>날짜 선택</option>
                         </select>
                         <span>회차 변경</span>
                         <select id="changeRound">
-                            <option selected>회차 선택</option>
+                            <option>회차 선택</option>
                         </select>
                     </div>
                     <div class="showName" id="mobileTitle"></div>
@@ -66,6 +66,11 @@
                         <button id="reset" onclick="reset()">좌석 다시 선택</button>
                         <button id="next" onclick="seatSelComplete()">좌석 선택 완료</button>
                     </div>
+                    
+                    <form name="convey" style="display: none">
+                    	<input type="text" name="showdate" id="showdate" value="">
+                    	<input type="text" name="showtime" id="showtime" value="">
+                    </form>
                 </div>
             </div>
         </div>
@@ -125,19 +130,12 @@
                                 <table>
                                     <thead align="center">
                                     <tr>
-                                        <td class="row1">할인명</td>
+                                        <td class="row1">쿠폰명</td>
                                         <td class="row2">할인 금액</td>
                                         <td class="row3">사용</td>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td class="row1">[YES마니아] 예매수수료 면제쿠폰 (예매수수료 면제)</td>
-                                        <td class="row2">1,000</td>
-                                        <td class="row3">
-                                            <input type="checkbox" id="couponCheck1" value="1000" onchange="changeCoupon()">
-                                        </td>
-                                    </tr>
+                                    <tbody class="couponList">
                                     </tbody>
                                 </table>
                             </div>
@@ -166,22 +164,21 @@
                                 <div class="infoTitle">주문자 정보</div>
                                 <div id="ordererName">
                                     <div class="ordererRow1">이름</div>
-                                    <div class="ordererRow2"><input type="text" size="15"></div>
+                                    <div class="ordererRow2"><input type="text" size="15" id="conveyName"></div>
                                 </div>
                                 <div id="ordererCall">
                                     <div class="ordererRow1">연락처</div>
-                                    <div class="ordererRow2"><input type="text" size="3" maxlength="3"> - <input type="text" size="4" maxlength="4"> - <input type="text" size="4" maxlength="4"></div>
+                                    <div class="ordererRow2"><input type="text" size="3" maxlength="3" id="conveyHP1"> - <input type="text" size="4" maxlength="4" id="conveyHP2"> - <input type="text" size="4" maxlength="4" id="conveyHP3"></div>
                                 </div>
                                 <div id="ordererEmail">
                                     <div class="ordererRow1">이메일</div>
-                                    <div class="ordererRow2"><input type="text" size="8"> @ <input type="text" size="10"></div>
+                                    <div class="ordererRow2"><input type="text" size="20" id="conveyEmail"></div>
                                 </div>
                             </div><br>
                             <div id="deliveryInfo" style="display: none;">
                                 <div class="infoTitle">배송지 정보 <span id="exclamation" onmouseenter="deliveryCaution()" onmouseleave="deliveryCautionEnd()">!</span>
                                     <div id="deliveryRadio">
                                         <input type="radio" id="same" name="address" onclick="ChangeAddressInfo(1)"><label for="same">주문자 정보와 동일</label>
-                                        <input type="radio" id="latest" name="address" onclick="ChangeAddressInfo(2)"><label for="latest">최근 배송지</label>
                                         <input type="radio" id="new" name="address" onclick="ChangeAddressInfo(3)"><label for="new">새로 입력</label>
                                     </div>
                                 </div>

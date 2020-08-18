@@ -38,6 +38,7 @@ public interface InterMainDAO {
 	// 쿠폰이 존재하는지 확인
 	int getCouponIs(HashMap<String, String> couponMap);
 
-	
+	// 쿠폰 발급하기
+	int getCoupon(HashMap<String, String> couponMap);
 	
 }

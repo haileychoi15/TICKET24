@@ -202,10 +202,19 @@ public class MainController {
 		}
 		else {
 			// 쿠폰 insert
+			int m = service.getCoupon(couponMap);
+			
+			if(m == 1) {
+				resultNum = 0;
+			}
+			else {
+				resultNum = 2;
+			}
 		}
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("resultNum", resultNum);
+		jsonObj.put("couponName", couponName);
 		
 		return jsonObj.toString();
 		

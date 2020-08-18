@@ -23,7 +23,7 @@
     		
     		
     		$("#modify").click(function(){
-    			validateForm();
+    			modifyInfo();
     		});
     		
     		
@@ -46,44 +46,6 @@
 			frm.action = "<%= ctxPath%>/infoDelete.action";
 			frm.submit();
     		
-    	}
-    	
-    	function validateForm() {
-
-    		// 유효성 검사
-    	    let rePW = /^[a-zA-Z0-9]{8,20}$/; // 패스워드 정규식
-    	    let reEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
-    	    let reMobile = /^[0-9]{3,4}$/; // 모바일 정규식
-
-    	    let passwd = document.querySelector('#user_pw');
-    	    let email = document.querySelector('#user_email');
-    	    let mobile = document.querySelectorAll('.mobile');
-    	    
-    	    if(!rePW.test(passwd.value)) {
-    	    	passwd.style.borderBottom = 'solid 1px red';
-    	    	return false;
-    	    }
-    	    
-    	    if(!reEmail.test(email.value)) {
-    	    	email.style.borderBottom = 'solid 1px red';
-    	    	return false;
-    	    }
-    	        
-    	    if(!reMobile.test(mobile[0].value)) {
-    	    	mobile[0].style.borderBottom = 'solid 1px red';
-    	    	return false;
-    	    }
-    	    
-    	    if(!reMobile.test(mobile[1].value)) {
-    	    	mobile[1].style.borderBottom = 'solid 1px red';
-    	    	return false;
-    	    }
-    	    
-    	    if(!reMobile.test(mobile[2].value)) {
-    	    	mobile[2].style.borderBottom = 'solid 1px red';
-    	    	return false;
-    	    }
-    		return modifyInfo();
     	}
     	
     </script>

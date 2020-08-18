@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.model.MemberVO;
 import com.spring.service.InterPayService;
 
 @Component
@@ -38,7 +39,7 @@ public class PayController {
 		
 		mav.addObject("loginuser", loginuser);
 		
-		String showNum = request.getAttribute("showNum");
+		String showNum = request.getAttribute("prodID");
 */
 		String showNum = "1";
 		mav.addObject("showNum", showNum);
@@ -70,10 +71,10 @@ public class PayController {
 	/*public String requiredLogin_seatStatus(HttpServletRequest request, HttpServletResponse response) {*/
 	public String seatStatus(HttpServletRequest request, HttpServletResponse response) {
 	
-		String jsonStr = "";
 		String showDay = request.getParameter("showDay");
 		String showRound = request.getParameter("showRound");
 		String showNum = request.getParameter("prodID");
+		
 		HashMap<String, String> seatMap = new HashMap<>();
 		seatMap.put("showDay", showDay);
 		seatMap.put("showRound", showRound);
@@ -136,28 +137,28 @@ public class PayController {
 	}
 	
 	// == 결제 실행 API 띄우기 == //
-		@RequestMapping(value="/payComplete.action")
-		/*public ModelAndView requiredLogin_payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
-		public ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
-			
-		/*
-			HttpSession session = request.getSession();
-			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-			
-			mav.addObject("loginuser", loginuser);
-			
-			String showNum = request.getAttribute("showNum");
-			ShowVO show = service.getShowInfo(showNum); // 공연 전체 정보를 집어넣을 필요 있을까?
-			
-			mav.addObject("show", show);
-	*/
+	@RequestMapping(value="/payComplete.action")
+	/*public ModelAndView requiredLogin_payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
+	public ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+	/*
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		mav.addObject("loginuser", loginuser);
+		
+		String showNum = request.getAttribute("showNum");
+		ShowVO show = service.getShowInfo(showNum); // 공연 전체 정보를 집어넣을 필요 있을까?
+		
+		mav.addObject("show", show);
+*/
 //			HashMap<String, String> payMap = new HashMap<>(); // 결제창에 보낼 정보 여러개일까..?
 //			mav.addObject("payMap", payMap);
-			
-			
-			mav.setViewName("reserve/payComplete.notiles");
-			return mav;
-		}
+		
+		
+		mav.setViewName("reserve/payComplete.notiles");
+		return mav;
+	}
 	
 	// == 결제 후 에매 확인 창 띄우기 == //
 	@RequestMapping(value="/reserveCheck.action")
@@ -168,18 +169,34 @@ public class PayController {
 		return mav;
 	}
 	
-	// == 회원 수정 페이지 비밀번호 확인 == //
-	@RequestMapping(value="/Member/MyPage_reconfirm.action")
-	public ModelAndView requiredLogin_reconfirm(ModelAndView mav) {
-		return mav;
-	}
+	// == 사용가능한 쿠폰 목록가져오기 == //
+	@ResponseBody
+	@RequestMapping(value="/takeCoupon.action", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	/*public String requriedLogin_takeCoupon(HttpServletRequest request, HttpServletResponse response) {*/
+	public String takeCoupon(HttpServletRequest request, HttpServletResponse response) {
 	
-	
-	// == 회원 수정 페이지 == //
-	@RequestMapping(value="/Member/userInfoUpt.action")
-	public ModelAndView requiredLogin_userInfoUpt(ModelAndView mav) {
-		return mav;
-	}
+//		HttpSession session = request.getSession();
+//		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+//		
+//		String userid = loginuser.getUserid();
+		String userid = "guzi10";
+
+		JSONArray jsonArr = new JSONArray();
 		
+		List<HashMap<String, String>> takeCoupon = service.takeCoupon(userid);
+		
+		if(takeCoupon != null) {
+			for(HashMap<String, String> coupon : takeCoupon ) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("coupon_dc", coupon.get("coupon_dc"));
+				jsonObj.put("coupon_name", coupon.get("coupon_name"));
+				
+				jsonArr.put(jsonObj);
+			}
+		}
+		
+		return jsonArr.toString();
+	}
+	
 	
 }

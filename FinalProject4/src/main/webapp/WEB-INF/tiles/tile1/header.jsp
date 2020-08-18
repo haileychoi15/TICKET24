@@ -176,7 +176,7 @@ String ctxPath = request.getContextPath();
                         </c:if>
                     </li>
                     <li class="user-box-item">
-                        <a href=""> 마이티켓 </a>
+                        <a href="<%=ctxPath%>/myTicket.action"> 마이티켓 </a>
                     </li>
                     <li class="user-box-item">
                         <a href="<%=ctxPath%>/myPage.action"> 마이페이지 </a>

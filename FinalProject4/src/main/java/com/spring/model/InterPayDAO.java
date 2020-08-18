@@ -22,5 +22,8 @@ public interface InterPayDAO {
 
 	// == 공연 일시 코드 가져오기 == //
 	String getDateId(HashMap<String, String> seatMap);
+
+	// == 결제창 사용가능 쿠폰 가져오기 == //
+	List<HashMap<String, String>> takeCoupon(String userid);
 	
 }

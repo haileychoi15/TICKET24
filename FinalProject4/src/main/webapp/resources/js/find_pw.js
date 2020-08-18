@@ -28,7 +28,7 @@ function validateCode() {
 function ajaxCode(code) {
 
     let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/findIDEnd.action', code); // ###
+    makeRequest('/finalproject4/verifyCertificationAjax.action',code); // ###
 
     function makeRequest(url, code) {
 
@@ -47,7 +47,7 @@ function ajaxCode(code) {
                 console.log('response : ',response);
 
                 if(Number(response) === 1){
-                    window.location.href = '';
+                    window.location.href = '/finalproject4/updatePW.action';
                 }
                 else{ // 인증번호가 일치하지 않으면
                     code.classList.add('wrong');
@@ -87,7 +87,7 @@ function validateInput() {
 function ajaxInfo(userid, email) {
 
     let httpRequest = new XMLHttpRequest();
-    makeRequest('/finalproject4/findIDEnd.action', userid, email); // ###
+    makeRequest('/finalproject4/findPWEnd.action', userid, email); // ###
 
     function makeRequest(url, userid, email) {
 

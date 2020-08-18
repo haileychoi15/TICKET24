@@ -45,9 +45,35 @@ public interface InterMemberService {
 	int updatePW(HashMap<String, String> paraMap); // 비밀번호 변경
 
 	List<HashMap<String, String>> pointList(String userid); // 포인트 적립 내역
+	List<HashMap<String, String>> qnaList(String userid); // 나의 문의 내역
+	List<HashMap<String, String>> couponList(String userid); // 쿠폰 내역
+	List<HashMap<String, String>> qnaList2(String userid); // 관리자 답변 내역
+	
+	String qnaCount(String userid); // 내 문의 갯수
+	String couponCount(String userid); // 내 쿠폰 개수
 
 
-	void pointPlus(HashMap<String, String> paraMap); // === AOP === 포인트추가
+	List<HashMap<String, String>> myReserveList(String userid); // 내 예매 내역
+	List<HashMap<String, String>> myReviewList(String userid); // 내 리뷰 내역
+	List<HashMap<String, String>> myLikeList(String userid);	// 내 선호 공연 내역
+
+	String reserveCount(String userid); // 내 예매 개수
+	String reviewCount(String userid); // 내 리뷰 개수
+	String likeCount(String userid);	// 내 선호 공연 개수
+
+
+
+
+
+
+
+	
+
+
+	
+
+
+	
 
 
 
