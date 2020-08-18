@@ -45,7 +45,7 @@
 	
     </style>
     
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=713478ea9084b9fc9e6f5c1cc4d5d95f"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=713478ea9084b9fc9e6f5c1cc4d5d95f&libraries=services"></script>
     <script src="https://kit.fontawesome.com/3625c042d9.js" crossorigin="anonymous"></script>
    	<script src='resources/js/fullcalendar/main.js'></script>
     <script src="resources/js/fullcalendar/ko.js"></script>
@@ -182,8 +182,8 @@
      								//	 "	<div class='desc' style='padding:5px; font-size:9pt;'>"+
      								//	 "      <a href='https://map.kakao.com/link/map/코엑스디홀,"+json.map_lat+","+json.map_lng+"' style='color:blue;' target='_blank'>큰지도</a>"+
      								//	 "      <a href='https://map.kakao.com/link/to/코엑스디홀,"+json.map_lat+","+json.map_lng+' style='color:blue;' target='_blank'>길찾기</a>"+
-     									 "	<div class='desc' style='padding:5px; font-size:9pt;'><a href='https://map.kakao.com/link/map/,"+json.map_lng+","+json.map_lat+"' style='color:blue;' target='_blank'>큰지도</a>"+
-     									 "  <a href='https://map.kakao.com/link/to/코엑스D홀,"+json.map_lng+","+json.map_lat+"' style='color:blue' target='_blank'>길찾기</a></div>"+
+     									 "	<div class='desc' style='padding:5px; font-size:9pt;'><a href='https://map.kakao.com/link/map/"+json.map_name+","+json.map_lng+","+json.map_lat+"' style='color:blue;' target='_blank'>큰지도</a>"+
+     									 "  <a href='https://map.kakao.com/link/to/"+json.map_name+","+json.map_lng+","+json.map_lat+"' style='color:blue' target='_blank'>길찾기</a></div>"+
      									 "  </div>"+
      									 "</div>";
      					console.log(Number(json.map_lat)+": map_lat,"+Number(json.map_lng)+": map_lng");
@@ -323,6 +323,8 @@
         		
     	    };
     	}
+        
+        
         
         function goShowtime(time) {
         	var showtime = document.getElementById('showtime');
@@ -1137,6 +1139,36 @@
         </div>
     </div>
 </section>
+<!-- 
+<div class="map_wrap">
+    
+    <ul id="category">
+        <li id="BK9" data-order="0"> 
+            <span class="category_bg bank"></span>
+            은행
+        </li>       
+        <li id="MT1" data-order="1"> 
+            <span class="category_bg mart"></span>
+            마트
+        </li>  
+        <li id="PM9" data-order="2"> 
+            <span class="category_bg pharmacy"></span>
+            약국
+        </li>  
+        <li id="OL7" data-order="3"> 
+            <span class="category_bg oil"></span>
+            주유소
+        </li>  
+        <li id="CE7" data-order="4"> 
+            <span class="category_bg cafe"></span>
+            카페
+        </li>  
+        <li id="CS2" data-order="5"> 
+            <span class="category_bg store"></span>
+            편의점
+        </li>      
+    </ul>
+</div> -->
 <section class="map" >
     <div class="container">
         <div class="row">
