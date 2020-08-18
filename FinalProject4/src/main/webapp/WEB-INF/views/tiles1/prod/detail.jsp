@@ -189,6 +189,7 @@
              let fk_userid = document.getElementById('fk_userid');
              if(fk_userid.value === '') {
              alert('공연 예매는 로그인이 필요합니다.');
+             location.href="<%=ctxPath%>/login.action"
              return false;
              }
             
@@ -598,7 +599,10 @@
 	<input type="hidden" name="conveyEmail" value="${sessionScope.loginuser.email}">
 	<input type="hidden" name="conveyHP1" value="${sessionScope.loginuser.hp1}">
 	<input type="hidden" name="conveyHP2" value="${sessionScope.loginuser.hp2}">
-<input type="hidden" name="conveyHP3" value="${sessionScope.loginuser.hp3}">
+	<input type="hidden" name="conveyHP3" value="${sessionScope.loginuser.hp3}">
+	<input type="hidden" name="conveyPostcode" value="${sessionScope.loginuser.postcode}">
+	<input type="hidden" name="conveyAddress" value="${sessionScope.loginuser.address}">
+	<input type="hidden" name="conveyDetailAddress" value="${sessionScope.loginuser.detailAddress}">
 </form>
 					<!-- finalproject4/reservePopUp.action 으로 예매하기 데이터 넘기는 부분 -->
 					

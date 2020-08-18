@@ -3087,3 +3087,34 @@ from
 group by parentProdId
 having(parentProdId = 1)
 -- 총 평균평점
+
+
+drop table yes_coupon purge;
+create table yes_coupon
+(coupon_id          varchar2(10)  not null  -- 쿠폰번호
+    ,coupon_dc          number(10)    not null  -- 할인금액
+    ,coupon_status      number(1)     not null  -- 사용상태
+    ,coupon_newdate     date default sysdate -- 발급일자
+    ,coupon_usedate     date                 -- 사용일자
+    ,coupon_olddate     date                 -- 사용기한(만료날짜)
+    ,coupon_name        varchar2(100) not null  -- 쿠폰명
+    ,coupon_condition   varchar2(100) default '모든 공연 가능'       -- 사용조건
+    ,fk_userid          varchar2(20)  not null  -- 사용가능회원코드
+    ,fk_prod_id         number        not null  -- 사용가능공연코드
+    ,constraint PK_coupon_id primary key(coupon_id)
+    ,constraint fk_prod_id_coupon foreign key(fk_prod_id) references prod(prod_id)
+);
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id)
+values('AB3C212C3D', 5000, 1, sysdate, null, sysdate +4, '[2020 캣츠 내한공연] 5천원 할인 쿠폰', default, 'guzi10', 1);
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id)
+values('AB4C212C3D', 10000, 1, sysdate, null, sysdate +2, '[2020 특별재난쿠폰] 코로나 재난쿠폰', default, 'guzi10', 2);
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id)
+values('AB5C212C3D', 4000, 1, sysdate, null, sysdate +10, '김밥일번가 쿠폰', default, 'guzi10', 3);
+
+insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id)
+values('AB6C212C3D', 2500, 1, sysdate, null, sysdate +7, 'MOMO 커피 쿠폰', default, 'guzi10', 4);
+
+commit;
