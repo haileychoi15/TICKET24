@@ -6,24 +6,24 @@
 
 	<!-- === MainPage === -->
 	<select id="getProdList" parameterType="String" resultType="com.spring.model.ProdVO">
-		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
-		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, to_char(date_start, 'yyyy-mm-dd') as date_start, to_char(date_end, 'yyyy-mm-dd') as date_end
+		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
 		from prod
 		where fk_category_id = #{category}
 		order by info_open_date desc
 	</select>
 	
 	<select id="getHotProdList" parameterType="String" resultType="com.spring.model.ProdVO">
-		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
-		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, to_char(date_start, 'yyyy-mm-dd') as date_start, to_char(date_end, 'yyyy-mm-dd') as date_end
+		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
 		from prod
 		where fk_category_id = #{category}
 		order by info_qnty desc
 	</select>
 	
 	<select id="getlocalRecProdList" parameterType="String" resultType="com.spring.model.ProdVO">
-		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
-		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, to_char(date_start, 'yyyy-mm-dd') as date_start, to_char(date_end, 'yyyy-mm-dd') as date_end
+		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
 		from prod
 		where fk_category_id = #{category}
 		order by info_qnty desc
@@ -860,7 +860,7 @@
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 	<!-- 상품상세페이지로 이동 -->
 	<select id="prodDetail" parameterType="String" resultType="com.spring.model.ProdVO">
-		select prod_id, prod_img, prod_detail_img, prod_title, info_open_date, info_close_date, info_grade, info_run_time
+		select prod_id, prod_img, prod_detail_img, prod_title, to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_grade, info_run_time
     		 , map_name, map_address, local 
 		from view_detail_prod
 		where prod_id = #{seq}

@@ -15,50 +15,22 @@
     <h1>프로모션 공연</h1>
     <div class="promotion-area">
         <ul class="promotion-group list-group">
+        
+        	<c:forEach items="${prodList}" var="pvo" varStatus="">
             <li class="promotion-item">
                 <a href>
                     <div class="promotion-item-image">
-                        <img src="resources/images/${prodList.get(0).prod_img}" alt="${prodList.get(0).prod_title}">
+                        <a href="detail.action?seq=${pvo.prod_id}"><img src="resources/images/${pvo.prod_img}" alt="${pvo.prod_title}" /></a>
                     </div>
                     <div class="promotion-item-content">
-                        <h3>${prodList.get(0).prod_title}</h3>
-                        <p>${prodList.get(0).date_start} ~ ${prodList.get(0).date_end} ${prodList.get(0).map_name}</p>
+                        <h3>${pvo.prod_title}</h3>
+                        <p>${pvo.date_start} ~ ${pvo.date_end} ${pvo.map_name}</p>
+                        <p>${pvo.info_open_date} ~ ${pvo.info_close_date} ${pvo.map_name}</p>
                     </div>
                 </a>
             </li>
-            <li class="promotion-item">
-                <a href>
-                    <div class="promotion-item-image">
-                        <img src="resources/images/${prodList.get(1).prod_img}" alt="${prodList.get(1).prod_title}">
-                    </div>
-                    <div class="promotion-item-content">
-                        <h3>${prodList.get(1).prod_title}</h3>
-                        <p>${prodList.get(1).date_start} ~ ${prodList.get(1).date_end} ${prodList.get(1).map_name}</p>
-                    </div>
-                </a>
-            </li>
-            <li class="promotion-item">
-                <a href>
-                    <div class="promotion-item-image">
-                        <img src="resources/images/${prodList.get(2).prod_img}" alt="${prodList.get(2).prod_title}">
-                    </div>
-                    <div class="promotion-item-content">
-                        <h3>${prodList.get(2).prod_title}</h3>
-                        <p>${prodList.get(2).date_start} ~ ${prodList.get(2).date_end} ${prodList.get(2).map_name}</p>
-                    </div>
-                </a>
-            </li>
-            <li class="promotion-item">
-                <a href>
-                    <div class="promotion-item-image">
-                        <img src="resources/images/${prodList.get(3).prod_img}" alt="${prodList.get(3).prod_title}">
-                    </div>
-                    <div class="promotion-item-content">
-                        <h3>${prodList.get(3).prod_title}</h3>
-                        <p>${prodList.get(3).date_start} ~ ${prodList.get(3).date_end} ${prodList.get(3).map_name}</p>
-                    </div>
-                </a>
-            </li>
+            </c:forEach>
+            
         </ul>
         <button type="button" class="prev-button" aria-label="Previous slide"></button>
         <button type="button" class="next-button" aria-label="Next slide"></button>
@@ -71,13 +43,16 @@
                 <h2 class="section-title">WHAT'S HOT</h2>
             </div>
         </div>
+        
+        
         <div class="row">
+        
             <div class="col12 col-md-6">
                 <ul class="card-list list-group">
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="resources/images/${hotProdList.get(0).prod_img}" alt="${hotProdList.get(0).prod_title}" />
+                                <a href="detail.action?seq=${hotProdList.get(0).prod_id}"><img src="resources/images/${hotProdList.get(0).prod_img}" alt="${hotProdList.get(0).prod_title}" /></a>
                             </div>
                             <div class="card-desc">
                                 <h3 class="card-title common-title">${hotProdList.get(0).prod_title}</h3>
@@ -88,7 +63,7 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="resources/images/${hotProdList.get(1).prod_img}" alt="${hotProdList.get(1).prod_title}" />
+                                <a href="detail.action?seq=${hotProdList.get(1).prod_id}"><img src="resources/images/${hotProdList.get(1).prod_img}" alt="${hotProdList.get(1).prod_title}" /></a>
                                 <span class="sr-only">Discount rate</span>
                                 <strong class="notice-sticker">30%</strong>
                             </div>
@@ -105,7 +80,7 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                 <img src="resources/images/${hotProdList.get(2).prod_img}" alt="${hotProdList.get(2).prod_title}" />
+                                 <a href="detail.action?seq=${hotProdList.get(2).prod_id}"><img src="resources/images/${hotProdList.get(2).prod_img}" alt="${hotProdList.get(2).prod_title}" /></a>
                             </div>
                             <div class="card-desc">
                                 <h3 class="card-title common-title">${hotProdList.get(2).prod_title}</h3>
@@ -116,7 +91,7 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="resources/images/${hotProdList.get(3).prod_img}" alt="${hotProdList.get(3).prod_title}" />
+                                <a href="detail.action?seq=${hotProdList.get(3).prod_id}"><img src="resources/images/${hotProdList.get(3).prod_img}" alt="${hotProdList.get(3).prod_title}" /></a>
                             </div>
                             <div class="card-desc">
                                 <h3 class="card-title common-title">${hotProdList.get(3).prod_title}</h3>
@@ -126,14 +101,18 @@
                     </li>
                 </ul>
             </div>
+            
         </div>
+        
+        
         <div class="row">
+        
             <div class="col12 col-md-6">
                 <ul class="card-list list-group">
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="resources/images/${hotProdList.get(4).prod_img}" alt="${hotProdList.get(4).prod_title}" />
+                                <a href="detail.action?seq=${hotProdList.get(4).prod_id}"><img src="resources/images/${hotProdList.get(4).prod_img}" alt="${hotProdList.get(4).prod_title}" /></a>
                             </div>
                             <h3 class="card-title common-title">${hotProdList.get(4).prod_title}</h3>
                             <strong class="card-content common-content">${hotProdList.get(4).map_name}</strong>
@@ -142,7 +121,7 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="resources/images/${hotProdList.get(5).prod_img}" alt="${hotProdList.get(5).prod_title}" />
+                                <a href="detail.action?seq=${hotProdList.get(5).prod_id}"><img src="resources/images/${hotProdList.get(5).prod_img}" alt="${hotProdList.get(5).prod_title}" /></a>
                                 <span class="sr-only">Discount rate</span>
                                 <strong class="notice-sticker">30%</strong>
                             </div>
@@ -159,7 +138,7 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                                <img src="resources/images/${hotProdList.get(6).prod_img}" alt="${hotProdList.get(6).prod_title}" />
+                                <a href="detail.action?seq=${hotProdList.get(6).prod_id}"><img src="resources/images/${hotProdList.get(6).prod_img}" alt="${hotProdList.get(6).prod_title}" /></a>
                             </div>
                             <div class="card-desc">
                                 <h3 class="card-title common-title">${hotProdList.get(6).prod_title}</h3>
@@ -170,7 +149,7 @@
                     <li class="card">
                         <a href="">
                             <div class="card-image common-image">
-                            	<img src="resources/images/${hotProdList.get(7).prod_img}" alt="${hotProdList.get(7).prod_title}" />
+                            	<a href="detail.action?seq=${hotProdList.get(7).prod_id}"><img src="resources/images/${hotProdList.get(7).prod_img}" alt="${hotProdList.get(7).prod_title}" /></a>
                             </div>
                             <div class="card-desc">
                                <h3 class="card-title common-title">${hotProdList.get(7).prod_title}</h3>
@@ -180,7 +159,9 @@
                     </li>
                 </ul>
             </div>
+            
         </div>
+        
     </div>
 </section>
 <c:if test="${param.category == 2}">
@@ -229,7 +210,7 @@
                                 <dl>
                                     <dt class="ranking-item-ranking">1위</dt>
                                     <dd class="ranking-item-image hide">
-                                        <img src="resources/images/${hotProdList.get(0).prod_img}" alt="${hotProdList.get(0).prod_title}" />
+                                        <a href="detail.action?seq=${hotProdList.get(0).prod_id}"><img src="resources/images/${hotProdList.get(0).prod_img}" alt="${hotProdList.get(0).prod_title}" /></a>
                                     </dd>
                                     <dd class="ranking-item-content">
                                         <strong class="ranking-item-title">${hotProdList.get(0).prod_title}</strong>
@@ -244,7 +225,7 @@
                                 <dl>
                                     <dt class="ranking-item-ranking">2위</dt>
                                     <dd class="ranking-item-image hide">
-                                        <img src="resources/images/${hotProdList.get(1).prod_img}" alt="${hotProdList.get(1).prod_title}" />
+                                        <a href="detail.action?seq=${hotProdList.get(1).prod_id}"><img src="resources/images/${hotProdList.get(1).prod_img}" alt="${hotProdList.get(1).prod_title}" /></a>
                                     </dd>
                                     <dd class="ranking-item-content">
                                         <strong class="ranking-item-title">${hotProdList.get(1).prod_title}</strong>
@@ -259,7 +240,7 @@
                                 <dl>
                                     <dt class="ranking-item-ranking">3위</dt>
                                     <dd class="ranking-item-image hide">
-                                        <img src="resources/images/${hotProdList.get(2).prod_img}" alt="${hotProdList.get(2).prod_title}" />
+                                        <a href="detail.action?seq=${hotProdList.get(2).prod_id}"><img src="resources/images/${hotProdList.get(2).prod_img}" alt="${hotProdList.get(2).prod_title}" /></a>
                                     </dd>
                                     <dd class="ranking-item-content">
                                         <strong class="ranking-item-title">${hotProdList.get(2).prod_title}</strong>
@@ -274,7 +255,7 @@
                                 <dl>
                                 	<dt class="ranking-item-ranking">4위</dt>
                                     <dd class="ranking-item-image hide">
-                                    	<img src="resources/images/${hotProdList.get(3).prod_img}" alt="${hotProdList.get(3).prod_title}" />
+                                    	<a href="detail.action?seq=${hotProdList.get(3).prod_id}"><img src="resources/images/${hotProdList.get(3).prod_img}" alt="${hotProdList.get(3).prod_title}" /></a>
                                     </dd>
                                     <dd class="ranking-item-content">
                                         <strong class="ranking-item-title">${hotProdList.get(3).prod_title}</strong>
@@ -289,7 +270,7 @@
                                 <dl>
                                     <dt class="ranking-item-ranking">5위</dt>
                                     <dd class="ranking-item-image hide">
-                                    	<img src="resources/images/${hotProdList.get(4).prod_img}" alt="${hotProdList.get(4).prod_title}" />
+                                    	<a href="detail.action?seq=${hotProdList.get(4).prod_id}"><img src="resources/images/${hotProdList.get(4).prod_img}" alt="${hotProdList.get(4).prod_title}" /></a>
                                     </dd>
                                     <dd class="ranking-item-content">
                                         <strong class="ranking-item-title">${hotProdList.get(4).prod_title}</strong>
@@ -309,7 +290,7 @@
                         <li class="place-item image-transition">
                             <a href="">
                                 <div class="place-item-image">
-                                    <img src="resources/images/${localRecProdList.get(0).prod_img}" alt="${localRecProdList.get(0).prod_title}" />
+                                    <a href="detail.action?seq=${localRecProdList.get(0).prod_id}"><img src="resources/images/${localRecProdList.get(0).prod_img}" alt="${localRecProdList.get(0).prod_title}" /></a>
                                     <strong class="place-sticker">울산</strong>
                                 </div>
                                 <strong class="place-item-title">${localRecProdList.get(0).prod_title}</strong>
@@ -320,7 +301,7 @@
                         <li class="place-item image-transition">
                             <a href="">
                                 <div class="place-item-image">
-                                    <img src="resources/images/${localRecProdList.get(1).prod_img}" alt="${localRecProdList.get(1).prod_title}" />
+                                    <a href="detail.action?seq=${localRecProdList.get(1).prod_id}"><img src="resources/images/${localRecProdList.get(1).prod_img}" alt="${localRecProdList.get(1).prod_title}" /></a>
                                     <strong class="place-sticker">광주</strong>
                                 </div>
                                 <strong class="place-item-title">${localRecProdList.get(1).prod_title}</strong>
@@ -331,7 +312,7 @@
                         <li class="place-item image-transition">
                             <a href="">
                                 <div class="place-item-image">
-                                    <img src="resources/images/${localRecProdList.get(2).prod_img}" alt="${localRecProdList.get(2).prod_title}" />
+                                    <a href="detail.action?seq=${localRecProdList.get(2).prod_id}"><img src="resources/images/${localRecProdList.get(2).prod_img}" alt="${localRecProdList.get(2).prod_title}" /></a>
                                     <strong class="place-sticker">부산</strong>
                                 </div>
                                 <strong class="place-item-title">${localRecProdList.get(2).prod_title}</strong>
