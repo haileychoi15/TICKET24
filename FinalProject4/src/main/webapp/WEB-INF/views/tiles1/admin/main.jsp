@@ -31,10 +31,10 @@
     <div id="container">
         <div id="top">
             <div class="myInfo">
-                <div class="imgDiv"><img src="resources/images/myInfo.png" alt="myInfoImg" width="80px"></div>
+                <div class="imgDiv"><i class="fas fa-user-cog" style="font-size: 40pt;"></i></div>
                 <div id="idDiv">
                     <div class="myInfo">
-                        <div id="myID">${sessionScope.loginuser.userid }</div>
+                        <div id="myID">${sessionScope.loginuser.userid} </div>
                         <div id="logout"><button type="button" onclick="location.href='<%=ctxPath%>/logout.action'">로그아웃</button></div>
                     </div>
                     <div class="aDiv"><a href="<%=ctxPath%>/modifyInfo.action" id="modifyInfo">&nbsp;정보 수정</a></div>
