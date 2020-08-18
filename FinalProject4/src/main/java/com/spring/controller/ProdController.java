@@ -56,8 +56,7 @@ public class ProdController {
 		String date = request.getParameter("chooseDate");
 		String seq = request.getParameter("seq");
 		
-
-		System.out.println(date);
+	//	System.out.println(date);
 		
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("date", date);
@@ -110,7 +109,7 @@ public class ProdController {
 			m = "추천취소";
 		}
 		
-		System.out.println("existlike : "+existlike);
+	//	System.out.println("existlike : "+existlike);
 		/*
 		if(existlike.equals("0")) { // 사용자에 해당 글번호에 대한 추천이 존재하지 않는다면
 			n = service.likeProd(paraMap);
@@ -136,7 +135,7 @@ public class ProdController {
 
 		String prod_id = request.getParameter("prod_id");
 		String fk_userid = request.getParameter("fk_userid");
-		System.out.println(prod_id);
+	//	System.out.println(prod_id);
 		
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("prod_id", prod_id);
@@ -146,8 +145,8 @@ public class ProdController {
 		
 		int existlike = service.existlike(paraMap); // 같은 아이디의 같은 글번호의 추천이 존재하는지 확인
 		
-		System.out.println("likeProdCnt" + likeProdCnt);
-		System.out.println("existlike" + existlike);
+	//	System.out.println("likeProdCnt" + likeProdCnt);
+	//	System.out.println("existlike" + existlike);
 
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("likeProdCnt", likeProdCnt);

@@ -3320,3 +3320,1614 @@ select prod_id, prod_img, prod_detail_img, prod_title, to_char(info_open_date, '
 from view_detail_prod
 where prod_id = 1;
 
+select * from yes_qna;
+
+
+select prod_id, map_id, map_name, map_address, local, map_lng, map_lat, map_url
+from view_detail_prod
+where prod_id = 11;
+
+
+create or replace view view_detail_prod
+as
+select P.prod_id, P.prod_img, P.prod_detail_img, P.prod_title, P.info_open_date, P.info_close_date, P.info_grade, P.info_run_time
+    , M.map_id, M.map_name, M.map_address, substr(M.map_address, 0,2) as local, map_lng, map_lat, map_url
+    --, S.seat_type, S.seat_price , S.seat_color
+from prod P
+JOIN yes_show_map M
+ON P.map_id = M.map_id;
+
+select * from yes_show_map;
+
+select * from yes_qna;
+select * from yes_faq;
+select * from yes_notice;
+
+
+
+---------------------prod 테이블에 map_id 컬럼 추가하기 ---------------------------
+-----------***prod 테이블에 map_id 컬럼이 없는 경우에만 추가하기****--------------
+
+ALTER TABLE prod ADD(map_id number);
+
+ALTER TABLE prod DROP map_id;
+
+
+select * from prod;
+alter table prod modify(info_run_time varchar2(20));
+-------------------------------------------------------------------------------------------------------
+
+
+
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(61,1,3,'오케스트라 앙상블 서울 OES의 베토벤 시리즈 IV','classic_11m.jpg','classic_11L.jpg',to_date('2020/08/18','yyyy/mm/dd'),to_date('2020/08/18','yyyy/mm/dd'),1,'12세 이상','100분',default);
+--예술의전당 콘서트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(62,1,47,'드밑트리 시쉬킨 피아노 리사이틀','classic_12m.jpg','classic_12L.jpg',to_date('2020/08/12','yyyy/mm/dd'),to_date('2020/08/12','yyyy/mm/dd'),1,'8세 이상','80분',default);
+--예술의전당 IBK 챔버홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(63,1,3,'코리안심포니오케스트라 <넥스트 스테이지>','classic_13m.jpg','classic_13L.jpg',to_date('2020/08/19','yyyy/mm/dd'),to_date('2020/08/19','yyyy/mm/dd'),1,'8세 이상','90분',default);
+--예술의전당 콘서트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(64,1,48,'제 20주년 기념 대전국제음악제 <최재혁, 김유빈 and 앙상블 블랭크>','classic_14m.jpg','classic_14L.jpg',to_date('2020/08/06','yyyy/mm/dd'),to_date('2020/08/06','yyyy/mm/dd'),1,'8세 이상','80분',default);
+--예술의전당 앙상블홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(65,1,49,'제 20주년 기념 대전 국제음악제 <베토벤 탄생 250주년 기념콘서트>','classic_15m.jpg','classic_15L.jpg',to_date('2020/08/03','yyyy/mm/dd'),to_date('2020/08/03','yyyy/mm/dd'),1,'8세 이상','90분',default);
+--예술의전당 아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(66,1,3,'김선욱 피아노 리사이틀','classic_16m.jpg','classic_16L.jpg',to_date('2020/09/13','yyyy/mm/dd'),to_date('2020/09/13','yyyy/mm/dd'),1,'8세 이상','80분',default);
+--예술의전당 콘서트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(67,1,47,'피아졸라 바흐를 만나다','classic_17m.jpg','classic_17L.jpg',to_date('2020/08/22','yyyy/mm/dd'),to_date('2020/08/22','yyyy/mm/dd'),1,'8세 이상','100분',default);
+--예술의전당 IBK 챔버홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(68,1,4,'2020 엘 토요 콘서트 : 토요 클래식 산책','classic_18m.jpg','classic_18L.jpg',to_date('2020/07/18','yyyy/mm/dd'),to_date('2020/11/21','yyyy/mm/dd'),1,'7세 이상','80분',default);
+--롯데콘서트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(69,1,47,'트리오 씰(C.Y.L) 창단연주회','classic_19m.jpg','classic_19L.jpg',to_date('2020/08/08','yyyy/mm/dd'),to_date('2020/08/08','yyyy/mm/dd'),1,'8세 이상','110분',default);
+--예술의전당 IBK 챔버홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(70,1,50,'이정선 귀국 피아노 독주회','classic_20m.jpg','classic_20L.jpg',to_date('2020/08/22','yyyy/mm/dd'),to_date('2020/08/22','yyyy/mm/dd'),1,'8세 이상','110분',default);
+--예술의전당 리사이틀홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(71,1,47,'2020 해설이 있는 청소년음악회[이럴때 이런음악]','classic_21m.jpg','classic_21L.jpg',to_date('2020/08/22','yyyy/mm/dd'),to_date('2020/08/22','yyyy/mm/dd'),1,'8세 이상','100분',default);
+--예술의전당 IBK 챔버홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(72,1,3,'한화생명과 함께하는 예술의 전당 11시 콘서트','classic_22m.jpg','classic_22L.jpg',to_date('2020/09/10','yyyy/mm/dd'),to_date('2020/09/10','yyyy/mm/dd'),1,'8세 이상','100분',default);
+--예술의전당 콘서트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(73,1,51,'김아름 피아노 리사이틀','classic_23m.jpg','classic_23L.jpg',to_date('2020/08/22','yyyy/mm/dd'),to_date('2020/08/22','yyyy/mm/dd'),1,'7세 이상','80분',default);
+--영산아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(74,1,3,'마르크 앙드레 아믈랭 피아노 리사이틀','classic_24m.jpg','classic_24L.jpg',to_date('2020/09/12','yyyy/mm/dd'),to_date('2020/09/12','yyyy/mm/dd'),1,'8세 이상','100분',default);
+--예술의전당 콘서트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(75,1,48,'2020 아침을 여는 클래식','classic_25m.jpg','classic_25L.jpg',to_date('2020/12/08','yyyy/mm/dd'),to_date('2020/12/08','yyyy/mm/dd'),1,'8세 이상','80분',default);
+--예술의전당 앙상블홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(76,1,52,'김유빈 플루트 독주회[French Night]','classic_26m.jpg','classic_26L.jpg',to_date('2020/12/08','yyyy/mm/dd'),to_date('2020/12/08','yyyy/mm/dd'),1,'8세 이상','80분',default);
+--티엘아이 아트센터
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(77,1,4,'썸머프리즈 : 김광민','classic_27m.jpg','classic_27L.jpg',to_date('2020/08/15','yyyy/mm/dd'),to_date('2020/08/15','yyyy/mm/dd'),1,'7세 이상','110분',default);
+--롯데 콘서트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(78,1,4,'Music in the Dark : Momentum','classic_28m.jpg','classic_28L.jpg',to_date('2020/08/11','yyyy/mm/dd'),to_date('2020/08/11','yyyy/mm/dd'),1,'7세 이상','90분',default);
+--롯데 콘서트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(79,1,6,'국립발레단(History of KNB Movement Series)','classic_29m.jpg','classic_29L.jpg',to_date('2020/08/01','yyyy/mm/dd'),to_date('2020/08/02','yyyy/mm/dd'),1,'8세 이상','90분',default);
+--예술의전당 CJ토월극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(80,1,6,'[2020 대한민국 오페라페스티벌] 김선국제오페라단 세빌리아의 이발사','classic_30m.jpg','classic_30L.jpg',to_date('2020/08/14','yyyy/mm/dd'),to_date('2020/08/16','yyyy/mm/dd'),1,'8세 이상','150분',default);
+--예술의전당 오페라극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(81,2,53,'내일은 미스트롯 전국투어 콘서트','concert_11m.jpg','concert_11L.jpg',to_date('2020/10/09','yyyy/mm/dd'),to_date('2020/10/09','yyyy/mm/dd'),1,'7세 이상','120분',default);
+--한국소리문화의전당 야외공연장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(82,2,54,'재즈 명반을 만나다 - Getz/Gitberto','concert_12m.jpg','concert_12L.jpg',to_date('2020/08/23','yyyy/mm/dd'),to_date('2020/08/23','yyyy/mm/dd'),1,'8세 이상','120분',default);
+--JCC아트센터 콘서트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(83,2,55,'뻔하지않은듯 펀한 페스티벌','concert_13m.jpg','concert_13L.jpg',to_date('2020/08/22','yyyy/mm/dd'),to_date('2020/08/22','yyyy/mm/dd'),1,'12세 이상','-미정-',default);
+--연세대학교 노천극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(84,2,56,'서울숲재즈페스티벌 2020공식티켓','concert_14m.jpg','concert_14L.jpg',to_date('2020/10/09','yyyy/mm/dd'),to_date('2020/10/11','yyyy/mm/dd'),1,'12세 이상','-미정-',default);
+--서울숲공원 일대
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(85,2,57,'2020 장윤정 라이브 콘서트','concert_15m.jpg','concert_15L.jpg',to_date('2020/12/09','yyyy/mm/dd'),to_date('2020/12/19','yyyy/mm/dd'),1,'7세 이상','120분',default);
+--KBS부산홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(86,2,58,'크리스토퍼 내한공연(CHRISTOPHER LIVE IN SEOUL)','concert_16m.jpg','concert_16L.jpg',to_date('2020/10/09','yyyy/mm/dd'),to_date('2020/10/11','yyyy/mm/dd'),1,'15세 이상','70분',default);
+--yes24 라이브홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(87,2,59,'KB RAPBEAT FESTIVAL 2020','concert_17m.jpg','concert_17L.jpg',to_date('2021/05/07','yyyy/mm/dd'),to_date('2021/05/09','yyyy/mm/dd'),1,'15세 이상','70분',default);
+--서울랜드
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(88,2,60,'[2020 울산서머페스벌]','concert_18m.jpg','concert_18L.jpg',to_date('2020/08/20','yyyy/mm/dd'),to_date('2020/08/23','yyyy/mm/dd'),1,'7세 이상','70분',default);
+--울산 태화강 국가정원 야외공연장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(89,2,60,'박상민 니가 그리운 날엔','concert_19m.jpg','concert_19L.jpg',to_date('2020/07/22','yyyy/mm/dd'),to_date('2020/08/16','yyyy/mm/dd'),1,'6세 이상','120분',default);
+--대학로 아티스탄홀
+
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(90,2,48,'2020 인문학콘서트 (빅데이터 전문가 송길영의 진정성의 시대)','concert_20m.jpg','concert_20L.jpg',to_date('2020/11/12','yyyy/mm/dd'),to_date('2020/11/12','yyyy/mm/dd'),1,'8세 이상','80분',default);
+--예술의전당 앙상블홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(91,2,61,'라움으로 헤쳐모여![세대공방]','concert_21m.jpg','concert_21L.jpg',to_date('2020/06/24','yyyy/mm/dd'),to_date('2020/08/19','yyyy/mm/dd'),1,'7세 이상','60분',default);
+--소셜베뉴 라움
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(92,2,62,'사람 : 너와 나 사이의 거리 -9월의 랑데북-','concert_22m.jpg','concert_22L.jpg',to_date('2020/09/24','yyyy/mm/dd'),to_date('2020/09/24','yyyy/mm/dd'),1,'7세 이상','100분',default);
+--경기아트센터 소극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(93,2,24,'세종시공연장상주단체 이모션콘텐츠','concert_23m.jpg','concert_23L.jpg',to_date('2020/09/24','yyyy/mm/dd'),to_date('2020/09/24','yyyy/mm/dd'),1,'7세 이상','120분',default);
+--세종시문화예술관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(94,2,24,'세종시문화재단 2020','concert_24m.jpg','concert_24L.jpg',to_date('2020/08/14','yyyy/mm/dd'),to_date('2020/08/14','yyyy/mm/dd'),1,'8세 이상','110분',default);
+--세종시문화예술회관
+commit;
+
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(95,3,62,'뮤지컬 빨래','musical_11m.jpg','musical_11L.jpg',to_date('2020/08/14','yyyy/mm/dd'),to_date('2020/08/14','yyyy/mm/dd'),1,'8세 이상','110분',default);
+--경기아트센터 소극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(96,3,24,'세종시문화재단 기획공연 창작음악극[더 클라운]','musical_12m.jpg','musical_12L.jpg',to_date('2020/08/13','yyyy/mm/dd'),to_date('2020/08/13','yyyy/mm/dd'),1,'5세 이상','75분',default);
+--세종시문화예술회관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(97,3,63,'뮤지컬 [무인도 탈출기]','musical_13m.jpg','musical_13L.jpg',to_date('2020/08/28','yyyy/mm/dd'),to_date('2020/09/27','yyyy/mm/dd'),1,'8세 이상','110분',default);
+--대학로 동양예술극장 2관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(98,3,38,'가족뮤지컬 [인어공주]','musical_14m.jpg','musical_14L.jpg',to_date('2020/07/25','yyyy/mm/dd'),to_date('2020/08/09','yyyy/mm/dd'),1,'전체연령가','50분',default);
+--대백프라임홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(99,3,38,'뮤지컬 써니텐','musical_15m.jpg','musical_15L.jpg',to_date('2020/07/12','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'10세 이상','100분',default);
+--JOB SQURE
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(100,3,42,'어린이성교육뮤지컬 [엄마는 안가르쳐 줘]','musical_16m.jpg','musical_16L.jpg',to_date('2020/06/25','yyyy/mm/dd'),to_date('2020/08/15','yyyy/mm/dd'),1,'10세 이상','100분',default);
+--대학로 시온아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(101,3,64,'뮤지컬<김종욱찾기>','musical_17m.jpg','musical_17L.jpg',to_date('2019/01/26','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'8세 이상','100분',default);
+--대학로컬쳐스페이스 엔유
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(102,3,1,'뮤지컬<작은 아씨들>','musical_18m.jpg','musical_18L.jpg',to_date('2020/11/24','yyyy/mm/dd'),to_date('2020/12/30','yyyy/mm/dd'),1,'7세 이상','110분',default);
+--세종문화회관 M씨어터
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(103,3,65,'가족뮤지컬[도서관에 간 사자]','musical_19m.jpg','musical_19L.jpg',to_date('2020/03/28','yyyy/mm/dd'),to_date('2020/08/29','yyyy/mm/dd'),1,'3세 이상','60분',default);
+--북촌아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(104,3,46,'오리지널 가족뮤지컬[넌 특별하단다]','musical_20m.jpg','musical_20L.jpg',to_date('2020/02/29','yyyy/mm/dd'),to_date('2020/03/31','yyyy/mm/dd'),1,'3세 이상','60분',default);
+--제주 한라아트홀 대극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(105,3,10,'뮤지컬 아모르파티','musical_21m.jpg','musical_21L.jpg',to_date('2020/08/29','yyyy/mm/dd'),to_date('2020/08/30','yyyy/mm/dd'),1,'7세 이상','150분',default);
+--부산 벡스코 제1전시장 1홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(106,3,66,'동춘 서커스','musical_22m.jpg','musical_22L.jpg',to_date('2019/05/30','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'전체연령가','90분',default);
+--안산 대부도 동춘서커스 빅탑극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(107,3,14,'알앤디웍스 콘서트','musical_23m.jpg','musical_23L.jpg',to_date('2020/08/14','yyyy/mm/dd'),to_date('2020/08/16','yyyy/mm/dd'),1,'8세 이상','120분',default);
+--광림아트센터 BBCH홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(108,3,40,'아기돼지삼형제','musical_24m.jpg','musical_24L.jpg',to_date('2020/08/29','yyyy/mm/dd'),to_date('2020/08/30','yyyy/mm/dd'),1,'전체연령가','55분',default);
+--롯데백화점 대구점 7층 문화홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(109,3,67,'어린이마술쇼 신비한 놀이터','musical_25m.jpg','musical_25L.jpg',to_date('2020/10/16','yyyy/mm/dd'),to_date('2020/10/17','yyyy/mm/dd'),1,'4세 이상','60분',default);
+--가평문화예술회관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(110,3,68,'겨울왕국뮤지컬[겨울이야기]','musical_26m.jpg','musical_26L.jpg',to_date('2020/08/29','yyyy/mm/dd'),to_date('2020/08/29','yyyy/mm/dd'),1,'3세 이상','60분',default);
+--청주아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(111,3,69,'2020 뮤지컬 천로역정','musical_27m.jpg','musical_27L.jpg',to_date('2019/07/13','yyyy/mm/dd'),to_date('2020/08/29','yyyy/mm/dd'),1,'10세 이상','100분',default);
+--목촌아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(112,3,70,'2020 세종 이도의 꿈','musical_28m.jpg','musical_28L.jpg',to_date('2020/10/02','yyyy/mm/dd'),to_date('2020/11/29','yyyy/mm/dd'),1,'3세 이상','60분',default);
+--경복궁아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(113,3,71,'꽃보다 슈퍼스타(꽃슈스)','musical_29m.jpg','musical_29L.jpg',to_date('2014/05/01','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'7세 이상','90분',default);
+--대학로 마로니에극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(114,3,72,'난타(NANTA)','musical_30m.jpg','musical_30L.jpg',to_date('2012/04/01','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'2세 이상','100분',default);
+--제주 난타 theater
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(115,4,73,'코믹빙의 뮤지컬[오 나의 귀신님]','theater_11m.jpg','theater_11L.jpg',to_date('2020/08/27','yyyy/mm/dd'),to_date('2020/10/25','yyyy/mm/dd'),1,'14세 이상','100분',default);
+--상무지구 기분좋은극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(116,4,39,'2020 예술의전당 어린이 가족 페스티벌 <에스메의 여름>','theater_12m.jpg','theater_12L.jpg',to_date('2020/08/01','yyyy/mm/dd'),to_date('2020/08/14','yyyy/mm/dd'),1,'4세 이상','60분',default);
+--예술의전당 자유소극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(117,4,74,'공포연극 조각','theater_13m.jpg','theater_13L.jpg',to_date('2020/07/03','yyyy/mm/dd'),to_date('2020/08/30','yyyy/mm/dd'),1,'13세 이상','100분',default);
+--전주 한해랑아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(118,4,75,'연극 [옥탑방 고양이]','theater_14m.jpg','theater_14L.jpg',to_date('2018/03/01','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'13세 이상','100분',default);
+--대학로 틴틴홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(119,4,76,'코믹추리극 <셜록홈즈>','theater_15m.jpg','theater_15L.jpg',to_date('2020/01/06','yyyy/mm/dd'),to_date('2020/09/30','yyyy/mm/dd'),1,'5세 이상','90분',default);
+--대학로 연극 M씨어터
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(120,4,39,'2020 예술의전당 어린이 가족 페스티벌(네네네)','theater_16m.jpg','theater_16L.jpg',to_date('2020/08/19','yyyy/mm/dd'),to_date('2020/08/23','yyyy/mm/dd'),1,'4세 이상','50분',default);
+--예술의전당 자유소극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(121,4,77,'연극 [뷰티풀라이프]','theater_17m.jpg','theater_17L.jpg',to_date('2018/02/20','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'8세 이상','90분',default);
+--대학로 JTN아트홀 4관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(122,4,78,'레트로코믹극 연극 라면','theater_18m.jpg','theater_18L.jpg',to_date('2020/04/04','yyyy/mm/dd'),to_date('2020/09/30','yyyy/mm/dd'),1,'12세 이상','100분',default);
+--대학로 컬쳐씨어터
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(123,4,79,'코믹연극 달동네','theater_19m.jpg','theater_19L.jpg',to_date('2020/12/11','yyyy/mm/dd'),to_date('2020/12/13','yyyy/mm/dd'),1,'8세 이상','100분',default);
+--광주 국립아시아문화전당 예술극장 극장2
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(124,4,80,'2020 심리스릴러 연극 새빨간 거짓말','theater_20m.jpg','theater_20L.jpg',to_date('2020/07/03','yyyy/mm/dd'),to_date('2020/08/16','yyyy/mm/dd'),1,'14세 이상','100분',default);
+--부산 메트로홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(125,4,79,'러브액츄얼리 오리지날 크리스마스 특별공연','theater_21m.jpg','theater_21L.jpg',to_date('2020/12/24','yyyy/mm/dd'),to_date('2020/12/26','yyyy/mm/dd'),1,'11세 이상','100분',default);
+--광주 국립아시아문화전당 예술극장 극장2
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(126,4,67,'어린이마술쇼 신비한 놀이터','theater_22m.jpg','theater_22L.jpg',to_date('2020/10/16','yyyy/mm/dd'),to_date('2020/10/17','yyyy/mm/dd'),1,'8세 이상','100분',default);
+--가평문화예술회관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(127,4,81,'연극 [친정엄마와 2박3일]','theater_23m.jpg','theater_23L.jpg',to_date('2020/10/10','yyyy/mm/dd'),to_date('2020/10/11','yyyy/mm/dd'),1,'7세 이상','100분',default);
+--엑스코 오디토리움
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(128,4,82,'연극 [신비한 요리집]','theater_24m.jpg','theater_24L.jpg',to_date('2020/10/10','yyyy/mm/dd'),to_date('2020/10/11','yyyy/mm/dd'),1,'14세 이상','90분',default);
+--대전 아신극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(129,4,83,'연극 [죽여주는 이야기]','theater_25m.jpg','theater_25L.jpg',to_date('2018/02/21','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'7세 이상','100분',default);
+--대학로 삼형제극장 죽여주는 이야기 전용관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(130,4,84,'리얼생존휴먼판타지-연극 2호선세입자','theater_26m.jpg','theater_26L.jpg',to_date('2019/03/15','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'13세 이상','90분',default);
+--대학로 바탕골 소극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(131,4,85,'연극 [안나라수마나라]','theater_27m.jpg','theater_27L.jpg',to_date('2019/09/23','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'10세 이상','90분',default);
+--업스테이지
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(132,4,86,'연극 [오싹한연애]','theater_28m.jpg','theater_28L.jpg',to_date('2020/05/23','yyyy/mm/dd'),to_date('2020/09/06','yyyy/mm/dd'),1,'13세 이상','100분',default);
+--대학로 열린극장
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(133,4,87,'공포연극 자취','theater_29m.jpg','theater_29L.jpg',to_date('2020/02/28','yyyy/mm/dd'),to_date('2020/09/30','yyyy/mm/dd'),1,'10세 이상','90분',default);
+--대학로 댕로홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(134,4,88,'(리얼타임)코믹연극 택시안에서','theater_30m.jpg','theater_30L.jpg',to_date('2019/03/15','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'12세 이상','100분',default);
+--해바라기 소극장
+commit;
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(135,5,89,'낙산,이화마을 여행','exhibition_11m.jpg','exhibition_11L.jpg',to_date('2019/03/15','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'12세 이상','100분',default);
+--1호선 동대문역 6번 출구
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(136,5,90,'다시 꿈을 꾸는 북촌','exhibition_12m.jpg','exhibition_12L.jpg',to_date('2013/09/26','yyyy/mm/dd'),to_date('2020/08/30','yyyy/mm/dd'),1,'전체연령가','사이트참조',default);
+--3호선 안국역 4번출구
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(137,5,91,'단양 오션플레이','exhibition_13m.jpg','exhibition_13L.jpg',to_date('2013/09/27','yyyy/mm/dd'),to_date('2020/08/16','yyyy/mm/dd'),1,'전체연령가','사이트참조',default);
+--단양 오션플레이
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(138,5,92,'덕수궁 궁궐야행','exhibition_14m.jpg','exhibition_14L.jpg',to_date('2018/07/10','yyyy/mm/dd'),to_date('2020/10/31','yyyy/mm/dd'),1,'7세 이상','120분',default);
+--덕수궁
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(139,5,92,'덕수궁 돌담길투어','exhibition_15m.jpg','exhibition_15L.jpg',to_date('2018/07/14','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'7세 이상','120분',default);
+--덕수궁
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(140,5,92,'덕수궁 인문학산책','exhibition_16m.jpg','exhibition_16L.jpg',to_date('2018/10/01','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'7세 이상','120분',default);
+--덕수궁
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(141,5,93,'델피노 오션플레이','exhibition_17m.jpg','exhibition_17L.jpg',to_date('2018/09/01','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'8세 이상','사이트참조',default);
+--델피노 오션플레이
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(142,5,94,'변산 오션플레이','exhibition_18m.jpg','exhibition_18L.jpg',to_date('2013/09/27','yyyy/mm/dd'),to_date('2020/08/30','yyyy/mm/dd'),1,'전체연령가','사이트참조',default);
+--변산 오션플레이
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(143,5,95,'선릉 인문학산책','exhibition_19m.jpg','exhibition_19L.jpg',to_date('2019/01/01','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'10세 이상','120분',default);
+--선릉
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(144,5,96,'스릴과 짜릿한 재미가 넘치는 [내린천 래프팅 레포츠]','exhibition_20m.jpg','exhibition_20L.jpg',to_date('2019/07/01','yyyy/mm/dd'),to_date('2020/09/30','yyyy/mm/dd'),1,'6세 이상','120분',default);
+--내린천
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(145,5,32,'쏠비치 아쿠아월드','exhibition_21m.jpg','exhibition_21L.jpg',to_date('2013/09/26','yyyy/mm/dd'),to_date('2020/08/30','yyyy/mm/dd'),1,'전체연령가','사이트참조',default);
+--양양쏠비치아쿠아월드
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(146,5,97,'예술인의 마을, 서촌','exhibition_22m.jpg','exhibition_22L.jpg',to_date('2018/07/14','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'11세 이상','120분',default);
+--3호선 경복궁역 4번출구
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(147,5,44,'곤충파충류 체험전','exhibition_23m.jpg','exhibition_23L.jpg',to_date('2020/04/30','yyyy/mm/dd'),to_date('2020/08/16','yyyy/mm/dd'),1,'전체연령가','120분',default);
+--용인 리빙파워센터 2층 전시관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(148,5,98,'전세계 외국인과 온라인 언어교환','exhibition_24m.jpg','exhibition_24L.jpg',to_date('2020/07/24','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'성인','60분',default);
+--온라인 모임
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(149,5,99,'정동진독립영화제','exhibition_25m.jpg','exhibition_25L.jpg',to_date('2020/08/07','yyyy/mm/dd'),to_date('2020/08/09','yyyy/mm/dd'),1,'전체연령가','200분',default);
+--강릉시 정동초등학교
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(150,5,100,'창경궁 궁궐야행','exhibition_26m.jpg','exhibition_26L.jpg',to_date('2019/01/25','yyyy/mm/dd'),to_date('2020/10/31','yyyy/mm/dd'),1,'8세 이상','120분',default);
+--창경궁
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(151,5,100,'창경궁의 인문학산책','exhibition_27m.jpg','exhibition_27L.jpg',to_date('2018/11/13','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'10세 이상','120분',default);
+--창경궁
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(152,5,100,'창경궁의 인문학산책 - 야간개장','exhibition_28m.jpg','exhibition_28L.jpg',to_date('2019/01/01','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'10세 이상','120분',default);
+--창경궁
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(153,5,101,'창덕궁의 인문학산책','exhibition_29m.jpg','exhibition_29L.jpg',to_date('2018/10/01','yyyy/mm/dd'),to_date('2020/12/31','yyyy/mm/dd'),1,'10세 이상','120분',default);
+--창덕궁
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(154,5,102,'천안오션파크','exhibition_30m.jpg','exhibition_30L.jpg',to_date('2018/04/28','yyyy/mm/dd'),to_date('2020/08/23','yyyy/mm/dd'),1,'10세 이상','120분',default);
+--천안오션파크
+
+commit;
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(155,6,103,'브릭라이브','infant_11m.jpg','infant_11L.jpg',to_date('2020/05/25','yyyy/mm/dd'),to_date('2020/08/31','yyyy/mm/dd'),1,'3세 이상','미정',default);
+--세종 마크원에비뉴 5층
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(156,6,67,'어린이마술쇼 신비한 놀이터','infant_12m.jpg','infant_12L.jpg',to_date('2020/10/16','yyyy/mm/dd'),to_date('2020/10/17','yyyy/mm/dd'),1,'4세 이상','60분',default);
+--가평문화예술회관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(157,6,68,'겨울왕국 뮤지컬 [겨울이야기]','infant_13m.jpg','infant_13L.jpg',to_date('2020/08/29','yyyy/mm/dd'),to_date('2020/08/30','yyyy/mm/dd'),1,'3세 이상','60분',default);
+--청주아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(158,6,70,'2020 세종 이도의 꿈','infant_14m.jpg','infant_14L.jpg',to_date('2020/10/02','yyyy/mm/dd'),to_date('2020/11/29','yyyy/mm/dd'),1,'3세 이상','60분',default);
+--경복궁아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(159,6,65,'가족뮤지컬[도서관에 간 사자]','infant_15m.jpg','infant_15L.jpg',to_date('2020/03/28','yyyy/mm/dd'),to_date('2020/08/29','yyyy/mm/dd'),1,'3세 이상','60분',default);
+--북촌아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(160,6,1,'가족음악극(한여름 밤의 꿈)','infant_16m.jpg','infant_16L.jpg',to_date('2021/01/08','yyyy/mm/dd'),to_date('2021/01/31','yyyy/mm/dd'),1,'5세 이상','70분',default);
+--세종문화회관 M씨어터
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(161,6,70,'독도 아리랑','infant_17m.jpg','infant_17L.jpg',to_date('2020/08/01','yyyy/mm/dd'),to_date('2020/09/27','yyyy/mm/dd'),1,'3세 이상','60분',default);
+--경복궁아트홀
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(162,6,104,'뮤지컬<봄날의 곰>','infant_18m.jpg','infant_18L.jpg',to_date('2020/04/25','yyyy/mm/dd'),to_date('2020/10/31','yyyy/mm/dd'),1,'4세 이상 ','60분',default);
+--대학로 세우아트센터 1관
+
+insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
+info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
+values(163,6,105,'연극 시간을 파는 상점','infant_19m.jpg','infant_19L.jpg',to_date('2017/10/01','yyyy/mm/dd'),to_date('2020/09/30','yyyy/mm/dd'),1,'8세 이상 ','80분',default);
+--파랑씨어터
+
+commit;
+
+
+
+
+select * from yes_show_date;
+delete from yes_show_date;
+commit;
+
+
+drop sequence seq_show_date;
+create sequence seq_show_date
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 1, to_date('2020/08/20','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 1, to_date('2020/08/20','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 1, to_date('2020/08/22','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 1, to_date('2020/08/22','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 2, to_date('2020/08/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 2, to_date('2020/08/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 3, to_date('2020/08/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 3, to_date('2020/08/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 4, to_date('2020/08/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 4, to_date('2020/08/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 5, to_date('2020/07/28','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 5, to_date('2020/07/28','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 6, to_date('2020/11/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 6, to_date('2020/11/12','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 7, to_date('2020/09/04','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 7 to_date('2020/09/05','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 8, to_date('2020/08/18','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 8, to_date('2020/08/20','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 9, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 9, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 10, to_date('2020/07/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 10, to_date('2020/07/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 11, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 11, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 12, to_date('2020/08/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 12, to_date('2020/08/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 13, to_date('2020/08/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 13, to_date('2020/08/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 14, to_date('2020/08/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 14, to_date('2020/08/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 15, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 15, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 16, to_date('2020/11/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 16, to_date('2020/11/11','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 16, to_date('2020/11/15','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 16, to_date('2020/11/15','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 16, to_date('2020/11/15','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 16, to_date('2020/11/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 17, to_date('2020/09/04','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 17, to_date('2020/09/05','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 18, to_date('2020/08/18','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 18, to_date('2020/08/18','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 19, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 19, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 20, to_date('2020/07/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 20, to_date('2020/07/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 21, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 21, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 22, to_date('2020/08/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 22, to_date('2020/08/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 23, to_date('2020/08/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 23, to_date('2020/08/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 24, to_date('2020/08/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 24, to_date('2020/08/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 25, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 25, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 26, to_date('2020/11/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 26, to_date('2020/11/11','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 27, to_date('2020/09/04','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 27, to_date('2020/09/05','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 28, to_date('2020/08/18','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 28, to_date('2020/08/19','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 28, to_date('2020/08/20','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 28, to_date('2020/08/21','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 28, to_date('2020/08/22','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 29, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 29, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 30, to_date('2020/07/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 30, to_date('2020/07/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 31, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 31, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 32, to_date('2020/08/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 32, to_date('2020/08/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 33, to_date('2020/08/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 33, to_date('2020/08/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 34, to_date('2020/08/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 34, to_date('2020/08/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 35, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 35, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 36, to_date('2020/11/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 36, to_date('2020/11/12','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 36, to_date('2020/11/13','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 36, to_date('2020/11/14','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 36, to_date('2020/11/15','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 37, to_date('2020/09/04','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 37, to_date('2020/09/05','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 38, to_date('2020/08/18','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 38, to_date('2020/08/22','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 39, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 39, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 40, to_date('2020/07/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 40, to_date('2020/07/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 41, to_date('2020/08/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 41, to_date('2020/08/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 42, to_date('2020/08/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 42, to_date('2020/08/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 43, to_date('2020/08/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 43, to_date('2020/08/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 44, to_date('2020/08/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 44, to_date('2020/08/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 45, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 45, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 46, to_date('2020/11/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 46, to_date('2020/11/15','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 47, to_date('2020/09/04','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 47, to_date('2020/09/05','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 48, to_date('2020/08/18','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 48, to_date('2020/08/22','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 49, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 49, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 50, to_date('2020/07/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 50, to_date('2020/07/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 51, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 51, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 52, to_date('2020/08/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 52, to_date('2020/08/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 53, to_date('2020/08/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 53, to_date('2020/08/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 54, to_date('2020/08/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 54, to_date('2020/08/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 55, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 55, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 56, to_date('2020/11/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 56, to_date('2020/11/15','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 57, to_date('2020/09/04','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 57, to_date('2020/09/05','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 58, to_date('2020/08/18','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 58, to_date('2020/08/18','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 59, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 59, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 60, to_date('2020/07/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 60, to_date('2020/07/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 61, to_date('2020/08/18','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 61, to_date('2020/08/18','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 62, to_date('2020/08/12','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 62, to_date('2020/08/12','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 63, to_date('2020/08/19','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 63, to_date('2020/08/19','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 64, to_date('2020/08/06','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 64, to_date('2020/08/06','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 65, to_date('2020/08/03','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 65, to_date('2020/08/03','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 66, to_date('2020/09/13','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 66, to_date('2020/09/13','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 67, to_date('2020/08/22','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 67, to_date('2020/08/22','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 68, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 68, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 69, to_date('2020/08/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 69, to_date('2020/08/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 70, to_date('2020/08/22','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 70, to_date('2020/08/22','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 71, to_date('2020/08/22','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 71, to_date('2020/08/22','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 72, to_date('2020/09/10','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 72, to_date('2020/09/10','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 73, to_date('2020/08/22','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 73, to_date('2020/08/22','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 74, to_date('2020/09/12','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 74, to_date('2020/09/12','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 75, to_date('2020/12/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 75, to_date('2020/12/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 76, to_date('2020/12/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 76, to_date('2020/12/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 77, to_date('2020/08/15','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 77, to_date('2020/08/15','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 78, to_date('2020/08/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 78, to_date('2020/08/11','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 79, to_date('2020/08/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 79, to_date('2020/08/02','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 80, to_date('2020/08/14','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 80, to_date('2020/08/15','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 80, to_date('2020/08/16','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 81, to_date('2020/10/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 81, to_date('2020/10/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 82, to_date('2020/08/23','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 82, to_date('2020/08/23','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 83, to_date('2020/08/22','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 83, to_date('2020/08/22','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 84, to_date('2020/10/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 84, to_date('2020/10/10','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 84, to_date('2020/10/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 85, to_date('2020/12/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 85, to_date('2020/12/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 86, to_date('2020/10/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 86, to_date('2020/10/10','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 86, to_date('2020/10/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 87, to_date('2021/05/07','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 87, to_date('2021/05/07','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 88, to_date('2020/08/20','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 88, to_date('2020/08/23','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 89, to_date('2020/08/16','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 89, to_date('2020/08/16','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 90, to_date('2020/11/12','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 90, to_date('2020/11/12','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 91, to_date('2020/08/19','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 91, to_date('2020/08/19','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 92, to_date('2020/09/24','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 92, to_date('2020/09/24','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 93, to_date('2020/09/24','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 93, to_date('2020/09/24','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 94, to_date('2020/08/14','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 94, to_date('2020/08/14','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 95, to_date('2020/08/14','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 95, to_date('2020/08/14','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 96, to_date('2020/08/13','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 96, to_date('2020/08/13','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 97, to_date('2020/08/28','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 97, to_date('2020/08/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 98, to_date('2020/08/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 98, to_date('2020/08/09','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 99, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 99, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 100, to_date('2020/08/15','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 100, to_date('2020/08/15','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 101, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 101, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 102, to_date('2020/11/24','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 102, to_date('2020/12/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 103, to_date('2020/08/29','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 103, to_date('2020/08/29','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 104, to_date('2020/03/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 104, to_date('2020/03/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 105, to_date('2020/08/29','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 105, to_date('2020/08/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 106, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 106, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 107, to_date('2020/08/16','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 107, to_date('2020/08/16','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 108, to_date('2020/08/29','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 108, to_date('2020/08/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 109, to_date('2020/10/16','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 109, to_date('2020/10/17','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 110, to_date('2020/08/29','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 110, to_date('2020/08/29','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 111, to_date('2020/08/29','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 111, to_date('2020/08/29','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 112, to_date('2020/10/12','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 112, to_date('2020/11/29','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 113, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 113, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 114, to_date('2020/12/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 114, to_date('2020/12/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 115, to_date('2020/10/25','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 115, to_date('2020/10/25','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 116, to_date('2020/08/14','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 116, to_date('2020/08/14','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 117, to_date('2020/08/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 117, to_date('2020/08/30','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 118, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 118, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 119, to_date('2020/09/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 119, to_date('2020/09/30','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 120, to_date('2020/08/19','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 120, to_date('2020/08/23','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 121, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 121, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 122, to_date('2020/09/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 122, to_date('2020/09/30','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 123, to_date('2020/12/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 123, to_date('2020/12/12','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 123, to_date('2020/12/13','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 124, to_date('2020/08/16','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 124, to_date('2020/08/16','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 125, to_date('2020/12/24','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 125, to_date('2020/12/25','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 125, to_date('2020/12/26','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 126, to_date('2020/10/16','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 126, to_date('2020/10/17','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 127, to_date('2020/10/10','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 127, to_date('2020/10/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 128, to_date('2020/10/10','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 128, to_date('2020/10/11','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 129, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 129, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 130, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 130, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 131, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 131, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 132, to_date('2020/09/06','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 132, to_date('2020/09/06','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 133, to_date('2020/09/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 133, to_date('2020/09/30','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 134, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 134, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 135, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 135, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 136, to_date('2020/08/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 136, to_date('2020/08/30','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 137, to_date('2020/08/16','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 137, to_date('2020/08/16','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 138, to_date('2020/10/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 138, to_date('2020/10/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 139, to_date('2020/12/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 139, to_date('2020/12/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 140, to_date('2020/10/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 140, to_date('2020/10/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 141, to_date('2020/09/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 141, to_date('2020/09/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 142, to_date('2020/08/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 142, to_date('2020/08/30','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 143, to_date('2020/12/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 143, to_date('2020/12/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 144, to_date('2020/09/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 144, to_date('2020/09/30','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 145, to_date('2020/08/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 145, to_date('2020/08/30','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 146, to_date('2020/12/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 146, to_date('2020/12/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 147, to_date('2020/08/16','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 147, to_date('2020/08/16','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 148, to_date('2020/12/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 148, to_date('2020/12/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 149, to_date('2020/08/07','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 149, to_date('2020/08/09','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 150, to_date('2020/10/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 150, to_date('2020/10/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 151, to_date('2020/11/13','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 151, to_date('2020/11/13','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 152, to_date('2020/12/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 152, to_date('2020/12/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 153, to_date('2020/10/01','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 153, to_date('2020/10/01','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 154, to_date('2020/08/23','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 154, to_date('2020/08/23','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 155, to_date('2020/08/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 155, to_date('2020/08/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 156, to_date('2020/10/16','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 156, to_date('2020/10/17','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 157, to_date('2020/08/29','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 157, to_date('2020/08/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 158, to_date('2020/10/02','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 158, to_date('2020/10/02','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 159, to_date('2020/08/29','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 159, to_date('2020/08/29','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 160, to_date('2021/01/08','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 160, to_date('2021/01/08','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 161, to_date('2020/09/27','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 161, to_date('2020/09/27','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 162, to_date('2020/10/31','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 162, to_date('2020/10/31','yyyy/mm/dd'), '2회차 7시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 163, to_date('2020/09/30','yyyy/mm/dd'), '1회차 4시');
+
+insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
+values(seq_show_date.nextval, 163, to_date('2020/09/30','yyyy/mm/dd'), '2회차 7시');
+
+commit;

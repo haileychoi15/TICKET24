@@ -926,7 +926,7 @@
 		order by review_id desc -->
 		select rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
 		from(
-			select rownum as rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
+			select rownum as rno, review_id, fk_userid, name, content, star, to_char(regDate, 'yyyy-mm-dd') as regDate, parentProdId, status
 			from yes_review
 			where status = 1 and parentProdId = #{parentProdId}
 			order by review_id desc
@@ -994,6 +994,22 @@
 		where fk_parentProdId = #{prod_id} and fk_userid = #{fk_userid}
 	</select>
 		
+	<!-- mapInfoList -->
+	<resultMap type="HashMap" id="mapInfoMap">	
+		<result property="prod_id"  	column="prod_id"  		javaType="String" />
+		<result property="map_id"  	 	column="map_id"  		javaType="String" />
+		<result property="map_name"  	column="map_name"  		javaType="String" />	
+		<result property="map_address" 	column="map_address" 	javaType="String" />	
+		<result property="local" 		column="local" 			javaType="String" />
+		<result property="map_lat" 		column="map_lat" 		javaType="String" />
+		<result property="map_lng" 		column="map_lng" 		javaType="String" />
+		<result property="map_url" 		column="map_url" 		javaType="String" />
+	</resultMap>
+	<select id="mapInfo" parameterType="HashMap" resultMap="mapInfoMap">
+		select prod_id, map_id, map_name, map_address, local, map_lat, map_lng, map_url
+		from view_detail_prod
+		where prod_id = #{prod_id}
+	</select>
 		
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 

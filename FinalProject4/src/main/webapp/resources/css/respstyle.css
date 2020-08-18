@@ -9,6 +9,39 @@ body{
     width:100%;
 }
 
+
+	div.mycontent {
+  		width: 300px;
+  		padding: 5px 3px;
+  	}
+  	
+  	div.mycontent>.title {
+  		font-size: 12pt;
+  		font-weight: bold;
+  		background-color: #d95050;
+  		color: #fff;
+  	}
+  	
+  	div.mycontent>.title>a {
+  		text-decoration: none;
+  		color: #fff;
+  	}
+  	
+  	
+  	div.mycontent>.desc {
+  	 /* border: solid 1px red; */
+  		padding: 10px 0 0 0;
+  		color: #000;
+  		font-weight: normal;
+  		font-size: 9pt;
+  	}
+  	
+  	div.mycontent>.desc>img {
+  		width: 50px;
+  		height: 50px;
+  	}
+
+
 .return-top-button{
     position: relative;
     width: 30px;
@@ -1223,7 +1256,7 @@ button,input,textarea{
     .ticketing .ticketing-desc {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         border: none;
         padding: 20px 0;
@@ -1231,7 +1264,7 @@ button,input,textarea{
 
     .ticketing #calendar {
         margin-bottom: 0;
-        margin-right: 20px;
+        width:60%;
         position: relative;
     }
 
