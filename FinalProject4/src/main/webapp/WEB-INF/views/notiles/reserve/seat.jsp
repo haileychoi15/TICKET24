@@ -369,11 +369,11 @@
     </div> -->
     
     <form name="payFrm">
-    	<input type="hidden" name="payShowName" value="${getShowRsvInfo.prod_title}"/>
+    	<input type="hidden" name="payShowName" value="${getShowRsvInfo.prod_id}"/>
     	<input type="hidden" name="paySum" value="" id="paySum" />
-    	<input type="hidden" name="payUserEmail" value=""/>
-    	<input type="hidden" name="payUserName" value=""/>
-    	<input type="hidden" name="payReciveMethod" value=""/>
+    	<input type="hidden" name="payNum" value="" id="payNum" />
+    	<input type="hidden" name="seatIdes" value="" id="seatIdes" />
+    	<input type="hidden" name="" value=""/>
     </form>
 </body>
 <jsp:include page="../../../../resources/js/seatSelScript.jsp"/>

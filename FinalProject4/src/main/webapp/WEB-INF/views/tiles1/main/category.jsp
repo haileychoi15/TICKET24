@@ -68,6 +68,7 @@
 </section>
 <main class="product">
     <h2 class="main-title">상품리스트</h2>
+    <p class="notice-count">총&nbsp;<strong><span class="total-prod-count">0</span>개</strong>의 공연이 있습니다.</p>
     <div class="container product-group">
         <div class="row">
             <div class="col12 col-md-6">
@@ -186,7 +187,7 @@
                 <button class="more-button">
                 	더보기
                	    <span class="until-prod-count">0</span>
-            		<span class="total-prod-count">0</span>
+            		<%-- <span class="total-prod-count">0</span> --%>
                	</button>
             </div>
         </div>
