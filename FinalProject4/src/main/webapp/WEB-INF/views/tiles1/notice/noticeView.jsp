@@ -211,7 +211,7 @@
                     <div class="list-button-group">
                         <a href="<%=ctxPath%>/noticeMain.action" role="button">전체목록</a>
                         <a href="<%=ctxPath%>/noticeMain.action" role="button">목록보기</a>
-                        <c:if test="sessionScope.loginuser.userid eq 'admin'">
+                        <c:if test="${sessionScope.loginuser.userid eq 'admin'}">
                             <a href="<%=ctxPath%>/noticeEdit.action?seq=${notivo.notice_id}" role="button">수정</a>
                             <a href="<%=ctxPath%>/noticeDel.action?seq=${notivo.notice_id}" role="button">삭제</a>
                         </c:if>

@@ -818,7 +818,7 @@
                        <a href="#map" class="landing-place">
                            <i class="fas fa-map-marker-alt"></i>
                            ${pvo.map_name}
-                           <input type="text" value="${pvo.prod_id}" >
+                           <%-- <input type="hidden" value="${pvo.prod_id}" > --%>
                        </a>
 
                    </div>
@@ -994,8 +994,8 @@
 
 
 <form name="convey">
-	<input type="text" name="showdate" id="showdate" value="" />
-	<input type="text" name="showtime" id="showtime" value="" />
+	<input type="hidden" name="showdate" id="showdate" value="" />
+	<input type="hidden" name="showtime" id="showtime" value="" />
 	<input type="hidden" name="conveyName" value="${sessionScope.loginuser.name}">
 	<input type="hidden" name="conveyEmail" value="${sessionScope.loginuser.email}">
 	<input type="hidden" name="conveyHP1" value="${sessionScope.loginuser.hp1}">
@@ -1008,7 +1008,7 @@
 					<!-- finalproject4/reservePopUp.action 으로 예매하기 데이터 넘기는 부분 -->
 					
 					
-					<input type="text" id="existlike" value="0" />
+					<input type="hidden" id="existlike" value="0" />
 					<!-- 관심상품이 이미 눌러져있는지 여부를 판단하는 부분 -->
 					
 

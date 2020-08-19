@@ -128,7 +128,7 @@ function ajaxBoard(page) {
                             item.ticketopenday = '해당없음';
                         }
 
-                        html += getBoardTemplate(item.qna_id, item.category, item.subject, item.regDate.substr(0,10), item.name, item.prod_title, item.fk_seq);
+                        html += getBoardTemplate(item.qna_id, item.category, item.subject, item.regDate.substr(0,10), item.name, item.prod_title, item.adminans, item.fk_seq);
                         recodes = item.totalCount;
                     });
 
@@ -190,14 +190,31 @@ function setPageList(pageGroup, page, recodes) { // 현재 누른 페이지, 총
 
 }
 
-function getBoardTemplate(seq, category, title, date, view, file, fk_seq) {
+function getBoardTemplate(seq, category, title, date, name, prod, adminans, fk_seq) {
 
 	if (fk_seq > 0) {
-		fk_seq = "     └Re";
+		fk_seq = '　　<span style="color:red;">└Re </span>';
 	}
 	else {
 		fk_seq = "";
 	}
+	
+	if(name != '관리자') {
+		if (adminans == 0) {
+			adminans = '<span style="color:#ec7d2c;">답변대기</span>';
+		}
+		else {
+			adminans = '<span style="color:#568ade;">답변완료</span>';
+		}
+	}
+	else {
+		adminans = '';
+	}
+	
+	if(prod != ' ' && name != '관리자') {
+		prod = ' <span style="color:#9764a9;">(예매공연 : '+prod+') </span>';
+	}
+	
 	
     let template = `<div class="row">
                     <span class="table-category">
@@ -205,17 +222,18 @@ function getBoardTemplate(seq, category, title, date, view, file, fk_seq) {
                     </span>
                     <span class="table-title">
                         <a href="/finalproject4/qnaView.action?seq=${seq}">
-                            ${fk_seq}${title}
+                            ${fk_seq}${title}${prod}
                         </a>
                     </span>
                     <span class="table-date">
                         ${date}
                     </span>
-                    <span class="table-view">
-                        ${view}
+                    <span class="table-writer">
+                        ${name}
                     </span>
-                    <span class="table-file">
-                        ${file}
+                    
+                    <span class="table-is-answer">
+                        ${adminans}
                     </span>
                 </div>`;
 

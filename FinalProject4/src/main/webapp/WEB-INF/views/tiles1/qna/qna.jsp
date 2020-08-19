@@ -112,7 +112,7 @@
                 <c:set var="name" value="${sessionScope.loginuser.name}" />
                 <input name="name" type="hidden" value="${name}"/>
                 <input name="fk_userid" id="userid" type="hidden" value="${userid}"/>
-                <input name="fk_seq" type="hidden" value="0"/>
+                <input name="fk_seq" type="hidden" value="${prod_id}"/>
                 <div class="modal-table">
                     <div class="row sort">
                         <div class="table-title">구분</div>

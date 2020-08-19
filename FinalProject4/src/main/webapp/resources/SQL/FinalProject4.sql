@@ -587,6 +587,9 @@ nocache;
 select *
 from yes_show_date;
 
+select * 
+from yes_show_date;
+
 insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
 values(seq_show_date.nextval, 1, to_date('2020/09/01','yyyy/mm/dd'), '1회차 9시');
 insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
@@ -644,6 +647,8 @@ nocache;
 
 select *
 from yes_show_map;
+
+delete from yes_show_map;
 
 insert into yes_show_map(map_id, prod_id, map_lng, map_lat, map_name, map_address, map_url)
 values(seq_show_map.nextval, 1, 37.56511284953554, 126.98187860455485, 'YES24 극장', '서울 종각역', 'www.naver.com');
@@ -1425,6 +1430,10 @@ values(seq_reserve.nextval, 2, 'kkimsg93', 2, 1, 1, 'hyunho2005@naver.com', 2, 5
 
 commit;
 
+delete from yes_reserve
+where rev_id in (5,6,7);
+
+
 insert into yes_reserve(rev_id, prod_id, user_id, seat_id, status_id, date_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status   )
 values(seq_reserve.nextval, 1, 'guzi10', 3, 1, 1, 'guzi1010@naver.com', 1, sysdate, 50000, 0, 0, 0 );
 
@@ -1438,6 +1447,31 @@ select *
 from yes_rev_status;
 
 delete from yes_rev_status;
+
+select distinct prod_title, prod_id
+from view_rev_memberInfo
+where userid = 'kkimsg93';
+
+select previousseq, previoussubject
+   , qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
+   , fk_rev_id, prod_id, rev_email, prod_img, prod_title
+   , nextseq, nextsubject
+    from
+        (
+           select lag(qna_id, 1) over(order by qna_id desc) as previousseq
+           , lag(subject, 1) over(order by qna_id desc) as previoussubject
+           
+           , qna_id, fk_userid, name, category, qna_cate_name, subject, content, to_char(regDate, 'yy-mm-dd') as regDate, adminread, adminans, groupno, fk_seq, depthno
+           , fk_rev_id, prod_id, rev_email, prod_img, prod_title
+           
+           , lead(qna_id, 1) over(order by qna_id desc) as nextseq
+           , lead(subject, 1) over(order by qna_id desc) as nextsubject
+           
+            from view_qna_info
+            where status = 1
+        ) V
+where qna_id = 1;
+-- qna 문의 글 보기
 
 insert into yes_rev_status(status_id, rev_id, status, status_cng_date )
 values(seq_rev_status.nextval, 1, 1, sysdate);
@@ -1496,7 +1530,8 @@ AS
 select P.prod_id, P.prod_img, P.prod_title, P.info_grade, P.info_run_time, M.map_name 
 from prod P
 JOIN yes_show_map M
-ON P.map_id = M.map_id; -- ### ON P.prod_id = M.prod_id --
+ON P.map_id = M.map_id
+order by prod_id; -- ### ON P.prod_id = M.prod_id --
 --JOIN yes_show_seat S
 --ON M.prod_id = S.prod_id;
 
@@ -1584,10 +1619,10 @@ from yes_qna_cate;
 
 
 select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, date_start, date_end
-		     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
-		from prod
-		where fk_category_id = 1
-		order by info_open_date desc
+     , info_open_date, info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+from prod
+where fk_category_id = 1
+order by info_open_date desc
 
 
 ----------------------------------- QNA 게시판 테이블 -----------------------------------
@@ -1728,7 +1763,7 @@ select * from yes_qna;
 
 select * 
 from yes_qna Q left join yes_reserve R 
-on Q.fk_rev_id = R.rev_id
+on Q.fk_rev_id = R.prod_id
 left join view_rev_showInfo I
 on R.prod_id = I.prod_id;
 -- 예매한 공연목록을 합쳐서 QNA 나타내기
@@ -1736,21 +1771,72 @@ on R.prod_id = I.prod_id;
 select qna_id, fk_userid, name, category, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
         ,fk_rev_id, I.prod_id, rev_email, rev_qnty, rev_date, rev_price, prod_img, prod_title
 from yes_qna Q left join yes_reserve R 
-on Q.fk_rev_id = R.rev_id
+on Q.fk_rev_id = R.prod_id -- on Q.fk_rev_id = R.rev_id 에서 바꿔야 함.
 left join view_rev_showInfo I
+on R.prod_id = I.prod_id;
+
+select * from
+view_rev_showInfo
+where prod_id = 2;
+
+select * from yes_qna
+order by qna_id;
+
+
+select qna_id, fk_userid, name, qna_cate_name, subject, content
+                 , regDate, adminread, adminans, groupno, fk_seq, depthno
+                 ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		from 
+		(
+		    select rownum AS rno
+		         , qna_id, fk_userid, name, qna_cate_name, subject, content
+                 , regDate, adminread, adminans, groupno, fk_seq, depthno
+                 ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		    from
+		    (
+		        select qna_id, fk_userid, name, qna_cate_name, subject, content
+                        , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate, adminread, adminans, groupno, fk_seq, depthno
+                        ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+		        from view_qna_info
+		        where status = 1
+--		        <if test='searchWord != ""'>
+--		        and ( lower(fk_userid) like lower(#{searchWord})  or lower(prod_title) like '%' || lower(#{searchWord}) || '%' )
+--		        </if>
+--			    <if test='category != ""'>
+--				and category = #{category}
+--				</if>
+		        start with fk_seq = 0
+		        connect by prior qna_id = fk_seq
+		        order siblings by groupno desc, qna_id asc
+		    ) V
+		) T
+		where rno between 1 and 5
+        
+        select * 
+        from view_qna_info
+        order by qna_id;
+
+select fk_rev_id
+from yes_qna;
+
+select * 
+from yes_reserve R left join view_rev_showInfo I 
 on R.prod_id = I.prod_id;
 
 create or replace view view_qna_info
 as
-select qna_id, fk_userid, name, category, qna_cate_name, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
+select distinct qna_id, fk_userid, name, category, qna_cate_name, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
       ,fk_rev_id, nvl(I.prod_id, 0) as prod_id, nvl(rev_email, ' ') as rev_email, nvl(prod_img, ' ') as prod_img, nvl(prod_title, ' ') as prod_title
 from yes_qna Q left join yes_reserve R 
-on Q.fk_rev_id = R.rev_id
+on Q.fk_rev_id = R.prod_id
 left join view_rev_showInfo I
 on R.prod_id = I.prod_id
 left join yes_qna_cate C
 on Q.category = C.qna_cate_code;
 -- 예매한 공연목록문의 합쳐진 QNA 리스트 나타내기
+
+select * 
+from yes_reserve;
 
 select * from view_qna_info
 where status = 1
@@ -1760,13 +1846,33 @@ order by qna_id desc;
 select *
 from yes_reserve;
 
-select * 
-from yes_reserve R join view_rev_showInfo I
-on R.prod_id = I.prod_id;
+create or replace view view_qna_info
+as
+select distinct qna_id, fk_userid, name, category, qna_cate_name, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
+      ,fk_rev_id, nvl(I.prod_id, 0) as prod_id, nvl(rev_email, ' ') as rev_email, nvl(prod_img, ' ') as prod_img, nvl(prod_title, ' ') as prod_title
+from yes_qna Q left join yes_reserve R 
+on Q.fk_rev_id = R.prod_id
+left join view_rev_showInfo I
+on R.prod_id = I.prod_id
+left join yes_qna_cate C
+on Q.category = C.qna_cate_code;
+
+
+create or replace view view_qna_info
+as
+select distinct qna_id, fk_userid, name, category, qna_cate_name, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
+      ,fk_rev_id, nvl(I.prod_id, 0) as prod_id, nvl(prod_img, ' ') as prod_img, nvl(prod_title, ' ') as prod_title
+from yes_qna Q left join yes_reserve R 
+on Q.fk_rev_id = R.prod_id
+left join view_rev_showInfo I
+on R.prod_id = I.prod_id
+left join yes_qna_cate C
+on Q.category = C.qna_cate_code;
+
 
 create or replace view view_rev_memberInfo
 as
-select rev_id, R.prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status, prod_img, prod_title, info_grade, info_run_time, map_name, idx, userid, name
+select distinct rev_id, R.prod_id, user_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status, prod_img, prod_title, info_grade, info_run_time, map_name, idx, userid, name
 from yes_reserve R join view_rev_showInfo I
 on R.prod_id = I.prod_id
 join yes_member M
@@ -1786,11 +1892,11 @@ where userid = 'kimjy';
 
 
 
-select *
+select rev_id, R.prod_id, user_id, seat_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status, prod_img, prod_title, info_grade, info_run_time, map_name, idx, userid, name
 from yes_reserve R join view_rev_showInfo I
 on R.prod_id = I.prod_id
 join yes_member M
-on R.user_id = M.idx;
+on R.user_id = M.userid;
 -- ### --
 
 select *
@@ -2727,7 +2833,7 @@ where fk_userid = 'kimjy';
 
 select previousseq, previoussubject
        , qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
-       , fk_rev_id, prod_id, rev_email, prod_img, prod_title
+       , fk_rev_id, prod_id, prod_img, prod_title
        , nextseq, nextsubject
         from
             (
@@ -2735,7 +2841,7 @@ select previousseq, previoussubject
                , lag(subject, 1) over(order by qna_id desc) as previoussubject
                
                , qna_id, fk_userid, name, category, qna_cate_name, subject, content, to_char(regDate, 'yy/mm/dd') as regDate, adminread, adminans, groupno, fk_seq, depthno
-               , fk_rev_id, prod_id, rev_email, prod_img, prod_title
+               , fk_rev_id, prod_id, prod_img, prod_title
                
                , lead(qna_id, 1) over(order by qna_id desc) as nextseq
                , lead(subject, 1) over(order by qna_id desc) as nextsubject
@@ -3007,6 +3113,13 @@ values(seq_show_map.nextval, 33.476296, 126.474891, '제주 한라아트홀 대�
 
 select * from yes_show_map;
 
+select *
+from yes_show_map
+where map_id = 48;
+
+select map_id
+from prod
+where prod_id = 75;
 
 ---------------------prod 테이블에 map_id 컬럼 추가하기 ---------------------------
 ALTER TABLE prod ADD(map_id number(10));
@@ -3384,7 +3497,8 @@ ALTER TABLE prod ADD(map_id number);
 ALTER TABLE prod DROP map_id;
 
 
-select * from prod;
+select * from prod
+order by prod_id;
 alter table prod modify(info_run_time varchar2(20));
 -------------------------------------------------------------------------------------------------------
 
@@ -3410,6 +3524,9 @@ insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_deta
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
 values(64,1,48,'제 20주년 기념 대전국제음악제 <최재혁, 김유빈 and 앙상블 블랭크>','classic_14m.jpg','classic_14L.jpg',to_date('2020/08/06','yyyy/mm/dd'),to_date('2020/08/06','yyyy/mm/dd'),1,'8세 이상','80분',default);
 --예술의전당 앙상블홀
+
+select * from prod
+where prod_id = 64;
 
 insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
@@ -3505,6 +3622,11 @@ insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_deta
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
 values(83,2,55,'뻔하지않은듯 펀한 페스티벌','concert_13m.jpg','concert_13L.jpg',to_date('2020/08/22','yyyy/mm/dd'),to_date('2020/08/22','yyyy/mm/dd'),1,'12세 이상','-미정-',default);
 --연세대학교 노천극장
+
+update prod set info_run_time = '100분'
+where info_run_time = '-미정-';
+
+commit;
 
 insert into prod(prod_id, fk_category_id, map_id, prod_title,prod_img, prod_detail_img,info_open_date,
 info_close_date,info_rev_status,info_grade,info_run_time,info_qnty)
@@ -5327,3 +5449,929 @@ update prod set fk_category_detail_id = 21 where prod_id = 162;
 update prod set fk_category_detail_id = 21 where prod_id = 163;
 
 commit;
+
+select * from prod
+where prod_id = 84;
+select * from prod
+where prod_id = 60;
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+ALTER TABLE prod DROP COLUMN map_id;
+
+
+ALTER TABLE prod ADD(map_id number);
+
+
+
+
+--***** insert 하기 전에 yes_show_map 테이블의 map_name,map_address 컬럼 varchar2 용량 늘려 줄것*******------
+
+alter table yes_show_map MODIFY(map_name varchar2(200)); 
+alter table yes_show_map MODIFY(map_address varchar2(200));
+------------------------------------------------------------------
+
+--'1' '세종문화회관 M씨어터'
+--'2' '광림아트센터 장천홀'
+--'3' '예술의전당 콘서트홀'
+--'4' '롯데 콘서트홀'
+--'5' '세종문화회관 대극장'
+--'6' '예술의전당 CJ토월극장'
+--'7' 'kt chamberhall'
+--'8' '노들섬 라이브 하우스'
+--'9' '김화생활체육공원 특설무대'
+--'10' '부산 벡스코 제1전시장 1홀'
+--'11' '예술의전당 오페라극장'
+--'12' '대학로 유니플렉스 2관'
+--'13' '세종문화회관 S씨어터' 
+--'14' '광림아트센터 BBCH홀'
+--'15' '샤롯데 씨어터'
+--'16' '블루스퀘어 인터파크홀'
+--'17' '예스24스테이지 1관'
+--'18' '동국대학교 이해랑 예술극장'
+--'19' '대학로 드림아트센터 2관'
+--'20' '부산 소향씨어터 신한카드홀'
+--'21' '예스24스테이지 3관'
+--'22' '밀양아리랑아트센터 대극장'
+--'23' 'BNK부산은행 조은극장 1관'
+--'24' '세종시문화예술회관'
+--'25' '구미 소극장[공터_다]'
+--'26' '대학로 나온씨어터'
+--'27' 'BNK부산은행조은극장 2관'
+--'28' '대구 여우별아트홀'
+--'29' '대학로 해피씨어터'
+--'30' '뮤지엄 다'
+--'31' '신촌 암흑카페'
+--'32' '양양 쏠비치 아쿠아월드'
+--'33' '예천 삼강문화단지 내'
+--'34' '전주학옥마을 경기전'
+--'35' '거제오션어드벤처'
+--'36' '경복궁'
+--'37' '경주대명아쿠아월드'
+--'38' '대백프라임홀'
+--'39' '예술의전당 자유소극장'
+--'40' '롯데백화점 대구점 7층 문화홀'
+--'41' '명작극장'
+--'42' '대학로 시온아트홀'
+--'43' '밀양아리랑아트센터 소극장'
+--'44' '용인 리빙파워센터 2층 전시관'
+--'45' '국립공주박물관 강당'
+--'46' '제주 한라아트홀 대극장'
+--47 예술의전당 IBK 챔버홀
+--48 예술의전당 앙상블홀
+--49 예술의전당 아트홀
+--50 예술의전당 리사이틀홀
+--51 영산아트홀
+--52 티엘아이 아트센터
+--53 한국소리문화의전당 야외공연장
+--54 JCC아트센터 콘서트홀
+--55 연세대학교 노천극장
+--56 서울숲공원 일대
+--57 KBS부산홀
+--58 예스24 라이브홀
+--59 서울랜드
+--60 울산 태화강 국가정원 야외공연장
+--61 소설베뉴 라움
+--62 경기아트센터 소극장
+--63 JOB SQURE
+--64 대학로컬쳐스페이스 엔유
+--65 북촌아트홀
+--66 안산 대부도 동춘서커스 빅탑극장
+--67 가평문화예술회관
+--68 청주아트홀
+--69 경복궁아트홀
+--70 대학로 마로니에극장
+--71 제주 난타 theater
+--72 상무지구 기분좋은극장
+--73 전주 한해랑아트홀
+--74 대학로 틴틴홀
+--75 대학로 연극 M씨어터
+--76 대학로 JTN아트홀 4관
+--77 대학로 컬쳐씨어터
+--78 광주 국립아시아문화전당 예술극장 극장2
+--79 부산 메트로홀
+--80 엑스코 오디토리움
+--81 대전 아신극장
+--82 대학로 삼형제극장 죽여주는 이야기 전용관
+--83 대학로 바탕골 소극장
+--84 업스테이지
+--85 대학로 열린극장
+--86 대학로 댕로홀
+--87 해바라기 소극장
+--88 1호선 동대문역 6번 출구
+--89 3호선 안국역 4번출구
+--90 단양 오션플레이
+--91 덕수궁
+--92 델피노 오션플레이
+--93 변산 오션플레이
+--94 선릉
+--95 내린천
+--96 3호선 경복궁역 4번출구
+--97 온라인 모임
+--98 강릉시 정동초등학교
+--99 창경궁
+--100 창덕궁
+--101 천안오션파크
+--102 세종 마크원에비뉴 5층
+--103 대학로 세우아트센터 1관
+--104 파랑씨어터
+
+-----------------------------------------------------------------------------------------
+
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.572755, 126.975555, '세종문화회관 M씨어터', '서울 종로구 세종로 세종대로 175', 'www.yes24.com');
+--1
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.524446, 127.026549, '광림아트센터 장천홀', '서울 강남구 신사동 논현로163길 33', 'www.yes24.com');
+--2
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.479590, 127.011682, '예술의전당 콘서트홀', '서울 서초구 신사동 서초3동 산120-18', 'www.yes24.com');
+--3
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.514426, 127.103855, '롯데 콘서트홀', '서울 송파구 신천동 27', 'www.yes24.com');
+--4
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.573035, 126.976072, '세종문화회관 대극장', '서울 종로구 세종로 세종대로 189', 'www.yes24.com');
+--5
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.479674, 127.011665, '예술의전당 CJ토월극장', '서울 서초구 서초동 남부순환로2406', 'www.yes24.com');
+--6
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.529994, 126.871057, 'kt chamberhall', '서울 양천구 목1동 목동서로 201 kt정보전산센터 1층', 'www.yes24.com');
+--7
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.521025, 126.959323, '노들섬 라이브 하우스', '서울특별시 이촌1동', 'www.yes24.com');
+--8
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 38.250347, 127.412442, '김화생활체육공원 특설무대', '강원도 철원군 김화읍 청양리 1-33', 'www.yes24.com');
+--9
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.169748, 129.135955, '부산 벡스코 제1전시장 1홀', '부산광역시 해운대구 우동APEC로 55', 'www.yes24.com');
+--10
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.479447, 127.013934, '예술의전당 오페라극장', '서울특별시 서초구 서초3동 남부순환로 2406', 'www.yes24.com');
+--11
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.581132, 127.003694, '대학로 유니플렉스 2관', '서울특별시 종로구 이화동 대학로12길 64', 'www.yes24.com');
+--12
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.572627, 126.975686, '세종문화회관 S씨어터', '서울특별시 종로구 세종로 세종대로 175', 'www.yes24.com');
+--13
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.524214, 127.026605, '광림아트센터 BBCH홀', '서울특별시 강남구 신사동 568-13', 'www.yes24.com');
+--14
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.510699, 127.099871, '샤롯데 씨어터', '서울특별시 송파구 올림픽로 240', 'www.yes24.com');
+--15
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.540864, 127.002457, '블루스퀘어 인터파크홀', '서울특별시 용산구 한남동 이태원로 294', 'www.yes24.com');
+--16
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.582750, 127.003243, '예스24스테이지 1관', '서울특별시 종로구 동숭동 대학로12길 21', 'www.yes24.com');
+--17
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.558212, 127.003232, '동국대학교 이해랑 예술극장', '서울특별시 중구 장충동 장충단로', 'www.yes24.com');
+--18
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.583255, 127.003270, '대학로 드림아트센터 2관', '서울특별시 종로구 동숭동 1-42', 'www.yes24.com');
+--19
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.172916, 129.127700, '부산 소향씨어터 신한카드홀', '서울특별시 해운대구 우동 센텀중앙로 55', 'www.yes24.com');
+--20
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.582708, 127.003248, '예스24스테이지 3관', '서울특별시 종로구 동숭동 대학로12길 21', 'www.yes24.com');
+--21
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.504280, 128.758133, '밀양아리랑아트센터 대극장', '경상남도 밀양시 교동 487', 'www.yes24.com');
+--22
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.098280, 129.032307, 'BNK부산은행 조은극장 1관', '부산광역시 중구 남포동2가 25-10', 'www.yes24.com');
+--23
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 36.599734, 127.287425, '세종시문화예술회관', '세종특별자치시 조치원읍 침산리 226-1', 'www.yes24.com');
+--24
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 36.125349, 128.340578, '구미 소극장[공터_다]', '경상북도 구미시 원평동 1032-60', 'www.yes24.com');
+--25
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.587665, 126.999356, '대학로 나온씨어터', '서울 종로구 명륜1가 36-4', 'www.yes24.com');
+--26
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.098300, 129.032318, 'BNK부산은행조은극장 2관', '부산 중구 남포동 구덕로34번길 4 뉴남포빌딩 3층', 'www.yes24.com');
+--27
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.865899, 128.597643, '대구 여우별아트홀', '대구광역시 중구 삼덕동 1가 동성로3길 35 4층', 'www.yes24.com');
+--28
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.098300, 129.032318, '대학로 해피씨어터', '대구광역시 중구 삼덕동 1가 동성로3길 35 4층', 'www.yes24.com');
+--29
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.171254, 129.128762, '뮤지엄 다', '부산광역시 해운대구 우동 센텀서로 20', 'www.yes24.com');
+--30
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.556538, 126.935426, '신촌 암흑카페', '서울 서대문구 창천동 62-1', 'www.yes24.com');
+--31
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 38.088314, 128.665969, '쏠비치아쿠아월드', '강원도 양양군 손양면 오산리 23-4', 'www.yes24.com');
+--32
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 36.563285, 128.298137, '예천 삼강문화단지 내', '경상북도 예천군 풍양면 삼강리 166-1', 'www.yes24.com');
+--33
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.815297, 127.149796, '전주한옥마을 경기전', '전라북도 전주시 완산구 풍남동 태조로 44', 'www.yes24.com');
+--34
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 34.843127, 128.703605, '거제오션어드벤처', '경상남도 거제시 일운면 소동리 115', 'www.yes24.com');
+--35
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.579600, 126.977052, '경복궁', '서울 종로구 세종로 사직로 161', 'www.yes24.com');
+--36
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.846222, 129.282222, '경주대명아쿠아월드', '경상북도 경주시 보덕동 651-1', 'www.yes24.com');
+--37
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.855946, 128.606332, '대백프라임홀', '경상북도 경주시 보덕동 651-1', 'www.yes24.com');
+--38
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.479134, 127.013919, '예술의전당 자유소극장', '서울 서초구 서초동 700', 'www.yes24.com');
+--39
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.875988, 128.596166, '롯데백화점 대구점 7층 문화홀', '대구광여기 북구 태평로 161', 'www.yes24.com');
+--40
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.582323, 127.002344, '명작극장', '서울 종로구 동숭동 대학로12길', 'www.yes24.com');
+--41
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.582957, 127.002618, '대학로 시온아트홀','서울 종로구 대학로 8길 52', 'www.yes24.com');
+--42
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.504285, 128.758153, '밀양아리랑아트센터 소극장', '경상남도 밀양시 교동 487', 'www.yes24.com');
+--43
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.223571, 127.114500, '용인 리빙파워센터 2층 전시관', '경기도 용인시 기흥구 고매동 271', 'www.yes24.com');
+--44
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 36.465506, 127.112187, '국립공주박물관 강당', '충청남도 공주시 웅진동 관광단지길 34', 'www.yes24.com');
+--45
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 33.476296, 126.474891, '제주 한라아트홀 대극장', '제주특별자치도 노형동 1534번지 KR 제주한라대학교 한라아트홀', 'www.yes24.com');
+--46
+
+commit;
+
+dr
+
+select * from yes_show_map;
+--update yes_show_map set map_lng =  37.479074, map_lat = 127.011622, map_name = '예술의전당 IBK챔버홀', map_address = '서울 서초구 서초동 700', map_url = 'www.yes24.com'
+--where map_id = 47
+
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.479074, 127.011622, '예술의전당 IBK챔버홀', '서울 서초구 서초동 700', 'www.yes24.com');
+--47
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.479003, 127.011630, '예술의전당 앙상블홀', '서울 서초구 남부순환로 2406', 'www.yes24.com');
+--48
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.478984, 127.011611, '예술의전당 아트홀', '서울 서초구 남부순환로 2406', 'www.yes24.com');
+--49
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.479129, 127.011691, '예술의전당 리사이트홀', '서울 서초구 서초동700', 'www.yes24.com');
+--50
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.529017, 126.924282, '영산아트홀', '서울 영등포구 여의도동 여의공원로 101', 'www.yes24.com');
+--51
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.417868, 127.127573, '티엘아이 아트센터', '경기도 성남시 중원구 양현로405번길 12', 'www.yes24.com');
+--52
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.856108, 127.138253, '한국소리문화의전당 야외공연장', '전라북도 전주시 덕진구 덕진동 소리로 31', 'www.yes24.com');
+--53
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.587279, 127.002027, 'JCC아트센터 콘서트홀', '서울특별시 종로구 창경궁로35길 29', 'www.yes24.com');
+--54
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.565313, 126.939686, '연세대학교 노천극장', '서울 신촌동 연세대학교', 'www.yes24.com');
+--55
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.544388, 127.037442, '서울숲공원 일대', '서울특별시 성동구 성수동1가 뚝섬로 273', 'www.yes24.com');
+--56
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.145127, 129.109079, 'KBS부산홀', '부산광역시 수영구 남천1동 수영로 429', 'www.yes24.com');
+--57
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.545766, 127.107881, '예스24 라이브홀', '서울특별시 광진구 광장동 구천면로 20', 'www.yes24.com');
+--58
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.434155, 127.020129, '서울랜드', '경기도 과천시 막계동 광명로 181', 'www.yes24.com');
+--59
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.547764, 129.296224, '울산 태화강 국가정원 야외공연장', '울산광역시 중구 태화동 신기길', 'www.yes24.com');
+--60
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.508189, 127.039566, '소설베뉴 라움', '서울특별시 강남구 역삼1동 언주로 564', 'www.yes24.com');
+--61
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.261562, 127.036349, '경기아트센터 소극장', '경기도 수원시 팔달구 인계동 효원로307번길 20', 'www.yes24.com');
+--62
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.551199, 126.919538, 'JOB SQUARE', '서울특별시 마포구 잔다리로 31', 'www.yes24.com');
+--63
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.580811, 127.003971, '대학로컬쳐스페이스 엔유', '서울특별시 종로구 동숭동 1-144', 'www.yes24.com');
+--64
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.578922, 126.988940, '북촌아트홀', '서울특별시 종로구 원서동 157-1', 'www.yes24.com');
+--65
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.283457, 126.569816, '안산 대부도 동춘서커스 빅탑극장', '경기도 안산시 단원구 대부북동 대부황금로 1432', 'www.yes24.com');
+--66
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.824175, 127.508457, '가평문화예술회관', '경기도 가평군 가평읍 문화로 131', 'www.yes24.com');
+--67
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 36.636904, 127.469447, '청주아트홀', '충청북도 청주시 흥덕구 사직동 808', 'www.yes24.com');
+--68
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.583341, 126.970635, '경복궁아트홀', '서울특별시 종로구 효자동 70-1', 'www.yes24.com');
+--69
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.580570, 127.004542, '대학로 마로니에극장', '서울특별시 종로구 동숭길 50 (동숭동) 지하 1층', 'www.yes24.com');
+--70
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 33.445604, 126.547560, '제주 난타 theater', '제주시 KR특별자치도 제주시 선돌목동길56-26', 'www.yes24.com');
+--71
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.163879, 126.909130, '상무지구 기분좋은극장', '광주광역시 서구 중흥동 상무중앙로 90', 'www.yes24.com');
+--72
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.814855, 127.108750, '전주 한해랑아트홀', '완산구 효자동2가 1155-10번지 3층 전주시 전라북도 KR', 'www.yes24.com');
+--73
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.581662, 127.003424, '대학로 틴틴홀', '서울특별시 종로구 동숭동 1-97', 'www.yes24.com');
+--74
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.580961, 127.003949, '대학로 연극 M씨어터', '서울특별시 종로구 이화동 대학로12길 69 3층', 'www.yes24.com');
+--75
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.576749, 127.003903, '대학로 JTN아트홀 4관', '서울특별시 종로구 이화동 이화장길 26 JTN 아트홀', 'www.yes24.com');
+--76
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.582450, 127.003252, '대학로 컬쳐씨어터', '서울특별시 종로구 이화동 대학로8가길 80 5층', 'www.yes24.com');
+--77
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.148217, 126.920452, '광주 국립아시아문화전당 예술극장 극장2', '광주광역시 동구 대의동 59-1', 'www.yes24.com');
+--78
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.157037, 129.113000, '부산 메트로홀', '부산광역시 수영구 광안로 4 부산광역시 수영구 광안로 4 광안지하철역 지하1층 상가 1호', 'www.yes24.com');
+--79
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.906851, 128.613310, '엑스코 오디토리움', '대구광역시 북구 산격2동 엑스코로 10', 'www.yes24.com');
+--80
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 36.325599, 127.427954, '대전 아신극장', '대전광역시 중구 대흥동 159-2', 'www.yes24.com');
+--81
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.578449, 127.004664, '대학로 삼형제극장 죽여주는 이야기 전용관', '서울특별시 종로구 동숭동 199-33', 'www.yes24.com');
+--82
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.581861, 127.002498, '대학로 바탕골 소극장', '서울특별시 종로구 동숭동 199-33', 'www.yes24.com');
+--83
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.580068, 127.004295, '업스테이지', '서울특별시 종로구 동숭동 동숭길 41', 'www.yes24.com');
+--84
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.583643, 127.000300, '대학로 열린극장', '서울특별시 종로구 명륜2가 21-18', 'www.yes24.com');
+--85
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.581818, 127.003709, '대학로 댕로홀', '서울특별시 종로구 동숭동 1-78 B1', 'www.yes24.com');
+--86
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.136762, 129.102275, '해바라기소극장', '부산광역시 남구 대연3동 용소로13번길 30', 'www.yes24.com');
+--87
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.571467, 127.010819, '1호선 동대문역 6번 출구', '서울특별시 종로구 창신동 464-4', 'www.yes24.com');
+--88
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.576647, 126.986417, '3호선 안국역 4번출구', '서울특별시 종로구 안국동 318-1', 'www.yes24.com');
+--89
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 36.977440, 128.361689, '단양 오션플레이', '충청북도 단양군 단양읍 삼봉로 187-17', 'www.yes24.com');
+--90
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.565804, 126.975147, '덕수궁', '서울특별시 중구 정동 세종대로 99', 'www.yes24.com');
+--91
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 38.212010, 128.494087, '델피노 오션플레이', '강원도 고성군 토성면 미시령옛길 1153', 'www.yes24.com');
+--92
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 35.632347, 126.470444, '변산 오션플레이', '전라북도 부안군 변산면 변산해변로 51', 'www.yes24.com');
+--93
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.504490, 127.048960, '선릉', '서울특별시 역삼동', 'www.yes24.com');
+--94
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 38.043048, 128.206706, '내린천', '강원도 인제군 인제읍 고사리 540-3', 'www.yes24.com');
+--95
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.576000, 126.973210, ' 3호선 경복궁역 4번출구', '서울특별시 종로구 적선동 93-3', 'www.yes24.com');
+--96
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 0, 0, ' 온라인 모임', '-', 'www.yes24.com');
+--97
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.576000, 126.973210, '강릉시 정동초등학교', '서울특별시 종로구 적선동 93-3', 'www.yes24.com');
+--98
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.578768, 126.994872, '창경궁', '서울특별시 종로구 와룡동 창경궁로 185', 'www.yes24.com');
+--99
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.578768, 126.994872, '창덕궁', '서울특별시 종로구 와룡동 창경궁로 185', 'www.yes24.com');
+--100
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 36.757041, 127.223139, '천안 오션파크', '충청남도 천안시 동남구 성남면 종합휴양지로 200', 'www.yes24.com');
+--101
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 36.757041, 127.223139, '세종 마크원에비뉴 5층', '서울특별시 종로구 종로5가 321-4', 'www.yes24.com');
+--102
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.581923, 127.003937, '대학로 세우아트센터 1관', '서울특별시 종로구 동숭동 1-86', 'www.yes24.com');
+--103
+insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
+values(seq_show_map.nextval, 37.582408, 127.002440, '파랑씨어터', '서울특별시 종로구 이화동 대학로8가길 36', 'www.yes24.com');
+--104
+
+select * from yes_show_map
+order by map_id desc;
+
+rollback;
+
+commit;
+
+select * 
+from yes_show_map
+
+---------------------prod 테이블에 map_id 컬럼 추가하기 ---------------------------
+ALTER TABLE prod ADD(map_id number(10));
+
+
+
+select * from prod;
+
+-------------------------------------------------------------------------------------------------------
+update prod set map_id = 1  where prod_id = 1;
+
+update prod set map_id = 2  where prod_id = 2;
+
+update prod set map_id = 3  where prod_id = 3;
+
+update prod set map_id = 2  where prod_id = 4;
+
+update prod set map_id = 4 where prod_id = 5;
+
+update prod set map_id = 5  where prod_id = 6;
+
+update prod set map_id = 6  where prod_id = 7;
+
+update prod set map_id = 1  where prod_id = 8;
+
+update prod set map_id = 7  where prod_id = 9;
+
+update prod set map_id = 4  where prod_id = 10;
+
+commit;
+
+
+update prod set map_id = 8  where prod_id = 11;
+
+update prod set map_id = 8  where prod_id = 12;
+
+update prod set map_id = 9  where prod_id = 13;
+
+update prod set map_id = 8  where prod_id = 14;
+
+update prod set map_id = 10 where prod_id = 15;
+
+update prod set map_id = 5  where prod_id = 16;
+
+update prod set map_id = 8  where prod_id = 17;
+
+update prod set map_id = 1  where prod_id = 18;
+
+update prod set map_id = 11  where prod_id = 19;
+
+update prod set map_id = 4  where prod_id = 20;
+
+commit;
+
+
+update prod set map_id = 12  where prod_id = 21;
+
+update prod set map_id = 13  where prod_id = 22;
+
+update prod set map_id = 12  where prod_id = 23;
+
+update prod set map_id = 14  where prod_id = 24;
+
+update prod set map_id = 15  where prod_id = 25;
+
+update prod set map_id = 16  where prod_id = 26;
+
+update prod set map_id = 17  where prod_id = 27;
+
+update prod set map_id = 18  where prod_id = 28;
+
+update prod set map_id = 19  where prod_id = 29;
+
+update prod set map_id = 20  where prod_id = 30;
+
+commit;
+
+
+
+update prod set map_id = 21  where prod_id = 31;
+
+update prod set map_id = 22  where prod_id = 32;
+
+update prod set map_id = 23  where prod_id = 33;
+
+update prod set map_id = 6  where prod_id = 34;
+
+update prod set map_id = 24  where prod_id = 35;
+
+update prod set map_id = 25  where prod_id = 36;
+
+update prod set map_id = 26  where prod_id = 37;
+
+update prod set map_id = 27  where prod_id = 38;
+
+update prod set map_id = 28  where prod_id = 39;
+
+update prod set map_id = 29  where prod_id = 40;
+
+commit;
+
+
+update prod set map_id = 30  where prod_id = 41;
+
+update prod set map_id = 22  where prod_id = 42;
+
+update prod set map_id = 31  where prod_id = 43;
+
+update prod set map_id = 32  where prod_id = 44;
+
+update prod set map_id = 33  where prod_id = 45;
+
+update prod set map_id = 34  where prod_id = 46;
+
+update prod set map_id = 35  where prod_id = 47;
+
+update prod set map_id = 36 where prod_id = 48;
+
+update prod set map_id = 37 where prod_id = 49;
+
+update prod set map_id = 36 where prod_id = 50;
+
+commit;
+
+
+update prod set map_id = 38  where prod_id = 51;
+
+update prod set map_id = 39  where prod_id = 52;
+
+update prod set map_id = 39  where prod_id = 53;
+
+update prod set map_id = 40  where prod_id = 54;
+
+update prod set map_id = 41  where prod_id = 55;
+
+update prod set map_id = 42  where prod_id = 56;
+
+update prod set map_id = 43  where prod_id = 57;
+
+update prod set map_id = 44  where prod_id = 58;
+
+update prod set map_id = 45  where prod_id = 59;
+
+update prod set map_id = 46  where prod_id = 60;
+
+commit;
+
+
+update prod set map_id = 3  where prod_id = 61;
+
+update prod set map_id = 47  where prod_id = 62;
+
+update prod set map_id = 3  where prod_id = 63;
+
+update prod set map_id = 48  where prod_id = 64;
+
+update prod set map_id = 49  where prod_id = 65;
+
+update prod set map_id = 3  where prod_id = 66;
+
+update prod set map_id = 47  where prod_id = 67;
+
+update prod set map_id = 4  where prod_id = 68;
+
+update prod set map_id = 47  where prod_id = 69;
+
+update prod set map_id = 50  where prod_id = 70;
+
+commit;
+
+
+update prod set map_id = 47  where prod_id = 71;
+
+update prod set map_id = 3  where prod_id = 72;
+
+update prod set map_id = 51  where prod_id = 73;
+
+update prod set map_id = 3  where prod_id = 74;
+
+update prod set map_id = 48  where prod_id = 75;
+
+update prod set map_id = 52  where prod_id = 76;
+
+update prod set map_id = 4  where prod_id = 77;
+
+update prod set map_id = 4  where prod_id = 78;
+
+update prod set map_id = 6  where prod_id = 79;
+
+update prod set map_id = 6  where prod_id = 80;
+
+commit;
+
+
+update prod set map_id = 53  where prod_id = 81;
+
+update prod set map_id = 54  where prod_id = 82;
+
+update prod set map_id = 55  where prod_id = 83;
+
+update prod set map_id = 56  where prod_id = 84;
+
+update prod set map_id = 57  where prod_id = 85;
+
+update prod set map_id = 58  where prod_id = 86;
+
+update prod set map_id = 59  where prod_id = 87;
+
+update prod set map_id = 60  where prod_id = 88;
+
+update prod set map_id = 60  where prod_id = 89;
+
+update prod set map_id = 48  where prod_id = 90;
+
+commit;
+
+
+update prod set map_id = 61  where prod_id = 91;
+
+update prod set map_id = 62  where prod_id = 92;
+
+update prod set map_id = 24  where prod_id = 93;
+
+update prod set map_id = 24  where prod_id = 94;
+
+update prod set map_id = 62  where prod_id = 95;
+
+update prod set map_id = 24  where prod_id = 96;
+
+update prod set map_id = 63  where prod_id = 97;
+
+update prod set map_id = 38  where prod_id = 98;
+
+update prod set map_id = 38  where prod_id = 99;
+
+update prod set map_id = 42  where prod_id = 100;
+
+commit;
+
+
+update prod set map_id = 64  where prod_id = 101;
+
+update prod set map_id = 1  where prod_id = 102;
+
+update prod set map_id = 65  where prod_id = 103;
+
+update prod set map_id = 46  where prod_id = 104;
+
+update prod set map_id = 10  where prod_id = 105;
+
+update prod set map_id = 66  where prod_id = 106;
+
+update prod set map_id = 14  where prod_id = 107;
+
+update prod set map_id = 40  where prod_id = 108;
+
+update prod set map_id = 67  where prod_id = 109;
+
+update prod set map_id = 68  where prod_id = 110;
+
+commit;
+
+
+update prod set map_id = 65  where prod_id = 111;
+
+update prod set map_id = 69  where prod_id = 112;
+
+update prod set map_id = 70  where prod_id = 113;
+
+update prod set map_id = 71  where prod_id = 114;
+
+update prod set map_id = 72  where prod_id = 115;
+
+update prod set map_id = 39  where prod_id = 116;
+
+update prod set map_id = 73  where prod_id = 117;
+
+update prod set map_id = 74  where prod_id = 118;
+
+update prod set map_id = 75  where prod_id = 119;
+
+update prod set map_id = 39  where prod_id = 120;
+
+commit;
+
+
+update prod set map_id = 76  where prod_id = 121;
+
+update prod set map_id = 77  where prod_id = 122;
+
+update prod set map_id = 78  where prod_id = 123;
+
+update prod set map_id = 79  where prod_id = 124;
+
+update prod set map_id = 78  where prod_id = 125;
+
+update prod set map_id = 67  where prod_id = 126;
+
+update prod set map_id = 80  where prod_id = 127;
+
+update prod set map_id = 81  where prod_id = 128;
+
+update prod set map_id = 82  where prod_id = 129;
+
+update prod set map_id = 83  where prod_id = 130;
+
+commit;
+
+
+update prod set map_id = 84  where prod_id = 131;
+
+update prod set map_id = 85  where prod_id = 132;
+
+update prod set map_id = 86  where prod_id = 133;
+
+update prod set map_id = 87  where prod_id = 134;
+
+update prod set map_id = 88  where prod_id = 135;
+
+update prod set map_id = 89  where prod_id = 136;
+
+update prod set map_id = 90  where prod_id = 137;
+
+update prod set map_id = 91  where prod_id = 138;
+
+update prod set map_id = 91  where prod_id = 139;
+
+update prod set map_id = 91  where prod_id = 140;
+
+commit;
+
+
+update prod set map_id = 92  where prod_id = 141;
+
+update prod set map_id = 93  where prod_id = 142;
+
+update prod set map_id = 94  where prod_id = 143;
+
+update prod set map_id = 95  where prod_id = 144;
+
+update prod set map_id = 32  where prod_id = 145;
+
+update prod set map_id = 96  where prod_id = 146;
+
+update prod set map_id = 44  where prod_id = 147;
+
+update prod set map_id = 97  where prod_id = 148;
+
+update prod set map_id = 98  where prod_id = 149;
+
+update prod set map_id = 99  where prod_id = 150;
+
+commit;
+
+
+update prod set map_id = 99  where prod_id = 151;
+
+update prod set map_id = 99  where prod_id = 152;
+
+update prod set map_id = 100  where prod_id = 153;
+
+update prod set map_id = 101  where prod_id = 154;
+
+update prod set map_id = 102  where prod_id = 155;
+
+update prod set map_id = 67  where prod_id = 156;
+
+update prod set map_id = 68  where prod_id = 157;
+
+update prod set map_id = 69  where prod_id = 158;
+
+update prod set map_id = 65  where prod_id = 159;
+
+update prod set map_id = 1  where prod_id = 160;
+
+commit;
+
+
+update prod set map_id = 69  where prod_id = 161;
+
+update prod set map_id = 103  where prod_id = 162;
+
+update prod set map_id = 104  where prod_id = 163;
+
+commit;
+
+
+
+create or replace view view_qna_info
+as
+select distinct qna_id, fk_userid, name, category, qna_cate_name, subject, content, readcount, regDate, secret, adminread, adminans, status, groupno, fk_seq, depthno
+      ,fk_rev_id, nvl(I.prod_id, 0) as prod_id, nvl(prod_img, ' ') as prod_img, nvl(prod_title, ' ') as prod_title
+from yes_qna Q left join (select distinct prod_id, user_id, status_id from yes_reserve ) R
+on Q.fk_rev_id = R.prod_id
+left join view_rev_showInfo I
+on R.prod_id = I.prod_id
+left join yes_qna_cate C
+on Q.category = C.qna_cate_code;
+
+select distinct *
+from view_qna_info
+order by qna_id;
+
+select distinct prod_id, user_id, status_id from yes_reserve;
+select * from view_rev_showInfo;
+-- 예매할때 fk_prod_id 추가하기
+
+select * 
+from yes_qna;
+
+select distinct prod_id, user_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status, date_id
+from yes_reserve;
+
+select * from yes_reserve;
+
+create or replace view view_distinct_reserve
+as
+select distinct prod_id, user_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status, date_id
+from yes_reserve;
+
+
+select * from view_rev_showInfo;
+
+
+create or replace view view_rev_memberInfo
+as
+select rev_id, R.prod_id, user_id, status_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status, prod_img, prod_title, info_grade, info_run_time, map_name, idx, userid, name
+from yes_reserve R join view_rev_showInfo I
+on R.prod_id = I.prod_id
+join yes_member M
+on R.user_id = M.userid;
+
+select * from yes_qna;
+
+
+select distinct * from yes_reserve;
+select * from view_rev_showInfo;
+
+
+-- 상태 테이블
+drop table yes_rev_status;
+create table yes_rev_status
+(status_id          number(10)              -- 상태코드
+,rev_id             number                  -- 예매코드(FK)
+,status             number(1)   default 0   -- 상태
+,status_cng_date    date                    -- 수정일자
+,constraint PK_status_id primary key(status_id)
+--,constraint FK_rev_id_status foreign key(rev_id) references yes_reserve(rev_id) on delete cascade
+);
+
+drop sequence seq_rev_status;
+create sequence seq_rev_status
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+ALTER TABLE yes_notice ADD(prod_id number default 0);
+
+select * from yes_notice;
