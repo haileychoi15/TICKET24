@@ -149,7 +149,12 @@
 	
 	<div align="center">
 	<hr style="border-top: solid 1px black; width:60%; margin: 50px 0; text-align: center;">
-	<div style="text-align: center; font-size: 20pt;"><span class="noti-tit-tag01">${qnavo.qna_cate_name}</span>${qnavo.name}(${qnavo.fk_userid})님의 문의 : ${qnavo.subject}</div>
+	<div style="text-align: center; font-size: 20pt;">
+		<span class="noti-tit-tag01">${qnavo.qna_cate_name}</span>
+		<c:if test="${qnavo.fk_seq == 0}">
+			${qnavo.name}(${qnavo.fk_userid})님의 문의 : 
+		</c:if>
+		${qnavo.subject}</div>
 	<hr style="border-top: solid 1px black; width:60%; margin: 50px 0; text-align: center;">
 	</div>
 	
