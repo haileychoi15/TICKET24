@@ -225,7 +225,17 @@
     color: #000;
 }
 
+.product .notice-count{
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+.product .notice-count strong{
+    color: #ec7d2c;
+}
+
 .more-button{
+    position: relative;
     width: 100%;
     height: 40px;
     border: 1px solid #ec7d2c;
@@ -234,6 +244,13 @@
     font-size: 15px;
     color: #fff;
     background-color: #ec7d2c;
+}
+
+.until-prod-count{
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
 }
 
 @media screen and (min-width: 768px){
@@ -325,7 +342,7 @@
     .more-button{
         width: 100px;
         border-radius: 20px;
-        margin-bottom: 40px;
+        margin: 0 auto 40px;
         font-size: 16px;
     }
 }
