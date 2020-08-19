@@ -17,4 +17,8 @@ public interface InterReviewDAO {
 
 	int editReview(HashMap<String, String> paraMap); // 리뷰 수정하기
 
+	int likeReview(HashMap<String, String> paraMap); // 리뷰 추천하기
+
+	int dislikeReview(HashMap<String, String> paraMap); // 리뷰 추천 취소하기
+
 }

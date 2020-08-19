@@ -47,7 +47,7 @@
 .search button{
     width: 25%;
     color: #fff;
-    background-color: #9764a9;
+    background-color: #3b68cc;
 }
 
 .search button:hover{
@@ -148,12 +148,12 @@
 
 .table .row .table-title,
 .table .row .table-date,
-.table .row .table-view{
+.table .row .table-writer{
     padding: 16px 3% 16px 0;
 }
 
 .table .row .table-category{
-    width: 15%;
+    width: 10%;
 }
 
 .table .row .table-title{
@@ -164,8 +164,8 @@
     width: 20%;
 }
 
-.table .row .table-view{
-    width: 5%;
+.table .row .table-writer{
+    width: 10%;
 }
 
 .table .row .table-file{

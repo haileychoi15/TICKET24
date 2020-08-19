@@ -357,10 +357,11 @@ public class BoardController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
-		int idx = loginuser.getIdx();
+	//	int idx = loginuser.getIdx();
+		String userid = loginuser.getUserid();
 		
 		// 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
-		List<HashMap<String, String>> reserveTitleList = service.reserveTitleList(idx);
+		List<HashMap<String, String>> reserveTitleList = service.reserveTitleList(userid);
 		
 		JSONArray jsonArr = new JSONArray();
 		
@@ -428,8 +429,32 @@ public class BoardController {
 	@RequestMapping(value = "/qnaListMain.action", produces="text/plain;charset=UTF-8", method = RequestMethod.GET)
 	public ModelAndView qnaListMain(HttpServletRequest request, ModelAndView mav) {
 		
-		mav.setViewName("qna/qnaList.tiles1");
-		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+
+		if(loginuser == null) {
+			String msg = "접근권한이 없습니다.";
+			String loc = "javascript:history.back()";
+
+			mav.addObject("msg", msg);
+			mav.addObject("loc", loc);
+
+			mav.setViewName("msg");
+		}
+		else {
+			if("admin".equals(loginuser.getUserid())) {
+				mav.setViewName("qna/qnaList.tiles1");
+			}
+			else {
+				String msg = "접근권한이 없습니다.";
+				String loc = "javascript:history.back()";
+	
+				mav.addObject("msg", msg);
+				mav.addObject("loc", loc);
+	
+				mav.setViewName("msg");
+			}
+		}
 		return mav;
 	}
 	
@@ -559,10 +584,10 @@ public class BoardController {
 			jsonObj.put("status", qna.getStatus());
 			jsonObj.put("regDate", qna.getRegDate());
 			
-			jsonObj.put("secret", qna.getSubject());
-			jsonObj.put("adminread", qna.getContent());
-			jsonObj.put("adminans", qna.getReadCount());
-			jsonObj.put("groupno", qna.getStatus());
+			jsonObj.put("secret", qna.getSecret());
+			jsonObj.put("adminread", qna.getAdminread());
+			jsonObj.put("adminans", qna.getAdminans());
+			jsonObj.put("groupno", qna.getGroupno());
 			jsonObj.put("fk_seq", qna.getFk_seq());
 			jsonObj.put("depthno", qna.getDepthno());
 			jsonObj.put("fk_rev_id", qna.getFk_rev_id());
@@ -851,6 +876,190 @@ public class BoardController {
 	} // end of void download(HttpServletRequest req, HttpServletResponse res)---------
 
 	
+	// Qna 답변 수정하기 페이지로 이동
+	@RequestMapping(value = "/qnaEditAdmin.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView qnaEditAdmin(HttpServletRequest request, ModelAndView mav) {
+		
+		// 글 수정해야할 글번호 가져오기
+		// url 에 담아온 seq 를 request.getParameter 로 받는다.
+		String seq = request.getParameter("seq");
+
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		String userid = loginuser.getUserid();
+
+		if(loginuser != null && loginuser.getUserid().equals("admin")) {
+			// 글 수정해야할 글 1개 내용 가져오기
+			// 글 조회수(readCount) 증가 없이 그냥 글 1개만 가져오는 것
+			QnaVO qvo = service.getQnaViewWithNoAddCount(seq, userid); 
+
+			mav.addObject("qvo", qvo);
+			mav.setViewName("qna/qnaEditAdmin.tiles1");
+		}
+		else {
+			String msg = "다른사용자의 글은 수정이 불가합니다.";
+			String loc = "javascript:history.back()";
+
+			mav.addObject("msg", msg);
+			mav.addObject("loc", loc);
+
+			mav.setViewName("msg");
+		}
+		
+		return mav; 
+	}
+	
+	// Qna 답변 수정하기
+	@RequestMapping(value = "/qnaEditAdminEnd.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView qnaEditAdminEnd(HttpServletRequest request, ModelAndView mav, QnaVO qvo) {
+		
+		int n = service.qnaEditAdmin(qvo); // Qna 답변 수정하기
+		
+		String loc = request.getContextPath()+"/qnaListMain.action";
+		String msg = "";
+		
+		if(n==1) {
+			msg = "답변이 수정되었습니다.";
+		}
+		else {
+			msg = "답변수정에 실패했습니다.";
+		}
+		
+		mav.addObject("loc", loc);
+		mav.addObject("msg", msg);
+
+		mav.setViewName("msg");
+		
+		return mav; 
+	}
+	
+	
+	// Qna 답변 삭제하기
+	@RequestMapping(value = "/qnaDelAdmin.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView qnaDelAdmin(HttpServletRequest request, ModelAndView mav) {
+		
+		String qna_id = request.getParameter("seq");
+
+		int n = service.qnaDelAdmin(qna_id); // Qna 답변 삭제하기
+		
+		String loc = request.getContextPath()+"/qnaListMain.action";
+		String msg = "";
+		
+		if(n==1) {
+			msg = "답변이 삭제되었습니다.";
+		}
+		else {
+			msg = "답변삭제에 실패했습니다.";
+		}
+		
+		mav.addObject("loc", loc);
+		mav.addObject("msg", msg);
+
+		mav.setViewName("msg");
+		
+		return mav; 
+	}
+	
+	
+	// 공지수정하기 페이지로 이동
+	@RequestMapping(value = "/noticeEdit.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView noticeEdit(HttpServletRequest request, ModelAndView mav) {
+		
+		// 글 수정해야할 글번호 가져오기
+		String seq = request.getParameter("seq");
+
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		String userid = loginuser.getUserid();
+
+		// 글 수정해야할 글 1개 내용 가져오기
+		// 글 조회수(readCount) 증가 없이 그냥 글 1개만 가져오는 것
+		NoticeVO notivo = service.getNoticeViewWithNoAddCount(seq); 
+
+		if(loginuser != null && loginuser.getUserid().equals("admin")) {
+			mav.addObject("notivo", notivo);
+			mav.setViewName("notice/noticeEdit.tiles1");
+		}
+		else {
+			String msg = "공지수정은 관리자만 가능합니다.";
+			String loc = "javascript:history.back()";
+
+			mav.addObject("msg", msg);
+			mav.addObject("loc", loc);
+
+			mav.setViewName("msg");
+		}
+		
+		
+		return mav; 
+	}
+	
+	
+	
+	// 공지 수정하기
+	@RequestMapping(value = "/noticeEditEnd.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView noticeEditEnd(HttpServletRequest request, ModelAndView mav, NoticeVO notivo) {
+		
+		int n = service.noticeEdit(notivo); // 공지 수정하기
+		
+		String loc = request.getContextPath()+"/noticeMain.action";
+		String msg = "";
+		
+		if(n==1) {
+			msg = "공지글이 수정되었습니다.";
+		}
+		else {
+			msg = "공지글 수정에 실패했습니다.";
+		}
+		
+		mav.addObject("loc", loc);
+		mav.addObject("msg", msg);
+
+		mav.setViewName("msg");
+		
+		return mav; 
+	}
+	
+	
+	// 공지 삭제하기
+	@RequestMapping(value = "/noticeDel.action", produces="text/plain;charset=UTF-8", method= {RequestMethod.POST})
+	public ModelAndView noticeDel(HttpServletRequest request, ModelAndView mav) {
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+
+		String loc =  "";
+		String msg = "";
+		if(loginuser != null && "admin".equals(loginuser.getUserid())) {
+			
+			String notice_id = request.getParameter("seq");
+			
+			int n = service.noticeDel(notice_id); // 공지 삭제하기
+			
+			loc = request.getContextPath()+"/noticeMain.action";
+			msg = "";
+			
+			if(n==1) {
+				msg = "공지글이 삭제되었습니다.";
+			}
+			else {
+				msg = "공지글 삭제에 실패했습니다.";
+			}
+			
+		}
+		else {
+			msg = "접근권한이 없습니다.";
+			loc = "javascript:history.back()";
+
+		}
+		
+		mav.addObject("msg", msg);
+		mav.addObject("loc", loc);
+
+		mav.setViewName("msg");
+		
+		return mav; 
+	}
 
 	
 }

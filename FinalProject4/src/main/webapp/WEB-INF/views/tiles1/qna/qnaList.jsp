@@ -58,22 +58,21 @@
                         <span class="table-title">
                                 제목
                         </span>
-                        <span class="table-product">
-                             예매공연
+                        <span class="table-date">
+                                문의일자
                         </span>
                         <span class="table-writer">
                                 작성자
                         </span>
-                        <span class="table-date">
-                                문의일자
-                        </span>
-                        <span class="table-is-read">
-                                읽음여부
-                        </span>
+                        <!-- <span class="table-is-read">
+                                
+                        </span> -->
                         <span class="table-is-answer">
-                                답변여부
+                               답변여부   
                         </span>
-                
+                        <!-- <span class="table-product">
+                               예매공연
+                        </span> -->
                     </div>
                 </div>
                 <div class="tbody">

@@ -93,8 +93,8 @@ public class BoardService implements InterBoardService {
 
 	// 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
 	@Override
-	public List<HashMap<String, String>> reserveTitleList(int idx) {
-		List<HashMap<String, String>> reserveTitleList = dao.reserveTitleList(idx);
+	public List<HashMap<String, String>> reserveTitleList(String userid) {
+		List<HashMap<String, String>> reserveTitleList = dao.reserveTitleList(userid);
 		return reserveTitleList;
 	}
 
@@ -137,14 +137,42 @@ public class BoardService implements InterBoardService {
 	@Override
 	public int noticeAdd(NoticeVO notivo) {
 		int n = dao.noticeAdd(notivo); // 첨부파일이 없는 경우
-		return 0;
+		return n;
 	}
 
 	// 공지사항 글 등록하기(첨부파일 O)
 	@Override
 	public int noticeAdd_withFile(NoticeVO notivo) {
 		int n = dao.noticeAdd_withFile(notivo); // 첨부파일이 있는 경우
-		return 0;
+		return n;
+	}
+
+	// Qna 답변 수정하기
+	@Override
+	public int qnaEditAdmin(QnaVO qvo) {
+		int n = dao.qnaEditAdmin(qvo);
+		return n;
+	}
+
+	// Qna 답변 삭제하기
+	@Override
+	public int qnaDelAdmin(String qna_id) {
+		int n = dao.qnaDelAdmin(qna_id);
+		return n;
+	}
+
+	// 공지 삭제하기 
+	@Override
+	public int noticeDel(String notice_id) {
+		int n = dao.noticeDel(notice_id);
+		return n;
+	}
+
+	// 공지 수정하기
+	@Override
+	public int noticeEdit(NoticeVO notivo) {
+		int n = dao.noticeEdit(notivo);
+		return n;
 	}
 	
 }

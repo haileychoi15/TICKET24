@@ -48,18 +48,10 @@ function styleCategory() {
 
                 if (category === selectedCategory) {
                     parent.classList.add('on');
+                    headerMenu.classList.replace('fold','unfold');
 
-                    let body = document.querySelector('body');
-                    let width = Number(window.getComputedStyle(body).width.replace("px",""));
-
-                    if(width >= 768){ // 데스크탑 버전
-                        headerMenu.style.paddingBottom = '75px';
-                    }
-                    else{ // 모바일 버전
-                        headerMenu.style.paddingBottom = '100px';
-                    }
                 } else {
-                   parent.classList.remove('on');
+                    parent.classList.remove('on');
                 }
             });
         }
@@ -73,43 +65,35 @@ function styleCategory() {
 
             let parent = item.closest('.header-category-item');
             parent.classList.remove('on');
-
-            let body = document.querySelector('body');
-            let width = Number(window.getComputedStyle(body).width.replace("px",""));
-
-            if(width >= 768){ // 데스크탑 버전
-                currentTarget.style.paddingBottom = '35px';
-            }
-            else{ // 모바일 버전
-                currentTarget.style.paddingBottom = '0';
-            }
+            currentTarget.classList.replace('unfold','fold');
 
         });
 
     });
 
-/*    headerCategory.addEventListener('click', (event) => {
+    /*      리로드 하기로 함
+            headerCategory.addEventListener('click', (event) => {
 
-        let ul = event.currentTarget;
-        let list = ul.querySelectorAll('.header-category-item');
+            let ul = event.currentTarget;
+            let list = ul.querySelectorAll('.header-category-item');
 
-        // 뮤지컬 카테고리 클릭 했을 때만 musicalOnly 나타나게 하기
-        let musicalOnly = document.querySelector('.musical-only');
+            // 뮤지컬 카테고리 클릭 했을 때만 musicalOnly 나타나게 하기
+            let musicalOnly = document.querySelector('.musical-only');
 
-        list.forEach((item) => {
-            item.classList.remove('active');
-            musicalOnly.style.display = 'none';
-        });
+            list.forEach((item) => {
+                item.classList.remove('active');
+                musicalOnly.style.display = 'none';
+            });
 
-        let target = event.target;
-        let parent = target.closest('.header-category-item');
-        parent.classList.add('active');
+            let target = event.target;
+            let parent = target.closest('.header-category-item');
+            parent.classList.add('active');
 
-        if(target.innerText === '뮤지컬'){
-            musicalOnly.style.display = 'flex';
-        }
+            if(target.innerText === '뮤지컬'){
+                musicalOnly.style.display = 'flex';
+            }
 
-    });*/
+        });*/
 
 
 }

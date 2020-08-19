@@ -71,8 +71,8 @@ public class BoardDAO implements InterBoardDAO {
 
 	// 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
 	@Override
-	public List<HashMap<String, String>> reserveTitleList(int idx) {
-		List<HashMap<String, String>> reserveTitleList = sqlsession.selectList("finalproject4.reserveTitleList", idx);
+	public List<HashMap<String, String>> reserveTitleList(String userid) {
+		List<HashMap<String, String>> reserveTitleList = sqlsession.selectList("finalproject4.reserveTitleList", userid);
 		return reserveTitleList;
 	}
 
@@ -137,6 +137,34 @@ public class BoardDAO implements InterBoardDAO {
 	public void updateAdminans(String fk_seq) {
 		sqlsession.update("finalproject4.updateAdminans", fk_seq);
 		
+	}
+
+	// Qna 답변 수정하기
+	@Override
+	public int qnaEditAdmin(QnaVO qvo) {
+		int n = sqlsession.update("finalproject4.qnaEditAdmin", qvo);
+		return n;
+	}
+
+	// Qna 답변 삭제하기
+	@Override
+	public int qnaDelAdmin(String qna_id) {
+		int n = sqlsession.update("finalproject4.qnaDelAdmin", qna_id);
+		return n;
+	}
+
+	// 공지 삭제하기 
+	@Override
+	public int noticeDel(String notice_id) {
+		int n = sqlsession.update("finalproject4.noticeDel", notice_id);
+		return n;
+	}
+
+	// 공지 수정하기
+	@Override
+	public int noticeEdit(NoticeVO notivo) {
+		int n = sqlsession.update("finalproject4.noticeEdit", notivo);
+		return n;
 	}
 	
 }

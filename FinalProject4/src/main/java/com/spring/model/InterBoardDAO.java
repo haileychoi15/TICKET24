@@ -19,7 +19,7 @@ public interface InterBoardDAO {
 
 	int qnaAdd(HashMap<String, String> paraMap); // Qna 문의 등록하기
 
-	List<HashMap<String, String>> reserveTitleList(int idx); // 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
+	List<HashMap<String, String>> reserveTitleList(String userid); // 로그인한 회원의 예매공연목록과 예매공연코드 가져오기
 
 	List<QnaVO> qnaList(HashMap<String, String> paraMap); // qna 글목록 보여주기
 
@@ -38,5 +38,13 @@ public interface InterBoardDAO {
 	void setAdminRead(String seq); // 관리자가 Qna 글 1개 보기 클릭시 Adminread 상태를 0 -> 1로 바꿈.
 
 	void updateAdminans(String fk_seq); // 관리자가 답변등록시 해당 참조글번호 fk_seq 의 문의글을 답변완료로 업데이트
+
+	int qnaEditAdmin(QnaVO qvo); // Qna 답변 수정하기
+
+	int qnaDelAdmin(String qna_id); // Qna 답변 삭제하기
+
+	int noticeDel(String notice_id); // 공지 삭제하기 
+
+	int noticeEdit(NoticeVO notivo); // 공지 수정하기
 	
 }

@@ -57,5 +57,19 @@ public class ReviewDAO implements InterReviewDAO {
 		int n = sqlsession.update("finalproject4.editReview", paraMap);
 		return n;
 	}
+
+	// 리뷰 추천하기
+	@Override
+	public int likeReview(HashMap<String, String> paraMap) {
+		int n = sqlsession.insert("finalproject4.likeReview", paraMap);
+		return n;
+	}
+
+	// 리뷰 추천 취소하기
+	@Override
+	public int dislikeReview(HashMap<String, String> paraMap) {
+		int n = sqlsession.delete("finalproject4.dislikeReview", paraMap);
+		return n;
+	}
 	
 }

@@ -7,11 +7,16 @@ pageEncoding="UTF-8"%>
 String ctxPath = request.getContextPath();
 %>
 
-<script src="resources/js/header.js"></script>
-<script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
+<%--<script src="resources/js/header1.js"></script>
+<script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>--%>
 
 <header class="header">
-    <nav class="header-menu">
+    <div class="link-bar">
+        <a href="<%=ctxPath%>/coupon.action">이벤트</a>
+        <a href="<%=ctxPath%>/noticeMain.action">공지사항</a>
+        <a href="<%=ctxPath%>/qna.action">FAQ</a>
+    </div>
+    <nav class="header-menu fold">
         <h1>
             <a href="<%=ctxPath%>/yes24.action">
                 TICKET24
@@ -164,9 +169,11 @@ String ctxPath = request.getContextPath();
                     <span class="yes-user"></span>
                 </c:if>
                 <ul class="user-box hide">
-                    <li class="user-box-item">
-                        <a href="<%=ctxPath%>/register.action"> 회원가입 </a>
-                    </li>
+                    <c:if test="${sessionScope.loginuser == null}">
+                        <li class="user-box-item">
+                            <a href="<%=ctxPath%>/register.action"> 회원가입 </a>
+                        </li>
+                    </c:if>
                     <li class="user-box-item">
                         <c:if test="${sessionScope.loginuser == null}">
                             <a href="<%=ctxPath%>/login.action">로그인</a>
@@ -176,13 +183,10 @@ String ctxPath = request.getContextPath();
                         </c:if>
                     </li>
                     <li class="user-box-item">
-                        <a href=""> 마이티켓 </a>
+                        <a href="<%=ctxPath%>/myTicket.action"> 마이티켓 </a>
                     </li>
                     <li class="user-box-item">
                         <a href="<%=ctxPath%>/myPage.action"> 마이페이지 </a>
-                    </li>
-                    <li class="user-box-item">
-                        <a href="<%=ctxPath%>/qna.action"> 고객센터 </a>
                     </li>
                 </ul>
             </button>

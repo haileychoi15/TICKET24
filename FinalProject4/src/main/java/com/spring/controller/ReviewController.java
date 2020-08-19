@@ -176,5 +176,34 @@ public class ReviewController {
 	}
 	
 	
+	// 리뷰 추천하기
+	@ResponseBody
+	@RequestMapping(value="/likeReview.action", produces="text/plain;charset=UTF-8")      
+	public String likeReview(HttpServletRequest request) {
+
+		String review_id = request.getParameter("review_id"); 
+		String fk_userid = request.getParameter("fk_userid");  
+	//	String flag = request.getParameter("flag"); 
+
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("review_id", review_id);
+		paraMap.put("fk_userid", fk_userid);
+		
+		int result = 0;
+	//	if(flag.equals("false")) { // 추천이 존재하지 않는다면
+			result = service.likeReview(paraMap);
+	//	}
+	//	else { // 이미 추천했다면
+			result = service.dislikeReview(paraMap);
+	//	}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("result", result);
+	//	jsonObj.put("flag", flag);
+
+		return jsonObj.toString();  
+
+	} 
+	
 	
 }

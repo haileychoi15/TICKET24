@@ -415,10 +415,10 @@
 		<result property="prod_title"		column="prod_title"		javaType="String"/>
 		<result property="prod_id"			column="prod_id"		javaType="String"/>
 	</resultMap>
-	<select id="reserveTitleList" parameterType="int" resultMap="reserveTitleList">
+	<select id="reserveTitleList" parameterType="String" resultMap="reserveTitleList">
 		select distinct prod_title, prod_id
 		from view_rev_memberInfo
-		where idx = #{idx}
+		where userid = #{userid}
 	</select>
 	
 	<!-- qna 글목록 보여주기 -->
@@ -440,18 +440,18 @@
 		where rno between #{startRno} and #{endRno} -->
 		select qna_id, fk_userid, name, qna_cate_name, subject, content
                  , regDate, adminread, adminans, groupno, fk_seq, depthno
-                 ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+                 ,fk_rev_id, prod_id, prod_img, prod_title
 		from 
 		(
 		    select rownum AS rno
 		         , qna_id, fk_userid, name, qna_cate_name, subject, content
                  , regDate, adminread, adminans, groupno, fk_seq, depthno
-                 ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+                 ,fk_rev_id, prod_id, prod_img, prod_title
 		    from
 		    (
 		        select qna_id, fk_userid, name, qna_cate_name, subject, content
                         , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate, adminread, adminans, groupno, fk_seq, depthno
-                        ,fk_rev_id, prod_id, rev_email, prod_img, prod_title
+                        ,fk_rev_id, prod_id, prod_img, prod_title
 		        from view_qna_info
 		        where status = 1
 		        <if test='searchWord != ""'>
@@ -489,24 +489,24 @@
 		from view_qna_info
 		where qna_id = #{seq} -->
 		select previousseq, previoussubject
-		       , qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
-		       , fk_rev_id, prod_id, rev_email, prod_img, prod_title
-		       , nextseq, nextsubject
-		        from
-		            (
-		               select lag(qna_id, 1) over(order by qna_id desc) as previousseq
-		               , lag(subject, 1) over(order by qna_id desc) as previoussubject
-		               
-		               , qna_id, fk_userid, name, category, qna_cate_name, subject, content, to_char(regDate, 'yy/mm/dd') as regDate, adminread, adminans, groupno, fk_seq, depthno
-		               , fk_rev_id, prod_id, rev_email, prod_img, prod_title
-		               
-		               , lead(qna_id, 1) over(order by qna_id desc) as nextseq
-		               , lead(subject, 1) over(order by qna_id desc) as nextsubject
-		               
-		                from view_qna_info
-		                where status = 1 and fk_userid != 'admin'
-		            ) V
-		where qna_id = #{seq}
+	       , qna_id, fk_userid, name, category, qna_cate_name, subject, content, regDate, adminread, adminans, groupno, fk_seq, depthno
+	       , fk_rev_id, prod_id, prod_img, prod_title
+	       , nextseq, nextsubject
+	        from
+	            (
+	               select lag(qna_id, 1) over(order by qna_id desc) as previousseq
+	               , lag(subject, 1) over(order by qna_id desc) as previoussubject
+	               
+	               , qna_id, fk_userid, name, category, qna_cate_name, subject, content, to_char(regDate, 'yy-mm-dd') as regDate, adminread, adminans, groupno, fk_seq, depthno
+	               , fk_rev_id, prod_id, prod_img, prod_title
+	               
+	               , lead(qna_id, 1) over(order by qna_id desc) as nextseq
+	               , lead(subject, 1) over(order by qna_id desc) as nextsubject
+	               
+	                from view_qna_info
+	                where status = 1
+	            ) V
+		where qna_id = #{seq} 
 	</select>
 	
 	<!-- Qna 답변 등록하기 -->
@@ -516,24 +516,54 @@
 	</insert>
 	
 	<!-- 공지사항 글 등록하기(첨부파일 O) -->
-
 	<insert id="noticeAdd_withFile">
 		insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content, fileName, orgFilename, fileSize)
 		values(noticeSeq.nextval, #{fk_userid}, #{category}, #{ticketopenday}, #{subject}, #{content}, #{fileName}, #{orgFilename}, #{fileSize})
 	</insert>
+	
+	<!-- 공지사항 글 등록하기(첨부파일 X) -->
+	<insert id="noticeAdd">
+		insert into yes_notice(notice_id,fk_userid,category,ticketopenday,subject,content)
+		values(noticeSeq.nextval, #{fk_userid}, #{category}, #{ticketopenday}, #{subject}, #{content})
+	</insert>
 
 	<!-- 관리자가 Qna 글 1개 보기 클릭시 Adminread 상태를 0 -> 1로 바꿈. -->
-
 	<update id="setAdminRead" parameterType="String">
 		update yes_qna set adminread = 1
 		where qna_id = #{seq}
 	</update>
 
 	<!-- 관리자가 답변등록시 해당 참조글번호 fk_seq 의 문의글을 답변완료로 업데이트 -->
-
 	<update id="updateAdminans" parameterType="String">
 		update yes_qna set adminans = 1
 		where qna_id = #{fk_seq}
+	</update>
+	
+	<!-- qna 답변 수정하기 -->
+	<update id="qnaEditAdmin" parameterType="com.spring.model.QnaVO">
+		update yes_qna set subject = #{subject} , content = #{content}
+		where qna_id = #{qna_id}
+	</update>
+	
+	<!-- qna 답변 삭제하기 -->
+	<update id="qnaDelAdmin" parameterType="String">
+		update yes_qna set status = 0 
+		where qna_id = #{qna_id}
+	</update>
+	
+	
+	<!-- 공지 삭제하기 -->
+	<update id="noticeDel" parameterType="String">
+		update yes_notice set status = 0 
+		where notice_id = #{notice_id}
+	</update>
+	
+	<!-- 공지 수정하기 -->
+	<update id="noticeEdit" parameterType="com.spring.model.NoticeVO">
+		<!-- update yes_notice set category = #{category}, ticketopenday = #{ticketopenday}, subject = #{subject}, content = #{content}
+		where notice_id = #{notice_id} -->
+		update yes_notice set category = #{category}, subject = #{subject}, content = #{content}
+		where notice_id = #{notice_id}
 	</update>
 
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
@@ -1087,6 +1117,18 @@
 		from view_detail_prod
 		where prod_id = #{prod_id}
 	</select>
+	
+	<!-- 리뷰 추천하기 -->
+	<insert id="likeReview" parameterType="HashMap" >
+		insert into like_review (seq, fk_userid, fk_parentReviewId ,fk_parentProdId)
+		values(likeReviewSeq.nextval, #{fk_userid}, #{review_id}, #{fk_parentProdId})
+	</insert>
+	
+	<!-- 리뷰 추천 취소하기 -->
+	<delete id="dislikeReview" parameterType="HashMap" >
+		delete from like_review
+		where fk_parentReviewId = #{review_id} and fk_userid = #{fk_userid}
+	</delete>
 		
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 
