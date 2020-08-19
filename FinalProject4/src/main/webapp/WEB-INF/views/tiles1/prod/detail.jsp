@@ -798,7 +798,7 @@
 		function goLikeReview(review_id, fk_userid){
 			
 			alert(fk_userid);
-	 		<%-- var loginuserid = "${sessionScope.loginuser.userid}";
+	 		var loginuserid = "${sessionScope.loginuser.userid}";
 			
 			if(loginuserid == "") {
 				alert("리뷰 추천은 로그인 후 가능합니다.");
@@ -851,7 +851,7 @@
 				}
 			});	   	
 		
-		 --%>
+		 
 		}
 		
 

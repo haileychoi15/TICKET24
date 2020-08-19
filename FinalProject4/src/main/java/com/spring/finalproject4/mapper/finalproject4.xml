@@ -1089,7 +1089,7 @@
 	<!-- 리뷰 추천하기 -->
 	<insert id="likeReview" parameterType="HashMap" >
 		insert into like_review (seq, fk_userid, fk_parentReviewId ,fk_parentProdId)
-		values(likeReviewSeq.nextval, #{fk_userId}, #{review_id}, #{fk_parentProdId})
+		values(likeReviewSeq.nextval, #{fk_userid}, #{review_id}, #{fk_parentProdId})
 	</insert>
 	
 	<!-- 리뷰 추천 취소하기 -->
