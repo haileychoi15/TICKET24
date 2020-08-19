@@ -272,6 +272,12 @@ create table prod
 --,constraint FK_info_close_date foreign key(date)
 );
 
+update prod set date_start = info_open_date + 30, date_end = info_close_date + 30;
+update prod set info_close_date = info_open_date + 3, date_end = date_start + 3;
+rollback;
+select * from prod;
+
+
 drop sequence seq_show;
 create sequence seq_show
 start with 1

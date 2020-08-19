@@ -462,11 +462,12 @@
                 '</div>'+
                 '<div class="review-comment-bottom">'+
                     '<div class="review-comment-like">'+
-                        /* '<i class="far fa-heart noncolored-heart"></i>'+
-                        '<i class="fas fa-heart colored-heart"></i>'+
+                    '<span onclick="goLikeReview('+review_id+','+'\''+fk_userid+'\')">'+
+                        '<i id="likeReviewMain" class="far fa-heart noncolored-heart"></i>'+
+                        /* '<i class="fas fa-heart colored-heart"></i>'+
                         '<strong class="main-likes-number">'+
                             '118'+
-                        '</strong>'+ */
+                        '</strong>'+  */
                     '</div>'+
                     '<div class="review-comment-revision">'+
                         '<span class="rev revisionButton" onclick="goEditReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+star+'\''+','+'\''+content+'\''+')">수정</span>'+
@@ -757,7 +758,7 @@
 			
 		}
 		
-		
+		// 리뷰 추천하기
 		function goLikeProdCnt(){
 			
 			var loginuserid = "${sessionScope.loginuser.userid}";
@@ -791,6 +792,66 @@
 				}
 			});	   
 			
+		}
+		
+		
+		function goLikeReview(review_id, fk_userid){
+			
+			alert(fk_userid);
+	 		<%-- var loginuserid = "${sessionScope.loginuser.userid}";
+			
+			if(loginuserid == "") {
+				alert("리뷰 추천은 로그인 후 가능합니다.");
+				return;
+			}
+			
+			if(loginuserid == fk_userid){
+				alert("자기자신의 리뷰는 추천할 수 없습니다.");
+				return;
+			}
+			
+			// 관심상품 등록하기
+			$.ajax({
+				url:"<%= request.getContextPath()%>/likeReview.action",
+				type:"GET",
+				data:{"review_id":review_id,
+					  "fk_userid":fk_userid, 
+				  	  "fk_parentProdId":"${pvo.prod_id}"},
+				dataType:"JSON",
+				success:function(json) {
+					
+					if(json.m == "추천") { 
+						if(json.n == 1) {
+							alert("리뷰추천이 완료되었습니다. ");
+					 	//	goLikeProdCnt(); 
+							
+							$("#likeReviewMain").removeClass("far");
+							$("#likeReviewMain").addClass("fas");
+						}
+						else {
+							alert("리뷰 추천할 수 없습니다. ");
+						}
+					 }
+					else {
+						if(json.n == 1) {
+							alert("관심상품에서 삭제되었습니다. ");
+					 	//	goLikeProdCnt();
+					 	
+							$("#likeReviewMain").removeClass("fas");
+							$("#likeReviewMain").addClass("far");
+						}
+						else {
+							alert("리뷰 추천 취소할 수 없습니다. ");
+						}
+					} 
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	   	
+		
+		 --%>
 		}
 		
 
