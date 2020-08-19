@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>YES24 공연 예매</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="http://tkfile.yes24.com/img/favicon.ico?ver=150825a" type="image/x-icon">
     <link rel="stylesheet" type="text/css" media="(max-width: 767px)" href="resources/css/seatMobile.css">
     <link rel="stylesheet" type="text/css" media="(min-width:768px)" href="resources/css/seatDesktop.css">
@@ -52,10 +53,10 @@
                     <p id="seatPriceTitle">▾좌석 등급/가격</p>
                     <div id="seatPrice">
                         <c:forEach var="seatType" items="${getSeatType}">
-                        	<div class="seatPriceItem">
-	                            <div class="gradeCol" style="background-color: ${seatType.seat_color}"></div>
-	                            <p>&nbsp;${seatType.seat_type}석 ${seatType.seat_price}원</p>
-                        	</div>
+                           <div class="seatPriceItem">
+                               <div class="gradeCol" style="background-color: ${seatType.seat_color}"></div>
+                               <p>&nbsp;${seatType.seat_type}석 ${seatType.seat_price}원</p>
+                           </div>
                         </c:forEach>
                     </div>
                     <div id="selectedSeatBox">
@@ -68,8 +69,8 @@
                     </div>
                     
                     <form name="convey" style="display: none">
-                    	<input type="text" name="showdate" id="showdate" value="">
-                    	<input type="text" name="showtime" id="showtime" value="">
+                       <input type="text" name="showdate" id="showdate" value="">
+                       <input type="text" name="showtime" id="showtime" value="">
                     </form>
                 </div>
             </div>
@@ -110,7 +111,7 @@
                                         <td class="row1">복지할인 (중증, 1~3급, 25% 할인)&nbsp;<em>[배송불가]</em></td>
                                         <td class="row2"><span style="display:none" id="dc2"></span><span id="dc2Display"></span></td>
                                         <td class="row3">
-                                        	<input type="checkbox" id="dcCheck2" onclick="changeDC()">
+                                           <input type="checkbox" id="dcCheck2" onclick="changeDC()">
                                         </td>
                                     </tr>
                                     <tr>
@@ -167,7 +168,7 @@
                                     <div class="ordererRow2"><input type="text" size="15" id="conveyName"></div>
                                 </div>
                                 <div id="ordererCall">
-                                    <div class="ordererRow1">연락처</div>
+                                    <div class="ordererRow1">긴급연락처</div>
                                     <div class="ordererRow2"><input type="text" size="3" maxlength="3" id="conveyHP1"> - <input type="text" size="4" maxlength="4" id="conveyHP2"> - <input type="text" size="4" maxlength="4" id="conveyHP3"></div>
                                 </div>
                                 <div id="ordererEmail">
@@ -175,32 +176,32 @@
                                     <div class="ordererRow2"><input type="text" size="20" id="conveyEmail"></div>
                                 </div>
                             </div><br>
-                            <div id="deliveryInfo" style="display: none;">
+                            <div id="deliveryInfo" style="opacity: 0;">
                                 <div class="infoTitle">배송지 정보 <span id="exclamation" onmouseenter="deliveryCaution()" onmouseleave="deliveryCautionEnd()">!</span>
                                     <div id="deliveryRadio">
                                         <input type="radio" id="same" name="address" onclick="ChangeAddressInfo(1)"><label for="same">주문자 정보와 동일</label>
-                                        <input type="radio" id="new" name="address" onclick="ChangeAddressInfo(3)"><label for="new">새로 입력</label>
+                                        <input type="radio" id="new" name="address" onclick="ChangeAddressInfo(2)"><label for="new">새로 입력</label>
                                     </div>
                                 </div>
-                                <div id="deliveryName">
+                                <div id="dlvyName">
                                     <div class="deliveryRow1">받으시는 분</div>
                                     <div class="deliveryRow2"><input type="text" size="15" id="deliveryName" value=""></div>
                                 </div>
-                                <div id="deliveryCall">
+                                <div id="dlvyCall">
                                     <div class="deliveryRow1">연락처</div>
-                                    <div class="deliveryRow2"><input type="text" size="3" maxlength="3"> - <input type="text" size="4" maxlength="4"> - <input type="text" size="4" maxlength="4"></div>
+                                    <div class="deliveryRow2"><input type="text" size="3" maxlength="3" id="deliveryHP1" value=""> - <input type="text" size="4" maxlength="4" id="deliveryHP2" value=""> - <input type="text" size="4" maxlength="4" id="deliveryHP3" value=""></div>
                                 </div>
-                                <div id="deliveryAddress">
+                                <div id="dlvyAddress">
                                     <div class="deliveryRow1">주소</div>
                                     <div class="deliveryRow2">
-                                        <input id="postNo" type="text" size="5" id="deliveryPostNo">&nbsp;
-                                        <input id="address" type="text" size="25" id="deliveryAddress">&nbsp;
+                                        <input id="postNo" type="text" size="5" value="">&nbsp;
+                                        <input id="address" type="text" size="25" value="">&nbsp;
                                         <button class="btn" onclick="setAddress()">우편번호검색</button>
                                     </div>
                                 </div>
-                                <div id="deliveryDetailAddress">
+                                <div id="dlvyDetailAddress">
                                     <div class="deliveryRow1">상세주소</div>
-                                    <div class="deliveryRow2"><input id="detailAddress" type="text" size="20" id="deliveryDetailAddress"></div>
+                                    <div class="deliveryRow2"><input id="detailAddress" type="text" size="20" value=""></div>
                                 </div>
                             </div>
                             <div id="caution" style="display: none;">
@@ -230,16 +231,17 @@
                         <div id="paymentDiv">
                             <div class="paymentCol1 paymentRow1">적립금</div>
                             <div class="paymentCol2 paymentRow1">
-                                <input type="text" size="10" value="0"> 원&nbsp;
-                                <input type="checkbox" id="allSel">
-                                <label for="allSel">전액사용 (총 <span id="point"></span>원)</label>
+                                <input type="number" size="10" value="0" id="payPoint" min="0" max="" style="width: 70px; text-align: right;"> 원&nbsp;
+                                <input type="checkbox" id="allPointSel" onchange="payAllPoint()">
+                                <label for="allPointSel">전액사용 (총 <span id="point">1000</span>원)</label>&nbsp;
+                                <button onclick="changePoint()" id="pointBtn">적립금 사용</button>
                             </div>
                             <div class="paymentCol1 paymentRow2">결제방법</div>
                             <div class="paymentCol2 paymentRow2">
-                                <input type="radio" name="paymentMethod" id="card"><label for="card"> 신용카드</label>&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="paymentMethod" id="deposit"><label for="deposit"> 무통장 입금</label>
+                                <input type="radio" name="paymentMethod" id="card" name="paymentMethod"><label for="card"> 신용카드</label>&nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="paymentMethod" id="deposit" name="paymentMethod"><label for="deposit"> 무통장 입금</label>
                                 <select name="bank" id="bank">
-                                    <option selected>입금은행 선택</option>
+                                    <option selected disabled hidden value="">입금은행 선택</option>
                                     <option value="국민은행">국민은행</option>
                                     <option value="신한은행">신한은행</option>
                                     <option value="농협중앙회">농협중앙회</option>
@@ -248,10 +250,10 @@
                                 </select>
                             </div>
                         </div>
-                        <h3>예매자 동의</h3>
+                        <h3 style="display: inline">예매자 동의</h3>&nbsp;<input type="checkbox" id="agreeAllSel" onchange="agreeAllSel()"><label for="agreeAllSel">전체 동의</label>
                         <div id="refundAgree">
                             <div id="refundAgreeDiv">
-                                <input type="checkbox" id="refundConfirm" name="confirm"><label for="refundConfirm">[필수] 예매 및 취소 수수료/취소기한을 확인하였으며 동의합니다.</label>&nbsp;
+                                <input type="checkbox" id="refundConfirm" name="confirm" class="agreeSel"><label for="refundConfirm">[필수] 예매 및 취소 수수료/취소기한을 확인하였으며 동의합니다.</label>&nbsp;
                             </div>
                             <table id="refundFee">
                                 <tr>
@@ -286,16 +288,16 @@
                             </div>
                         </div>
                         <div class="agree">
-                            <input type="checkbox" id="paymentConfirm" name="confirm"><label for="paymentConfirm">[필수] 결제대행 서비스 표준이용약관을 확인하였으며 동의합니다.</label>&nbsp;
+                            <input type="checkbox" class="agreeSel" id="paymentConfirm" name="confirm"><label for="paymentConfirm">[필수] 결제대행 서비스 표준이용약관을 확인하였으며 동의합니다.</label>&nbsp;
                         </div>
                         <div class="agree">
-                            <input type="checkbox" id="kakaoConfirm" name="confirm"><label for="kakaoConfirm">[필수] 카카오 전자금융 이용약관을 확인하였으며 동의합니다.</label>&nbsp;
+                            <input type="checkbox" class="agreeSel" id="kakaoConfirm" name="confirm"><label for="kakaoConfirm">[필수] 카카오 전자금융 이용약관을 확인하였으며 동의합니다.</label>&nbsp;
                         </div>
                         <div class="agree">
-                            <input type="checkbox" id="infoOfferConfirm" name="confirm"><label for="infoOfferConfirm">[필수] 개인정보 제3자 제공에 동의하며 주의사항을 확인하였습니다.</label>&nbsp;
+                            <input type="checkbox" class="agreeSel" id="infoOfferConfirm" name="confirm"><label for="infoOfferConfirm">[필수] 개인정보 제3자 제공에 동의하며 주의사항을 확인하였습니다.</label>&nbsp;
                         </div>
                         <div class="agree">
-                            <input type="checkbox" id="infoUseConfirm" name="confirm"><label for="infoUseConfirm">[필수] 개인정보 수집 및 이용에 동의합니다.</label>&nbsp;
+                            <input type="checkbox" class="agreeSel" id="infoUseConfirm" name="confirm"><label for="infoUseConfirm">[필수] 개인정보 수집 및 이용에 동의합니다.</label>&nbsp;
                         </div>
                     </div>
                 </div>
@@ -352,7 +354,7 @@
                         </div>
 
                         <div id="refundDeadline">
-                            <div id="refundDeadlineTitle">취소 기한 :&nbsp;</div><div id="deadline">2020년 8월 26일(수) 24:00</div>
+                            <div id="refundDeadlineTitle">취소 기한 :&nbsp;</div><div id="deadline"><span id="cancelDate"></span> <br>23시 59분</div>
                         </div>
                         <div id="sideBarBtn">
                             <button id="prevStep" onclick="change(step1)">이전 단계</button>
@@ -365,17 +367,20 @@
     </div>
     
     <!-- <div class="inipay_modal" id="inipay_modal">
-   		<iframe id="inipay_iframe" src="payPopUp.action" class="inipay_iframe" scrolling="yes"></iframe>
+         <iframe id="inipay_iframe" src="payPopUp.action" class="inipay_iframe" scrolling="yes"></iframe>
     </div> -->
     
-    <form name="payFrm">
-    	<input type="hidden" name="payShowName" value="${getShowRsvInfo.prod_id}"/>
-    	<input type="hidden" name="paySum" value="" id="paySum" />
+     <form name="payFrm">
     	<input type="hidden" name="payNum" value="" id="payNum" />
+    	<input type="hidden" name="showNum" value="${getShowRsvInfo.prod_id}"/>
+    	<input type="hidden" name="showName" value="${getShowRsvInfo.prod_title}"/>
+    	<input type="hidden" name="paySum" value="" id="paySum" />
     	<input type="hidden" name="seatIdes" value="" id="seatIdes" />
     	<input type="hidden" name="Email" value="" id="Email"/>
     	<input type="hidden" name="showDay" value="" id="showDay"/>
     	<input type="hidden" name="showRound" value="" id="showRound"/>
+    	
+    	<input type="hidden" name="receiveMethod" value="" id="receiveMethod" />
     	
     </form>
 </body>

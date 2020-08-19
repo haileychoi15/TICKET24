@@ -1,14 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="resources/css/coupon.css"/>
-    
+    <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
     <script type="text/javascript">
     	function couponReceive(couponNum) {
     		// alert(num + "쿠폰발행");
@@ -34,9 +30,6 @@
    			});
     	}
     </script>
-</head>
-
-<body>
 <section class="event-top">
                 <div class="event-ad">
                 <img src="resources/images/assets/eventtop.png" alt="이벤트안내이미지"/>
@@ -100,5 +93,3 @@
                 </div>
 </section>
 
-</body>
-</html>

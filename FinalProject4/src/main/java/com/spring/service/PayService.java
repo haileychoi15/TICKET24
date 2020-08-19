@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.model.InterPayDAO;
 
@@ -61,6 +64,59 @@ public class PayService implements InterPayService {
 	public List<HashMap<String, String>> takeCoupon(String userid) {
 		List<HashMap<String, String>> takeCoupon = dao.takeCoupon(userid);
 		return takeCoupon;
+	}
+
+	// 결제완료 후 insert == //
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int reserveComplete(HashMap<String, String> reserveInsertMap) {
+		String receiveMethod = reserveInsertMap.get("receiveMethod");
+		String seatIdes = reserveInsertMap.get("seatIdes"); // 좌석코드
+		String[] seatArr = seatIdes.split(",");
+		String dateID = reserveInsertMap.get("dateID");
+		String userid = reserveInsertMap.get("userid");
+		
+		int n = dao.reserveComplete(reserveInsertMap);
+		
+		if(n == 1) {
+			for(int i=0; i<seatArr.length; i++) {
+				String selSeat = seatArr[i];
+				
+				HashMap<String, String> updateSeatMap = new HashMap<>();
+				updateSeatMap.put("selSeat", selSeat);
+				updateSeatMap.put("dateID", dateID);
+				updateSeatMap.put("userid", userid);
+				
+				int m = dao.updateSeat(updateSeatMap);
+				int z = dao.insertSeatList(updateSeatMap);
+			}
+			
+			if("2".equals(receiveMethod)) {
+				// int m = dao.shipInsert(reserveInsertMap);
+			}
+			
+		}
+		
+
+		return n;
+	}
+
+	@Override
+	public String getRevId(HashMap<String, String> reserveInsertMap) {
+		String getRevId = dao.getRevId(reserveInsertMap);
+		return getRevId;
+	}
+
+	@Override
+	public int reserveStatusInsert(HashMap<String, String> reserveInsertMap) {
+		int n = dao.reserveStatusInsert(reserveInsertMap);
+		return n;
+	}
+
+	@Override
+	public String getMap(String showNum) {
+		String mapName = dao.getMap(showNum);
+		return mapName;
 	}
 
 }

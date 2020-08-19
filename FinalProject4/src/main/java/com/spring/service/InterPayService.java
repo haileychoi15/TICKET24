@@ -26,5 +26,16 @@ public interface InterPayService {
 	// == 결제창 사용가능 쿠폰 가져오기 == //
 	List<HashMap<String, String>> takeCoupon(String userid);
 
+	// 결제완료 후 insert == //
+	int reserveComplete(HashMap<String, String> reserveInsertMap);
+
+	// 예약 코드 가져오기
+	String getRevId(HashMap<String, String> reserveInsertMap);
+
+	// 상태테이블 insert
+	int reserveStatusInsert(HashMap<String, String> reserveInsertMap);
+
+	String getMap(String showNum);
+
 
 }
