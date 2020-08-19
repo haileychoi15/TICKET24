@@ -43,4 +43,6 @@ public interface InterBoardService {
 
 	int noticeDel(String notice_id); // 공지 삭제하기 
 
+	int noticeEdit(NoticeVO notivo); // 공지 수정하기
+
 }

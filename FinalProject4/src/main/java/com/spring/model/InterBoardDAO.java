@@ -44,5 +44,7 @@ public interface InterBoardDAO {
 	int qnaDelAdmin(String qna_id); // Qna 답변 삭제하기
 
 	int noticeDel(String notice_id); // 공지 삭제하기 
+
+	int noticeEdit(NoticeVO notivo); // 공지 수정하기
 	
 }

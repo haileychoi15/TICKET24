@@ -525,6 +525,14 @@
 		update yes_notice set status = 0 
 		where notice_id = #{notice_id}
 	</update>
+	
+	<!-- 공지 수정하기 -->
+	<update id="noticeEdit" parameterType="com.spring.model.NoticeVO">
+		<!-- update yes_notice set category = #{category}, ticketopenday = #{ticketopenday}, subject = #{subject}, content = #{content}
+		where notice_id = #{notice_id} -->
+		update yes_notice set category = #{category}, subject = #{subject}, content = #{content}
+		where notice_id = #{notice_id}
+	</update>
 
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->
 

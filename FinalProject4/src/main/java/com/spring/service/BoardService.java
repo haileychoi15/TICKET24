@@ -167,5 +167,12 @@ public class BoardService implements InterBoardService {
 		int n = dao.noticeDel(notice_id);
 		return n;
 	}
+
+	// 공지 수정하기
+	@Override
+	public int noticeEdit(NoticeVO notivo) {
+		int n = dao.noticeEdit(notivo);
+		return n;
+	}
 	
 }

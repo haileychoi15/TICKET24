@@ -888,13 +888,15 @@ public class BoardController {
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		String userid = loginuser.getUserid();
 
-		// 글 수정해야할 글 1개 내용 가져오기
-		// 글 조회수(readCount) 증가 없이 그냥 글 1개만 가져오는 것
-		QnaVO qvo = service.getQnaViewWithNoAddCount(seq, userid); 
+		if(loginuser != null && loginuser.getUserid().equals("admin")) {
+			// 글 수정해야할 글 1개 내용 가져오기
+			// 글 조회수(readCount) 증가 없이 그냥 글 1개만 가져오는 것
+			QnaVO qvo = service.getQnaViewWithNoAddCount(seq, userid); 
 
-		// 로그인 하지 않은 사용자 또는 
-		// 글쓴이가 아닌 다른 사용자가 글수정을 클릭한 경우
-		if(!loginuser.getUserid().equals(qvo.getFk_userid())) {
+			mav.addObject("qvo", qvo);
+			mav.setViewName("qna/qnaEditAdmin.tiles1");
+		}
+		else {
 			String msg = "다른사용자의 글은 수정이 불가합니다.";
 			String loc = "javascript:history.back()";
 
@@ -902,13 +904,6 @@ public class BoardController {
 			mav.addObject("loc", loc);
 
 			mav.setViewName("msg");
-		}
-		// 자신의 글을 수정할 경우
-		// 가져온 1개 글을(qvo) 글수정할 폼이 있는 view 단으로 보내준다. 
-		else {
-			mav.addObject("qvo", qvo);
-			mav.setViewName("qna/qnaEditAdmin.tiles1");
-
 		}
 		
 		return mav; 
@@ -965,14 +960,47 @@ public class BoardController {
 		return mav; 
 	}
 	
-	/*
-	// 공지 수정하기
+	
+	// 공지수정하기 페이지로 이동
 	@RequestMapping(value = "/noticeEdit.action", produces="text/plain;charset=UTF-8")
 	public ModelAndView noticeEdit(HttpServletRequest request, ModelAndView mav) {
 		
-		String notice_id = request.getParameter("seq");
+		// 글 수정해야할 글번호 가져오기
+		String seq = request.getParameter("seq");
+
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		String userid = loginuser.getUserid();
+
+		// 글 수정해야할 글 1개 내용 가져오기
+		// 글 조회수(readCount) 증가 없이 그냥 글 1개만 가져오는 것
+		NoticeVO notivo = service.getNoticeViewWithNoAddCount(seq); 
+
+		if(loginuser != null && loginuser.getUserid().equals("admin")) {
+			mav.addObject("notivo", notivo);
+			mav.setViewName("notice/noticeEdit.tiles1");
+		}
+		else {
+			String msg = "공지수정은 관리자만 가능합니다.";
+			String loc = "javascript:history.back()";
+
+			mav.addObject("msg", msg);
+			mav.addObject("loc", loc);
+
+			mav.setViewName("msg");
+		}
 		
-		int n = service.noticeEdit(notice_id); // 공지 수정하기
+		
+		return mav; 
+	}
+	
+	
+	
+	// 공지 수정하기
+	@RequestMapping(value = "/noticeEditEnd.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView noticeEditEnd(HttpServletRequest request, ModelAndView mav, NoticeVO notivo) {
+		
+		int n = service.noticeEdit(notivo); // 공지 수정하기
 		
 		String loc = request.getContextPath()+"/noticeMain.action";
 		String msg = "";
@@ -991,10 +1019,10 @@ public class BoardController {
 		
 		return mav; 
 	}
-	*/
+	
 	
 	// 공지 삭제하기
-	@RequestMapping(value = "/noticeDel.action", produces="text/plain;charset=UTF-8")
+	@RequestMapping(value = "/noticeDel.action", produces="text/plain;charset=UTF-8", method= {RequestMethod.POST})
 	public ModelAndView noticeDel(HttpServletRequest request, ModelAndView mav) {
 		
 		HttpSession session = request.getSession();

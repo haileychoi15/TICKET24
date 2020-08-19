@@ -159,5 +159,12 @@ public class BoardDAO implements InterBoardDAO {
 		int n = sqlsession.update("finalproject4.noticeDel", notice_id);
 		return n;
 	}
+
+	// 공지 수정하기
+	@Override
+	public int noticeEdit(NoticeVO notivo) {
+		int n = sqlsession.update("finalproject4.noticeEdit", notivo);
+		return n;
+	}
 	
 }
