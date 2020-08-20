@@ -7,7 +7,7 @@
 	<!-- === MainPage === -->
 	<select id="getProdList" parameterType="String" resultType="com.spring.model.ProdVO">
 		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, to_char(date_start, 'yyyy-mm-dd') as date_start, to_char(date_end, 'yyyy-mm-dd') as date_end
-		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, map_id
 		from prod
 		where fk_category_id = #{category}
 		order by info_open_date desc
@@ -15,7 +15,7 @@
 	
 	<select id="getHotProdList" parameterType="String" resultType="com.spring.model.ProdVO">
 		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, to_char(date_start, 'yyyy-mm-dd') as date_start, to_char(date_end, 'yyyy-mm-dd') as date_end
-		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, map_id
 		from prod
 		where fk_category_id = #{category}
 		order by info_qnty desc
@@ -23,7 +23,7 @@
 	
 	<select id="getlocalRecProdList" parameterType="String" resultType="com.spring.model.ProdVO">
 		select prod_id, fk_category_id, fk_category_detail_id, prod_title, prod_img, prod_detail_img, to_char(date_start, 'yyyy-mm-dd') as date_start, to_char(date_end, 'yyyy-mm-dd') as date_end
-		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, status, map_id
+		     , to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_rev_status, info_grade, info_run_time, info_qnty, map_id
 		from prod
 		where fk_category_id = #{category}
 		order by info_qnty desc
@@ -234,6 +234,38 @@
 		from yes_coupon
 		where fk_userid = #{userid2} and coupon_status = 1
 	</select>
+	
+	<insert id="reserveInsert" parameterType="HashMap">
+		insert into yes_reserve(rev_id, prod_id, user_id, date_id, rev_email, rev_qnty, rev_date, rev_price, rev_ship_method, rev_pay_method, rev_pay_status)
+		values(seq_reserve.nextval, #{showNum}, #{userid}, #{dateID}, #{email}, #{seatCnt}, default, #{paySum}, #{receiveMethod}, #{payMethodNum}, #{payStatus})
+	</insert>
+	
+	<update id="updateSeat" parameterType="HashMap">
+		update yes_show_seat set seat_status = 1 where seat_name like '%' || #{selSeat} || '%' and date_id = #{dateID}
+	</update>
+	
+	<insert id="insertSeatList" parameterType="HashMap">
+		INSERT INTO yes_paySeat(paySeat_id, date_id, seat_name, user_id) VALUES (seq_paySeat.nextval, #{dateID}, #{selSeat}, #{userid})
+	</insert>
+	
+	<select id="getRevId" parameterType="HashMap" resultType="String">
+		select rev_id
+		from yes_reserve
+		where prod_id = #{showNum} and user_id = #{userid} and date_id = #{dateID}
+	</select>
+	
+	<insert id="reserveStatusInsert" parameterType="HashMap">
+		INSERT INTO yes_rev_status(status_id, rev_id, status, status_cng_date) VALUES (seq_rev_status.nextval, #{revId}, #{payStatus}, default)
+	</insert>
+	
+	<select id="getMap" resultType="String" parameterType="String">
+		select map_name
+		from yes_show_map M
+		join prod P
+		on P.map_id = M.map_id
+		where P.prod_id = #{showNum}
+	</select>
+	
 	
 	
 	<!-- ===== BOARD(공지사항, FAQ, QNA, 리뷰 부분 ===== -->

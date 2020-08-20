@@ -99,17 +99,8 @@ public class MainController {
 		showInfoMap.put("startCnt", startCnt);
 		showInfoMap.put("endCnt", endCnt);
 		
-		System.out.println(selectNum + "정렬번호 <<");
-		System.out.println(categoryNum + "대분류<<");
-		System.out.println(detailCategoryNum + "소분류 <<");
-		System.out.println(startCnt + "공연시작번호 <<");
-		System.out.println(endCnt + "공연끝번호 <<");
-		
 		List<HashMap<String, String>> selectedShowList = service.getSelectedShowList(showInfoMap);
 		String totalCnt = service.getTotalCnt(showInfoMap);
-		
-		System.out.println(totalCnt + "개수 <<<");
-		System.out.println(selectedShowList.size() + "사이즈<<<");
 		
 		JSONArray jsonArr = new JSONArray();
 		

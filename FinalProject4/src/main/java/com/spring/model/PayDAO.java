@@ -63,4 +63,41 @@ public class PayDAO implements InterPayDAO {
 		return takeCoupon;
 	}
 
+	// 결제완료 후 예매테이블 insert == //
+	@Override
+	public int reserveComplete(HashMap<String, String> reserveInsertMap) {
+		int n = sqlsession.insert("finalproject4.reserveInsert", reserveInsertMap);
+		return n;
+	}
+
+	@Override
+	public int updateSeat(HashMap<String, String> updateSeatMap) {
+		int n = sqlsession.update("finalproject4.updateSeat", updateSeatMap);
+		return n;
+	}
+
+	@Override
+	public int insertSeatList(HashMap<String, String> updateSeatMap) {
+		int n = sqlsession.insert("finalproject4.insertSeatList", updateSeatMap);
+		return n;
+	}
+
+	@Override
+	public String getRevId(HashMap<String, String> reserveInsertMap) {
+		String getRevId = sqlsession.selectOne("finalproject4.getRevId", reserveInsertMap);
+		return getRevId;
+	}
+
+	@Override
+	public int reserveStatusInsert(HashMap<String, String> reserveInsertMap) {
+		int n = sqlsession.insert("finalproject4.reserveStatusInsert", reserveInsertMap);
+		return n;
+	}
+
+	@Override
+	public String getMap(String showNum) {
+		String mapName = sqlsession.selectOne("finalproject4.getMap", showNum);
+		return mapName;
+	}
+
 }

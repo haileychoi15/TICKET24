@@ -112,40 +112,51 @@ public class PayController {
 	/*public ModelAndView requiredLogin_payPopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
 	public ModelAndView payPopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-	/*
-		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+//		HttpSession session = request.getSession();
+//		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+//		mav.addObject("loginuser", loginuser);
 		
-		mav.addObject("loginuser", loginuser);
-*/
+		String payMethodNum = request.getParameter("payNum"); // 결제 방법(1. 신용카드 or 2. 무통장입금)
+		String showName = request.getParameter("showName"); // 공연 제목
 		
-		String payMethodNum = request.getParameter("payNum"); // 결제 방법
-		
-		String showNum = request.getParameter("payShowName"); // 공연 코드
-		String paySum = request.getParameter("paySum"); // 공연 금액 다시 확인해봐야 함
-		String seatId = request.getParameter("seatId"); // 좌석코드
-		String payStatus = "1"; // ( 무통장입금이면 결제대기, 바로 결제완료라면 결제완료, 취소할경우 취소 )
+		String showNum = request.getParameter("showNum"); // 공연 코드
+		String paySum = request.getParameter("paySum"); // 공연 금액
+		String payStatus = ""; // ( 2. 무통장입금이면 결제대기, 1. 바로 결제완료라면 결제완료, 0. 취소할경우 취소 )
 		String email = request.getParameter("Email"); // 예매 이메일
-		
-		String[] seatArr = seatId.split(",");
-		String seatCnt = String.valueOf(seatArr.length); // 예매 수
-		
 		String showDay = request.getParameter("showDay");
 		String showRound = request.getParameter("showRound");
-		
 		HashMap<String, String> dateMap = new HashMap<>();
 		dateMap.put("showDay", showDay);
 		dateMap.put("showRound", showRound);
 		dateMap.put("showNum", showNum);
-		String dateID = service.getDateId(dateMap);
+		String dateID = service.getDateId(dateMap); // 일시 코드
+		String receiveMethod = request.getParameter("receiveMethod"); // 수령방법 ( 1. 현장수령  or 2. 배송 )
 		
-		String receiveMethod = request.getParameter("receiveMethod");
+		String seatIdes = request.getParameter("seatIdes"); // 좌석코드
+		String[] seatArr = seatIdes.split(",");
+		int seatCnt2 = seatArr.length;
+		String seatCnt = String.valueOf(seatCnt2); // 예매 수
 		
+		HashMap<String, String> reserveInfoMap = new HashMap<>();
+		reserveInfoMap.put("payMethodNum", payMethodNum);
+		reserveInfoMap.put("showNum", showNum);
+		reserveInfoMap.put("paySum", paySum);
+		reserveInfoMap.put("email", email);
+		reserveInfoMap.put("dateID", dateID);
+		reserveInfoMap.put("receiveMethod", receiveMethod);
+		reserveInfoMap.put("showName", showName);
+		reserveInfoMap.put("seatIdes", seatIdes);
+		reserveInfoMap.put("seatCnt", seatCnt);
 		
 		if("1".equals(payMethodNum)) { // 신용카드 결제일 경우
+			payStatus = "1";
+			reserveInfoMap.put("payStatus", payStatus);
+			mav.addObject("reserveInfoMap", reserveInfoMap);
 			mav.setViewName("reserve/paymentGateway.notiles");
 		}
-		else { // 무통장입금일 경우
+		else if("2".equals(payMethodNum)) { // 무통장입금일 경우
+			payStatus = "2";
+			reserveInfoMap.put("payStatus", payStatus);
 			
 			// 무통장입금일 경우 트랜잭션
 			mav.setViewName("reserve/payComplete.notiles");
@@ -159,32 +170,91 @@ public class PayController {
 	/*public ModelAndView requiredLogin_payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
 	public ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-	/*
-		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		//HttpSession session = request.getSession();
+		//MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
-		mav.addObject("loginuser", loginuser);
+		//String userid = loginuser.getUserid();
+		String userid = "guzi10";
 		
-		String showNum = request.getAttribute("showNum");
-		ShowVO show = service.getShowInfo(showNum); // 공연 전체 정보를 집어넣을 필요 있을까?
+		String showNum = request.getParameter("showNum");
+		String dateID = request.getParameter("dateID");
+		String email = request.getParameter("email");
+		String paySum = request.getParameter("paySum");
+		String receiveMethod = request.getParameter("receiveMethod");
+		String payMethodNum = request.getParameter("payMethodNum");
+		String payShowName = request.getParameter("payShowName");
+		String payStatus = request.getParameter("payStatus");
+		String seatCnt = request.getParameter("seatCnt");
+		String seatIdes = request.getParameter("seatIdes");
+		String[] seatArr = seatIdes.split(",");
 		
-		mav.addObject("show", show);
-*/
-//			HashMap<String, String> payMap = new HashMap<>(); // 결제창에 보낼 정보 여러개일까..?
-//			mav.addObject("payMap", payMap);
+		String payMethod = "";
+		if("1".equals(payMethodNum)) { // 신용카드 결제일 경우
+			payMethod = "신용카드";
+		}
+		else { // 무통장입금일 경우
+			payMethod = "무통장입금";
+		}
 		
+		String sReceiveMethod = "";
+		if("1".equals(receiveMethod)) { // 신용카드 결제일 경우
+			sReceiveMethod = "현장수령";
+		}
+		else { // 무통장입금일 경우
+			sReceiveMethod = "배송";
+		}
+		
+		
+		
+		HashMap<String, String> reserveInsertMap = new HashMap<>();
+		reserveInsertMap.put("showNum", showNum);
+		reserveInsertMap.put("dateID", dateID);
+		reserveInsertMap.put("email", email);
+		reserveInsertMap.put("payShowName", payShowName);
+		reserveInsertMap.put("receiveMethod", receiveMethod);
+		reserveInsertMap.put("paySum", paySum);
+		reserveInsertMap.put("payMethodNum", payMethodNum);
+		reserveInsertMap.put("userid", userid);
+		reserveInsertMap.put("payStatus", payStatus);
+		reserveInsertMap.put("seatCnt", seatCnt);
+		reserveInsertMap.put("seatIdes", seatIdes);
+		
+		
+		HashMap<String, String> reserveInfoMap = new HashMap<>();
+		reserveInfoMap.put("payShowName", payShowName);
+		reserveInfoMap.put("payMethod", payMethod);
+		reserveInfoMap.put("sReceiveMethod", sReceiveMethod);
+		
+		reserveInfoMap.put("showNum", showNum);
+		reserveInfoMap.put("receiveMethod", receiveMethod);
+		reserveInfoMap.put("paySum", paySum);
+		reserveInfoMap.put("dateID", dateID);
 		
 		// 결제 성공했을 경우 트랜잭션
+		int n = service.reserveComplete(reserveInsertMap);
+		String revId = service.getRevId(reserveInsertMap);
+		String mapName = service.getMap(showNum);
 		
-		mav.setViewName("reserve/payComplete.notiles");
-		return mav;
-	}
-	
-	// == 결제 후 에매 확인 창 띄우기 == //
-	@RequestMapping(value="/reserveCheck.action")
-	public ModelAndView requriedLogin_reserveCheck(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		// 예매 db 에 예메 확인 처리 ㄱㄱ
+		reserveInsertMap.put("revId", revId);
+		reserveInfoMap.put("revId", revId);
+		int m = service.reserveStatusInsert(reserveInsertMap);
+		
+		if(n == 1) {
+			mav.addObject("reserveInfoMap", reserveInfoMap);
+			mav.addObject("seatArr", seatArr);
+			mav.addObject("mapName", mapName);
+			mav.setViewName("reserve/payComplete.notiles");
+		}
+		else {
+			String msg = "결제가 실패하였습니다.";
+			String loc = "javascript:history.back()";
+			
+			mav.addObject("msg", msg);
+			mav.addObject("loc", loc);
+			
+			mav.setViewName("msg");
+		}
 		
 		return mav;
 	}

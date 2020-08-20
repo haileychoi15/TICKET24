@@ -19,7 +19,7 @@
 <link rel="shortcut icon" href="http://tkfile.yes24.com/img/favicon.ico?ver=150825a" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="resources/css/header.css">
+<link rel="stylesheet" href="resources/css/header2.css">
 
 
 <link rel="stylesheet" href="resources/css/footer.css">

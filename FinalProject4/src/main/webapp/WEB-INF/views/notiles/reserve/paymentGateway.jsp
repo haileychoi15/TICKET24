@@ -23,12 +23,12 @@ $(document).ready(function() {
        pg : 'html5_inicis', // 결제방식 PG사 구분
        pay_method : 'card',	// 결제 수단  // 'card' 'kakao'
        merchant_uid : 'merchant_' + new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호
-       name : 'YES24 결제(${payShowName})', // ${show.name} 공연명	 
+       name : 'YES24 결제(${reserveInfoMap.showName})', // ${show.name} 공연명	 
        // 코인충전 또는 order 테이블에 들어갈 주문명 혹은 주문 번호. (선택항목)원활한 결제정보 확인을 위해 입력 권장(PG사 마다 차이가 있지만) 16자 이내로 작성하기를 권장
        amount : 100, // ${sum} 총가격 
        // '${coinmoney}'  결제 금액 number 타입. 필수항목. 
-       buyer_email : 'hyunho2005@naver.com',  // 구매자 email
-       buyer_name : '신현호',	  // 구매자 이름 
+       buyer_email : '${reserveInfoMap.email}',  // 구매자 email
+       buyer_name : '신현호',	  // 구매자 이름  // ${loginuser.userid}
        buyer_tel : '',    // 구매자 전화번호 (필수항목)
        buyer_addr : '',  
        buyer_postcode : '',
@@ -62,8 +62,10 @@ $(document).ready(function() {
 		//	opener.location.href = "javascript:goCoinUpdate('${idx}','${coinmoney}');";
 		//	window.opener.goCoinUpdate('${idx}','${coinmoney}'); // 이동시켜서 결제 완료처리
 		//  $(opener.location).attr("href", "javascript:goCoinUpdate('${idx}','${coinmoney}');");
-			location.href="<%=request.getContextPath()%>/payComplete.action?success=1";
-			
+			var frm = document.payFrm;
+			frm.method = "POST";
+			frm.action = "<%=request.getContextPath()%>/payComplete.action";
+			frm.submit();
         } else {
         	alert("결제에 실패하였습니다.");
         	//location.href = "javascript:back();";
@@ -79,5 +81,17 @@ $(document).ready(function() {
 </head>	
 
 <body>
+	<form name="payFrm">
+    	<input type="hidden" name="showNum" value="${reserveInfoMap.showNum}"/>
+    	<input type="hidden" name="payShowName" value="${reserveInfoMap.showName}"/>
+    	<input type="hidden" name="receiveMethod" value="${reserveInfoMap.receiveMethod}" />
+    	<input type="hidden" name="paySum" value="${reserveInfoMap.paySum}" />
+    	<input type="hidden" name="payMethodNum" value="${reserveInfoMap.payMethodNum}" />
+    	<input type="hidden" name="dateID" value="${reserveInfoMap.dateID}" />
+    	<input type="hidden" name="email" value="${reserveInfoMap.email}" />
+    	<input type="hidden" name="payStatus" value="${reserveInfoMap.payStatus}" />
+    	<input type="hidden" name="seatCnt" value="${reserveInfoMap.seatCnt}" />
+    	<input type="hidden" name="seatIdes" value="${reserveInfoMap.seatIdes}" />
+    </form>
 </body>
 </html>
