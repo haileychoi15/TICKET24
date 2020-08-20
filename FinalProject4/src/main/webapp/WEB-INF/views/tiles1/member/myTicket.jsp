@@ -170,7 +170,7 @@
         <div id="preferredArea">
         	<c:forEach var="like" items="${myLikeList }" varStatus="status">
         		<div class="preferredItem">
-        			<img src="resources/images/${like.prod_img }" alt="poster" height="110px" onclick="location.href='<%=ctxPath%>/detail.action?seq=${like.prod_id }'">
+        			<img src="resources/images/${like.prod_img }" alt="poster" style="width:170px" onclick="location.href='<%=ctxPath%>/detail.action?seq=${like.prod_id }'">
    					<input type="hidden" name="prod_id" value="${like.prod_id }"/>
         		</div>
         	</c:forEach>

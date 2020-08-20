@@ -8,6 +8,9 @@
 %>
 <header class="header">
     <div class="link-bar">
+    <c:if test="${sessionScope.loginuser.userid == 'admin'}">
+    	<a href="<%=ctxPath%>/qnaListMain.action">Admin</a>
+   	</c:if>
         <a href="<%=ctxPath%>/coupon.action">이벤트</a>
         <a href="<%=ctxPath%>/noticeMain.action">공지사항</a>
         <a href="<%=ctxPath%>/qna.action">FAQ</a>

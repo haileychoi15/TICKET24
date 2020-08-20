@@ -6,7 +6,7 @@
 <script type="text/javascript" src="<%= request.getContextPath()%>/resources/js/jquery-3.3.1.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript">
-window.resizeTo(800, 600);
+window.resizeTo(850, 617);
 
 $(document).ready(function(){
       

@@ -14,7 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>반응형상세</title>
      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="resources/css/grid.min.css" />
     <link rel="stylesheet" href="resources/css/respstyle.css">
     <link rel="stylesheet" href="resources/css/fullcalendar/main.css">
     
@@ -477,7 +476,9 @@
              return false;
              }
             
-             window.open("/finalproject4/reservePopUp.action", "popUp", 'toolbar=no, menubar=no, scrollbars=no');
+             var url = "<%= request.getContextPath()%>/reservePopUp.action?seq=${param.seq}";
+          	 var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, menubar=no, status = no";
+          	 window.open(url, "", option);
             
             }
         

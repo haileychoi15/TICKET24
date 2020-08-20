@@ -202,8 +202,8 @@
 	                    <div class="list-button-group">
 	                        <a href="<%= request.getContextPath()%>/qnaListMain.action" role="button">전체목록보기</a>
 	                        <a href="<%= request.getContextPath()%>/qnaListMain.action" role="button">목록보기</a>
+	                        <a href="<%= request.getContextPath()%>/qnaAddAdmin.action?fk_seq=${qnavo.qna_id}&groupno=${qnavo.groupno}&depthno=${qnavo.depthno}&category=${qnavo.category}" role="button">답변글쓰기</a>
 	                        <c:if test="${sessionScope.loginuser.userid eq 'admin' && qnavo.fk_userid eq 'admin'}">
-	                            <a href="<%= request.getContextPath()%>/qnaAddAdmin.action?fk_seq=${qnavo.qna_id}&groupno=${qnavo.groupno}&depthno=${qnavo.depthno}&category=${qnavo.category}" role="button">답변글쓰기</a>
 	                            <a href="<%= request.getContextPath()%>/qnaEditAdmin.action?seq=${qnavo.qna_id}" role="button">수정</a>
 	                            <a href="<%= request.getContextPath()%>/qnaDelAdmin.action?seq=${qnavo.qna_id}" role="button">삭제</a>
 	                        </c:if>

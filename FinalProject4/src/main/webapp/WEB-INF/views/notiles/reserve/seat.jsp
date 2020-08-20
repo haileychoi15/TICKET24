@@ -384,5 +384,5 @@
     	
     </form>
 </body>
-<jsp:include page="../../../../resources/js/seatSelScript.jsp"/>
+<jsp:include page="../../../../resources/js/seatSelScript2.jsp"/>
 </html>

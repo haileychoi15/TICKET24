@@ -151,11 +151,10 @@ public class MainController {
 		String couponName = "";
 		int resultNum = 0;
 		
-//		HttpSession session = request.getSession();
-//		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-//		
-//		String userid = loginuser.getUserid();
-		String userid = "guzi10";
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		String userid = loginuser.getUserid();
 		String couponNum = request.getParameter("couponNum");
 		
 		System.out.println(userid + " 아이디");
