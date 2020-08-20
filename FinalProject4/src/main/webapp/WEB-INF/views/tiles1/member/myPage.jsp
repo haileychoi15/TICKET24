@@ -81,16 +81,6 @@
 					</c:forEach>
                 </tbody>
             </table>
-
-            <div class="pageBar">
-                <a href="" class="pageBtn prevFist"></a>
-                <a href="" class="pageBtn prev"></a>
-                <em class="pageLink">1</em>
-                <a href="" class="pageLink">2</a>
-                <a href="" class="pageLink">3</a>
-                <a href="" class="pageBtn next"></a>
-                <a href="" class="pageBtn nextLast"></a>
-            </div>
         </div>
 
         <div id="couponDiv">
@@ -117,16 +107,6 @@
 					</c:forEach>
                 </tbody>
             </table>
-
-            <div class="pageBar">
-                <a href="" class="pageBtn prevFist"></a>
-                <a href="" class="pageBtn prev"></a>
-                <em class="pageLink">1</em>
-                <a href="" class="pageLink">2</a>
-                <a href="" class="pageLink">3</a>
-                <a href="" class="pageBtn next"></a>
-                <a href="" class="pageBtn nextLast"></a>
-            </div>
         </div>
 
         <div id="qnaDiv">
@@ -157,16 +137,6 @@
 					 </c:forEach>
                 </tbody>
             </table>
-
-            <div class="pageBar">
-                <a href="" class="pageBtn prevFist"></a>
-                <a href="" class="pageBtn prev"></a>
-                <em class="pageLink">1</em>
-                <a href="" class="pageLink">2</a>
-                <a href="" class="pageLink">3</a>
-                <a href="" class="pageBtn next"></a>
-                <a href="" class="pageBtn nextLast"></a>
-            </div>
 
 
 			<c:forEach var="qna2" items="${qnaList2}" varStatus="status" >

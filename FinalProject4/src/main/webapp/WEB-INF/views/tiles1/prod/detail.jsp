@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%
-   String ctxPath = request.getContextPath();
+	String ctxPath = request.getContextPath();
 %>
 
 <!DOCTYPE html>
@@ -21,17 +21,17 @@
     <style type="text/css">
     
     .fc-scroller {
-      height: auto!important;
-      overflow-y: auto;
-      }
-   
-   .selectedDate{
+		height: auto!important;
+		overflow-y: auto;
+		}
+	
+	.selectedDate{
     background-color:#ec7d2c !important;
     }
-       
+    	
     a {text-decoration: none !important;}
-   
-   #star_grade a{
+	
+	#star_grade a{
         text-decoration: none;
         color: gray;
     }
@@ -40,130 +40,130 @@
         color: red;
     }
     
-   <%-- .star-rating { width:103px; }
-   .star-rating,.star-rating span { display:inline-block; height:19px; overflow:hidden; background:url(<%= ctxPath%>/resources/images/star_resize.png)no-repeat; color: orange;}
-   .star-rating span{ background-position:left bottom; line-height:0; vertical-align:top; } --%>
-   
-   <%-- .star-rating { width:115px; }
-   .star-rating,.star-rating span { display:inline-block; height:22px; overflow:hidden; background:url(<%= ctxPath%>/resources/images/orange_star.PNG)no-repeat; color: orange;}
-   .star-rating span{ background-position:left bottom; line-height:0; vertical-align:top; } --%>
-   
-   li.pageBarStyle {
-      display:inline-block; 
-      width:30px;
-   }
-   
+	<%-- .star-rating { width:103px; }
+	.star-rating,.star-rating span { display:inline-block; height:19px; overflow:hidden; background:url(<%= ctxPath%>/resources/images/star_resize.png)no-repeat; color: orange;}
+	.star-rating span{ background-position:left bottom; line-height:0; vertical-align:top; } --%>
+	
+	<%-- .star-rating { width:115px; }
+	.star-rating,.star-rating span { display:inline-block; height:22px; overflow:hidden; background:url(<%= ctxPath%>/resources/images/orange_star.PNG)no-repeat; color: orange;}
+	.star-rating span{ background-position:left bottom; line-height:0; vertical-align:top; } --%>
+	
+	li.pageBarStyle {
+		display:inline-block; 
+		width:30px;
+	}
+	
     </style>
     
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=713478ea9084b9fc9e6f5c1cc4d5d95f&libraries=services"></script>
     <script src="https://kit.fontawesome.com/3625c042d9.js" crossorigin="anonymous"></script>
-      <script src='resources/js/fullcalendar/main.js'></script>
+   	<script src='resources/js/fullcalendar/main.js'></script>
     <script src="resources/js/fullcalendar/ko.js"></script>
     <script>
 
         document.addEventListener('DOMContentLoaded', function() {
-           
-           var loginuserid = "${sessionScope.loginuser.userid}";
-       //    document.getElementById('fk_userid').value = loginuserid;
-           
+        	
+        	var loginuserid = "${sessionScope.loginuser.userid}";
+       // 	document.getElementById('fk_userid').value = loginuserid;
+        	
 
-         var existlike = $("#existlike").val();
-         console.log("existlike : "+existlike);
-         
-         goLikeProdCnt();
-         
-      /*    goLikeProdCnt();
-         
-         var loginuserid = "${sessionScope.loginuser.userid}";
-         if(loginuserid != "") {
-            goLikeProdUser();
-         } */
-         
-      
-         goReviewList("1");
-           
-           var showdate = document.getElementById('showdate');
-           var showtime = document.getElementById('showtime');
-           
+			var existlike = $("#existlike").val();
+			console.log("existlike : "+existlike);
+			
+			goLikeProdCnt();
+			
+		/* 	goLikeProdCnt();
+			
+			var loginuserid = "${sessionScope.loginuser.userid}";
+			if(loginuserid != "") {
+				goLikeProdUser();
+			} */
+			
+		
+			goReviewList("1");
+        	
+        	var showdate = document.getElementById('showdate');
+        	var showtime = document.getElementById('showtime');
+        	
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 contentHeight:350,
-               initialView: 'dayGridMonth',
+            	initialView: 'dayGridMonth',
                 locale:'ko',
                 dateClick: function(info) {
-                   
-               var days=document.querySelectorAll(".selectedDate");
-                   days.forEach(function(day){day.classList.remove("selectedDate");});
-                   info.dayEl.classList.add("selectedDate");
+                	
+					var days=document.querySelectorAll(".selectedDate");
+                	days.forEach(function(day){day.classList.remove("selectedDate");});
+                	info.dayEl.classList.add("selectedDate");
                     // alert('Date: ' + info.dateStr); // 선택한 달력의 값
                     // 달력을 선택하면 Ajax로 달력의 값이 date_showday 와 같은 경우 회차정보를 불러오도록 한다. 
                     
                     $.ajax({
-                  url:"<%= request.getContextPath()%>/dateLoading.action",
-                  data:{"chooseDate":info.dateStr,
-                       "seq":"${pvo.prod_id}"},
-                  type:"GET",
-                  dataType:"JSON",
-                  success:function(json){
-                     var html = "";
-                     if(json.length > 0) {
-                        $.each(json, function(index, item){
-                           
-                           html += "<button onclick='goShowtime(\""+item.date_showtime+"\");' class='ticketing-button'>"+item.date_showtime+"</button>";
-                        //   console.log(item.date_showtime);
-                        
-                           $(".ticketing-detailtime").html(html);
-                           showdate.value = info.dateStr;
-                           
-                           
-                     //      var buttons=document.getElementsByClassName("ticketing-button");
-                     //      console.log(buttons);    
-                           
-                              $(document).on("click", ".ticketing-button", function(event){
-                              $(".ticketing-button").removeClass("button-on");
-                              //   alert("ㅇㅇ");
-                              //   var buttons=document.getElementsByClassName("ticketing-button");
-                           //   alert(event.currentTarget.innerText);   
-                              $(event.target).addClass("button-on");
-                           //   event.currentTarget.addClass("button-on");
-                           //   alert(event.target);   
-                                 /* 
-                                  for(var i=0;i<buttons.length;i++){
-                                          buttons[i].removeClass("button-on");
-                                    }
-                                       this.addClass("button-on"); */
-                              });
-                              
-                             /*  buttons.addEventListener("click",function(){
-                                  
-                                 for(var i=0;i<buttons.length;i++){
-                                       buttons[i].removeClass("button-on");
-                                 }
-                                    this.addClass("button-on");
-                                       
-                               }); */
+						url:"<%= request.getContextPath()%>/dateLoading.action",
+						data:{"chooseDate":info.dateStr,
+							  "seq":"${pvo.prod_id}"},
+						type:"GET",
+						dataType:"JSON",
+						success:function(json){
+							var html = "";
+							if(json.length > 0) {
+								$.each(json, function(index, item){
+									
+									html += "<button onclick='goShowtime(\""+item.date_showtime+"\");' class='ticketing-button'>"+item.date_showtime+"</button>";
+								//	console.log(item.date_showtime);
+								
+									$(".ticketing-detailtime").html(html);
+									showdate.value = info.dateStr;
+									
+									
+							//		var buttons=document.getElementsByClassName("ticketing-button");
+							//		console.log(buttons);    
+									
+										$(document).on("click", ".ticketing-button", function(event){
+										$(".ticketing-button").removeClass("button-on");
+										//	alert("ㅇㅇ");
+										//	var buttons=document.getElementsByClassName("ticketing-button");
+									//	alert(event.currentTarget.innerText);	
+										$(event.target).addClass("button-on");
+									//	event.currentTarget.addClass("button-on");
+									//	alert(event.target);	
+											/* 
+											 for(var i=0;i<buttons.length;i++){
+										            buttons[i].removeClass("button-on");
+											   }
+									            this.addClass("button-on"); */
+										});
+										
+									  /*  buttons.addEventListener("click",function(){
+									       
+										   for(var i=0;i<buttons.length;i++){
+									            buttons[i].removeClass("button-on");
+										   }
+								            this.addClass("button-on");
+									            
+									    }); */
 /* 
-                               buttons[1].addEventListener("click",()=>{function(){
-                                   buttons.forEach(button=>{
-                                       button.classList.remove("button-on");
-                                   });
+									    buttons[1].addEventListener("click",()=>{function(){
+									        buttons.forEach(button=>{
+									            button.classList.remove("button-on");
+									        });
 
-                                       buttons[1].classList.add("button-on");
-                                  }
-                               });
-                               */
-                        });
-                        
-                     }
-                     else {
-                        $(".ticketing-detailtime").html("");
-                        showdate.value = "";
-                     }
-                  },
-                  error: function(request, status, error){
-                     alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-                  }
-               });
+									            buttons[1].classList.add("button-on");
+									    	}
+									    });
+									    */
+								});
+								
+							}
+							else {
+								$(".ticketing-detailtime").html("");
+								showdate.value = "";
+							}
+						},
+						error: function(request, status, error){
+							alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+						}
+					});
                 
                 }
             });
@@ -175,289 +175,289 @@
             
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
-            //   지도를 담을 영역의 DOM 레퍼런스
-           var mapContainer = document.getElementById('map');
-           
-        //   지도를 생성할때 필요한 기본 옵션
-           var options = {
-              center: new kakao.maps.LatLng(37.510338, 127.058518),   // 지도의 중심좌표. 반드시 존재해야함.
-              level: 4   // 지도의 레벨(확대, 축소 정도). 숫자가 적을수록 확대 된다.
-           };
-           /*
-             center 에 할당할 값은 kakao.maps.LatLng 클래스를 사용하여 생성한다.
-             kakao.maps.LatLng 클래스의 2개 인자값은 첫번째 파라미터는 위도(latitude)이고, 두번째 파라미터는 경도(longitude)이다.
-           */
-           
-        //   지도 생성 및 생성된 지도객체 리턴
-           var mapobj = new kakao.maps.Map(mapContainer, options);
-           
-        //   일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성함.    
-           var mapTypeControl = new kakao.maps.MapTypeControl();
-        
-        //   지도 타입 컨트롤을 지도에 표시함.
-        //   kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미함.   
-           mapobj.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-        
-        //   지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성함.   
-           var zoomControl = new kakao.maps.ZoomControl();
-        
-        //   지도 확대 축소를 제어할 수 있는  줌 컨트롤을 지도에 표시함.
-        //   kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 RIGHT는 오른쪽을 의미함.    
-           mapobj.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-        
-           if (navigator.geolocation) {
-           //   HTML5의 geolocation으로 사용할 수 있는지 확인한다 
-                 
-              // GeoLocation을 이용해서 웹페이지에 접속한 사용자의 현재 위치를 확인하여 그 위치(위도,경도)를 지도의 중앙에 오도록 한다. 
-              navigator.geolocation.getCurrentPosition(function(position) {
-                 var latitude = position.coords.latitude;   // 현위치의 위도
-                 var longitude = position.coords.longitude; // 현위치의 경도
-                 
-              //   === 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
-                 
-              //   인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능함.
-              
-              $.ajax({
-                 url:"<%= request.getContextPath()%>/mapInfo.action",
-                 async:false, // !!!!!! 지도는 비동기 통신(async:true)이 아닌 동기통신(async:false)으로 해야한다.!!!!!!
-                 // 동기와 비동기의 차이 : url 에 가서 데이터(json)를 받아올 때까지 가만히 대기하며 기다리는 것이 아니라, url 에 가서 데이터(json)를 받아올 때 까지 다른 것으로 넘어가서 진행하다가 다시 올라오는 것이 비동기이다.
-                 // 동기를 해야 하는 이유는, 지도정보를 다 가지고 온 후에 처리 해야하므로 json 으로 지도정보를 다 가지고 올 때 까지 가만히 대기해서 기다려야 한다. 
-                 data:{"prod_id":"${pvo.prod_id}"},
-                 dataType:"json",
-                 success:function(json){
-                    
-                    var iwContent =  "<div class='mycontent'>"+ 
-                                 "   <div class='title'>"+ 
-                                 "      <a href='"+json.map_url+"' target='_blank'><strong>"+json.map_name+"</strong></a>"+  
-                                 "   </div>"+
-                                 "   <div class='desc'>"+ 
-                             //    "      <img src='/finalproject4/resources/images/logo3.png' width='60px' height='25px'><br>"+  
-                                 "      <span class='address'>"+json.map_address+"</span>"+ 
-                                 "   </div>"+ 
-                             //    "   <div class='desc' style='padding:5px; font-size:9pt;'>"+
-                             //    "      <a href='https://map.kakao.com/link/map/코엑스디홀,"+json.map_lat+","+json.map_lng+"' style='color:blue;' target='_blank'>큰지도</a>"+
-                             //    "      <a href='https://map.kakao.com/link/to/코엑스디홀,"+json.map_lat+","+json.map_lng+' style='color:blue;' target='_blank'>길찾기</a>"+
-                                 "   <div class='desc' style='padding:5px; font-size:9pt;'><a href='https://map.kakao.com/link/map/"+json.map_name+","+json.map_lng+","+json.map_lat+"' style='color:blue;' target='_blank'>큰지도</a>"+
-                                 "  <a href='https://map.kakao.com/link/to/"+json.map_name+","+json.map_lng+","+json.map_lat+"' style='color:blue' target='_blank'>길찾기</a></div>"+
-                                 "  </div>"+
-                                 "</div>";
-                    console.log(Number(json.map_lat)+": map_lat,"+Number(json.map_lng)+": map_lng");
-                 //  ## lat, lng 순서바뀜. ##
-                                 
-                    var iwPosition = new kakao.maps.LatLng(Number(json.map_lng), Number(json.map_lat));
-                    var iwZIndex = 1;
-                       
-                 //   removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됨
-                     var iwRemoveable = true; 
-                 
-                 //   == 인포윈도우를 생성하기 == 
-                    var infowindow = new kakao.maps.InfoWindow({
-                        position : iwPosition, 
-                        content : iwContent,
-                        zIndex : iwZIndex,
-                        removable : iwRemoveable
-                    });
-                 
-                 //  마커 위치 지정해주기
-                 //  마커가 표시될 위치를 geolocation으로 얻어온 현위치의 위.경도 좌표로 한다   
-                    var locPosition = new kakao.maps.LatLng(Number(json.map_lng), Number(json.map_lat));
-           
-                 //   마커이미지를 기본이미지를 사용하지 않고 다른 이미지로 사용할 경우의 이미지 주소 
-                      var imageSrc = 'http://localhost:9090/finalproject4/resources/images/pointerPink.png'; 
-           
-                 //   마커이미지의 크기 
-                    var imageSize = new kakao.maps.Size(34, 39); 
-           
-                 //   마커이미지의 옵션. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정한다. 
-                     var imageOption = {offset: new kakao.maps.Point(15, 39)};
-           
-                 //   마커의 이미지정보를 가지고 있는 마커이미지를 생성한다. 
-                    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-           
-                 //   == 마커 생성하기 == //
-                    var marker = new kakao.maps.Marker({ 
-                       map: mapobj, 
-                         position: locPosition, // locPosition 좌표에 마커를 생성 
-                         image: markerImage     // 마커이미지 설정
-                    }); 
-                 
-                    marker.setMap(mapobj); // 지도에 마커를 표시한다
-                 
-                 
-                 //   == 마커 위에 인포윈도우를 표시하기 == //
-                    infowindow.open(mapobj, marker);
-                 
-                 //   == 지도의 센터위치를 iwPosition로 변경한다.
-                     mapobj.setCenter(iwPosition);
-                 
-                     kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(mapobj, marker, infowindow));
-                 
-                    $("#goBackBtn").click(function(){
-                       mapobj.setCenter(iwPosition);
-                    });
-                    
-                    
-                 },
-                 error: function(request, status, error){
-                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-                  }
-           
-                 
-              });
-              
-              });
-           }
+            //	지도를 담을 영역의 DOM 레퍼런스
+     		var mapContainer = document.getElementById('map');
+     		
+     	//	지도를 생성할때 필요한 기본 옵션
+     		var options = {
+     			center: new kakao.maps.LatLng(37.510338, 127.058518),	// 지도의 중심좌표. 반드시 존재해야함.
+     			level: 4	// 지도의 레벨(확대, 축소 정도). 숫자가 적을수록 확대 된다.
+     		};
+     		/*
+     		  center 에 할당할 값은 kakao.maps.LatLng 클래스를 사용하여 생성한다.
+     		  kakao.maps.LatLng 클래스의 2개 인자값은 첫번째 파라미터는 위도(latitude)이고, 두번째 파라미터는 경도(longitude)이다.
+     		*/
+     		
+     	//	지도 생성 및 생성된 지도객체 리턴
+     		var mapobj = new kakao.maps.Map(mapContainer, options);
+     		
+     	//	일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성함. 	
+     		var mapTypeControl = new kakao.maps.MapTypeControl();
+     	
+     	//	지도 타입 컨트롤을 지도에 표시함.
+     	//	kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미함.	
+     		mapobj.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+     	
+     	//	지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성함.	
+     		var zoomControl = new kakao.maps.ZoomControl();
+     	
+     	//	지도 확대 축소를 제어할 수 있는  줌 컨트롤을 지도에 표시함.
+     	//	kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 RIGHT는 오른쪽을 의미함.	 
+     		mapobj.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+     	
+     		if (navigator.geolocation) {
+     		//	HTML5의 geolocation으로 사용할 수 있는지 확인한다 
+     				
+     			// GeoLocation을 이용해서 웹페이지에 접속한 사용자의 현재 위치를 확인하여 그 위치(위도,경도)를 지도의 중앙에 오도록 한다. 
+     			navigator.geolocation.getCurrentPosition(function(position) {
+     				var latitude = position.coords.latitude;   // 현위치의 위도
+     				var longitude = position.coords.longitude; // 현위치의 경도
+     				
+     			//	=== 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
+     				
+     			//	인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능함.
+     			
+     			$.ajax({
+     				url:"<%= request.getContextPath()%>/mapInfo.action",
+     				async:false, // !!!!!! 지도는 비동기 통신(async:true)이 아닌 동기통신(async:false)으로 해야한다.!!!!!!
+     				// 동기와 비동기의 차이 : url 에 가서 데이터(json)를 받아올 때까지 가만히 대기하며 기다리는 것이 아니라, url 에 가서 데이터(json)를 받아올 때 까지 다른 것으로 넘어가서 진행하다가 다시 올라오는 것이 비동기이다.
+     				// 동기를 해야 하는 이유는, 지도정보를 다 가지고 온 후에 처리 해야하므로 json 으로 지도정보를 다 가지고 올 때 까지 가만히 대기해서 기다려야 한다. 
+     				data:{"prod_id":"${pvo.prod_id}"},
+     				dataType:"json",
+     				success:function(json){
+     					
+     					var iwContent =  "<div class='mycontent'>"+ 
+     									 "	<div class='title'>"+ 
+     									 "		<a href='"+json.map_url+"' target='_blank'><strong>"+json.map_name+"</strong></a>"+  
+     									 "	</div>"+
+     									 "	<div class='desc'>"+ 
+     								//	 "		<img src='/finalproject4/resources/images/logo3.png' width='60px' height='25px'><br>"+  
+     									 "		<span class='address'>"+json.map_address+"</span>"+ 
+     									 "	</div>"+ 
+     								//	 "	<div class='desc' style='padding:5px; font-size:9pt;'>"+
+     								//	 "      <a href='https://map.kakao.com/link/map/코엑스디홀,"+json.map_lat+","+json.map_lng+"' style='color:blue;' target='_blank'>큰지도</a>"+
+     								//	 "      <a href='https://map.kakao.com/link/to/코엑스디홀,"+json.map_lat+","+json.map_lng+' style='color:blue;' target='_blank'>길찾기</a>"+
+     									 "	<div class='desc' style='padding:5px; font-size:9pt;'><a href='https://map.kakao.com/link/map/"+json.map_name+","+json.map_lng+","+json.map_lat+"' style='color:blue;' target='_blank'>큰지도</a>"+
+     									 "  <a href='https://map.kakao.com/link/to/"+json.map_name+","+json.map_lng+","+json.map_lat+"' style='color:blue' target='_blank'>길찾기</a></div>"+
+     									 "  </div>"+
+     									 "</div>";
+     					console.log(Number(json.map_lat)+": map_lat,"+Number(json.map_lng)+": map_lng");
+     				//  ## lat, lng 순서바뀜. ##
+     									 
+     					var iwPosition = new kakao.maps.LatLng(Number(json.map_lng), Number(json.map_lat));
+     					var iwZIndex = 1;
+     						
+     				//	removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됨
+     				    var iwRemoveable = true; 
+     				
+     				//	== 인포윈도우를 생성하기 == 
+     					var infowindow = new kakao.maps.InfoWindow({
+     					    position : iwPosition, 
+     					    content : iwContent,
+     					    zIndex : iwZIndex,
+     					    removable : iwRemoveable
+     					});
+     				
+     				//  마커 위치 지정해주기
+     				//  마커가 표시될 위치를 geolocation으로 얻어온 현위치의 위.경도 좌표로 한다   
+     					var locPosition = new kakao.maps.LatLng(Number(json.map_lng), Number(json.map_lat));
+     		
+     				//	마커이미지를 기본이미지를 사용하지 않고 다른 이미지로 사용할 경우의 이미지 주소 
+     			        var imageSrc = 'http://localhost:9090/finalproject4/resources/images/pointerPink.png'; 
+     		
+     				//	마커이미지의 크기 
+     					var imageSize = new kakao.maps.Size(34, 39); 
+     		
+     				//	마커이미지의 옵션. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정한다. 
+     				    var imageOption = {offset: new kakao.maps.Point(15, 39)};
+     		
+     				//	마커의 이미지정보를 가지고 있는 마커이미지를 생성한다. 
+     					var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+     		
+     				//	== 마커 생성하기 == //
+     					var marker = new kakao.maps.Marker({ 
+     						map: mapobj, 
+     				        position: locPosition, // locPosition 좌표에 마커를 생성 
+     				        image: markerImage     // 마커이미지 설정
+     					}); 
+     				
+     					marker.setMap(mapobj); // 지도에 마커를 표시한다
+     				
+     				
+     				//	== 마커 위에 인포윈도우를 표시하기 == //
+     					infowindow.open(mapobj, marker);
+     				
+     				//	== 지도의 센터위치를 iwPosition로 변경한다.
+     				    mapobj.setCenter(iwPosition);
+     				
+     				    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(mapobj, marker, infowindow));
+     				
+     					$("#goBackBtn").click(function(){
+     						mapobj.setCenter(iwPosition);
+     					});
+     					
+     					
+     				},
+     				error: function(request, status, error){
+     					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+     			    }
+     		
+     				
+     			});
+     			
+     			});
+     		}
 
-               
-         //   == 마커 위에 인포윈도우를 표시하기 ==
-            //   infowindow.open(mapobj, marker);
-                       
-            //   == 마커 위에 인포윈도우를 표시하기 ==
-            //   마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-            //   이벤트 리스너로는 클로저(closure => 함수 내에서 함수를 정의하고 사용하도록 만든것)를 만들어 등록합니다 
-            //   for문에서 클로저(closure => 함수 내에서 함수를 정의하고 사용하도록 만든것)를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-                          
-                       
-            //   ================== 지도에 클릭 이벤트를 등록하기 ======================= //
-            //   지도를 클릭하면 클릭한 위치에 마커를 표시하면서 위,경도를 보여주도록 한다.
-            //   == 마커 생성하기 == //
-            //   1. 마커이미지 변경
+            	
+			//   == 마커 위에 인포윈도우를 표시하기 ==
+            //	infowindow.open(mapobj, marker);
+                    	
+            //	== 마커 위에 인포윈도우를 표시하기 ==
+            //	마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+            //	이벤트 리스너로는 클로저(closure => 함수 내에서 함수를 정의하고 사용하도록 만든것)를 만들어 등록합니다 
+            //	for문에서 클로저(closure => 함수 내에서 함수를 정의하고 사용하도록 만든것)를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+                    		
+                    	
+            //	================== 지도에 클릭 이벤트를 등록하기 ======================= //
+            //	지도를 클릭하면 클릭한 위치에 마커를 표시하면서 위,경도를 보여주도록 한다.
+            //	== 마커 생성하기 == //
+            //	1. 마커이미지 변경
             var imageSrc = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';       
-                                     
-            //   2. 마커이미지의 크기 
+                    			        
+            //	2. 마커이미지의 크기 
             var imageSize = new kakao.maps.Size(34, 39);   
-                                      
-            //   3. 마커이미지의 옵션. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정한다. 
+                    				      
+            //	3. 마커이미지의 옵션. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정한다. 
             var imageOption = {offset: new kakao.maps.Point(15, 39)};   
-                                
-            //   4. 이미지정보를 가지고 있는 마커이미지를 생성한다. 
+                    		      
+            //	4. 이미지정보를 가지고 있는 마커이미지를 생성한다. 
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-                                    
+                    				    
             var movingMarker = new kakao.maps.Marker({ 
-              map: mapobj, 
-              image: markerImage  // 마커이미지 설정
-           });
-            
-        //   === 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
-           var movingInfowindow = new kakao.maps.InfoWindow({
-              removable : false
-           //   removable : true   // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됨
-           });
-                             
-                              
-         kakao.maps.event.addListener(mapobj, 'click', function(mouseEvent) {         
-                
-         //   클릭한 위도, 경도 정보를 가져옵니다 
-            var latlng = mouseEvent.latLng;
-             
-         //   마커 위치를 클릭한 위치로 옮긴다.
-            movingMarker.setPosition(latlng);
-             
-         //   인포윈도우의 내용물 변경하기 
-            movingInfowindow.setContent("<div style='padding:5px; font-size:9pt;'>여기가 어디에요?<br/><a href='https://map.kakao.com/link/map/여기,"+latlng.getLat()+","+latlng.getLng()+"' style='color:blue;' target='_blank'>큰지도</a> <a href='https://map.kakao.com/link/to/여기,"+latlng.getLat()+","+latlng.getLng()+"' style='color:blue' target='_blank'>길찾기</a></div>");  
-             
-         //    == 마커 위에 인포윈도우를 표시하기 == //
-            movingInfowindow.open(mapobj, movingMarker);
-         
-         });           
-                             
+  				map: mapobj, 
+  				image: markerImage  // 마커이미지 설정
+  			});
+  		    
+  		//	=== 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
+  			var movingInfowindow = new kakao.maps.InfoWindow({
+  				removable : false
+  			//	removable : true   // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됨
+  			});
+                    			
+                    		    
+			kakao.maps.event.addListener(mapobj, 'click', function(mouseEvent) {         
+				    
+			//	클릭한 위도, 경도 정보를 가져옵니다 
+				var latlng = mouseEvent.latLng;
+				 
+			//	마커 위치를 클릭한 위치로 옮긴다.
+				movingMarker.setPosition(latlng);
+				 
+			//	인포윈도우의 내용물 변경하기 
+				movingInfowindow.setContent("<div style='padding:5px; font-size:9pt;'>여기가 어디에요?<br/><a href='https://map.kakao.com/link/map/여기,"+latlng.getLat()+","+latlng.getLng()+"' style='color:blue;' target='_blank'>큰지도</a> <a href='https://map.kakao.com/link/to/여기,"+latlng.getLat()+","+latlng.getLng()+"' style='color:blue' target='_blank'>길찾기</a></div>");  
+				 
+			// 	== 마커 위에 인포윈도우를 표시하기 == //
+				movingInfowindow.open(mapobj, movingMarker);
+			
+			});  			
+                    			
             
         }); // end of document.addEventListener('DOMContentLoaded', function() {})-----------------------
         
         
         function makeOverListener(mapobj, marker, infowindow) {
-          
-           return function() {
-              
-              if(0 == infowindow.getZIndex()-1) {
-                 infowindow.open(mapobj, marker);
-              }
-              else{
-                 infowindow.close();
-              }
-              
-           };
-       }
+    		
+    	    return function() {
+    	    	
+        		if(0 == infowindow.getZIndex()-1) {
+        			infowindow.open(mapobj, marker);
+        		}
+        		else{
+        			infowindow.close();
+        		}
+        		
+    	    };
+    	}
         
         
         
         function goShowtime(time) {
-           var showtime = document.getElementById('showtime');
-           showtime.value = time;
+        	var showtime = document.getElementById('showtime');
+        	showtime.value = time;
         }
 
         
         function goReview() {
 
-           
-           var form_data = $("form[name=reviewFrm]").serialize();
-           
-           $.ajax({
-            url:"<%= request.getContextPath()%>/addReview.action",
-            data:form_data,
-            type:"GET",
-            dataType:"JSON",
-            success:function(json){
-               var html = "";
-               if(json.n == 1) {
-                  alert("리뷰가 등록되었습니다.");
-               }
-               else {
-                  alert("리뷰등록에 실패했습니다.");
-               }
-               /* 
-               $(".modal").addClass("hide");
-               $(".modal").removeClass("show"); */
+        	
+        	var form_data = $("form[name=reviewFrm]").serialize();
+        	
+        	$.ajax({
+				url:"<%= request.getContextPath()%>/addReview.action",
+				data:form_data,
+				type:"GET",
+				dataType:"JSON",
+				success:function(json){
+					var html = "";
+					if(json.n == 1) {
+						alert("리뷰가 등록되었습니다.");
+					}
+					else {
+						alert("리뷰등록에 실패했습니다.");
+					}
+					/* 
+					$(".modal").addClass("hide");
+					$(".modal").removeClass("show"); */
 
-               $("#content").val("");
-               $(".modal").css("display","none");
-               
-               goReviewList("1");
-               
-            },
-            error: function(request, status, error){
-               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-         });
-           
+					$("#content").val("");
+					$(".modal").css("display","none");
+					
+					goReviewList("1");
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});
+        	
         }
         
         
         function goReviewList(page){
-           
-           $.ajax({
-            url:"<%= request.getContextPath()%>/reviewList.action",
-            data:{"parentProdId":"${pvo.prod_id}"
-                ,"fk_userid":"${sessionScope.loginuser.userid}"
-                ,"page":page},
-            type:"GET",
-            dataType:"JSON",
-            success:function(json){
-               
-               var html = "";
-               html += "<ul class='review-comments-list'>";
-               if(json.length > 0) {
-                  
-                  $.each(json, function(index, item){
-                     html += getReviewTemplate(item.review_id, item.fk_userid, item.name, item.star, item.regDate, item.content);
-                  });
-                  
-               }
-               else {
-                  html += "<li>관람후기가 없습니다.<li>";
-               }
-               
-               html += "</ul>"
-               $(".review-comments").html(html);
+        	
+        	$.ajax({
+				url:"<%= request.getContextPath()%>/reviewList.action",
+				data:{"parentProdId":"${pvo.prod_id}"
+					 ,"fk_userid":"${sessionScope.loginuser.userid}"
+					 ,"page":page},
+				type:"GET",
+				dataType:"JSON",
+				success:function(json){
+					
+					var html = "";
+					html += "<ul class='review-comments-list'>";
+					if(json.length > 0) {
+						
+						$.each(json, function(index, item){
+							html += getReviewTemplate(item.review_id, item.fk_userid, item.name, item.star, item.regDate, item.content, item.flag, item.reviewlikecnt, page);
+						});
+						
+					}
+					else {
+						html += "<li>관람후기가 없습니다.<li>";
+					}
+					
+					html += "</ul>"
+					$(".review-comments").html(html);
 
-               makeCommentPageBar(page);
+					makeCommentPageBar(page);
                     
-            },
-            error: function(request, status, error){
-               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-         });
-           
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});
+        	
         }
         
         function moveBooking() {
@@ -477,37 +477,38 @@
              return false;
              }
             
-             var url = "<%= request.getContextPath()%>/reservePopUp.action?seq=${param.seq}";
-          	 var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, menubar=no, status = no";
-          	 window.open(url, "", option);
+             window.open("/finalproject4/reservePopUp.action", "popUp", 'toolbar=no, menubar=no, scrollbars=no');
+            
             }
         
         
-        function getReviewTemplate(review_id, fk_userid, name, star, regDate, content) {
+        function getReviewTemplate(review_id, fk_userid, name, star, regDate, content, flag, reviewlikecnt, page) {
         
+        console.log(page);
+        	
         var loginuserid = "${sessionScope.loginuser.userid}";
         var fk_userid_sub = fk_userid.substring(0,fk_userid.length-2) + '**';                
         var template = '<li>'+
-                    '<div class="review-comment-badge">'+
-                       '<span class="reservationbadge">예매자</span>';
-                       
-      if(fk_userid == loginuserid){
+        			   '<div class="review-comment-badge">'+
+	        				'<span class="reservationbadge">예매자</span>';
+	        				
+		if(fk_userid == loginuserid){
             template += '<span class="writerself">본인</span>';
         }
-      
-           template += '</div>'+
-                       '<div class="review-comment-star">'+
-                           '<span class="reviewer">'+fk_userid_sub+'</span>'+
-                           '<span class="reviewer">'+regDate+'</span>'+
-                           '<span class="reviewer">';
-                           
-                           for(var i=0; i<star; i++){
-                        template += "<span><i class='fas fa-star reviewstar' style='color:orange;'></i></span>";
-                     }
-                     for(var i=0; i<5-star; i++){
-                        template += "<span><i class='far fa-star reviewstar' style='color:orange;'></i></span>";
-                     }
-                           
+		
+	        template += '</div>'+
+	                    '<div class="review-comment-star">'+
+	                        '<span class="reviewer">'+fk_userid_sub+'</span>'+
+	                        '<span class="reviewer">'+regDate+'</span>'+
+	                        '<span class="reviewer">';
+	                        
+	                        for(var i=0; i<star; i++){
+								template += "<span><i class='fas fa-star reviewstar' style='color:orange;'></i></span>";
+							}
+							for(var i=0; i<5-star; i++){
+								template += "<span><i class='far fa-star reviewstar' style='color:orange;'></i></span>";
+							}
+	                        
              template += '</span>'+
                     '</div>'+
                     '<div class="review-comment-desc">'+
@@ -518,9 +519,23 @@
                 '</div>'+
                 '<div class="review-comment-bottom">'+
                     '<div class="review-comment-like">'+
-                       '<span onclick="goLikeReview('+review_id+','+'\''+fk_userid+'\')">'+
-                          '<i id="likeReviewMain" class="far fa-heart noncolored-heart"></i>'+
-                          '</span>'+
+	                  '<span id="likeReviewHeart" onclick="goLikeReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+Number(page)+'\''+')">';
+	                  //  '<span id="likeReviewHeart" onclick="goLikeReview('+review_id+','+'\''+fk_userid+'\''+')">';
+	                    
+	                    
+                    	if(flag) {
+                    		template += '<i id="likeReviewMain" class="fas fa-heart" style="color:orange;"></i>';
+                    	}
+                    	else {
+                    		template += '<i id="likeReviewMain" class="far fa-heart" style="color:orange;"></i>';
+                    	}
+                    	
+                    	if(reviewlikecnt != null) {
+                    		template += '<span style="color:orange;"> + '+reviewlikecnt+'</span>';
+                    	}
+	                    
+	                    	
+	          template += '</span>'+
                         /* '<i class="far fa-heart noncolored-heart"></i>'+
                         '<i class="fas fa-heart colored-heart"></i>'+
                         '<strong class="main-likes-number">'+
@@ -533,387 +548,399 @@
                     '</div>'+
                 '</div>'+
             '</li>';
-               
+            	
             return template;
         }
         
         function prevPageBar(page) {
-           var prevPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-left'></i></a></li>";
-           return prevPageBar;
+        	var prevPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-left'></i></a></li>";
+        	return prevPageBar;
         }
         
 
         function nextPageBar(page) {
-           var nextPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-right'></i></a></li>";
-           return nextPageBar;
+        	var nextPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-right'></i></a></li>";
+        	return nextPageBar;
         }
         
         
         function makeCommentPageBar(page) {
-          
-          $.ajax({
-             url:"<%= request.getContextPath()%>/getReviewTotalPage.action",
-             data:{"parentProdId":"${pvo.prod_id}"
-                ,"fk_userid":"${sessionScope.loginuser.userid}"
-                 ,"sizePerPage":"5"
-                 ,"page":page},
-             type:"GET",
-             dataType:"JSON",
-             success:function(json){
-             
-                if(json.totalPage > 0) { // 댓글이 있는 경우
-                
-                   var pageBarHTML = "<ul style='list-style: none;'>"; 
-                   var blockSize = 10;
-                   var loop = 1;
-                
-                   if(typeof page == "string") {
-                      page = Number(page);
-                   }
-                   
-                   var pageNo = Math.floor((page - 1)/blockSize) * blockSize + 1;
-                   
-                   
-                   /* // === [이전 <<] 만들기 === //
-                   if(pageNo != 1) {
-                      pageBarHTML += prevPageBar(pageNo-1);
-                   } */
+    		
+    		$.ajax({
+    			url:"<%= request.getContextPath()%>/getReviewTotalPage.action",
+    			data:{"parentProdId":"${pvo.prod_id}"
+					 ,"fk_userid":"${sessionScope.loginuser.userid}"
+    				 ,"sizePerPage":"5"
+    				 ,"page":page},
+    			type:"GET",
+    			dataType:"JSON",
+    			success:function(json){
+    			
+    				if(json.totalPage > 0) { // 댓글이 있는 경우
+    				
+    					var pageBarHTML = "<ul style='list-style: none;'>"; 
+    					var blockSize = 10;
+    					var loop = 1;
+    				
+    					if(typeof page == "string") {
+    						page = Number(page);
+    					}
+    					
+    					var pageNo = Math.floor((page - 1)/blockSize) * blockSize + 1;
+    					
+    					
+    					/* // === [이전 <<] 만들기 === //
+    					if(pageNo != 1) {
+    						pageBarHTML += prevPageBar(pageNo-1);
+    					} */
 
-                   // === [이전 <] 만들기 === //
-                   if(page == 1) {
-                      pageBarHTML += prevPageBar(1);
-                   }
-                   else{
-                      pageBarHTML += prevPageBar(page-1);
-                   }
-                   
-                   while( !(loop > blockSize || pageNo > json.totalPage) ) {
-                      
-                      if(pageNo == page) {
-                         pageBarHTML += "<li class='pageBarStyle' style='color:red;'>"+pageNo+"</li>";
-                      }
-                      else {
-                         pageBarHTML += "<li class='pageBarStyle'><a href='javascript:goReviewList(\""+(pageNo)+"\")'>"+pageNo+"</a></li>";
-                      }
-                      
-                      loop++;
-                      pageNo++;
-                   }
+    					// === [이전 <] 만들기 === //
+    					if(page == 1) {
+    						pageBarHTML += prevPageBar(1);
+    					}
+    					else{
+    						pageBarHTML += prevPageBar(page-1);
+    					}
+    					
+    					while( !(loop > blockSize || pageNo > json.totalPage) ) {
+    						
+    						if(pageNo == page) {
+    							pageBarHTML += "<li class='pageBarStyle' style='color:red;'>"+pageNo+"</li>";
+    						}
+    						else {
+    							pageBarHTML += "<li class='pageBarStyle'><a href='javascript:goReviewList(\""+(pageNo)+"\")'>"+pageNo+"</a></li>";
+    						}
+    						
+    						loop++;
+    						pageNo++;
+    					}
 
-                   // === [다음 >] 만들기 === //
-                   if(page >= json.totalPage) {
-                      pageBarHTML += nextPageBar(json.totalPage);
-                   }
-                   else{
-                      pageBarHTML += nextPageBar(page+1);
-                   }
+    					// === [다음 >] 만들기 === //
+    					if(page >= json.totalPage) {
+    						pageBarHTML += nextPageBar(json.totalPage);
+    					}
+    					else{
+    						pageBarHTML += nextPageBar(page+1);
+    					}
 
-                   /* // === [다음 >>] 만들기 === //
-                   if( !(pageNo > json.totalPage) ) { 
-                      pageBarHTML += nextPageBar(pageNo);
-                   } */
-                   
-                   pageBarHTML += "</ul>";
-                   $(".review-pagination").html(pageBarHTML);
-                
-                   var num = Number(json.avgStar) / 5 * 100;
-                   $(".star-rating-width").css('width', num+'%');
-                   $(".totalReviewCount").html(json.totalCount);
-                   $(".star").html(json.avgStar);
-                   
-                }
-                else { // 댓글이 없는 경우
-                   $(".review-pagination").empty();
-                   
-                   $(".star-rating-width").css('width', '0%');
-                   $(".totalReviewCount").html(0);
-                   $(".star").html(0);
-                }
-             
-             },
-             error: function(request, status, error){
-                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-             }
-          });
-          
-       }// end of function makeCommentPageBar(currentShowPageNo) --------------------
-       
+    					/* // === [다음 >>] 만들기 === //
+    					if( !(pageNo > json.totalPage) ) { 
+    						pageBarHTML += nextPageBar(pageNo);
+    					} */
+    					
+    					pageBarHTML += "</ul>";
+    					$(".review-pagination").html(pageBarHTML);
+    				
+    					var num = Number(json.avgStar) / 5 * 100;
+    					$(".star-rating-width").css('width', num+'%');
+    					$(".totalReviewCount").html(json.totalCount);
+    					$(".star").html(json.avgStar);
+    					
+    				}
+    				else { // 댓글이 없는 경우
+    					$(".review-pagination").empty();
+    					
+    					$(".star-rating-width").css('width', '0%');
+    					$(".totalReviewCount").html(0);
+    					$(".star").html(0);
+    				}
+    			
+    			},
+    			error: function(request, status, error){
+    				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+    			}
+    		});
+    		
+    	}// end of function makeCommentPageBar(currentShowPageNo) --------------------
+    	
         
-       function goDelReview(review_id, fk_userid){
-          
-          var loginuserid = "${sessionScope.loginuser.userid}";
-          if(fk_userid != loginuserid) {
-             alert("댓글삭제는 본인만 가능합니다.");
-             return;
-          }
-          
-          var bool = confirm("리뷰글을 정말로 삭제하시겠습니까?");
-          if(bool) {
-             
-             $.ajax({
-                url:"<%= ctxPath%>/delReview.action",
-                type:"GET",
-                data:{"review_id":review_id,
-                     "fk_userid":fk_userid},
-                dataType:"JSON",
-                success:function(json) {
-                   
-                   if(json.n == 1) {
-                      alert("리뷰가 삭제되었습니다.");
-                   }
-                   else {
-                      alert("리뷰삭제를 할 수 없습니다.");
-                   }
-                   
-                   goReviewList(1);
-                },
-                error: function(request, status, error){
-                   alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-                }
-             });   
-             
-          }
-       }
-       
-       
-       function goEditReview(review_id, fk_userid, star, content) {
-          // 수정 모달 띄우기
-          
-          var loginuserid = "${sessionScope.loginuser.userid}";
-          if(fk_userid != loginuserid) {
-             alert("댓글수정은 본인만 가능합니다.");
-             return;
-          }
-          
-       //   $(".revision").css("display","inline-block");
-          $(".revision").css("display","initial");
-          
-          $(".close-revision-button").click(function(){
-             $(".revision").css("display","none");
-          });
-          
-         $("#review_id").val(review_id);
-          $("#input-content").val(content);
-          
-          
-          // 초기 별점셋팅
-          $(".re-starlist i").removeClass("staron");
-          $(".re-starlist i").eq(별).prevAll("i").addClass("staron"); // eq(index=star) 인 star+1번째 별 전에 모두 on 시키기
-          $("#re-star").val(별);
-          
-          // 별점 주기
-          $(".re-starlist i").click(function(){
+    	function goDelReview(review_id, fk_userid){
+    		
+    		var loginuserid = "${sessionScope.loginuser.userid}";
+    		if(fk_userid != loginuserid) {
+    			alert("댓글삭제는 본인만 가능합니다.");
+    			return;
+    		}
+    		
+    		var bool = confirm("리뷰글을 정말로 삭제하시겠습니까?");
+    		if(bool) {
+    			
+    			$.ajax({
+    				url:"<%= ctxPath%>/delReview.action",
+    				type:"GET",
+    				data:{"review_id":review_id,
+    					  "fk_userid":fk_userid},
+    				dataType:"JSON",
+    				success:function(json) {
+    					
+    					if(json.n == 1) {
+    						alert("리뷰가 삭제되었습니다.");
+    					}
+    					else {
+    						alert("리뷰삭제를 할 수 없습니다.");
+    					}
+    					
+    					goReviewList(1);
+    				},
+    				error: function(request, status, error){
+    					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+    				}
+    			});	
+    			
+    		}
+    	}
+    	
+    	
+    	function goEditReview(review_id, fk_userid, star, content) {
+    		// 수정 모달 띄우기
+    		
+    		var loginuserid = "${sessionScope.loginuser.userid}";
+    		if(fk_userid != loginuserid) {
+    			alert("댓글수정은 본인만 가능합니다.");
+    			return;
+    		}
+    		
+    	//	$(".revision").css("display","inline-block");
+    		$(".revision").css("display","initial");
+    		
+    		$(".close-revision-button").click(function(){
+    			$(".revision").css("display","none");
+    		});
+    		
+			$("#review_id").val(review_id);
+    		$("#input-content").val(content);
+    		
+    		
+    		// 초기 별점셋팅
+    		$(".re-starlist i").removeClass("staron");
+    		$(".re-starlist i").eq(star).prevAll("i").addClass("staron"); // eq(index=star) 인 star+1번째 별 전에 모두 on 시키기
+    		$("#re-star").val(star);
+    		
+    		// 별점 주기
+    		$(".re-starlist i").click(function(){
                 $(this).parent().children("i").removeClass("staron");  /* 별점의 on 클래스 전부 제거 */ 
                 $(this).addClass("staron").prevAll("i").addClass("staron"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
                 
             //  var hasClassLen = $(this).siblings().hasClass("on");
-            //  console.log(hasClassLen);   // true  
+            //  console.log(hasClassLen);	// true  
             
-               var hasClassLen = $(".re-starlist i.staron").length;
+            	var hasClassLen = $(".re-starlist i.staron").length;
             //  alert(hasClassLen);
-               $("#re-star").val(hasClassLen);
+            	$("#re-star").val(hasClassLen);
 
                 return false;
             });
-          
-       }
-       
-       
-      function goEditEndReview() {
-           
-           $.ajax({
-            url:"<%= request.getContextPath()%>/editReview.action",
-            data:{"review_id":$("#review_id").val(),
-                   "star":$("#re-star").val(),
-                   "content":$("#input-content").val()},
-            type:"GET",
-            dataType:"JSON",
-            success:function(json){
-               var html = "";
-               if(json.n == 1) {
-                  alert("수정되었습니다.");
-               }
-               else {
-                  alert("수정할 수 없습니다.");
-               }
-               /* 
-               $(".revision").addClass("hide");
-               $(".revision").removeClass("show"); */
+    		
+    	}
+    	
+    	
+		function goEditEndReview() {
+        	
+        	$.ajax({
+				url:"<%= request.getContextPath()%>/editReview.action",
+				data:{"review_id":$("#review_id").val(),
+				  	  "star":$("#re-star").val(),
+				  	  "content":$("#input-content").val()},
+				type:"GET",
+				dataType:"JSON",
+				success:function(json){
+					var html = "";
+					if(json.n == 1) {
+						alert("수정되었습니다.");
+					}
+					else {
+						alert("수정할 수 없습니다.");
+					}
+					/* 
+					$(".revision").addClass("hide");
+					$(".revision").removeClass("show"); */
 
-               $("#input-content").val("");
-               $("#re-star").val("");
-               $(".revision").css("display","none");
-               
-               goReviewList("1");
-               
-            },
-            error: function(request, status, error){
-               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-         });
-           
+					$("#input-content").val("");
+					$("#re-star").val("");
+					$(".revision").css("display","none");
+					
+					goReviewList("1");
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});
+        	
         }
-      
-      // 관심상품 등록하기
-      function goLikeProd(prod_id) {
-         
-         var loginuserid = "${sessionScope.loginuser.userid}";
-         
-         if(loginuserid == "") {
-            alert("관심상품등록은 로그인 후 가능합니다.");
-            return;
-         }
-         
-         var existlike = $("#existlike").val();
-         console.log(existlike);
-         /* 
-          if(existlike == '1') {
-            alert("이미 추천한 글입니다.");
-            return;
-         }   */
-         
-         // 관심상품 등록하기
-         $.ajax({
-            url:"<%= request.getContextPath()%>/likeProd.action",
-            type:"GET",
-            data:{"prod_id":prod_id,
-                 "fk_userid":loginuserid},
-               // "existlike":existlike},
-            dataType:"JSON",
-            success:function(json) {
-               
-               if(json.m == "추천") { 
-                  if(json.n == 1) {
-                     alert("관심상품으로 등록되었습니다. ");
-                      goLikeProdCnt(); 
-                     $("#existlike").val("1");
-                     
-                     $("#likeProdMain").removeClass("far");
-                     $("#likeProdMain").addClass("fas");
-                  }
-                  else {
-                     alert("관심상품으로 등록할 수 없습니다. ");
-                  }
-                }
-               else {
-                  if(json.n == 1) {
-                     alert("관심상품에서 삭제되었습니다. ");
-                      goLikeProdCnt();
-                     $("#existlike").val("0");
-                     $("#likeProdMain").removeClass("fas");
-                     $("#likeProdMain").addClass("far");
-                  }
-                  else {
-                     alert("관심상품을 삭제할 수 없습니다. ");
-                  }
-               } 
-               
-            },
-            error: function(request, status, error){
-               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-         });      
-         
-      }
-      
-      
-      function goLikeProdCnt(){
-         
-         var loginuserid = "${sessionScope.loginuser.userid}";
-         
-         $.ajax({
-            url:"<%= request.getContextPath()%>/likeProdCnt.action",
-            type:"GET",
-            data:{"prod_id":"${pvo.prod_id}",
-                 "fk_userid":loginuserid},  
-            dataType:"JSON",
-            success:function(json) {
-               
-               if(json.likeProdCnt != 0) {
-                  $(".main-likes-number").html(json.likeProdCnt);
-                  if(json.existlike == 1) {
-                     $("#likeProdMain").removeClass("far");
-                     $("#likeProdMain").addClass("fas");
-                  }
-                  else {
-                     $("#likeProdMain").removeClass("fas");
-                     $("#likeProdMain").addClass("far");
-                  }
-               }
-               else {
-                  $(".main-likes-number").html(json.likeProdCnt);
-               }
-               
-            },
-            error: function(request, status, error){
-               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-         });      
-         
-      }
-      
-      
-      // 리뷰 추천하기
-      function goLikeReview(review_id, fk_userid){
-         
-         alert(fk_userid);
-          var loginuserid = "${sessionScope.loginuser.userid}";
-         
-         if(loginuserid == "") {
-            alert("리뷰 추천은 로그인 후 가능합니다.");
-            return;
-         }
-         
-         if(loginuserid == fk_userid){
-            alert("자기자신의 리뷰는 추천할 수 없습니다.");
-            return;
-         }
-         
-         // 리뷰추천하기
-         $.ajax({
-            url:"<%= request.getContextPath()%>/likeReview.action",
-            type:"GET",
-            data:{"review_id":review_id,
-                 "fk_userid":fk_userid, 
-                   "fk_parentProdId":"${pvo.prod_id}"},
-            dataType:"JSON",
-            success:function(json) {
-               
-               if(json.m == "추천") { 
-                  if(json.result == 1) {
-                     alert("리뷰추천이 완료되었습니다. ");
-                   //   goLikeProdCnt(); 
-                     
-                     $("#likeReviewMain").removeClass("far");
-                     $("#likeReviewMain").addClass("fas");
-                  }
-                  else {
-                     alert("리뷰 추천할 수 없습니다. ");
-                  }
-                }
-               else {
-                  if(json.result == 1) {
-                     alert("리뷰추천이 삭제되었습니다. ");
-                   //   goLikeProdCnt();
-                   
-                     $("#likeReviewMain").removeClass("fas");
-                     $("#likeReviewMain").addClass("far");
-                  }
-                  else {
-                     alert("리뷰 추천 취소할 수 없습니다. ");
-                  }
-               } 
-               
-            },
-            error: function(request, status, error){
-               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-         });         
-      
-       
-      }
-      
-      
+		
+		// 관심상품 등록하기
+		function goLikeProd(prod_id) {
+			
+			var loginuserid = "${sessionScope.loginuser.userid}";
+			
+			if(loginuserid == "") {
+				alert("관심상품등록은 로그인 후 가능합니다.");
+				return;
+			}
+			
+			var existlike = $("#existlike").val();
+			console.log(existlike);
+			/* 
+			 if(existlike == '1') {
+				alert("이미 추천한 글입니다.");
+				return;
+			}   */
+			
+			// 관심상품 등록하기
+			$.ajax({
+				url:"<%= request.getContextPath()%>/likeProd.action",
+				type:"GET",
+				data:{"prod_id":prod_id,
+					  "fk_userid":loginuserid},
+				   // "existlike":existlike},
+				dataType:"JSON",
+				success:function(json) {
+					
+					if(json.m == "추천") { 
+						if(json.n == 1) {
+							alert("관심상품으로 등록되었습니다. ");
+					 		goLikeProdCnt(); 
+							$("#existlike").val("1");
+							
+							$("#likeProdMain").removeClass("far");
+							$("#likeProdMain").addClass("fas");
+						}
+						else {
+							alert("관심상품으로 등록할 수 없습니다. ");
+						}
+					 }
+					else {
+						if(json.n == 1) {
+							alert("관심상품에서 삭제되었습니다. ");
+					 		goLikeProdCnt();
+							$("#existlike").val("0");
+							$("#likeProdMain").removeClass("fas");
+							$("#likeProdMain").addClass("far");
+						}
+						else {
+							alert("관심상품을 삭제할 수 없습니다. ");
+						}
+					} 
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	   
+			
+		}
+		
+		
+		function goLikeProdCnt(){
+			
+			var loginuserid = "${sessionScope.loginuser.userid}";
+			
+			$.ajax({
+				url:"<%= request.getContextPath()%>/likeProdCnt.action",
+				type:"GET",
+				data:{"prod_id":"${pvo.prod_id}",
+					  "fk_userid":loginuserid},  
+				dataType:"JSON",
+				success:function(json) {
+					
+					if(json.likeProdCnt != 0) {
+						$(".main-likes-number").html(json.likeProdCnt);
+						if(json.existlike == 1) {
+							$("#likeProdMain").removeClass("far");
+							$("#likeProdMain").addClass("fas");
+						}
+						else {
+							$("#likeProdMain").removeClass("fas");
+							$("#likeProdMain").addClass("far");
+						}
+					}
+					else {
+						$(".main-likes-number").html(json.likeProdCnt);
+					}
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	   
+			
+		}
+		
+		
+		// 리뷰 추천하기
+		function goLikeReview(review_id, fk_userid, page){
+	//	function goLikeReview(review_id, fk_userid){
+			
+		//	alert(fk_userid);
+	 		var loginuserid = "${sessionScope.loginuser.userid}";
+			
+			if(loginuserid == "") {
+				alert("리뷰 추천은 로그인 후 가능합니다.");
+				return;
+			}
+			
+			if(loginuserid == fk_userid){
+				alert("자기자신의 리뷰는 추천할 수 없습니다.");
+				return;
+			}
+			
+			// 리뷰추천하기
+			$.ajax({
+				url:"<%= request.getContextPath()%>/likeReview.action",
+				type:"GET",
+				data:{"review_id":review_id,
+					  "loginuserid":loginuserid, 
+				  	  "fk_parentProdId":"${pvo.prod_id}"},
+				dataType:"JSON",
+				success:function(json) {
+					
+					if(json.m == "추천") { 
+						if(json.result == 1) {
+							alert("리뷰추천이 완료되었습니다. ");
+							goReviewList(page);
+							
+					 	//	goLikeProdCnt(); 
+					 	
+					 		/* var html = '<i class="far fa-heart"></i>';
+					 		$("#likeReviewHeart").html(html); */
+
+							
+							/* $("#likeReviewMain").removeClass("far");
+							$("#likeReviewMain").addClass("fas"); */
+						}
+						else {
+							alert("리뷰 추천할 수 없습니다. ");
+						}
+					 }
+					else {
+						if(json.result == 1) {
+							alert("리뷰추천이 삭제되었습니다. ");
+							goReviewList(page);
+							
+					 	//	goLikeProdCnt();
+					 	
+					 		/* var html = '<i class="fas fa-heart"></i>';
+					 		$("#likeReviewHeart").html(html); */
+					 	
+							/* $("#likeReviewMain").removeClass("fas");
+							$("#likeReviewMain").addClass("far"); */
+						}
+						else {
+							alert("리뷰 추천 취소할 수 없습니다. ");
+						}
+					} 
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	   	
+		
+		 
+		}
+		
+		
 
     </script>
 </head>
@@ -979,10 +1006,10 @@
 
                 <div class="main-rate">
                     <div class="main-likes">
-                  <span id="likecnt"></span>
-                       <span onclick="goLikeProd('${pvo.prod_id}')">
-                          <i id="likeProdMain" class="far fa-heart" style="color:orange;"></i>
-                       </span>&nbsp;
+						<span id="likecnt"></span>
+                    	<span onclick="goLikeProd('${pvo.prod_id}')">
+                    		<i id="likeProdMain" class="far fa-heart" style="color:orange;"></i>
+	                    </span>&nbsp;
                         <strong class="main-likes-number">
                              118
                         </strong>
@@ -1019,9 +1046,9 @@
                             <dt>가격</dt>
                             <dd>
                                 <div class="main-price">
-                                   <c:forEach var="seattype" items="${seattypeList}">
-                                       <span>${seattype.seat_type}석</span><span>${seattype.seat_price}</span><br/>
-                                   </c:forEach>
+                                	<c:forEach var="seattype" items="${seattypeList}">
+                                    	<span>${seattype.seat_type}석</span><span>${seattype.seat_price}</span><br/>
+                                	</c:forEach>
                                 </div>
                             </dd>
                         </div>
@@ -1033,14 +1060,14 @@
                         <div>
                             <dt>공연시간안내</dt>
                             <dd>
-                               <c:forEach var="datevo" items="${dateList}" varStatus="status">
+                            	<c:forEach var="datevo" items="${dateList}" varStatus="status">
                                 <span>
                                 <c:if test = "${status.count %2!=0}">${datevo.date_showday}</c:if> 
-                                   &nbsp;&nbsp;&nbsp; ${datevo.date_showtime}
+                                	&nbsp;&nbsp;&nbsp; ${datevo.date_showtime}
                                 <c:if test="${status.count %2 !=0}">,</c:if>
                                 <c:if test="${status.count %2 ==0}"><br/></c:if>
                                 </span>
-                               </c:forEach>
+                            	</c:forEach>
                             </dd>
                         </div>
                         <div>
@@ -1077,7 +1104,7 @@
                             <span>1회</span>
                             오후 7시 00분
                         </a> -->
-                     
+							
                     </div>
                 </div>
             </div>
@@ -1089,7 +1116,7 @@
                 <div class="ticketing-seat">
                     <div class="ticketing-seat-list">
                         <dl>
-                           <c:forEach var="seattype" items="${seattypeList}">
+                        	<c:forEach var="seattype" items="${seattypeList}">
                             <dt>${seattype.seat_type}석</dt>
                             <dd>
                                 ${seattype.seat_price}<br>
@@ -1115,23 +1142,23 @@
 
 
 <form name="convey">
-   <input type="hidden" name="showdate" id="showdate" value="" />
-   <input type="hidden" name="showtime" id="showtime" value="" />
-   <input type="hidden" name="conveyName" value="${sessionScope.loginuser.name}">
-   <input type="hidden" name="conveyEmail" value="${sessionScope.loginuser.email}">
-   <input type="hidden" name="conveyHP1" value="${sessionScope.loginuser.hp1}">
-   <input type="hidden" name="conveyHP2" value="${sessionScope.loginuser.hp2}">
-   <input type="hidden" name="conveyHP3" value="${sessionScope.loginuser.hp3}">
-   <input type="hidden" name="conveyPostcode" value="${sessionScope.loginuser.postcode}">
-   <input type="hidden" name="conveyAddress" value="${sessionScope.loginuser.address}">
-   <input type="hidden" name="conveyDetailAddress" value="${sessionScope.loginuser.detailAddress}">
+	<input type="hidden" name="showdate" id="showdate" value="" />
+	<input type="hidden" name="showtime" id="showtime" value="" />
+	<input type="hidden" name="conveyName" value="${sessionScope.loginuser.name}">
+	<input type="hidden" name="conveyEmail" value="${sessionScope.loginuser.email}">
+	<input type="hidden" name="conveyHP1" value="${sessionScope.loginuser.hp1}">
+	<input type="hidden" name="conveyHP2" value="${sessionScope.loginuser.hp2}">
+	<input type="hidden" name="conveyHP3" value="${sessionScope.loginuser.hp3}">
+	<input type="hidden" name="conveyPostcode" value="${sessionScope.loginuser.postcode}">
+	<input type="hidden" name="conveyAddress" value="${sessionScope.loginuser.address}">
+	<input type="hidden" name="conveyDetailAddress" value="${sessionScope.loginuser.detailAddress}">
 </form>
-               <!-- finalproject4/reservePopUp.action 으로 예매하기 데이터 넘기는 부분 -->
-               
-               
-               <input type="hidden" id="existlike" value="0" />
-               <!-- 관심상품이 이미 눌러져있는지 여부를 판단하는 부분 -->
-               
+					<!-- finalproject4/reservePopUp.action 으로 예매하기 데이터 넘기는 부분 -->
+					
+					
+					<input type="hidden" id="existlike" value="0" />
+					<!-- 관심상품이 이미 눌러져있는지 여부를 판단하는 부분 -->
+					
 
 </section>
 <section class="maincategory">
@@ -1299,8 +1326,8 @@
                     ${pvo.map_name}
                 </strong>
                 <div id="map" class="map-desc">
-                   
-               <%-- <jsp:include page="map.jsp"></jsp:include> --%>
+                	
+					<%-- <jsp:include page="map.jsp"></jsp:include> --%>
                 </div>
             </div>
         </div>
@@ -1344,7 +1371,7 @@
                                     <div class="modal-title">
                                         <p class="post-title">${pvo.prod_title}</p>
                                         <button type="button" class="close-button"><span>+</span></button>
-                              <input type="hidden" name="fk_userid" id="fk_userid" value="${sessionScope.loginuser.userid}" />
+										<input type="hidden" name="fk_userid" id="fk_userid" value="${sessionScope.loginuser.userid}" />
                                         <input type="hidden" name="parentProdId" id="parentProdId" value="${pvo.prod_id}" />
                                     </div>
                                     <div class="row datestar">

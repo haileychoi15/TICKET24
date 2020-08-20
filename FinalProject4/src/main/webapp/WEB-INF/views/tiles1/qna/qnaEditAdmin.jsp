@@ -9,7 +9,7 @@
 
 <style type="text/css">
 
-	body{margin-top: 116px;}
+/* 	body{margin-top: 116px;}
 
 	table, th, td, textarea {border: solid gray 1px;}
 	
@@ -20,7 +20,126 @@
 	#table th{width: 120px; background-color: #DDDDDD;}
 	#table td{width: 860px;}
 	.long {width: 470px;}
+	.short {width: 120px;} */
+	
+	body{margin-top: 116px;}
+	
+	.noti-tit-tag01 {
+		border: 1px solid #568ade;
+		color: #568ade; 
+		font-size: 10pt;
+		padding: 5px 10px;
+		margin: 0 15px 35px 0;
+		text-align: right;
+	}
+	
+	.noti-content {
+		margin: 0px auto;
+		padding: 0;
+		width: 60%;
+		word-wrap: break-word; 
+	}
+	
+	.noti-vt-open {
+		line-height: 1;
+		margin: 30px 0 0 0;
+		padding: 20px 0 0 0;
+		font-style: normal;
+		vertical-align: baseline;
+		outline: none;
+		background: #fbe5d5;
+		border: 1px solid #999;
+		margin-top: -1px;
+		height: 230px;
+		font-size: 17px;
+		font-weight: 700;
+		vertical-align: middle;
+	}
+	
+	.noti-vt-open > span:nth-child(1) em {
+		inline-block;
+	    height: 22px;
+	    line-height: 22px;
+	    padding-left: 32px;
+	    color: #ec7d2c;
+		background: url('http://tkfile.yes24.com/imgNew/sub/ico-rp-tko1.png') no-repeat;
+		background-size: auto 100%;
+	}
+	
+	.noti-vt-open > span {
+		margin: 0px 44px;
+		padding: 14px 0 0 0;
+		vertical-align: middle;
+	}
+	
+	.noti-view-date, .noti-view-date > span { 
+		text-align: right;
+		height: 30px;
+		line-height: 30px;
+		margin-bottom: 30px;
+	}
+
+	.noti-content img {
+		text-align: center;
+	}
+
+	/* table, th, td, */ textarea {border: solid gray 1px;}
+	
+	#table, #table2 {border-collapse: collapse;
+	 		         /* width: 900px; */
+	 		        }
+	#table th, #table td{padding: 5px;}
+	#table th{width: 120px; background-color: #DDDDDD;}
+	#table td{width: 900px;}
+	
+	.long {width: 470px;}
 	.short {width: 120px;}
+	
+	.move {cursor: pointer;}
+	.moveColor {color: #660029; font-weight: bold;}
+	
+	a {text-decoration: none !important;}
+	
+	.blue {
+		color:#568ade;
+	}
+	
+	.orange {
+		color:#ec7d2c;
+	}
+	
+	.list-button-group{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+	}
+	
+	.list-button-group a{
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    width: 100px;
+	    height: 40px;
+	    border: 1px solid rgb(216, 222, 226);
+	    border-radius: 20px;
+	    margin: 10px;
+	    background-color: rgb(240, 240, 240);
+	} 
+	
+	.list-button-group a:hover{
+	    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+	}  
+	
+	button[type="button"] {
+		/* padding: 10px;
+		border-radius: 50%;
+		color:red; */
+		    width: 100px;
+		    height: 40px;
+		    border: 1px solid rgb(216, 222, 226);
+		    border-radius: 20px;
+		    margin: 10px;
+	}
 	
 </style>
 
@@ -118,58 +237,95 @@
 
 </script>
 
-<div style="padding-left: 10%;">
-	<h1>글쓰기</h1>
+
+<div style="margin-top: 200px;">
 	
-	<%-- <div id="printarea"> --%>
-	<%-- <form name="addFrm"> --%>
-	<%-- === #145. 파일첨부하기 === 
-		  먼저 위의 문장을 주석처리 한 후 아래와 같이 해야 한다.
-		 enctype="multipart/form-data" 를 해주어야만 파일첨부가 되어진다. --%>
-	<form name="editFrm" >
-		<table id="table">
-			<tr>
-				<th>성명</th>
-				<td>
+	<h1 style="text-align: center; ">고객의 소리 게시판</h1>
+	
+	<div align="center">
+	
+		<%-- enctype="multipart/form-data" 를 해주어야만 파일첨부가 되어진다. --%>
+		<form name="editFrm" >
+		
+			<hr style="border-top: solid 1px black; width:60%; margin: 50px 0; text-align: center;">
+			<div style="text-align: center; font-size: 20pt;">
+				<span class="noti-tit-tag01">관리자답변글</span>
+				
+					<input type="text" name="subject" id="subject" class="long" style="font-size:20pt;" value="${qvo.subject}" />
 					<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}">
-					<input type="text" name="name" value="${sessionScope.loginuser.name}" class="short" readonly="readonly" />
+					<input type="hidden" name="name" value="${sessionScope.loginuser.name}" class="short" readonly="readonly" />
 					<input type="hidden" name="qna_id" value="${qvo.qna_id}">
-				</td>
-			</tr>
-			<tr>
-				<th>카테고리</th>
-				<td>
-					<input type="text" name="category" id="category" value="${qvo.category}" class="long" />
-				</td>
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td>
-					<input type="text" name="subject" id="subject" value="${qvo.subject}" class="long" />
-				</td>
-			</tr>
-			<tr>
-				<th>내용</th>
-				<td>
-					<textarea rows="10" cols="100" style="width: 95%; height: 412px;" name="content" id="content" >${qvo.content}</textarea>
-				</td>
-			</tr>
-		</table>
+				
+			</div>
+			<hr style="border-top: solid 1px black; width:60%; margin: 50px 0; text-align: center;">
 		
-		<%-- === #139. 답변글쓰기인 경우
-					      부모글(원글)의 seq 값인 fk_seq 값과 
-					      부모글의 groupno 값과 
-					      부모글의 depthno 값을 hidden 타입으로 보내준다. --%>
-		<input type="text" name="fk_seq" value="${qvo.fk_seq}" />
-		<input type="text" name="groupno" value="${qvo.groupno}" />
-		<input type="text" name="depthno" value="${qvo.depthno}" />
 		
-		<div style="margin: 20px;">
-			<button type="button" id="btnWrite">수정</button>
-			<button type="button" onclick="javascrpit:history.back()">취소</button>
-			<%-- button type="reset" 을 사용해도 되고, onclick="이전페이지" 를 사용해도 된다. --%>
-		</div>
-		
-	</form>
+			<table id="table">
+				<%-- <tr>
+					<th>성명</th>
+					<td>
+						<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}">
+						<input type="text" name="name" value="${sessionScope.loginuser.name}" class="short" readonly="readonly" />
+					</td>
+				</tr> --%>
+				<tr>
+					<!-- <th>카테고리</th> -->
+					<td>
+						<%-- <input type="hidden" name="category" id="category" value="${qvo.category}" class="long" /> --%>
+						<select name="category" id="category">
+							<c:if test="${qvo.category == 1}">
+								<option value="1" selected="selected">예매/결제</option>
+								<option value="2">티켓수령</option>
+								<option value="3">취소/환불</option>
+								<option value="4">기타</option>
+							</c:if>
+							<c:if test="${qvo.category == 2}">
+								<option value="1">예매/결제</option>
+								<option value="2" selected="selected">티켓수령</option>
+								<option value="3">취소/환불</option>
+								<option value="4">기타</option>
+							</c:if>
+							<c:if test="${qvo.category == 3}">
+								<option value="1">예매/결제</option>
+								<option value="2">티켓수령</option>
+								<option value="3" selected="selected">취소/환불</option>
+								<option value="4">기타</option>
+							</c:if>
+							<c:if test="${qvo.category == 4}">
+								<option value="1">예매/결제</option>
+								<option value="2">티켓수령</option>
+								<option value="3">취소/환불</option>
+								<option value="4" selected="selected">기타</option>
+							</c:if>
+						</select>
+					</td>
+				</tr>
+				<%-- <tr>
+					<th>제목</th>
+					<td>
+						<input type="text" name="subject" id="subject" value="${qvo.subject}" class="long" />
+					</td>
+				</tr> --%>
+				<tr>
+					<!-- <th>내용</th> -->
+					<td>
+						<textarea rows="10" cols="100" style="width: 95%; height: 412px;" name="content" id="content" >${qvo.content}</textarea>
+					</td>
+				</tr>
+			</table>
+			
+			<input type="hidden" name="fk_seq" value="${qvo.fk_seq}" />
+			<input type="hidden" name="groupno" value="${qvo.groupno}" />
+			<input type="hidden" name="depthno" value="${qvo.depthno}" />
+			
+			<div style="margin: 20px;">
+				<button type="button" id="btnWrite">수정</button>
+				<button type="button" onclick="javascrpit:history.back()">취소</button>
+			</div>
+			
+		</form>
+	
+	
+	</div>
 	
 </div>

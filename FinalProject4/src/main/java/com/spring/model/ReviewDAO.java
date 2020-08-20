@@ -78,5 +78,28 @@ public class ReviewDAO implements InterReviewDAO {
 		int n = sqlsession.selectOne("finalproject4.existLikeReview", paraMap);
 		return n;
 	}
+
+	// 해당 공연에 대한 추천있는 리뷰와 추천수
+	@Override
+	public List<String> reviewLikeList(HashMap<String, String> paraMap) {
+		List<String> reviewLikeList = sqlsession.selectList("finalproject4.reviewLikeList", paraMap);
+		return reviewLikeList;
+	}
+
+	// 공연에 달린 리뷰의 추천수 
+	@Override
+	public List<HashMap<String, String>> reviewLikecntList(HashMap<String, String> paraMap) {
+		List<HashMap<String, String>> reviewLikecntList = sqlsession.selectList("finalproject4.reviewLikecntList", paraMap);
+		return reviewLikecntList;
+	}
+
+	// 리뷰 등록 성공시 포인트 증가(트랜잭션)
+	/*@Override
+	public void pointAdd(HashMap<String, String> paraMap) {
+		sqlsession.update("finalproject4.pointAdd", paraMap);
+		
+	}*/
+	
+	
 	
 }

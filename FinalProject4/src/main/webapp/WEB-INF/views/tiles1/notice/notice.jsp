@@ -14,6 +14,23 @@
     <link rel="stylesheet" href="resources/css/notice.css"> <%--###--%>
     <script src="https://kit.fontawesome.com/5342aa1b58.js" crossorigin="anonymous"></script>
 </head>
+
+
+<style>
+
+button#btnAddNoti {
+		/* padding: 10px;
+		border-radius: 50%;
+		color:red; */
+	    width: 100px;
+	    height: 40px;
+	    border: 1px solid rgb(216, 222, 226);
+	    border-radius: 20px;
+	    margin: 0 10px 30px 10px;
+} 
+
+</style>
+
 <body>
 <section class="search">
     <div class="search-group">
@@ -105,7 +122,7 @@
         <%-- ### admin 으로 로그인했을 때만 공지등록 버튼 표시 --%>
         <c:if test="${sessionScope.loginuser.userid == 'admin'}">
 	        <div>
-	        	<button type="button" style="float:right;" onclick="location.href='noticeAdd.action'">공지등록</button>
+	        	<button type="button" id="btnAddNoti" style="float:right;" onclick="location.href='noticeAdd.action'">공지등록</button>
 	        </div>
         </c:if>
         

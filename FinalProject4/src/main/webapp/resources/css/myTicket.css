@@ -1,6 +1,6 @@
 #container {
     width: 942px;
-    margin: 150px auto 20px auto;
+    margin: 200px auto 20px auto;
     font-size: 14px;
 }
 
@@ -403,8 +403,6 @@ em.pageLink {
 #preferredArea::-webkit-scrollbar-track {
     background: #eee;
 }
-
-
 
 
 .revision {

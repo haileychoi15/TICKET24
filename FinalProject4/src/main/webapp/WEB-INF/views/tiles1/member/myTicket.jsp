@@ -162,17 +162,6 @@
 	            </div>
         	</c:forEach>
         </div>
-        
- 
-        <div class="pageBar">
-            <a href="" class="pageBtn prevFist"></a>
-            <a href="" class="pageBtn prev"></a>
-            <em class="pageLink">1</em>
-            <a href="" class="pageLink">2</a>
-            <a href="" class="pageLink">3</a>
-            <a href="" class="pageBtn next"></a>
-            <a href="" class="pageBtn nextLast"></a>
-        </div>
     </div>
 
     <div id="preferredDiv">
@@ -185,16 +174,6 @@
    					<input type="hidden" name="prod_id" value="${like.prod_id }"/>
         		</div>
         	</c:forEach>
-        </div>
-
-        <div class="pageBar">
-            <a href="" class="pageBtn prevFist"></a>
-            <a href="" class="pageBtn prev"></a>
-            <em class="pageLink">1</em>
-            <a href="" class="pageLink">2</a>
-            <a href="" class="pageLink">3</a>
-            <a href="" class="pageBtn next"></a>
-            <a href="" class="pageBtn nextLast"></a>
         </div>
     </div>
 

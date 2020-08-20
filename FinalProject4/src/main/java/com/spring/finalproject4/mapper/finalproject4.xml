@@ -1048,12 +1048,23 @@
 		from yes_review
 		where status = 1 and parentProdId = #{parentProdId}
 		order by review_id desc -->
-		select rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
+		<!-- select rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
 		from(
 			select rownum as rno, review_id, fk_userid, name, content, star, to_char(regDate, 'yyyy-mm-dd') as regDate, parentProdId, status
 			from yes_review
 			where status = 1 and parentProdId = #{parentProdId}
 			order by review_id desc
+		) T
+		where rno between #{startRno} and #{endRno} -->
+		select rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
+		from(
+			select rownum as rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
+			from 
+            (select review_id, fk_userid, name, content, star, to_char(regDate, 'yyyy-mm-dd') as regDate, parentProdId, status
+            from yes_review
+			where status = 1 and parentProdId = #{parentProdId}
+			order by review_id desc
+            )T
 		) T
 		where rno between #{startRno} and #{endRno}
 	</select>
@@ -1138,23 +1149,70 @@
 	<!-- 리뷰 추천하기 -->
 	<insert id="likeReview" parameterType="HashMap" >
 		insert into like_review (seq, fk_userid, fk_parentReviewId ,fk_parentProdId)
-		values(likeReviewSeq.nextval, #{fk_userid}, #{review_id}, #{fk_parentProdId})
+		values(likeReviewSeq.nextval, #{loginuserid}, #{review_id}, #{fk_parentProdId})
 	</insert>
 	
 	<!-- 리뷰 추천 취소하기 -->
 	<delete id="dislikeReview" parameterType="HashMap" >
 		delete from like_review
-		where fk_parentReviewId = #{review_id} and fk_userid = #{fk_userid}
+		where fk_parentReviewId = #{review_id} and fk_userid = #{loginuserid}
 	</delete>
+	
 	
 	<!-- 리뷰 추천이 이미 존재하는지 확인 -->
 	<select id="existLikeReview" parameterType="HashMap" resultType="int">
 		select count(*)
 		from like_review
-		where fk_userid = #{fk_userid} and fk_parentReviewId = #{review_id}
+		where fk_userid = #{loginuserid} and fk_parentReviewId = #{review_id}
 	</select>
-		
+	
+	<!-- 해당 공연에 대한 추천있는 리뷰와 추천수 -->
+	<!-- 
+	<resultMap type="HashMap" id="reviewLikeListMap">
+		<result property="fk_parentReviewId" column="fk_parentReviewId" javaType="String" />
+		<result property="reviewlikecnt" 	 column="reviewlikecnt" 	javaType="String" />
+	</resultMap>
+	<select id="reviewLikeList" parameterType="HashMap" resultMap="reviewLikeListMap">
+		select fk_parentReviewId, count(*) as reviewlikecnt
+		from like_review
+		group by fk_parentProdID, fk_parentReviewId
+		having fk_parentProdID = 1
+		order by fk_parentProdID, fk_parentReviewId
+	</select>
+	 -->
+	 
+	 
+	<!-- 로그인한 유저가 좋아요한 댓글 번호 목록 -->
+	<select id="reviewLikeList" parameterType="HashMap" resultType="String">
+		select fk_parentReviewId
+		from like_review
+		where fk_userid = #{fk_userid} and fk_parentProdID = #{parentProdId}
+	</select>
+	
+	
+	<!-- 공연에 달린 리뷰의 추천수  -->
+	<resultMap type="HashMap" id="reviewLikecntMap">
+		<result property="fk_parentReviewId" column="fk_parentReviewId" javaType="String" />
+		<result property="reviewlikecnt" 	 column="reviewlikecnt" 	javaType="String" />
+	</resultMap>
+	<select id="reviewLikecntList" parameterType="HashMap" resultMap="reviewLikecntMap">
+		select fk_parentReviewId, count(*) as reviewlikecnt
+		from like_review
+		group by fk_parentProdID, fk_parentReviewId
+		having fk_parentProdID = 1
+		order by fk_parentProdID, fk_parentReviewId
+	</select>
+	
+	
+	<!-- 리뷰 등록 성공시 포인트 증가(트랜잭션) -->
+	<!-- 
+	<update id="pointAdd">
+		update yes_member set point = point + to_number(#{point})
+		where userid = #{fk_userid}
+	</update>
+	 -->
 		
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
+
 
 </mapper>

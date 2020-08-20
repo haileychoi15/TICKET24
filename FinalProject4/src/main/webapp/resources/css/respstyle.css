@@ -10,36 +10,36 @@ body{
 }
 
 
-   div.mycontent {
-        width: 300px;
-        padding: 5px 3px;
-     }
-     
-     div.mycontent>.title {
-        font-size: 12pt;
-        font-weight: bold;
-        background-color: #d95050;
-        color: #fff;
-     }
-     
-     div.mycontent>.title>a {
-        text-decoration: none;
-        color: #fff;
-     }
-     
-     
-     div.mycontent>.desc {
-      /* border: solid 1px red; */
-        padding: 10px 0 0 0;
-        color: #000;
-        font-weight: normal;
-        font-size: 9pt;
-     }
-     
-     div.mycontent>.desc>img {
-        width: 50px;
-        height: 50px;
-     }
+	div.mycontent {
+  		width: 300px;
+  		padding: 5px 3px;
+  	}
+  	
+  	div.mycontent>.title {
+  		font-size: 12pt;
+  		font-weight: bold;
+  		background-color: #d95050;
+  		color: #fff;
+  	}
+  	
+  	div.mycontent>.title>a {
+  		text-decoration: none;
+  		color: #fff;
+  	}
+  	
+  	
+  	div.mycontent>.desc {
+  	 /* border: solid 1px red; */
+  		padding: 10px 0 0 0;
+  		color: #000;
+  		font-weight: normal;
+  		font-size: 9pt;
+  	}
+  	
+  	div.mycontent>.desc>img {
+  		width: 50px;
+  		height: 50px;
+  	}
 
 
 .return-top-button{
@@ -406,7 +406,7 @@ button,input,textarea{
     font-size: 15px;
     font-weight: 400;
     letter-spacing: -0.05em;
-     background-color:#fff;
+  	background-color:#fff;
     margin-bottom:10px;
     /* color:#FFFFFF; */
     border: 1px solid #ec7d2c;
@@ -564,12 +564,12 @@ button,input,textarea{
 /* refund */
 
 .refund{
-   
+	
     margin-bottom: 30px;
 }
 
 .refund-title {
-   background-color: #fbe5d5;
+	background-color: #fbe5d5;
 }
 
 .refund .refund-table table {
@@ -579,7 +579,7 @@ button,input,textarea{
 }
 
 .refund-table tbody {
-   background-color: #fafafa;
+	background-color: #fafafa;
 }
 
 .refund .refund-table th, td {
@@ -587,12 +587,12 @@ button,input,textarea{
 }
 
 .refund .refund-desc p{
-   font-size:13px;
+	font-size:13px;
     margin-bottom: 12px;
 }
 
 .refund .refund-detail-table{
-   
+	
     margin-bottom: 12px;
 }
 
@@ -963,7 +963,7 @@ button,input,textarea{
     margin-bottom: 20px;
 }
 .notice .info-1-desc p{
-   font-size:13px;
+	font-size:13px;
     margin-bottom: 20px;
 }
 
@@ -981,7 +981,7 @@ button,input,textarea{
 
 
 .modal{
-   
+	
    display: none;
     z-index: 100;
     background-color: #fff;
@@ -1118,7 +1118,7 @@ button,input,textarea{
     
     .landing-title{
     margin-top: 100px;
-   }
+	}
 
     .landing .landing-share {
         display: flex;
@@ -1239,9 +1239,9 @@ button,input,textarea{
     .ticketing .ticketing-button{
   
     margin-bottom:40px;
-   
-   }
-   
+	
+	}
+	
 
     /*booking*/
     .booking {
@@ -1306,23 +1306,23 @@ button,input,textarea{
     padding: 20px 15px;
     border: 1px solid lightgray;
     border-radius: 10px;
-   } */
-   
-   .re-post-buttons {
+	} */
+	
+	.re-post-buttons {
     width: 20%;
     height: 50px;
     border: 1px solid #ec7d2c;
     margin: 20px auto;
-   }
-   
-   .post-buttons {
+	}
+	
+	.post-buttons {
     width: 20%;
     height: 50px;
     border: 1px solid #ec7d2c;
     margin: 20px auto;
-   }
-   
-   
+	}
+	
+	
     /*refund*/
     .refund .col-12 {
         margin: 70px 0;
@@ -1334,7 +1334,7 @@ button,input,textarea{
     }
     
     .map-title{
-       font-size:25px;
+    	font-size:25px;
     }
 
     .review .review-title {
@@ -1385,6 +1385,7 @@ button,input,textarea{
         border: 1px solid #ec7d2c;
         background-color: #ec7d2c !important;
     } 
+
 
 
 

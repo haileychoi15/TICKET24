@@ -20,6 +20,10 @@ public class ReviewService implements InterReviewService {
 	@Override
 	public int addReview(HashMap<String, String> paraMap) {
 		int n = dao.addReview(paraMap);
+		/*if(n == 1) { // 리뷰 등록 성공시 포인트 증가(트랜잭션)
+			paraMap.put("point", "100");
+			dao.pointAdd(paraMap);
+		}*/
 		return n;
 	}
 
@@ -76,6 +80,20 @@ public class ReviewService implements InterReviewService {
 	public int existLikeReview(HashMap<String, String> paraMap) {
 		int n = dao.existLikeReview(paraMap);
 		return n;
+	}
+
+	// 해당 공연에 대한 추천있는 리뷰와 추천수
+	@Override
+	public List<String> reviewLikeList(HashMap<String, String> paraMap) {
+		List<String> reviewLikeList = dao.reviewLikeList(paraMap);
+		return reviewLikeList;
+	}
+	
+	// 공연에 달린 리뷰의 추천수 
+	@Override
+	public List<HashMap<String, String>> reviewLikecntList(HashMap<String, String> paraMap) {
+		List<HashMap<String, String>> reviewLikecntList = dao.reviewLikecntList(paraMap);
+		return reviewLikecntList;
 	}
 	
 }

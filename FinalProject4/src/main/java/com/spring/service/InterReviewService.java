@@ -25,4 +25,8 @@ public interface InterReviewService {
 
 	int existLikeReview(HashMap<String, String> paraMap);
 
+	List<String> reviewLikeList(HashMap<String, String> paraMap); // 해당 공연에 대한 추천있는 리뷰와 추천수 
+
+	List<HashMap<String, String>> reviewLikecntList(HashMap<String, String> paraMap); // 공연에 달린 리뷰의 추천수 
+
 }

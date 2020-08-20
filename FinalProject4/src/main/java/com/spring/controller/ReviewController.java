@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -69,31 +70,62 @@ public class ReviewController {
 	    paraMap.put("endRno", String.valueOf(endRno));
 	
 		
-		List<ReviewVO> reviewList = service.reviewList(paraMap);
+		List<ReviewVO> reviewList = service.reviewList(paraMap); // 리뷰목록 불러오기
+		
+		List<HashMap<String, String>> reviewLikecntList = service.reviewLikecntList(paraMap); // 공연에 달린 리뷰의 추천수 
+		
+		/*
+		for(int i=0; i<reviewLikecntList.size(); i++) {
+			reviewLikecntList.get(i).get("reviewlikecnt");
+			reviewLikecntList.get(i).get("fk_parentReviewId");
+		}
+		*/
 		
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
-		/*
-	 	// 로그인한 유저가 있을 때만 로그인한 유저의 좋아요 댓글을 가져온다. 
-	    if(loginuser != null) {
-		   paraMap.put("loginuserid", loginuser.getUserid()); 
-		   List<String> commentLikeList = service.getCommentLikeList(paraMap);
-	    }
-		*/
+		List<String> reviewLikeList = new ArrayList<String>();
+		
+		if(loginuser != null) {
+			paraMap.put("loginuserid", loginuser.getUserid()); 
+		//	reviewLikeList = service.reviewLikeList(paraMap); 
+			reviewLikeList = service.reviewLikeList(paraMap); // 로그인한 유저의 해당 공연에 대한 리뷰추천 목록
+			// 1, 2, 15, 16
+		}
 		
 		JSONArray jsonArr = new JSONArray();
-		for(ReviewVO rvo : reviewList) {
-			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("parentProdId", rvo.getParentProdId());
-			jsonObj.put("fk_userid", rvo.getFk_userid());
-			jsonObj.put("review_id", rvo.getReview_id());
-			jsonObj.put("name", rvo.getName());
-			jsonObj.put("star", rvo.getStar());
-			jsonObj.put("regDate", rvo.getRegDate());
-			jsonObj.put("content", rvo.getContent());
-			
-			jsonArr.put(jsonObj);
+		
+		if(reviewList != null) {
+			for(ReviewVO rvo : reviewList) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("parentProdId", rvo.getParentProdId());
+				jsonObj.put("fk_userid", rvo.getFk_userid());
+				jsonObj.put("review_id", rvo.getReview_id());
+				jsonObj.put("name", rvo.getName());
+				jsonObj.put("star", rvo.getStar());
+				jsonObj.put("regDate", rvo.getRegDate());
+				jsonObj.put("content", rvo.getContent());
+				
+			//	System.out.println(rvo.getReview_id());
+			//	System.out.println(reviewLikeList.contains(rvo.getReview_id()));
+				Boolean flag = false;
+				
+				if(reviewLikeList.contains(rvo.getReview_id())) { // 로그인 유저가 추천을 누른 리뷰id가 해당 공연에 있는 리뷰id 를 갖고 있다면
+					flag = true;
+				}
+				
+				jsonObj.put("flag",flag);
+				
+				
+				for(int i=0; i<reviewLikecntList.size(); i++) {
+					if(reviewLikecntList.get(i).get("fk_parentReviewId").equals(rvo.getReview_id())){ 
+						jsonObj.put("reviewlikecnt", reviewLikecntList.get(i).get("reviewlikecnt"));
+					}
+				}
+				
+				
+				jsonArr.put(jsonObj);
+			}
 		}
 		
 		return jsonArr.toString();
@@ -101,7 +133,7 @@ public class ReviewController {
 	
 	
     
-	// 해당 상품에 달린 리뷰목록 가져오기
+	// 해당 상품에 달린 리뷰 총페이지 가져오기
 	@ResponseBody
 	@RequestMapping(value="/getReviewTotalPage.action", produces="text/plain;charset=UTF-8") 
 	public String getCommentTotalPage(HttpServletRequest request) {
@@ -182,13 +214,13 @@ public class ReviewController {
 	public String likeReview(HttpServletRequest request) {
 
 		String review_id = request.getParameter("review_id"); 
-		String fk_userid = request.getParameter("fk_userid");  
+		String loginuserid = request.getParameter("loginuserid");  
 		String fk_parentProdId = request.getParameter("fk_parentProdId");  
 	//	String flag = request.getParameter("flag"); 
 
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("review_id", review_id);
-		paraMap.put("fk_userid", fk_userid);
+		paraMap.put("loginuserid", loginuserid);
 		paraMap.put("fk_parentProdId", fk_parentProdId);
 		
 		int existlike = service.existLikeReview(paraMap); 
@@ -207,6 +239,7 @@ public class ReviewController {
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("result", result);
 		jsonObj.put("m", m);
+		jsonObj.put("existlike", existlike);
 	//	jsonObj.put("flag", flag);
 
 		return jsonObj.toString();  
