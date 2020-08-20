@@ -48,17 +48,17 @@ public class KakaoController {
         String id = (String) userInfo.get("id");
         String name = (String) userInfo.get("nickname");
         String email = (String) userInfo.get("email");
-        String gender = (String) userInfo.get("gender");
+        //String gender = (String) userInfo.get("gender");
         
         String clientip = request.getRemoteAddr(); // 클라이언트 ip 주소
         
-        if(gender.equalsIgnoreCase("male")) {
+/*        if(gender.equalsIgnoreCase("male")) {
         	gender = "1";
         }
         else {
         	gender = "2";
         }
-        
+        */
         //System.out.println("id : " + id);
         //System.out.println("gender : " + gender);
 		
@@ -66,7 +66,7 @@ public class KakaoController {
 		//paraMap.put("userid", id);
 		paraMap.put("name", name);
 		paraMap.put("email", email);
-		paraMap.put("gender", gender);
+		//paraMap.put("gender", gender);
 		paraMap.put("clientip", clientip);
 		
 		try {
