@@ -92,7 +92,7 @@ function getProdTemplate(id, title, img, place, discount) {
 
     // #### 주소 바꾸기 ####
     let template = `<li class="card">
-                        <a href="<%=ctxPath%>/?prodId=${id}"> 
+                        <a href="detail.action?seq=${id}"> 
                             <div class="card-image common-image">
                                 <img src="resources/images/${img}" alt="${title}" />`;
 

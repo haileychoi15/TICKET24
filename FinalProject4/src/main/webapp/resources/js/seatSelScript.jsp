@@ -50,13 +50,16 @@ $(document).ready(function(){
    
    var dateSel = changeDate.options[changeDate.selectedIndex].value;
    var roundSel = changeRound.options[changeRound.selectedIndex].value;
+   var prodID = ${showNum};
    
-   seatSelAjax(dateSel, roundSel);
+   seatSelAjax(dateSel, roundSel, prodID);
     
     $("#changeRound").change(function(){
        var day = $("#changeDate").val();
        var round = $(this).val();
-       seatSelAjax(day, round);
+       var prodID = ${showNum};
+       
+       seatSelAjax(day, round, prodID);
     });
 
     // 공연 정보 불러오기
@@ -74,7 +77,7 @@ $(document).ready(function(){
     
     // 부모창에서 받아온 값 넣기
     document.getElementById('conveyName').value = opener.document.convey.conveyName.value;
-    document.getElementById('conveyEmail').value = opener.document.convey.conveyEmail.value;
+    document.getElementById('conveyEmail').value = '${email}';
     
     // 취소가능날짜 2020. 08. 05
     let cancelDate = document.getElementById('cancelDate');
@@ -121,8 +124,8 @@ function numberPad(n, width) {
     return n.length >= width ? n:new Array(width - n.length + 1).join('0') + n;
 }
 
-// 좌석창 변경 ajax
-function seatSelAjax(day, round) {
+
+function seatSelAjax(day, round, prodID) {
    
     let seatArea = document.getElementById('seatArea');
     let eachSeat = document.getElementsByClassName('eachSeat');
@@ -134,7 +137,7 @@ function seatSelAjax(day, round) {
       type:"POST",
       data:{"showDay":day
           ,"showRound":round
-          ,"prodID":"${showNum}"},
+          ,"prodID":prodID},
       dataType:"JSON",
       success:function(json){
          seatArea.innerHTML = ""; 
@@ -277,7 +280,6 @@ function seatSelAjax(day, round) {
          alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
       }
    });
-   
    // 시간 회차 입력
    let showDate1 = document.getElementById('showDate1');
    let showDate2 = document.getElementById('showDate2');
@@ -541,7 +543,7 @@ function deliveryCautionEnd() {
 }
 
 // 돈 콤마 찍기
-function money(돈) {
+function money(money) {
     return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -704,6 +706,7 @@ function Pay(payNum) {
 	document.getElementById('Email').value = document.getElementById('conveyEmail').value;
 	document.getElementById('showDay').value = document.getElementById('showDate1').innerText;
 	document.getElementById('showRound').value = document.getElementById('showDate2').innerText;
+	document.getElementById('mapName').value = document.getElementById('showLocation').innerText;
 	
 	
 	var receiveMethod = "";

@@ -193,4 +193,4 @@
         </div>
     </div>
 </main>
-<script src="resources/js/category.js"></script>
+<script src="resources/js/category2.js"></script>

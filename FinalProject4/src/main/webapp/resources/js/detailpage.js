@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     registerReview();
     closeReview();
     starRate();
+    /*changeButtonColor();*/
 /*    showrevision();
     closerevision();
     restarRate();*/
@@ -294,6 +295,28 @@ const starRate=()=> {
     });
 }
 
+/*
+const changeButtonColor=()=>{
+
+    const buttons=document.querySelectorAll(".ticketing-button");
+    
+    buttons[0].addEventListener("click",()=>{
+        buttons.forEach(button=>{
+            button.classList.remove("button-on");
+        });
+            buttons[0].classList.add("button-on");
+            
+    });
+
+    buttons[1].addEventListener("click",()=>{
+        buttons.forEach(button=>{
+            button.classList.remove("button-on");
+        });
+
+            buttons[1].classList.add("button-on");
+    });
+   
+}*/
 
 /*
 //초기 re-star 별점셋팅

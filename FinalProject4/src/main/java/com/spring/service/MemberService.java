@@ -300,6 +300,24 @@ public class MemberService implements InterMemberService {
 	}
 
 
+	
+	// 마이티켓에서 리뷰 삭제
+	@Override
+	public int myReviewDelete(HashMap<String, String> paraMap) {
+		int n = dao.myReviewDelete(paraMap);
+		return n;
+	}
+
+
+	// 마이티켓에서 리뷰 수정
+	@Override
+	public int updateReviewEnd(HashMap<String, String> paraMap) {
+
+		int n = dao.updateReviewEnd(paraMap);
+		return n;
+	}
+
+
 
 	
 	

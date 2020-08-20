@@ -1,5 +1,8 @@
 package com.spring.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.common.AES256;
 import com.spring.model.MemberVO;
 import com.spring.service.InterPayService;
 
@@ -29,19 +33,28 @@ public class PayController {
 	@Autowired
 	private InterPayService service;
 	
+	@Autowired
+	private AES256 aes;
+	
 	// == 예매하기 클릭 시, 좌석선택 및 시간, 할인 팝업창 띄우기 == //
 	@RequestMapping(value="/reservePopUp.action")
-	/*public ModelAndView requiredLogin_reservePopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
-	public ModelAndView reservePopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
-/*
+	public ModelAndView requiredLogin_reservePopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
 		mav.addObject("loginuser", loginuser);
 		
-		String showNum = request.getAttribute("prodID");
-*/
-		String showNum = "1";
+		String Lemail = loginuser.getEmail();
+		try {
+			String Remail = aes.decrypt(Lemail);
+			mav.addObject("email", Remail);
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+	
+		String showNum = request.getParameter("seq");
+
 		mav.addObject("showNum", showNum);
 		
 		HashMap<String, String> getShowRsvInfo = new HashMap<>();
@@ -109,12 +122,13 @@ public class PayController {
 	
 	// == 결제 실행 API 띄우기 == //
 	@RequestMapping(value="/payPopUp.action")
-	/*public ModelAndView requiredLogin_payPopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
-	public ModelAndView payPopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	public ModelAndView requiredLogin_payPopUp(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-//		HttpSession session = request.getSession();
-//		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-//		mav.addObject("loginuser", loginuser);
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		mav.addObject("loginuser", loginuser);
+		
+		String userid = loginuser.getUserid();
 		
 		String payMethodNum = request.getParameter("payNum"); // 결제 방법(1. 신용카드 or 2. 무통장입금)
 		String showName = request.getParameter("showName"); // 공연 제목
@@ -131,11 +145,30 @@ public class PayController {
 		dateMap.put("showNum", showNum);
 		String dateID = service.getDateId(dateMap); // 일시 코드
 		String receiveMethod = request.getParameter("receiveMethod"); // 수령방법 ( 1. 현장수령  or 2. 배송 )
+		String mapName = request.getParameter("mapName");
 		
 		String seatIdes = request.getParameter("seatIdes"); // 좌석코드
 		String[] seatArr = seatIdes.split(",");
 		int seatCnt2 = seatArr.length;
 		String seatCnt = String.valueOf(seatCnt2); // 예매 수
+		
+		String payMethod = "";
+		if("1".equals(payMethodNum)) { // 신용카드 결제일 경우
+			payMethod = "신용카드";
+		}
+		else { // 무통장입금일 경우
+			payMethod = "무통장입금";
+		}
+		
+		String sReceiveMethod = "";
+		if("1".equals(receiveMethod)) { // 신용카드 결제일 경우
+			sReceiveMethod = "현장수령";
+		}
+		else { // 무통장입금일 경우
+			sReceiveMethod = "배송";
+		}
+		
+		
 		
 		HashMap<String, String> reserveInfoMap = new HashMap<>();
 		reserveInfoMap.put("payMethodNum", payMethodNum);
@@ -147,6 +180,8 @@ public class PayController {
 		reserveInfoMap.put("showName", showName);
 		reserveInfoMap.put("seatIdes", seatIdes);
 		reserveInfoMap.put("seatCnt", seatCnt);
+		reserveInfoMap.put("payMethod", payMethod);
+		reserveInfoMap.put("sReceiveMethod", sReceiveMethod);
 		
 		if("1".equals(payMethodNum)) { // 신용카드 결제일 경우
 			payStatus = "1";
@@ -157,6 +192,31 @@ public class PayController {
 		else if("2".equals(payMethodNum)) { // 무통장입금일 경우
 			payStatus = "2";
 			reserveInfoMap.put("payStatus", payStatus);
+			
+			HashMap<String, String> reserveInsertMap = new HashMap<>();
+			reserveInsertMap.put("showNum", showNum);
+			reserveInsertMap.put("dateID", dateID);
+			reserveInsertMap.put("email", email);
+			reserveInsertMap.put("payShowName", showName);
+			reserveInsertMap.put("receiveMethod", receiveMethod);
+			reserveInsertMap.put("paySum", paySum);
+			reserveInsertMap.put("payMethodNum", payMethodNum);
+			reserveInsertMap.put("userid", userid);
+			reserveInsertMap.put("payStatus", payStatus);
+			reserveInsertMap.put("seatCnt", seatCnt);
+			reserveInsertMap.put("seatIdes", seatIdes);
+			
+			int n = service.reserveComplete(reserveInsertMap);
+			String revId = service.getRevId(reserveInsertMap);
+			
+			reserveInsertMap.put("revId", revId);
+			reserveInfoMap.put("revId", revId);
+			int m = service.reserveStatusInsert(reserveInsertMap);
+			
+			mav.addObject("mapName", mapName);
+			mav.addObject("seatArr", seatArr);
+			mav.addObject("payStatus", payStatus);
+			mav.addObject("reserveInfoMap", reserveInfoMap);
 			
 			// 무통장입금일 경우 트랜잭션
 			mav.setViewName("reserve/payComplete.notiles");
@@ -170,11 +230,10 @@ public class PayController {
 	/*public ModelAndView requiredLogin_payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {*/
 	public ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		//HttpSession session = request.getSession();
-		//MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
-		//String userid = loginuser.getUserid();
-		String userid = "guzi10";
+		String userid = loginuser.getUserid();
 		
 		String showNum = request.getParameter("showNum");
 		String dateID = request.getParameter("dateID");
@@ -244,6 +303,7 @@ public class PayController {
 			mav.addObject("reserveInfoMap", reserveInfoMap);
 			mav.addObject("seatArr", seatArr);
 			mav.addObject("mapName", mapName);
+			mav.addObject("payStatus", payStatus);
 			mav.setViewName("reserve/payComplete.notiles");
 		}
 		else {

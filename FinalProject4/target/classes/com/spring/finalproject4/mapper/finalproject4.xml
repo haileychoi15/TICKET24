@@ -205,7 +205,7 @@
 	<select id="getSeatStatus" parameterType="String" resultMap="seatStatus">
 		select date_id, prod_id, seattype_id, seat_type, seat_name, seat_price, seat_status, seat_color
 		from view_seat_info
-		where prod_id = #{showNum}
+		where date_id = #{dateID}
 	</select>
 	
 	<resultMap type="HashMap" id="seatType">
@@ -249,7 +249,7 @@
 	</insert>
 	
 	<select id="getRevId" parameterType="HashMap" resultType="String">
-		select rev_id
+		select max(rev_id)
 		from yes_reserve
 		where prod_id = #{showNum} and user_id = #{userid} and date_id = #{dateID}
 	</select>
@@ -850,10 +850,12 @@
 	</select>
 	
 	
+	
 	<!-- 내 예매 내역 -->
 	<resultMap type="HashMap" id="myReserveMap">
 		<result property="rev_date" 	column="rev_date" 		javaType="String"/>
 		<result property="prod_title" 	column="prod_title" 	javaType="String"/>
+		<result property="prod_id" 		column="prod_id" 		javaType="String"/>
 		<result property="prod_img" 	column="prod_img" 		javaType="String"/>
 		<result property="date_start" 	column="date_start" 	javaType="String"/>
 		<result property="date_end" 	column="date_end" 		javaType="String"/>
@@ -867,6 +869,7 @@
 	<select id="myReserveList" parameterType="String" resultMap="myReserveMap">
 		select to_char(R.rev_date, 'yyyy.mm.dd') AS rev_date
 		       , P.prod_title AS prod_title
+		       , P.prod_id AS prod_id
 		       , P.prod_img AS prod_img
 		       , to_char(P.date_start, 'yyyy,mm.dd') AS date_start
 		       , to_char(P.date_end, 'yyyy,mm.dd') AS date_end 
@@ -879,7 +882,7 @@
 		from yes_reserve R join prod P
 		on R.prod_id = P.prod_id
 		join yes_show_map M
-		on P.prod_id = M.prod_id
+		on P.map_id = M.map_id
 		join yes_show_date D
 		on R.date_id = D.date_id
 		join yes_rev_status S
@@ -897,6 +900,7 @@
 
 	<resultMap type="HashMap" id="myReviewMap">
 		<result property="prod_img" 	column="prod_img" 	javaType="String"/>
+		<result property="prod_id" 		column="prod_id" 	javaType="String"/>
 		<result property="prod_title" 	column="prod_title" javaType="String"/>
 		<result property="regDate" 		column="regDate" 	javaType="String"/>
 		<result property="content" 		column="content" 	javaType="String"/>
@@ -905,6 +909,7 @@
 	<!-- 내 리뷰 내역 -->
 	<select id="myReviewList" parameterType="String" resultMap="myReviewMap">
 		select p.prod_img as prod_img
+		      , p.prod_id as prod_id
 		      , p.prod_title as prod_title
 		      , to_char(V.regDate, 'yyyy.mm.dd') as regDate
 		      , V.content  as content
@@ -941,6 +946,18 @@
 		from like_prod
 		where fk_userid = #{userid}
 	</select>
+	
+	<!-- 마이티켓에서 내 리뷰 삭제 -->
+	<update id="myReviewDelete" parameterType="HashMap">
+		update yes_review set status = 0
+		where review_id = #{review_id} and fk_userid = #{userid}
+	</update>
+	
+	<!-- 마이티켓에서 내 리뷰 수정 -->
+	<update id="updateReviewEnd" parameterType="HashMap">
+		update yes_review set star = #{star}, content = #{content}, regDate = sysdate
+		where review_id = #{review_id} and status = 1
+	</update>
 	
 	
 	<!-- AOP pointPlus -->
@@ -1129,6 +1146,14 @@
 		delete from like_review
 		where fk_parentReviewId = #{review_id} and fk_userid = #{fk_userid}
 	</delete>
+	
+	<!-- 리뷰 추천이 이미 존재하는지 확인 -->
+	<select id="existLikeReview" parameterType="HashMap" resultType="int">
+		select count(*)
+		from like_review
+		where fk_userid = #{fk_userid} and fk_parentReviewId = #{review_id}
+	</select>
+		
 		
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
 

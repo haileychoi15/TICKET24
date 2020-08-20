@@ -10,36 +10,36 @@ body{
 }
 
 
-	div.mycontent {
-  		width: 300px;
-  		padding: 5px 3px;
-  	}
-  	
-  	div.mycontent>.title {
-  		font-size: 12pt;
-  		font-weight: bold;
-  		background-color: #d95050;
-  		color: #fff;
-  	}
-  	
-  	div.mycontent>.title>a {
-  		text-decoration: none;
-  		color: #fff;
-  	}
-  	
-  	
-  	div.mycontent>.desc {
-  	 /* border: solid 1px red; */
-  		padding: 10px 0 0 0;
-  		color: #000;
-  		font-weight: normal;
-  		font-size: 9pt;
-  	}
-  	
-  	div.mycontent>.desc>img {
-  		width: 50px;
-  		height: 50px;
-  	}
+   div.mycontent {
+        width: 300px;
+        padding: 5px 3px;
+     }
+     
+     div.mycontent>.title {
+        font-size: 12pt;
+        font-weight: bold;
+        background-color: #d95050;
+        color: #fff;
+     }
+     
+     div.mycontent>.title>a {
+        text-decoration: none;
+        color: #fff;
+     }
+     
+     
+     div.mycontent>.desc {
+      /* border: solid 1px red; */
+        padding: 10px 0 0 0;
+        color: #000;
+        font-weight: normal;
+        font-size: 9pt;
+     }
+     
+     div.mycontent>.desc>img {
+        width: 50px;
+        height: 50px;
+     }
 
 
 .return-top-button{
@@ -144,7 +144,7 @@ button,input,textarea{
 }
 
 .landing .landing-info h1{
-    font-size: 30px;
+    font-size: 40px;
     margin-bottom: 20px;
 }
 
@@ -199,73 +199,15 @@ button,input,textarea{
     font-size: 25px;
 }
 
-
+/* 
 .landing-title{
     margin-top: 100px;
-}
+} */
 
-/*.landing-content{
-    justify-content: center;
-    align-items: center;
-    height: auto;
 
-}*/
-/*
 .landing-content .landing-place i{
     color: orange;
 }
-
-.landing-category{
-    margin-bottom: 15px;
-}
-
-
-
-.landing-title{
-    margin-bottom: 15px;
-}
-
-.landing-date{
-    margin-bottom: 8px;
-}
-
-
-.landing .share-box{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-
-}
-
-
-
-
-
-.landing-content .share-button2{
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background-color: #ffffff;
-    background-image: url("../images/assets/icon-share.svg");
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 24px 24px;
-    position: absolute;
-    top: 0;
-    right:0;
-}
-
-
-
-.landing-dateplace {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    position: relative;
-}*/
 
 
 /* Main */
@@ -366,10 +308,13 @@ button,input,textarea{
 .main .main-detail-top{
     width: 100%;
     margin: 0 auto;
-    padding: 10px 0;
+    padding: 20px 10px;
     border-top: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
 }
+
+
+
 .main .main-detail-top dt {
     font-size: 15px;
     color: #333;
@@ -394,7 +339,7 @@ button,input,textarea{
 .main .main-detail-bottom{
     width: 100%;
     margin: 0 auto;
-    padding: 10px 0;
+    padding: 20px 10px;
     border-bottom: 1px solid lightgray;
 
 }
@@ -420,7 +365,7 @@ button,input,textarea{
     font-size: 16px;
     font-weight: 700;
     line-height: 1.5;
-    padding: 15px 0;
+    padding: 20px 10px;
 }
 
 .ticketing .ticketing-desc{
@@ -440,7 +385,7 @@ button,input,textarea{
 .ticketing #calendar{
     width: 100%;
     /* height: 150px; */
-    border: 1px solid red;
+    /* border: 1px solid red; */
     margin-bottom: 15px;
     padding:8px;
     font-size:10px;
@@ -461,18 +406,25 @@ button,input,textarea{
     font-size: 15px;
     font-weight: 400;
     letter-spacing: -0.05em;
-    color:#333333;
-    border: 1px solid orange;
+     background-color:#fff;
+    margin-bottom:10px;
+    /* color:#FFFFFF; */
+    border: 1px solid #ec7d2c;
+    
 
 }
 
 .ticketing .col-md-5{
-    padding: 15px;
+     padding: 20px 25px;
 }
 
 .ticketing .ticketing-title {
     font-size: 16px;
 }
+
+.ticketing .ticketing-detailtime {
+        padding: 20px 10px;
+    }
 
 
 .ticketing-seat{
@@ -567,6 +519,7 @@ button,input,textarea{
     font-weight: 700;
     font-size: 14px;
     height: 40px;
+    padding:20px;
 }
 
 
@@ -578,7 +531,7 @@ button,input,textarea{
 }
 
 .caution .col-12{
-    margin: 20px 0;
+    margin: 40px 0;
 }
 
 .caution .caution-title{
@@ -611,25 +564,35 @@ button,input,textarea{
 /* refund */
 
 .refund{
+   
     margin-bottom: 30px;
 }
 
+.refund-title {
+   background-color: #fbe5d5;
+}
 
 .refund .refund-table table {
     width: 100%;
-    border: 1px solid #444444;
+    border: 1px solid #d5d5d5;
     border-collapse: collapse;
 }
 
+.refund-table tbody {
+   background-color: #fafafa;
+}
+
 .refund .refund-table th, td {
-    border: 1px solid #444444;
+    border: 1px solid #d5d5d5;
 }
 
 .refund .refund-desc p{
+   font-size:13px;
     margin-bottom: 12px;
 }
 
 .refund .refund-detail-table{
+   
     margin-bottom: 12px;
 }
 
@@ -654,8 +617,6 @@ button,input,textarea{
 }
 
 .map .map-desc{
-    border: 1px solid red;
-    width: 80%;
     margin: 0 auto;
     height: 400px;
 }
@@ -822,15 +783,18 @@ button,input,textarea{
 
 /* revision */
 
-.revision {
-    justify-content: center;
-    align-items: center;
+ .revision {
     display: none;
     z-index: 100;
     background-color: #fff;
-    /* position: fixed; */
+    position: fixed;
+    width: 80%;
+    bottom: 10%;
+    right: 10%;
     padding: 20px 15px;
-}
+    border: 1px solid lightgray;
+    border-radius: 10px;
+} 
 
 
 .revision-title{
@@ -991,7 +955,7 @@ button,input,textarea{
     font-size: 13px;
     padding: 15px 10px;
     border: 1px solid lightgray;
-    margin-top: 50px;
+    margin:40px 0;
 }
 
 .info01 .info-1-title{
@@ -999,6 +963,7 @@ button,input,textarea{
     margin-bottom: 20px;
 }
 .notice .info-1-desc p{
+   font-size:13px;
     margin-bottom: 20px;
 }
 
@@ -1016,14 +981,17 @@ button,input,textarea{
 
 
 .modal{
-   /*  position: absolute; */
-   /* display: flex;*/
-   	display: none;
-    justify-content: center;
-    align-items: center;
+   
+   display: none;
     z-index: 100;
     background-color: #fff;
-   /*  width: 100%; */
+    position: fixed;
+    width: 80%;
+    bottom: 10%;
+    right: 10%;
+    padding: 20px 15px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
 }
 
 
@@ -1037,7 +1005,6 @@ button,input,textarea{
 .modal-title .post-title{
     font-size: 30px;
     font-weight: 700;
-    margin-bottom: 0;
 }
 
 .modal-group {
@@ -1080,7 +1047,8 @@ button,input,textarea{
     align-items: center;
     border-bottom: 1px solid black;
     font-size: 15px;
-    padding: 0 15px;
+    margin:0;
+
 }
 
 .modal .modal-form .modal-table .datestar
@@ -1088,6 +1056,11 @@ button,input,textarea{
     height: 70px;
 }
 
+.datestar a {
+    text-decoration: none;
+    font-size: 25px;
+    color: #ec7d2c;
+}
 
 .modal .modal-form .modal-table .datestar i
 {
@@ -1136,41 +1109,16 @@ button,input,textarea{
 
 
 
-@media screen and (min-width: 768px) {
-    /*Reset CSS*/
-    /* landing */
-    /*.landing .col-12{
-        padding-top: 15px;
-        border-bottom: 2px solid #333;
-    }
-    .landing .landing-content .landing-category{
-        font-size: 16px;
-    }
-    .landing .landing-title{
-        font-size: 35px;
-        line-height: 1.14285714;
-        font-weight: 700;
-        letter-spacing: -0.003em;
-    }
-
-    .landing .landing-dateplace{
-        margin: 23px 0 21px 0;
-    }
-
-    .landing .landing-dateplace{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
-
-    .landing .landing-date{
-        padding-right: 15px;
-    }*/
+@media screen and (min-width: 768px) {/*------------------------------------------------------------------------------*/
+   
     .share-box i {
         color: #333333;
         font-size: 30px;
     }
+    
+    .landing-title{
+    margin-top: 100px;
+   }
 
     .landing .landing-share {
         display: flex;
@@ -1217,6 +1165,8 @@ button,input,textarea{
         line-height: 2.916;
         padding-top: 0;
     }
+    
+   
 
     .main .main-detail-bottom {
         min-height: 174px;
@@ -1264,27 +1214,15 @@ button,input,textarea{
 
     .ticketing #calendar {
         margin-bottom: 0;
-        width:60%;
+        width:65%;
         position: relative;
     }
 
     .ticketing .ticketing-detailtime {
-        padding: 20px 30px;
+        padding: 20px 10px;
     }
 
-    /*
-      .ticketing #calendar::after{
-          content: '';
-          display: inline-block;
-          width: 1px;
-          height: 80px;
-          color: lightgray;
-          background: #7d858f;
-          position: absolute;
-          top: 3px;
-          left: -4px;
-
-      }*/
+  
     .ticketing .col-md-5 {
         border-top: 1px solid lightgray;
         border-right: 1px solid lightgray;
@@ -1297,11 +1235,19 @@ button,input,textarea{
         padding: 15px 0;
         border-bottom: 1px solid #444;
     }
+    
+    .ticketing .ticketing-button{
+  
+    margin-bottom:40px;
+   
+   }
+   
 
     /*booking*/
     .booking {
         margin-bottom: 50px;
     }
+
 
     /*maincategory*/
     .maincategory .mainlinks {
@@ -1345,8 +1291,38 @@ button,input,textarea{
         height: auto;
         margin: 0 auto;
 
-    }
-
+    }    
+/*     
+    modal
+    
+    .modal {
+    display: none;
+    z-index: 100;
+    background-color: #fff;
+    position: fixed;
+    width: 80%;
+    bottom: 10%;
+    right: 10%;
+    padding: 20px 15px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+   } */
+   
+   .re-post-buttons {
+    width: 20%;
+    height: 50px;
+    border: 1px solid #ec7d2c;
+    margin: 20px auto;
+   }
+   
+   .post-buttons {
+    width: 20%;
+    height: 50px;
+    border: 1px solid #ec7d2c;
+    margin: 20px auto;
+   }
+   
+   
     /*refund*/
     .refund .col-12 {
         margin: 70px 0;
@@ -1355,6 +1331,10 @@ button,input,textarea{
     /*map*/
     .map .col-12 {
         margin-bottom: 50px;
+    }
+    
+    .map-title{
+       font-size:25px;
     }
 
     .review .review-title {
@@ -1366,142 +1346,11 @@ button,input,textarea{
 
     }
     
-    .revision {
-   
-    display: none;
-    z-index: 100;
-    background-color: #fff;
-    position: fixed;
-    width: 80%;
-    bottom: 10%;
-    right: 10%;
-    padding: 20px 15px;
-}
-    
-
-    /*.review .review-desc .review-register {
-        display: none;
-    }*/
-    /*modal*/
 
 
-   /*  .modal{
-        width: 600px;
-    }
-    .modal .modal-form .modal-table .row {
-      width: 100%;
-    } */
-   /*  
-   .revision {
-        position: absolute;
-        top: 0;
-        left: 0;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100vh;
-        background-color: #fff;
-        z-index: 100;
-    }
 
 
-    .revision-group {
-        width: 60%;
-        background-color: #ffffff;
-        margin: 0 auto;
-        padding: 10px 50px;
-
-    }
-
-    .close-revision-button {
-        transform: rotate(45deg);
-        cursor: pointer;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        background-color: #fff;
-        font-size: 30px;
-        border: 1px solid black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        outline: 0;
-    }
-
-    .revision-title{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 25px;
-        font-weight: 700;
-        border-bottom: 1px solid black;
-    }
-
-
-    .revision-table {
-        width: 100%;
-        margin: 0 auto;
-    }
-
-    .re-table-title {
-        width: 20%;
-        margin-right: 2%;
-        font-weight: 700;
-
-    }
-
-
-    .re-row {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        border-bottom: 1px solid black;
-        font-size: 15px;
-    }
-
-    .re-datestar {
-        height: 70px;
-    }
-
-   .modal .modal-form .modal-table .datestar a {
-        text-decoration: none;
-        font-size: 25px;
-        color: #ec7d2c;
-    }
-
-    .re-table-content {
-        width: 75%;
-        margin: 10px 0;
-    }
-
-    .re-table-content textarea {
-        width: 100%;
-        height: 200px;
-    }
-
-
-    .re-post-buttons {
-        width: 30%;
-        border: 1px solid #ec7d2c;
-        margin: 20px auto;
-
-    }
-
-
-    .re-post-ok-button {
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        background-color: #ec7d2c;
-        color: white;
-        border: 1px solid #ec7d2c;
-
-    } 
-
-}
- */
-
-}/*end of mediaQuery*/
+}/*-------------------------------------------end of mediaQuery-------------------------------------------*/
 
 
     /*js css*/
@@ -1527,9 +1376,15 @@ button,input,textarea{
     .show{
         display: flex;
     }
+    
 
 
-
+    
+     .button-on{
+        color:#FFFFFF;
+        border: 1px solid #ec7d2c;
+        background-color: #ec7d2c !important;
+    } 
 
 
 

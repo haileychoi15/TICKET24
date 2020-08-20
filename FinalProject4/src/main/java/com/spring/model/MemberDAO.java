@@ -244,6 +244,23 @@ public class MemberDAO implements InterMemberDAO {
 		String likeCount = sqlsession.selectOne("finalproject4.likeCount", userid);
 		return likeCount;
 	}
+
+	
+	// 마이티켓에서 내 리뷰 삭제
+	@Override
+	public int myReviewDelete(HashMap<String, String> paraMap) {
+
+		int n = sqlsession.update("finalproject4.myReviewDelete", paraMap);
+		return n;
+	}
+
+	// 마이티켓에서 내 리뷰 수정
+	@Override
+	public int updateReviewEnd(HashMap<String, String> paraMap) {
+
+		int n = sqlsession.update("finalproject4.updateReviewEnd", paraMap);
+		return n;
+	}
 	
 	
 	

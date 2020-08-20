@@ -183,22 +183,30 @@ public class ReviewController {
 
 		String review_id = request.getParameter("review_id"); 
 		String fk_userid = request.getParameter("fk_userid");  
+		String fk_parentProdId = request.getParameter("fk_parentProdId");  
 	//	String flag = request.getParameter("flag"); 
 
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("review_id", review_id);
 		paraMap.put("fk_userid", fk_userid);
+		paraMap.put("fk_parentProdId", fk_parentProdId);
+		
+		int existlike = service.existLikeReview(paraMap); 
+		String m = "";
 		
 		int result = 0;
-	//	if(flag.equals("false")) { // 추천이 존재하지 않는다면
+		if(existlike == 0) { // 추천이 존재하지 않는다면
 			result = service.likeReview(paraMap);
-	//	}
-	//	else { // 이미 추천했다면
+			m = "추천";
+		}
+		else { // 이미 추천했다면
 			result = service.dislikeReview(paraMap);
-	//	}
+			m = "추천취소";
+		}
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("result", result);
+		jsonObj.put("m", m);
 	//	jsonObj.put("flag", flag);
 
 		return jsonObj.toString();  

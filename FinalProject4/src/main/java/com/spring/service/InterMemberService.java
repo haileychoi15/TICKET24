@@ -62,6 +62,12 @@ public interface InterMemberService {
 	String likeCount(String userid);	// 내 선호 공연 개수
 
 
+	int myReviewDelete(HashMap<String, String> paraMap); // 마이티켓에서 리뷰 삭제
+
+	int updateReviewEnd(HashMap<String, String> paraMap); // 마이티켓에서 리뷰 수정 
+	
+
+
 
 
 

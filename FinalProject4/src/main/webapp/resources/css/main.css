@@ -52,6 +52,7 @@
 
 .promotion-area{
     width: 100%;
+    height: 405px;
     overflow-x: scroll;
 }
 
@@ -73,12 +74,12 @@
 .promotion-item-image{
     width: 450px;
     height: 405px;
-    overflow: hidden;
 }
 
 .promotion-item-image img{
     width: 100%;
     height: auto;
+    overflow: hidden;
 }
 
 .promotion-item .promotion-item-content{

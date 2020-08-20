@@ -379,7 +379,7 @@
     	<input type="hidden" name="Email" value="" id="Email"/>
     	<input type="hidden" name="showDay" value="" id="showDay"/>
     	<input type="hidden" name="showRound" value="" id="showRound"/>
-    	
+    	<input type="hidden" name="mapName" value="" id="mapName"/>
     	<input type="hidden" name="receiveMethod" value="" id="receiveMethod" />
     	
     </form>
