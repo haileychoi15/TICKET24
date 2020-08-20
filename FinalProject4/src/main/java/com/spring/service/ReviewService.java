@@ -71,5 +71,11 @@ public class ReviewService implements InterReviewService {
 		int n = dao.dislikeReview(paraMap);
 		return n;
 	}
+
+	@Override
+	public int existLikeReview(HashMap<String, String> paraMap) {
+		int n = dao.existLikeReview(paraMap);
+		return n;
+	}
 	
 }

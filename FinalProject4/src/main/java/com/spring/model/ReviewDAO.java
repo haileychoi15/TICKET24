@@ -71,5 +71,12 @@ public class ReviewDAO implements InterReviewDAO {
 		int n = sqlsession.delete("finalproject4.dislikeReview", paraMap);
 		return n;
 	}
+
+
+	@Override
+	public int existLikeReview(HashMap<String, String> paraMap) {
+		int n = sqlsession.selectOne("finalproject4.existLikeReview", paraMap);
+		return n;
+	}
 	
 }

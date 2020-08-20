@@ -145,13 +145,13 @@
 	                <c:forEach var="qna" items="${qnaList}" varStatus="status">
 						<tr>
 							<td>${qna.qna_cate_name} </td>
-							<td class="left"><span onclick="modal('${status.index}')">${qna.subject}</span></td>
+							<td class="left"><span onclick="modal(${status.index})">${qna.subject}</span></td>
 							<td>${qna.regDate }</td>
 							<c:if test="${qna.adminans == '0' }">
 								<td class="point">답변대기</td>
 							</c:if>
 							<c:if test="${qna.adminans == '1' }">
-								<td class="point" style="color:#568ade;">답변완료</td>
+								<td class="point">답변완료</td>
 							</c:if>
 						</tr>
 					 </c:forEach>
@@ -174,7 +174,7 @@
 	                <div class="modal">
 	                    <div class="modalTitle">
 	                        <div class="questionTitle">${qna2.user_subject}</div>
-	                        <div class="closeBtn" onclick="closeModal('${status.index}')"></div>
+	                        <div class="closeBtn" onclick="closeModal(${status.index})"></div>
 	                        <div class="modalDate">${qna2.user_regDate }</div>
 	                    </div>
 	                    <div class="questionContent">${qna2.user_content }</div>
@@ -185,7 +185,7 @@
 		                        <div class="modalDate">${qna2.admin_regDate }</div>
 		                    </div>
 		                    <br>
-		                    <div id="answerContent">${qna2.admin_content }</div>
+		                    <div class="answerContent">${qna2.admin_content }</div>
 						</c:if>
 						
 						<c:if test="${qna2.admin_content == null}">   
@@ -194,7 +194,7 @@
 		                        <%-- <div class="modalDate">${qna2.admin_regDate }</div> --%>
 		                    </div>
 		                    <br>
-		                    <div id="answerContent">답변 대기중입니다.</div>
+		                    <div class="answerContent">답변 대기중입니다.</div>
 						</c:if>		                
 	                </div>
 	            </div>

@@ -919,5 +919,90 @@ public class MemberController {
 	
 	
 	
+	@RequestMapping(value="/myReviewDelete.action")
+	public ModelAndView myReviewDelete(HttpServletRequest request, ModelAndView mav, HttpSession session) {
+		
+		String review_id = request.getParameter("review_id");
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		// System.out.println("review_id : "+review_id);
+		
+		HashMap<String, String> paraMap = new HashMap<String,String>();
+		paraMap.put("review_id", review_id);
+		paraMap.put("userid", loginuser.getUserid());
+		
+		int n = service.myReviewDelete(paraMap);
+		
+		String loc = "";
+		String msg = "";
+		
+		if(n == 1) {
+			loc = request.getContextPath() + "/myTicket.action";
+			msg = "삭제되었습니다.";
+		}
+		else {
+			loc = "javascript:history.back()";
+			msg = "삭제 실패";
+		}
+		mav.addObject("loc", loc);
+		mav.addObject("msg", msg);
+		mav.setViewName("msg");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/updateReview.action")
+	public ModelAndView updateReview(HttpServletRequest request, ModelAndView mav) {
+		
+		String review_id = request.getParameter("review_id");
+		
+		//System.out.println("review_id : " + review_id);
+		
+		mav.addObject("review_id", review_id);
+		mav.setViewName("member/updateReview.notiles");
+		
+		return mav;
+	}
+	
+	
+	@RequestMapping(value="/updateReviewEnd.action")
+	public ModelAndView updateReviewEnd(HttpServletRequest request, ModelAndView mav) {
+		
+		String review_id = request.getParameter("review_id");
+		String star = request.getParameter("re-star");
+		String content = request.getParameter("input-content");
+		
+/*		System.out.println("review_id " +review_id);
+		System.out.println("star "+ star);
+		System.out.println("content "+ content);*/
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("review_id", review_id);
+		paraMap.put("star", star);
+		paraMap.put("content", content);
+		
+		int n = service.updateReviewEnd(paraMap);
+		
+		String loc = "";
+		String msg = "";
+		
+		if(n == 1) {
+			loc = request.getContextPath() + "/myTicket.action";
+			msg = "리뷰가 수정되었습니다.";
+		}
+		else {
+			loc = request.getContextPath() + "/myTicket.action";
+			msg = "리뷰 수정 실패";
+		}
+		mav.addObject("loc", loc);
+		mav.addObject("msg", msg);
+		mav.setViewName("msg");
+		
+		
+		return mav;
+	}
+	
+	
+	
+	
 	
 }

@@ -308,6 +308,9 @@ update prod set prod_detail_img = substr(prod_detail_img, instr(prod_detail_img,
 select substr(prod_img, instr(prod_img, '/', 1)+1)
 from prod;
 
+select * from prod
+order by prod_id;
+
 update prod set prod_img = substr(prod_img, instr(prod_img, '/', 1)+1); 
 update prod set prod_detail_img = substr(prod_detail_img, instr(prod_detail_img, '/', 1)+1); 
 commit;
@@ -650,6 +653,9 @@ nomaxvalue
 nominvalue
 nocycle
 nocache;
+
+delete from yes_show_map;
+commit;
 
 select *
 from yes_show_map;
@@ -5588,6 +5594,8 @@ alter table yes_show_map MODIFY(map_address varchar2(200));
 
 -----------------------------------------------------------------------------------------
 
+
+
 insert into yes_show_map(map_id, map_lng, map_lat, map_name, map_address, map_url)
 values(seq_show_map.nextval, 37.572755, 126.975555, '세종문화회관 M씨어터', '서울 종로구 세종로 세종대로 175', 'www.yes24.com');
 --1
@@ -6381,3 +6389,17 @@ nocache;
 ALTER TABLE yes_notice ADD(prod_id number default 0);
 
 select * from yes_notice;
+
+select fk_parentReviewId from like_review;
+
+
+select * from like_review;
+
+select *
+from yes_review
+where review_id = 14;
+
+select count(*)
+from like_review
+where fk_userid = 'kkimsg93' and fk_parentReviewId = 14;
+-- 해당 리뷰 추천이 이미 존재하는지 확인하기 

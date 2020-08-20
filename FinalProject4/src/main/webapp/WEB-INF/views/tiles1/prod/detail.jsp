@@ -13,12 +13,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>반응형상세</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="resources/css/grid.min.css" />
     <link rel="stylesheet" href="resources/css/respstyle.css">
     <link rel="stylesheet" href="resources/css/fullcalendar/main.css">
     
     <style type="text/css">
+    
+    .fc-scroller {
+		height: auto!important;
+		overflow-y: auto;
+		}
+	
+	.selectedDate{
+    background-color:#ec7d2c !important;
+    }
+    	
     a {text-decoration: none !important;}
 	
 	#star_grade a{
@@ -77,9 +87,14 @@
         	
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
+                contentHeight:350,
+            	initialView: 'dayGridMonth',
                 locale:'ko',
                 dateClick: function(info) {
+                	
+					var days=document.querySelectorAll(".selectedDate");
+                	days.forEach(function(day){day.classList.remove("selectedDate");});
+                	info.dayEl.classList.add("selectedDate");
                     // alert('Date: ' + info.dateStr); // 선택한 달력의 값
                     // 달력을 선택하면 Ajax로 달력의 값이 date_showday 와 같은 경우 회차정보를 불러오도록 한다. 
                     
@@ -93,12 +108,37 @@
 							var html = "";
 							if(json.length > 0) {
 								$.each(json, function(index, item){
+									
 									html += "<button onclick='goShowtime(\""+item.date_showtime+"\");' class='ticketing-button'>"+item.date_showtime+"</button>";
 								//	console.log(item.date_showtime);
 								
 									$(".ticketing-detailtime").html(html);
 									showdate.value = info.dateStr;
+									
+									/* 
+									var buttons=document.getElementsByClassName("ticketing-button");
+									console.log(buttons);    
+									
+									   buttons[0].addEventListener("click",function(){
+									       
+										   for(var i=0;i<buttons.length;i++){
+									            buttons[i].removeClass("button-on");
+										   }
+								            buttons[0].addClass("button-on");
+									            
+									    }); */
+/* 
+									    buttons[1].addEventListener("click",()=>{function(){
+									        buttons.forEach(button=>{
+									            button.classList.remove("button-on");
+									        });
+
+									            buttons[1].classList.add("button-on");
+									    	}
+									    });
+									    */
 								});
+								
 							}
 							else {
 								$(".ticketing-detailtime").html("");
@@ -462,12 +502,14 @@
                 '</div>'+
                 '<div class="review-comment-bottom">'+
                     '<div class="review-comment-like">'+
-                    '<span onclick="goLikeReview('+review_id+','+'\''+fk_userid+'\')">'+
-                        '<i id="likeReviewMain" class="far fa-heart noncolored-heart"></i>'+
-                        /* '<i class="fas fa-heart colored-heart"></i>'+
+	                    '<span onclick="goLikeReview('+review_id+','+'\''+fk_userid+'\')">'+
+	                    	'<i id="likeReviewMain" class="far fa-heart noncolored-heart"></i>'+
+	                    	'</span>'+
+                        /* '<i class="far fa-heart noncolored-heart"></i>'+
+                        '<i class="fas fa-heart colored-heart"></i>'+
                         '<strong class="main-likes-number">'+
                             '118'+
-                        '</strong>'+  */
+                        '</strong>'+ */
                     '</div>'+
                     '<div class="review-comment-revision">'+
                         '<span class="rev revisionButton" onclick="goEditReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+star+'\''+','+'\''+content+'\''+')">수정</span>'+
@@ -758,7 +800,7 @@
 			
 		}
 		
-		// 리뷰 추천하기
+		
 		function goLikeProdCnt(){
 			
 			var loginuserid = "${sessionScope.loginuser.userid}";
@@ -795,6 +837,7 @@
 		}
 		
 		
+		// 리뷰 추천하기
 		function goLikeReview(review_id, fk_userid){
 			
 			alert(fk_userid);
@@ -810,7 +853,7 @@
 				return;
 			}
 			
-			// 관심상품 등록하기
+			// 리뷰추천하기
 			$.ajax({
 				url:"<%= request.getContextPath()%>/likeReview.action",
 				type:"GET",
@@ -821,7 +864,7 @@
 				success:function(json) {
 					
 					if(json.m == "추천") { 
-						if(json.n == 1) {
+						if(json.result == 1) {
 							alert("리뷰추천이 완료되었습니다. ");
 					 	//	goLikeProdCnt(); 
 							
@@ -833,8 +876,8 @@
 						}
 					 }
 					else {
-						if(json.n == 1) {
-							alert("관심상품에서 삭제되었습니다. ");
+						if(json.result == 1) {
+							alert("리뷰추천이 삭제되었습니다. ");
 					 	//	goLikeProdCnt();
 					 	
 							$("#likeReviewMain").removeClass("fas");
@@ -853,6 +896,7 @@
 		
 		 
 		}
+		
 		
 
     </script>
@@ -874,12 +918,12 @@
                            [${pvo.local}] ${pvo.prod_title}
                        </h1>
                        <strong class="landing-date">
-                           ${pvo.info_open_date}~${pvo.info_close_date}
+                           ${pvo.info_open_date}&nbsp;~&nbsp;${pvo.info_close_date}
                        </strong>
                        <a href="#map" class="landing-place">
                            <i class="fas fa-map-marker-alt"></i>
                            ${pvo.map_name}
-                           <%-- <input type="hidden" value="${pvo.prod_id}" > --%>
+                           <input type="text" value="${pvo.prod_id}" >
                        </a>
 
                    </div>
@@ -922,9 +966,9 @@
 						<span id="likecnt"></span>
                     	<span onclick="goLikeProd('${pvo.prod_id}')">
                     		<i id="likeProdMain" class="far fa-heart" style="color:orange;"></i>
-	                    </span>
+	                    </span>&nbsp;
                         <strong class="main-likes-number">
-                            118
+                             118
                         </strong>
                     </div> 
                     <div class="main-reviews">
