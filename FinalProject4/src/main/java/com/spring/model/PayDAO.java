@@ -100,4 +100,41 @@ public class PayDAO implements InterPayDAO {
 		return mapName;
 	}
 
+	@Override
+	public int useCoupon(String couponId) {
+		int u = sqlsession.update("finalproject4.useCoupon", couponId);
+		return u;
+	}
+
+	@Override
+	public int updatePoint(HashMap<String, String> updatePoint) {
+		int p = sqlsession.update("finalproject4.updatePoint", updatePoint);
+		return p;
+	}
+
+	@Override
+	public int updatePointList(HashMap<String, String> updatePoint) {
+		int l = sqlsession.insert("finalproject4.insertPoint", updatePoint);
+		return l;
+	}
+
+	@Override
+	public String getPoint(String userid) {
+		String getPoint = sqlsession.selectOne("finalproject4.getPoint", userid);
+		return getPoint;
+	}
+
+	@Override
+	public int updatePoint2(HashMap<String, String> updatePoint) {
+		int p = sqlsession.update("finalproject4.updatePoint2", updatePoint);
+		return p;
+	}
+
+	@Override
+	public int updatePointList2(HashMap<String, String> updatePoint) {
+		int l = sqlsession.insert("finalproject4.insertPoint2", updatePoint);
+		return l;
+	}
+
+
 }

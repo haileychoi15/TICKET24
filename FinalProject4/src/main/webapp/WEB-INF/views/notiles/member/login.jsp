@@ -117,7 +117,7 @@
 
 <body>
     <header class="header">
-        <a href="#">
+        <a href="/finalproject4/yes24.action">
             <div class="logo-image" role="img" aria-label="Ticket24 icon image"></div>
         </a>
         <h1>TICKET24 로그인</h1>

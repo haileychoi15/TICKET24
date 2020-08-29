@@ -180,14 +180,14 @@
 	<select id="getShowTime" resultMap="resShowTime" parameterType="String">
 		select prod_id, to_char(date_showday, 'yyyy-mm-dd') || ' ' || to_char(date_showday, 'day') as date_showday, date_showtime
 		from yes_show_date
-		where prod_id = #{showNum}
+		where prod_id = #{showNum} <!-- and date_showday > sysdate -->
 		order by date_showday, date_showtime
 	</select>
 	
 	<select id="getShowDay" resultType="String" parameterType="String">
 		select distinct to_char(date_showday, 'yyyy-mm-dd') || ' ' || to_char(date_showday, 'day') as date_showday
 		from yes_show_date
-		where prod_id = #{showNum}
+		where prod_id = #{showNum} <!-- and date_showday > sysdate -->
 		order by date_showday
 	</select>
 	
@@ -226,11 +226,12 @@
 	</select>
 	
 	<resultMap type="HashMap" id="takeCoupon">
+		<result property="coupon_id"			column="coupon_id"		javaType="String"/>
 		<result property="coupon_dc"			column="coupon_dc"		javaType="String"/>
 		<result property="coupon_name"			column="coupon_name"	javaType="String"/>
 	</resultMap>
 	<select id="takeCoupon" parameterType="String" resultMap="takeCoupon">
-		select coupon_dc, coupon_name
+		select coupon_id, coupon_dc, coupon_name
 		from yes_coupon
 		where fk_userid = #{userid2} and coupon_status = 1
 	</select>
@@ -265,6 +266,40 @@
 		on P.map_id = M.map_id
 		where P.prod_id = #{showNum}
 	</select>
+	
+	<update id="useCoupon" parameterType="String">
+		update yes_coupon
+		set coupon_status = 0, coupon_usedate = sysdate
+		where coupon_id = #{couponId}
+	</update>
+	
+	<update id="updatePoint" parameterType="HashMap">
+		update yes_member
+		set point = point + #{paySum}*0.01
+		where userid = #{userid}
+	</update>
+	
+	<insert id="insertPoint" parameterType="HashMap">
+		insert into yes_point(point_id, fk_userid, content, point, fk_rev_date) 
+		values(seq_point.nextval, #{userid}, '포인트 적립!', #{paySum}*0.01, sysdate)
+	</insert>
+	
+	<select id="getPoint" parameterType="String" resultType="String">
+		select point
+		from yes_member
+		where userid = #{userid}
+	</select>
+	
+	<update id="updatePoint2" parameterType="HashMap">
+		update yes_member
+		set point = point - #{usePoint}
+		where userid = #{userid}
+	</update>
+	
+	<insert id="insertPoint2" parameterType="HashMap">
+		insert into yes_point(point_id, fk_userid, content, point, fk_rev_date) 
+		values(seq_point.nextval, #{userid}, '포인트 사용!', #{usePoint}, sysdate)
+	</insert>
 	
 	
 	
@@ -772,11 +807,10 @@
 		<result property="fk_userid" 		column="fk_userid"      javaType="String"/>
 		<result property="content" 	   		column="content"     	javaType="String"/>
 		<result property="fk_rev_date"      column="fk_rev_date"    javaType="String"/>
-		<result property="fk_rev_id"        column="fk_rev_id"      javaType="String"/>
 		<result property="point"        column="point"      javaType="String"/>
 	</resultMap>
 	<select id="pointList" parameterType="String" resultMap="pointMap">
-		select point_id, fk_userid, content, point, to_char(fk_rev_date, 'yyyy.mm.dd hh24:mi:ss') AS fk_rev_date, fk_rev_id 
+		select point_id, fk_userid, content, point, to_char(fk_rev_date, 'yyyy.mm.dd hh24:mi:ss') AS fk_rev_date
 		from yes_point 
 		where fk_userid = #{userid}
 		order by fk_rev_date desc

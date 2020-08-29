@@ -37,5 +37,8 @@ public interface InterPayService {
 
 	String getMap(String showNum);
 
+	String getPoint(String userid);
+
+
 
 }

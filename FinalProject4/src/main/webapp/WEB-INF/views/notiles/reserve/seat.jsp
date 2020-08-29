@@ -233,7 +233,7 @@
                             <div class="paymentCol2 paymentRow1">
                                 <input type="number" size="10" value="0" id="payPoint" min="0" max="" style="width: 70px; text-align: right;"> 원&nbsp;
                                 <input type="checkbox" id="allPointSel" onchange="payAllPoint()">
-                                <label for="allPointSel">전액사용 (총 <span id="point">1000</span>원)</label>&nbsp;
+                                <label for="allPointSel">전액사용 (총 <span id="point">${ablePoint}</span>원)</label>&nbsp;
                                 <button onclick="changePoint()" id="pointBtn">적립금 사용</button>
                             </div>
                             <div class="paymentCol1 paymentRow2">결제방법</div>
@@ -381,7 +381,8 @@
     	<input type="hidden" name="showRound" value="" id="showRound"/>
     	<input type="hidden" name="mapName" value="" id="mapName"/>
     	<input type="hidden" name="receiveMethod" value="" id="receiveMethod" />
-    	
+    	<input type="hidden" name="couponId" value="0" id="couponId" />
+    	<input type="hidden" name="usePoint" value="0" id="usePoint" />
     </form>
 </body>
 <jsp:include page="../../../../resources/js/seatSelScript2.jsp"/>

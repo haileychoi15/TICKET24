@@ -5362,7 +5362,7 @@ create table yes_reserve
 ,seat_id        number                      -- 좌석코드(FK)
 ,status_id      number                      -- 상태코드(FK)
 ,date_id        number                      -- 공연일시 코드(FK)
-,rev_email      varchar2(20)                -- 예매자이메일
+,rev_email      varchar2(40)                -- 예매자이메일
 ,rev_qnty       number(6)                   -- 예매수
 ,rev_date       date        default sysdate -- 예매일자
 ,rev_price      number(10)                  -- 예매가격
@@ -5391,6 +5391,8 @@ nocache;
 select *
 from yes_reserve;
 
+select *
+from yes_coupon
 
 -----------------------------------------
 -- 상태 테이블
@@ -6803,12 +6805,12 @@ drop table yes_paySeat;
 create table yes_paySeat
 (paySeat_id         number(10)
 ,date_id            number(10)
-,rev_id             number(10)
+-- ,rev_id             number(10)
 ,seat_name          varchar2(40)
 ,user_id            varchar2(20)
 ,constraint FK_user_id_paySeat foreign key(user_id) references yes_member(userid) on delete cascade
 ,constraint FK_date_id_paySeat foreign key(date_id) references yes_show_date(date_id) on delete cascade
-,constraint FK_rev_id_paySeat foreign key(rev_id) references yes_reserve(rev_id) on delete cascade
+-- ,constraint FK_rev_id_paySeat foreign key(rev_id) references yes_reserve(rev_id) on delete cascade
 );
 
 drop sequence seq_paySeat;

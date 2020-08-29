@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>반응형상세</title>
-     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" /> -->
     <link rel="stylesheet" href="resources/css/respstyle.css">
     <link rel="stylesheet" href="resources/css/fullcalendar/main.css">
     
@@ -28,7 +28,8 @@
     background-color:#ec7d2c !important;
     }
     	
-    a {text-decoration: none !important;}
+    a {
+    text-decoration: none !important;}
 	
 	#star_grade a{
         text-decoration: none;

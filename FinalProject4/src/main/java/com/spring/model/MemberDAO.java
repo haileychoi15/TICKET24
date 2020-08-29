@@ -261,6 +261,12 @@ public class MemberDAO implements InterMemberDAO {
 		int n = sqlsession.update("finalproject4.updateReviewEnd", paraMap);
 		return n;
 	}
+
+	@Override
+	public String getPoint(String userid) {
+		String point = sqlsession.selectOne("finalproject4.getPoint", userid);
+		return point;
+	}
 	
 	
 	

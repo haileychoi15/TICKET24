@@ -319,6 +319,15 @@ public class MemberService implements InterMemberService {
 
 
 
+
+	@Override
+	public String getPoint(String userid) {
+		String point = dao.getPoint(userid);
+		return point;
+	}
+
+
+
 	
 	
 	

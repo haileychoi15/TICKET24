@@ -75,6 +75,9 @@ public class PayService implements InterPayService {
 		String[] seatArr = seatIdes.split(",");
 		String dateID = reserveInsertMap.get("dateID");
 		String userid = reserveInsertMap.get("userid");
+		String couponId = reserveInsertMap.get("couponId");
+		String paySum = reserveInsertMap.get("paySum");
+		String usePoint = reserveInsertMap.get("usePoint");
 		
 		int n = dao.reserveComplete(reserveInsertMap);
 		
@@ -89,6 +92,22 @@ public class PayService implements InterPayService {
 				
 				int m = dao.updateSeat(updateSeatMap);
 				int z = dao.insertSeatList(updateSeatMap);
+				
+			}
+			
+			HashMap<String, String> updatePoint = new HashMap<>();
+			updatePoint.put("userid", userid);
+			updatePoint.put("paySum", paySum);
+			updatePoint.put("usePoint", usePoint);
+			
+			if(!"0".equals("couponId")) {
+				int u = dao.useCoupon(couponId);
+			}
+			int p = dao.updatePoint(updatePoint);
+			int l = dao.updatePointList(updatePoint);
+			if(!"0".equals(usePoint)) {
+				int p2 = dao.updatePoint2(updatePoint);
+				int l2 = dao.updatePointList2(updatePoint);
 			}
 			
 			if("2".equals(receiveMethod)) {
@@ -118,5 +137,12 @@ public class PayService implements InterPayService {
 		String mapName = dao.getMap(showNum);
 		return mapName;
 	}
+
+	@Override
+	public String getPoint(String userid) {
+		String getPoint = dao.getPoint(userid);
+		return getPoint;
+	}
+
 
 }

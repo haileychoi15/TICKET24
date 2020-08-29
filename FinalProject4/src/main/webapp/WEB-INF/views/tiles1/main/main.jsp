@@ -200,9 +200,9 @@
                 <div class="area ranking-area">
                     <header class="ranking-header">
                         <h3 class="area-title">WEEKLY RANKING</h3>
-                        <a href="#">
+                        <!-- <a href="#">
                             <button class="more-ranking-button" type="button">더보기</button>
-                        </a>
+                        </a> -->
                     </header>
                     <ol class="ranking-item-group">
                         <li class="ranking-item on">

@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <link rel="stylesheet" href="resources/css/seatComplete.css">
    <div id="container">
     
@@ -43,7 +42,7 @@
             </tr>
             <tr>
                 <td class="row1">취소가능일시</td>
-                <td class="row2">2020년 8월 28일 00시 00분까지</td>
+                <td class="row2">공연시작  24시간 전까지</td>
             </tr>
         </table>
 
@@ -92,7 +91,7 @@
             </tr>
             <tr>
                 <td class="row1">취소가능일시</td>
-                <td class="row2">2020년 8월 28일 00시 00분까지</td>
+                <td class="row2">공연시작  24시간 전까지</td>
             </tr>
         </table>
 

@@ -856,6 +856,7 @@ public class MemberController {
 			String qnaCount = service.qnaCount(loginuser.getUserid());
 			String couponCount = service.couponCount(loginuser.getUserid());
 			
+			String point = service.getPoint(loginuser.getUserid());
 			List<HashMap<String,String>> pointList = service.pointList(loginuser.getUserid());
 			List<HashMap<String,String>> qnaList = service.qnaList(loginuser.getUserid());
 			List<HashMap<String,String>> couponList = service.couponList(loginuser.getUserid());
@@ -864,6 +865,7 @@ public class MemberController {
 			//System.out.println("pointList : " + pointList.size());
 			//System.out.println(pointList.get(0).get("fk_rev_date"));
 			
+			mav.addObject("point", point);
 			mav.addObject("qnaCount", qnaCount);
 			mav.addObject("couponCount", couponCount);
 			mav.addObject("pointList", pointList);

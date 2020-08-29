@@ -386,34 +386,32 @@ function change(step) {
         nextStep.innerHTML = '다음 단계';
         nextStep.setAttribute('onclick', 'change(step3)');
         
-        // 좌석 정보 받아오기
-         $.ajax({
-         url:"<%= request.getContextPath()%>/takeCoupon.action",
-         type:"POST",
-         dataType:"JSON",
-         success:function(json){
-            var html = "";
-            
-            if(json.length > 0) {
-               $.each(json, function(index, item) {
-                  // alert("111");
-                  html += "<tr>"
-                       + "<td class='row1'>" + item.coupon_name + "</td>"
-                       + "<td class='row2'>" + money(item.coupon_dc) + "</td>"
-                       + "<td class='row3'><input type='checkbox' class='couponCheck' value='" + item.coupon_dc + "' onchange='changeCoupon()'>"
-                       + "</td>";
-               });
-            }
-            else {
-               html = "<p style='text-align: center;'>사용 가능한 쿠폰이 없습니다.</p>";
-            }
-            
-            $(".couponList").html(html);
-         },
-         error: function(request, status, error){
-            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-         }
-      });
+        $.ajax({
+        url:"<%= request.getContextPath()%>/takeCoupon.action",
+        type:"POST",
+        dataType:"JSON",
+        success:function(json){
+           var html = "";
+           
+           if(json.length > 0) {
+              $.each(json, function(index, item) {
+                 html += "<tr>"
+                      + "<td class='row1'>" + item.coupon_name + "</td>"
+                      + "<td class='row2'>" + money(item.coupon_dc) + "</td>"
+                      + "<td class='row3'><input type='checkbox' class='couponCheck' value='" + item.coupon_dc + "' onchange='changeCoupon(" + item.coupon_id + ")'>"
+                      + "</td>";
+              });
+           }
+           else {
+              html = "<p style='text-align: center;'>사용 가능한 쿠폰이 없습니다.</p>";
+           }
+           
+           $(".couponList").html(html);
+        },
+        error: function(request, status, error){
+           alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
+     });
     }
     else if(step === step3) {
         step1.style.display = 'none';
@@ -877,7 +875,7 @@ function changeDC() {
 }
 
 // 쿠폰할인
-function changeCoupon() {   
+function changeCoupon(couponID) {   
    
    let couponCheck = document.getElementsByClassName('couponCheck');
     let dcCoupon = document.getElementById('dcCoupon');
@@ -890,6 +888,7 @@ function changeCoupon() {
    }
     dcCoupon.innerText = sumCoupon;
     dcCouponDisplay.innerText = money(sumCoupon);
+    document.getElementById('couponId').value = couponID;
 
    /* let couponCheck1 = document.getElementById('couponCheck1');
     if(couponCheck1.checked) {
@@ -920,6 +919,8 @@ function changeCoupon() {
 function changePoint() {
    let payPoint= document.getElementById('payPoint');
    let dcPoint = document.getElementById('dcPoint');
+   
+   document.getElementById('usePoint').value = payPoint.value;
    
    dcPoint.innerText = Number(payPoint.value);
    dcPointDisplay.innerText = money(payPoint.value);

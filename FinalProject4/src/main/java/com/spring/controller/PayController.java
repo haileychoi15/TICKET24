@@ -74,6 +74,9 @@ public class PayController {
 		getSeatType = service.getSeatType(showNum);
 		mav.addObject("getSeatType", getSeatType);
 		
+		String ablePoint = service.getPoint(loginuser.getUserid());
+		mav.addObject("ablePoint", ablePoint);
+		
 		mav.setViewName("reserve/seat.notiles");
 		return mav;
 	}
@@ -146,6 +149,8 @@ public class PayController {
 		String dateID = service.getDateId(dateMap); // 일시 코드
 		String receiveMethod = request.getParameter("receiveMethod"); // 수령방법 ( 1. 현장수령  or 2. 배송 )
 		String mapName = request.getParameter("mapName");
+		String couponId = request.getParameter("couponId");
+		String usePoint = request.getParameter("usePoint");
 		
 		String seatIdes = request.getParameter("seatIdes"); // 좌석코드
 		String[] seatArr = seatIdes.split(",");
@@ -168,8 +173,6 @@ public class PayController {
 			sReceiveMethod = "배송";
 		}
 		
-		
-		
 		HashMap<String, String> reserveInfoMap = new HashMap<>();
 		reserveInfoMap.put("payMethodNum", payMethodNum);
 		reserveInfoMap.put("showNum", showNum);
@@ -182,6 +185,8 @@ public class PayController {
 		reserveInfoMap.put("seatCnt", seatCnt);
 		reserveInfoMap.put("payMethod", payMethod);
 		reserveInfoMap.put("sReceiveMethod", sReceiveMethod);
+		reserveInfoMap.put("couponId", couponId);
+		reserveInfoMap.put("usePoint", usePoint);
 		
 		if("1".equals(payMethodNum)) { // 신용카드 결제일 경우
 			payStatus = "1";
@@ -205,6 +210,8 @@ public class PayController {
 			reserveInsertMap.put("payStatus", payStatus);
 			reserveInsertMap.put("seatCnt", seatCnt);
 			reserveInsertMap.put("seatIdes", seatIdes);
+			reserveInsertMap.put("couponId", couponId);
+			reserveInsertMap.put("usePoint", usePoint);
 			
 			int n = service.reserveComplete(reserveInsertMap);
 			String revId = service.getRevId(reserveInsertMap);
@@ -246,6 +253,9 @@ public class PayController {
 		String seatCnt = request.getParameter("seatCnt");
 		String seatIdes = request.getParameter("seatIdes");
 		String[] seatArr = seatIdes.split(",");
+		String couponId = request.getParameter("couponId");
+		String usePoint = request.getParameter("usePoint");
+		
 		
 		String payMethod = "";
 		if("1".equals(payMethodNum)) { // 신용카드 결제일 경우
@@ -263,8 +273,6 @@ public class PayController {
 			sReceiveMethod = "배송";
 		}
 		
-		
-		
 		HashMap<String, String> reserveInsertMap = new HashMap<>();
 		reserveInsertMap.put("showNum", showNum);
 		reserveInsertMap.put("dateID", dateID);
@@ -277,13 +285,13 @@ public class PayController {
 		reserveInsertMap.put("payStatus", payStatus);
 		reserveInsertMap.put("seatCnt", seatCnt);
 		reserveInsertMap.put("seatIdes", seatIdes);
-		
+		reserveInsertMap.put("couponId", couponId);
+		reserveInsertMap.put("usePoint", usePoint);
 		
 		HashMap<String, String> reserveInfoMap = new HashMap<>();
 		reserveInfoMap.put("payShowName", payShowName);
 		reserveInfoMap.put("payMethod", payMethod);
 		reserveInfoMap.put("sReceiveMethod", sReceiveMethod);
-		
 		reserveInfoMap.put("showNum", showNum);
 		reserveInfoMap.put("receiveMethod", receiveMethod);
 		reserveInfoMap.put("paySum", paySum);
@@ -325,11 +333,10 @@ public class PayController {
 	/*public String requriedLogin_takeCoupon(HttpServletRequest request, HttpServletResponse response) {*/
 	public String takeCoupon(HttpServletRequest request, HttpServletResponse response) {
 	
-//		HttpSession session = request.getSession();
-//		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-//		
-//		String userid = loginuser.getUserid();
-		String userid = "guzi10";
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		String userid = loginuser.getUserid();
 
 		JSONArray jsonArr = new JSONArray();
 		
@@ -338,6 +345,7 @@ public class PayController {
 		if(takeCoupon != null) {
 			for(HashMap<String, String> coupon : takeCoupon ) {
 				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("coupon_id", coupon.get("coupon_id"));
 				jsonObj.put("coupon_dc", coupon.get("coupon_dc"));
 				jsonObj.put("coupon_name", coupon.get("coupon_name"));
 				

@@ -65,6 +65,9 @@ public interface InterMemberService {
 	int myReviewDelete(HashMap<String, String> paraMap); // 마이티켓에서 리뷰 삭제
 
 	int updateReviewEnd(HashMap<String, String> paraMap); // 마이티켓에서 리뷰 수정 
+
+
+	String getPoint(String userid);
 	
 
 

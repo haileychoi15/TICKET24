@@ -43,7 +43,7 @@
             <div id="myPoint">
                 <img src="resources/images/point.png" alt="pointImg" width="30px">
                 <div class="title">포인트</div>
-                <div class="emDiv"><span class="em" id="point"><fmt:formatNumber value="${sessionScope.loginuser.point}" pattern="###,###" /></span>원</div>
+                <div class="emDiv"><span class="em" id="point"><fmt:formatNumber value="${point}" pattern="###,###" /></span>원</div>
             </div>
             <div id="myCoupon">
                 <img src="resources/images/coupon.png" alt="couponImg" width="30px">

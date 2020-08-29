@@ -92,6 +92,8 @@ $(document).ready(function() {
     	<input type="hidden" name="payStatus" value="${reserveInfoMap.payStatus}" />
     	<input type="hidden" name="seatCnt" value="${reserveInfoMap.seatCnt}" />
     	<input type="hidden" name="seatIdes" value="${reserveInfoMap.seatIdes}" />
+    	<input type="hidden" name="couponId" value="${reserveInfoMap.couponId}" />
+    	<input type="hidden" name="usePoint" value="${reserveInfoMap.usePoint}" />
     </form>
 </body>
 </html>

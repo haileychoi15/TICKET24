@@ -38,19 +38,19 @@
         <div class="row">
             <div class="col-12 col-md-2">
                 <strong class="footer-logo">
-                    <a href="#">YES24 티켓</a>
+                    <a href="/finalproject4/yes24.action">Ticket24 티켓</a>
                 </strong>
             </div>
             <div class="col-12 col-md-7">
-                <strong class="footer-title">예스이십사(주)</strong>
+                <strong class="footer-title">티켓이십사(주)</strong>
                 <p class="footer-desc common-detail">
                     서울시 영등포구 은행로 11, 5층~6층(여의도동,일신빌딩) </br>
-                    대표 김석환  |  개인정보보호책임자 : 권민석 yes24help@yes24.com </br>
+                    대표 김석환  |  개인정보보호책임자 : 권민석 ticket24help@ticket24.com </br>
                     사업자등록번호 229-81-37000  | 통신판매업신고 제 2005-02682호 사업자 정보확인 </br>
-                    호스팅 서비스사업자 : 예스이십사㈜
+                    호스팅 서비스사업자 : 티켓이십사㈜
                 </p>
                 <p class="footer-copyright common-detail">
-                    Copyright © YES24 Corp. All Rights Reserved.
+                    Copyright © Ticket24 Corp. All Rights Reserved.
                 </p>
             </div>
             <div class="col-12 col-md-3">

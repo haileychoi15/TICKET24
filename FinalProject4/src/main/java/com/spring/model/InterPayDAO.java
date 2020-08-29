@@ -43,5 +43,18 @@ public interface InterPayDAO {
 
 	String getMap(String showNum);
 
+	int useCoupon(String couponId);
+
+	int updatePoint(HashMap<String, String> updatePoint);
+
+	int updatePointList(HashMap<String, String> updatePoint);
+
+	String getPoint(String userid);
+
+	int updatePoint2(HashMap<String, String> updatePoint);
+
+	int updatePointList2(HashMap<String, String> updatePoint);
+
+
 	
 }
