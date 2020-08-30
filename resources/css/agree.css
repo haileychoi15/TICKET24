@@ -1,0 +1,48 @@
+body{
+    background-color: rgb(249, 249, 249);
+}
+
+.header,
+.agree{
+    margin: 0 auto 50px;
+}
+
+.header .go-back-button{
+    display: block;
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+}
+
+.header .go-back-button::before{
+    content: "\f0a8";
+    display: block;
+    font-family: "Font Awesome 5 Free";
+    font-size: 1.3em;
+    font-weight: 900;
+    height: auto;
+    color: #999;
+}
+
+.header h1{
+    font-size: 26px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.agree{
+    width: 90%;
+    border: 1px solid rgb(216, 222, 226);
+    border-radius: 8px;
+    padding: 30px;
+    background-color: #fff;
+}
+
+@media screen and (min-width: 768px){
+
+    /* Agree */
+    .header,
+    .agree{
+        width: 520px;
+    }
+}

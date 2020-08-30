@@ -311,11 +311,12 @@
 .promotion-item-image{
     width: 450px;
     height: 405px;
+    overflow: hidden;
 }
 
 .promotion-item-image img{
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 .promotion-item .promotion-item-content{
