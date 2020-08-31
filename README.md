@@ -35,6 +35,7 @@ tech | description
 [kakao-login](https://developers.kakao.com/docs/latest/ko/kakaologin/common) | A Rest API for easy login with user's kakao account.
 [kakao-map](https://apis.map.kakao.com/web/) | A Javscript API for maps.
 [daum-postcode](http://postcode.map.daum.net/guide) | A Javascript API for searching address and postcode.
+[i'mport-pay](https://www.iamport.kr/?gclid=EAIaIQobChMIh_TR1JvF6wIVGK6WCh2ZxQtOEAAYASAAEgJWw_D_BwE) | A Javscript API for pay system.
 [SmartEditor2](https://github.com/naver/smarteditor2) | A library (WYSIWYG editor) for file upload.
 [jQuery](https://jquery.com/) | A JavaScript library for building user interfaces.  
 [JSTL](https://www.tutorialspoint.com/jsp/jsp_standard_tag_library.htm) | JavaServer Pages Standard Tag Library
@@ -66,13 +67,53 @@ tech | description
 ## Screenshots
 The following images are representative screenshots of TICKET24.
 
-- Home Page
-- Detail Page
-- Booking Page
-- My Account Page
-- Notice Board Page
-- Login Page
+### Desktop Version
 
+Home Page
+
+<img width="1440" alt="ticket24-home" src="https://user-images.githubusercontent.com/60546778/91707600-01cf5c80-ebbb-11ea-89cc-7e381bb864df.png">
+
+<br />
+
+Detail Page
+
+<img width="1440" alt="ticket24-detail" src="https://user-images.githubusercontent.com/60546778/91685802-5f9d7d80-eb96-11ea-834c-8a5d56fa4ec1.png">
+
+<br />
+
+Booking Page
+
+<img width="842" alt="ticket24-booking" src="https://user-images.githubusercontent.com/60546778/91707803-5672d780-ebbb-11ea-97f4-447cac52d28c.png">
+
+<br />
+
+My Account Page
+
+<br />
+
+QnA Board Page
+
+<img width="1440" alt="ticket24-qna" src="https://user-images.githubusercontent.com/60546778/91708755-bcac2a00-ebbc-11ea-8f6b-9c2936eb569d.png">
+
+<br />
+
+Login Page
+
+<img width="1440" alt="ticket24-login" src="https://user-images.githubusercontent.com/60546778/91685357-14cf3600-eb95-11ea-88e0-760a75178ba7.png">
+
+<br />
+
+### Mobile Version
+
+Home Page
+
+<img width="237" alt="ticket24-home-mobile" src="https://user-images.githubusercontent.com/60546778/91710889-f2064700-ebbf-11ea-9ab1-487d09bffbee.png">
+
+<br />
+
+Login Page
+
+<img width="240" alt="ticket24-login-mobile" src="https://user-images.githubusercontent.com/60546778/91710894-f3377400-ebbf-11ea-9e42-221ac3ba7581.png">
 
 
 <br />
