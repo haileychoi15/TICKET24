@@ -1,0 +1,154 @@
+#container {
+    width: 940px;
+    font-size: 13px;
+    margin: 0 auto;
+}
+
+#title {
+    font-size: 20px;
+    width: 100px;
+    margin: 30px auto 50px auto;
+    color: #333;
+}
+
+#content {
+    border-top: solid 1px #666;
+    border-bottom: solid 1px #666;
+}
+
+.searchContainer {
+    width: 900px;
+    display: grid;
+    padding: 20px;
+    grid-template-columns: 100px 400px 200px 200px;
+    grid-template-rows: 140px;
+    border-bottom: solid 1px #ddd;
+}
+
+.searchContainer > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #666;
+}
+
+.title {
+    padding: 20px;
+    font-size: 15px;
+}
+
+.term, .place {
+    text-align: center;
+}
+
+.term {
+    border-left: solid 1px #ddd;
+    margin: 20px 0;
+}
+
+.status {
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.soldIn {
+    width: 50px;
+    border: solid 1px #ec7d2c;
+    background-color: #ec7d2c;
+    color: white;
+}
+.soldIn::before {
+    content: "판매중";
+}
+
+.soldOut {
+    width: 60px;
+    border: solid 1px #a1a1a1;
+}
+.soldOut::before {
+    content: "판매마감";
+}
+
+#pageBar {
+    margin: 30px auto;
+    width: 100%;
+    text-align: center;
+}
+
+.pageBtn {
+    display: inline-block;
+    width: 34px;
+    height: 24px;
+    margin: 0 1px;
+    border: solid 1px #c2c2c2;
+    border-radius: 13px;
+}
+
+a:link, a:visited, a:active, a:hover {
+    text-decoration: none;
+    color: #666;
+}
+
+#prevFist::after {
+    content: " \f100";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #bfbfbf;
+    line-height: 24px;
+}
+
+#prev::after {
+    content: " \f104";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #bfbfbf;
+    line-height: 24px;
+}
+
+#next::after {
+    content: " \f105";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #bfbfbf;
+    line-height: 24px;
+}
+
+#nextLast::after {
+    content: " \f101";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #bfbfbf;
+    line-height: 24px;
+}
+
+#prev {
+    margin-right: 10px;
+}
+#next {
+    margin-left: 10px;
+}
+
+.pageLink {
+    font-size: 16px;
+    font-style: normal;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+em.pageLink {
+    color: #ec7d2c;
+}
+
+@media screen and (max-width: 899px) {
+}
+
+@media screen and (max-width: 767px) {
+}

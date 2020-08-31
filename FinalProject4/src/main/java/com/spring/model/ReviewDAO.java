@@ -94,11 +94,39 @@ public class ReviewDAO implements InterReviewDAO {
 	}
 
 	// 리뷰 등록 성공시 포인트 증가(트랜잭션)
-	/*@Override
+	@Override
 	public void pointAdd(HashMap<String, String> paraMap) {
 		sqlsession.update("finalproject4.pointAdd", paraMap);
 		
-	}*/
+	}
+
+	// 리뷰 등록 성공시 포인트 테이블에 적립내용 입력(트랜잭션)
+	@Override
+	public void pointInsertReview(HashMap<String, String> paraMap) {
+		sqlsession.insert("finalproject4.pointInsertReview", paraMap);
+		
+	}
+
+	// 리뷰시퀀스 채번하기
+	@Override
+	public String selectReviewSeq() {
+		String seq = sqlsession.selectOne("finalproject4.selectReviewSeq");
+		return seq;
+	}
+
+	// 리뷰 삭제 성공시 포인트 회수(트랜잭션)
+	@Override
+	public void pointRemove(HashMap<String, String> paraMap) {
+		sqlsession.update("finalproject4.pointRemove", paraMap);
+		
+	}
+
+	// 리뷰 삭제 성공시 포인트테이블 내용삭제 (트랜잭션)
+	@Override
+	public void pointDeleteReview(HashMap<String, String> paraMap) {
+		sqlsession.delete("finalproject4.pointDeleteReview", paraMap);
+		
+	}
 	
 	
 	

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.model.MemberVO;
 import com.spring.model.ProdVO;
 import com.spring.service.InterProdService;
 
@@ -42,6 +44,20 @@ public class ProdController {
 		mav.addObject("dateList", dateList);
 		
 	//	System.out.println(dateList.get(0).get("date_showday"));
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		
+		// 로그인한 회원의 해당 공연 관람일시와 공연코드 가져오기
+		if(loginuser != null) {
+			HashMap<String, String> paraMap = new HashMap<>();
+			paraMap.put("userid", loginuser.getUserid());
+			paraMap.put("seq", seq);
+			
+			List<HashMap<String, String>> viewInfoList = service.viewInfoList(paraMap);
+			mav.addObject("viewInfoList", viewInfoList);
+		}
+		
 	
 		mav.setViewName("prod/detail.tiles1");
 		return mav;
@@ -51,7 +67,7 @@ public class ProdController {
 	// 선택한 달력의 데이터와 같은 회차정보 불러오기
 	@ResponseBody
 	@RequestMapping(value="/dateLoading.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
-	public String notice(HttpServletRequest request) {	
+	public String dateLoading(HttpServletRequest request) {	
 		
 		String date = request.getParameter("chooseDate");
 		String seq = request.getParameter("seq");
@@ -63,7 +79,6 @@ public class ProdController {
 		paraMap.put("seq", seq);
 		
 		List<HashMap<String, String>> showDateList = service.showDateList(paraMap);
-		
 		
 		JSONArray jsonArr = new JSONArray();
 	
@@ -156,6 +171,48 @@ public class ProdController {
 		return jsonObj.toString();  
 
 	} 
+	
+	
+	// 공연의 회차별, 좌석타입별 잔여좌석 구하기
+	@ResponseBody
+	@RequestMapping(value="/remainSeatList.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String remainSeatList(HttpServletRequest request) {	
+		
+		String prod_id = request.getParameter("prod_id");
+		String date_id = request.getParameter("date_id");
+		
+	//	System.out.println(date_id + ": date_id"); // 0 또는 1,2,3,4
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("prod_id", prod_id);
+	//	paraMap.put("date_id", date_id);
+		
+		// date_id 0 일때는 
+		/*if(date_id.equals("0")) {
+			date_id = "";
+		}
+		
+		System.out.println(date_id + ": date_id");*/
+		paraMap.put("date_id", date_id);
+
+		List<HashMap<String, String>> remainSeatList = service.remainSeatList(paraMap);
+		
+		JSONArray jsonArr = new JSONArray();
+	
+		for(HashMap<String, String> remainSeat : remainSeatList) {
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("seattype_id", remainSeat.get("seattype_id"));
+			jsonObj.put("seat_type", remainSeat.get("seat_type"));
+			jsonObj.put("seat_price", remainSeat.get("seat_price"));
+			jsonObj.put("seat_color", remainSeat.get("seat_color"));
+			jsonObj.put("remainseatCnt", remainSeat.get("remainseatCnt"));
+	
+			jsonArr.put(jsonObj);
+		}
+	
+		return jsonArr.toString();
+	}
+	
 
 
 	

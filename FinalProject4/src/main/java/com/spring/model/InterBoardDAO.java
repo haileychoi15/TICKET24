@@ -46,5 +46,7 @@ public interface InterBoardDAO {
 	int noticeDel(String notice_id); // 공지 삭제하기 
 
 	int noticeEdit(NoticeVO notivo); // 공지 수정하기
+
+	List<ProdVO> ticketopenSearchList(String prod_title); // 공연명으로 티켓오픈일자 검색 
 	
 }

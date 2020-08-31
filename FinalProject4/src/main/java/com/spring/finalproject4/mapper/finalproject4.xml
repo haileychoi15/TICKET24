@@ -1065,15 +1065,68 @@
 	</resultMap>
 
 	<select id="showDateList" parameterType="HashMap" resultMap="showDateListMap">
-		select date_id, prod_id, date_showday, date_showtime
+		select date_id, prod_id, to_char(date_showday, 'yyyy-mm-dd') as date_showday, date_showtime
 		from yes_show_date
 		where prod_id=#{seq} and to_char(date_showday, 'yyyy-mm-dd') = #{date}
 	</select>
+	
+	<!-- 공연의 회차별, 좌석타입별 잔여좌석 구하기 -->
+	<resultMap type="HashMap" id="remainSeatListMap">
+		<result property="seattype_id"  	column="seattype_id"  	javaType="String" />	
+		<result property="seat_type"  	 	column="seat_type"  	javaType="String" />
+		<result property="seat_price"  		column="seat_price"  	javaType="String" />	
+		<result property="seat_color" 		column="seat_color" 	javaType="String" />
+		<result property="remainseatCnt" 	column="remainseatCnt"  javaType="String" />
+	</resultMap>
+	<select id="remainSeatList" parameterType="HashMap" resultMap="remainSeatListMap">
+		select S.seattype_id, seat_type, seat_price, seat_color, remainseatCnt
+		from yes_seat_type T join (
+		    select seattype_id, count(*) as remainseatCnt
+		    from(
+		        select *
+		        from (
+		            select seat_id, seattype_id, seat_name, seat_status, D.date_id, D.prod_id, date_showday, date_showtime
+		            from yes_show_seat S join yes_show_date D
+		            on S.date_id = D.date_id
+		        )T
+				where T.prod_id = #{prod_id} and seat_status = 0
+				<if test="date_id != 0">
+					and date_id = #{date_id}
+				</if>
+		    )
+		    group by seattype_id
+		) S
+		on T.seattype_id = S.seattype_id
+	</select>
 		
+	
+	<!-- 리뷰시퀀스 채번하기 -->	
+	<select id="selectReviewSeq" resultType="String">
+		select reviewSeq.nextval
+		from dual
+	</select>
+	
+	
 	<!-- 리뷰등록하기 -->
 	<insert id="addReview" parameterType="HashMap">
+		<!-- 
+		<if test="date_id == ''">
 		insert into yes_review (review_id, fk_userid, name, content, star, parentProdId)
 		values(reviewSeq.nextval, #{fk_userid}, #{name}, #{content}, #{star}, #{parentProdId})
+		</if>
+		<if test="date_id != ''">
+        insert into yes_review (review_id, fk_userid, name, content, star, parentProdId, date_id)
+		values(reviewSeq.nextval, #{fk_userid}, #{name}, #{content}, #{star}, #{parentProdId}, #{date_id})
+        </if> 
+        -->
+        <if test="date_id == ''">
+		insert into yes_review (review_id, fk_userid, name, content, star, parentProdId)
+		values(#{seq}, #{fk_userid}, #{name}, #{content}, #{star}, #{parentProdId})
+		</if>
+		<if test="date_id != ''">
+        insert into yes_review (review_id, fk_userid, name, content, star, parentProdId, date_id)
+		values(#{seq}, #{fk_userid}, #{name}, #{content}, #{star}, #{parentProdId}, #{date_id})
+        </if> 
 	</insert>
 	
 	<!-- 해당 상품에 달린 리뷰목록 가져오기 -->
@@ -1090,7 +1143,7 @@
 			order by review_id desc
 		) T
 		where rno between #{startRno} and #{endRno} -->
-		select rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
+		<!-- select rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
 		from(
 			select rownum as rno, review_id, fk_userid, name, content, star, regDate, parentProdId, status
 			from 
@@ -1100,6 +1153,23 @@
 			order by review_id desc
             )T
 		) T
+		where rno between #{startRno} and #{endRno} -->
+		select rno, review_id, fk_userid, name, content, star, regDate, parentProdId, date_id, status, date_showday, date_showtime
+		from(
+		    select rownum as rno, review_id, fk_userid, name, content, star, regDate, parentProdId, date_id, status , date_showday, date_showtime
+		    from 
+		    (
+		    select review_id, fk_userid, name, content, star, regDate, parentProdId, date_id, status, date_showday, date_showtime
+		    from 
+		    (
+		        select review_id, fk_userid, name, content, star, to_char(regDate, 'yyyy-mm-dd') as regDate, parentProdId, D.date_id, status, to_char(date_showday, 'yyyy-mm-dd') as date_showday, date_showtime
+		        from yes_review R left join yes_show_date D
+		        on R.date_id = D.date_id
+		    ) W
+		    where status = 1 and parentProdId = #{parentProdId}
+		    order by review_id desc
+		    )T
+		) V
 		where rno between #{startRno} and #{endRno}
 	</select>
 
@@ -1136,13 +1206,13 @@
 	</update>
 	
 	<!-- 관심상품 등록하기 -->
-	<insert id="likeProd">
+	<insert id="likeProd" parameterType="HashMap">
 		insert into like_prod(seq, fk_userid, fk_parentProdId)
 		values(likeProdSeq.nextval, #{fk_userid}, #{prod_id})
 	</insert>
 	
 	<!-- 관심상품 해제하기 -->
-	<delete id="dislikeProd">
+	<delete id="dislikeProd" parameterType="HashMap">
 		delete from like_prod
 		where fk_parentProdId = #{prod_id} and fk_userid = #{fk_userid}
 	</delete>
@@ -1239,14 +1309,48 @@
 	
 	
 	<!-- 리뷰 등록 성공시 포인트 증가(트랜잭션) -->
-	<!-- 
-	<update id="pointAdd">
+	<update id="pointAdd" parameterType="HashMap">
 		update yes_member set point = point + to_number(#{point})
 		where userid = #{fk_userid}
 	</update>
-	 -->
+	
+	
+	<!-- 리뷰 등록 성공시 포인트 테이블에 적립내용 입력(트랜잭션) -->
+	<insert id="pointInsertReview" parameterType="HashMap">
+		insert into yes_point(point_id, fk_userid, content, point, fk_rev_date, fk_rev_id, fk_review_id) 
+		values(seq_point.nextval, #{fk_userid}, #{pointcontent}, #{point}, sysdate, 0, #{seq})
+	</insert>
+	
+	
+	<!-- 리뷰 삭제 성공시 포인트 회수(트랜잭션) -->
+	<update id="pointRemove" parameterType="HashMap">
+		update yes_member set point = point - to_number(#{point})
+		where userid = #{fk_userid}
+	</update>
+	
+	
+	<!-- 리뷰 삭제 성공시 포인트테이블 내용삭제 (트랜잭션) -->
+	<insert id="pointDeleteReview" parameterType="HashMap">
+		delete from yes_point 
+		where fk_review_id = #{review_id}
+	</insert>
+	
+	
+	 
+	<!-- 로그인한 회원의 해당 공연 관람일시와 공연코드 가져오기 -->
+	<resultMap type="HashMap" id="viewInfoListMap">
+		<result property="rev_id" 		column="rev_id" 		javaType="String" />
+		<result property="prod_id" 	 	column="prod_id" 		javaType="String" />
+		<result property="date_id" 	 	column="date_id" 		javaType="String" />
+		<result property="date_showday" column="date_showday" 	javaType="String" />
+	</resultMap>
+	<select id="viewInfoList" parameterType="HashMap" resultMap="viewInfoListMap">
+		select distinct rev_id, prod_id, date_id, to_char(date_showday, 'yy/mm/dd') as date_showday
+		from view_revdate_Info
+		where userid = #{userid} and prod_id = #{seq}
+	</select>
+	 
 		
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
-
 
 </mapper>

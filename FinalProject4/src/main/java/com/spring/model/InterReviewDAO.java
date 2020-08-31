@@ -27,6 +27,14 @@ public interface InterReviewDAO {
 
 	List<HashMap<String, String>> reviewLikecntList(HashMap<String, String> paraMap); // 공연에 달린 리뷰의 추천수 
 
-//	void pointAdd(HashMap<String, String> paraMap); // 리뷰 등록 성공시 포인트 증가(트랜잭션)
+	void pointAdd(HashMap<String, String> paraMap); // 리뷰 등록 성공시 포인트 증가(트랜잭션)
+
+	void pointInsertReview(HashMap<String, String> paraMap); // 리뷰 등록 성공시 포인트 테이블에 적립내용 입력(트랜잭션)
+
+	String selectReviewSeq(); // 리뷰시퀀스 채번하기
+
+	void pointRemove(HashMap<String, String> paraMap); // 리뷰 삭제 성공시 포인트 회수(트랜잭션)
+
+	void pointDeleteReview(HashMap<String, String> paraMap); // 리뷰 삭제 성공시 포인트테이블 내용삭제 (트랜잭션)
 
 }

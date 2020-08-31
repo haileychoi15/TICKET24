@@ -13,7 +13,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>반응형상세</title>
-    <!-- <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" /> -->
+     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="resources/css/grid.min.css" />
     <link rel="stylesheet" href="resources/css/respstyle.css">
     <link rel="stylesheet" href="resources/css/fullcalendar/main.css">
     
@@ -28,8 +29,7 @@
     background-color:#ec7d2c !important;
     }
     	
-    a {
-    text-decoration: none !important;}
+    a {text-decoration: none !important;}
 	
 	#star_grade a{
         text-decoration: none;
@@ -53,6 +53,27 @@
 		width:30px;
 	}
 	
+	select {
+		width: 200px;
+		padding: .8em .5em;
+		border: 1px solid #999;
+		font-family: inherit;
+		background: url('/finalproject4/resources/images/arrowselect.jpg') no-repeat 95% 50%;
+		border-radius: 0px;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+	}
+
+	select::-ms-expand {
+		display: none;
+	} 
+	
+	input[type=checkbox] {
+		border: none;
+	}
+
+
     </style>
     
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=713478ea9084b9fc9e6f5c1cc4d5d95f&libraries=services"></script>
@@ -81,6 +102,8 @@
 			
 		
 			goReviewList("1");
+			
+			remainSeatList("0");
         	
         	var showdate = document.getElementById('showdate');
         	var showtime = document.getElementById('showtime');
@@ -109,12 +132,15 @@
 							if(json.length > 0) {
 								$.each(json, function(index, item){
 									
-									html += "<button onclick='goShowtime(\""+item.date_showtime+"\");' class='ticketing-button'>"+item.date_showtime+"</button>";
-								//	console.log(item.date_showtime);
+									var daytime = " " + item.date_showday.substring(8,10) + "일 ";
+									
+								//	alert(item.date_id); // 1,2(20일) 3,4(22일)
+									
+								//	html += "<button onclick='goShowtime(\""+item.date_showtime+"\");' class='ticketing-button'>"+item.date_showtime+"</button>";
+									html += "<button onclick='goShowtime(\""+item.date_showtime+"\",\""+item.date_id+"\",\""+daytime+"\");' class='ticketing-button'>"+item.date_showtime+"</button>";
 								
 									$(".ticketing-detailtime").html(html);
 									showdate.value = info.dateStr;
-									
 									
 							//		var buttons=document.getElementsByClassName("ticketing-button");
 							//		console.log(buttons);    
@@ -156,6 +182,8 @@
 								
 							}
 							else {
+								$(".ticketing-title-daytime").html("");
+								
 								$(".ticketing-detailtime").html("");
 								showdate.value = "";
 							}
@@ -173,9 +201,9 @@
             
             
             
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
-            //	지도를 담을 영역의 DOM 레퍼런스
+        //	지도를 담을 영역의 DOM 레퍼런스
      		var mapContainer = document.getElementById('map');
      		
      	//	지도를 생성할때 필요한 기본 옵션
@@ -183,10 +211,6 @@
      			center: new kakao.maps.LatLng(37.510338, 127.058518),	// 지도의 중심좌표. 반드시 존재해야함.
      			level: 4	// 지도의 레벨(확대, 축소 정도). 숫자가 적을수록 확대 된다.
      		};
-     		/*
-     		  center 에 할당할 값은 kakao.maps.LatLng 클래스를 사용하여 생성한다.
-     		  kakao.maps.LatLng 클래스의 2개 인자값은 첫번째 파라미터는 위도(latitude)이고, 두번째 파라미터는 경도(longitude)이다.
-     		*/
      		
      	//	지도 생성 및 생성된 지도객체 리턴
      		var mapobj = new kakao.maps.Map(mapContainer, options);
@@ -195,14 +219,12 @@
      		var mapTypeControl = new kakao.maps.MapTypeControl();
      	
      	//	지도 타입 컨트롤을 지도에 표시함.
-     	//	kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미함.	
      		mapobj.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
      	
      	//	지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성함.	
      		var zoomControl = new kakao.maps.ZoomControl();
      	
      	//	지도 확대 축소를 제어할 수 있는  줌 컨트롤을 지도에 표시함.
-     	//	kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 RIGHT는 오른쪽을 의미함.	 
      		mapobj.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
      	
      		if (navigator.geolocation) {
@@ -216,12 +238,9 @@
      			//	=== 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
      				
      			//	인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능함.
-     			
      			$.ajax({
      				url:"<%= request.getContextPath()%>/mapInfo.action",
      				async:false, // !!!!!! 지도는 비동기 통신(async:true)이 아닌 동기통신(async:false)으로 해야한다.!!!!!!
-     				// 동기와 비동기의 차이 : url 에 가서 데이터(json)를 받아올 때까지 가만히 대기하며 기다리는 것이 아니라, url 에 가서 데이터(json)를 받아올 때 까지 다른 것으로 넘어가서 진행하다가 다시 올라오는 것이 비동기이다.
-     				// 동기를 해야 하는 이유는, 지도정보를 다 가지고 온 후에 처리 해야하므로 json 으로 지도정보를 다 가지고 올 때 까지 가만히 대기해서 기다려야 한다. 
      				data:{"prod_id":"${pvo.prod_id}"},
      				dataType:"json",
      				success:function(json){
@@ -234,9 +253,6 @@
      								//	 "		<img src='/finalproject4/resources/images/logo3.png' width='60px' height='25px'><br>"+  
      									 "		<span class='address'>"+json.map_address+"</span>"+ 
      									 "	</div>"+ 
-     								//	 "	<div class='desc' style='padding:5px; font-size:9pt;'>"+
-     								//	 "      <a href='https://map.kakao.com/link/map/코엑스디홀,"+json.map_lat+","+json.map_lng+"' style='color:blue;' target='_blank'>큰지도</a>"+
-     								//	 "      <a href='https://map.kakao.com/link/to/코엑스디홀,"+json.map_lat+","+json.map_lng+' style='color:blue;' target='_blank'>길찾기</a>"+
      									 "	<div class='desc' style='padding:5px; font-size:9pt;'><a href='https://map.kakao.com/link/map/"+json.map_name+","+json.map_lng+","+json.map_lat+"' style='color:blue;' target='_blank'>큰지도</a>"+
      									 "  <a href='https://map.kakao.com/link/to/"+json.map_name+","+json.map_lng+","+json.map_lat+"' style='color:blue' target='_blank'>길찾기</a></div>"+
      									 "  </div>"+
@@ -338,7 +354,7 @@
   				image: markerImage  // 마커이미지 설정
   			});
   		    
-  		//	=== 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
+  			//	=== 인포윈도우(텍스트를 올릴 수 있는 말풍선 모양의 이미지) 생성하기 === //
   			var movingInfowindow = new kakao.maps.InfoWindow({
   				removable : false
   			//	removable : true   // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됨
@@ -381,14 +397,20 @@
         
         
         
-        function goShowtime(time) {
+        function goShowtime(time, date_id, daytime) {
         	var showtime = document.getElementById('showtime');
         	showtime.value = time;
+        	
+        //	alert(date_id);
+        	remainSeatList(date_id);
+        	
+        	var html = daytime + time;
+        	$(".ticketing-title-daytime").html(html);
+        
         }
 
         
         function goReview() {
-
         	
         	var form_data = $("form[name=reviewFrm]").serialize();
         	
@@ -435,11 +457,13 @@
 				success:function(json){
 					
 					var html = "";
+					/* html += "<input type='checkbox' id='all' /><label for='all'>전체</label>";
+					html += "<input type='checkbox' id='rsv' /><label for='rsv'>예매자</label>"; */
 					html += "<ul class='review-comments-list'>";
 					if(json.length > 0) {
 						
 						$.each(json, function(index, item){
-							html += getReviewTemplate(item.review_id, item.fk_userid, item.name, item.star, item.regDate, item.content, item.flag, item.reviewlikecnt, page);
+							html += getReviewTemplate(item.review_id, item.fk_userid, item.name, item.star, item.regDate, item.content, item.flag, item.reviewlikecnt, item.date_showday, item.date_id, page);
 						});
 						
 					}
@@ -460,6 +484,7 @@
         	
         }
         
+        
         function moveBooking() {
             
             let showdate = document.getElementById('showdate');
@@ -470,32 +495,35 @@
             return false;
             }
              
-             let fk_userid = document.getElementById('fk_userid');
-             if(fk_userid.value === '') {
-             alert('공연 예매는 로그인이 필요합니다.');
-             location.href="<%=ctxPath%>/login.action"
-             return false;
-             }
-            
-             var url = "<%= request.getContextPath()%>/reservePopUp.action?seq=${param.seq}";
-          	 var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, menubar=no, status = no";
-          	 window.open(url, "", option);
-            
+            let fk_userid = document.getElementById('fk_userid');
+            if(fk_userid.value === '') {
+            alert('공연 예매는 로그인이 필요합니다.');
+            location.href="<%=ctxPath%>/login.action"
+            return false;
             }
+            
+            var url = "<%= request.getContextPath()%>/reservePopUp.action?seq=${param.seq}";
+          	var option = "width = 971, height = 635, top = 200, left = 500, location = no, scrollbars = yes, toolbars = no, menubar=no, status = no";
+          	window.open(url, "", option);
+          	 
+       }
         
         
-        function getReviewTemplate(review_id, fk_userid, name, star, regDate, content, flag, reviewlikecnt, page) {
+        function getReviewTemplate(review_id, fk_userid, name, star, regDate, content, flag, reviewlikecnt, date_showday, date_id, page) {
         
-        console.log(page);
+        //  console.log(page);
         	
         var loginuserid = "${sessionScope.loginuser.userid}";
         var fk_userid_sub = fk_userid.substring(0,fk_userid.length-2) + '**';                
         var template = '<li>'+
-        			   '<div class="review-comment-badge">'+
-	        				'<span class="reservationbadge">예매자</span>';
+        			   '<div class="review-comment-badge">';
+        if(date_id != null) 
+        	template +=		'<span class="reservationbadge">예매평</span>';
+       	else 
+       		template +=		'<span class="expectationbadge">기대평</span>';
 	        				
 		if(fk_userid == loginuserid){
-            template += '<span class="writerself">본인</span>';
+            template += 	'<span class="writerself">본인</span>';
         }
 		
 	        template += '</div>'+
@@ -511,19 +539,22 @@
 								template += "<span><i class='far fa-star reviewstar' style='color:orange;'></i></span>";
 							}
 	                        
-             template += '</span>'+
-                    '</div>'+
-                    '<div class="review-comment-desc">'+
-                    '<span>(관람일:2020.08.02)</span>'+
-                    '<p>'+
-                    content+
-                    '</p>'+
+             template += 	'</span>'+
+	                    '</div>'+
+	                    '<div class="review-comment-desc">';
+                    
+             if(date_showday != null) {
+             		template += '<span>(관람일:'+date_showday+')</span>';
+             }
+                    
+             template += '<p>'+
+	                    content+
+	                    '</p>'+
                 '</div>'+
                 '<div class="review-comment-bottom">'+
                     '<div class="review-comment-like">'+
 	                  '<span id="likeReviewHeart" onclick="goLikeReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+Number(page)+'\''+')">';
 	                  //  '<span id="likeReviewHeart" onclick="goLikeReview('+review_id+','+'\''+fk_userid+'\''+')">';
-	                    
 	                    
                     	if(flag) {
                     		template += '<i id="likeReviewMain" class="fas fa-heart" style="color:orange;"></i>';
@@ -535,7 +566,6 @@
                     	if(reviewlikecnt != null) {
                     		template += '<span style="color:orange;"> + '+reviewlikecnt+'</span>';
                     	}
-	                    
 	                    	
 	          template += '</span>'+
                         /* '<i class="far fa-heart noncolored-heart"></i>'+
@@ -544,15 +574,23 @@
                             '118'+
                         '</strong>'+ */
                     '</div>'+
-                    '<div class="review-comment-revision">'+
-                        '<span class="rev revisionButton" onclick="goEditReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+star+'\''+','+'\''+content+'\''+')">수정</span>'+
-                        '<span class="rev" onclick="goDelReview('+review_id+','+'\''+fk_userid+'\''+')" style="color:blue;">삭제</span>'+
-                    '</div>'+
+                    '<div class="review-comment-revision">';
+                    if(fk_userid == loginuserid){
+              			template += '<span class="rev revisionButton" onclick="goEditReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+star+'\''+','+'\''+content+'\''+')">수정</span>';
+                        			
+              			if(date_id != null) 
+              	        	template += '<span class="rev" onclick="goDelReview('+review_id+','+'\''+fk_userid+'\''+','+'\''+date_id+'\''+')" style="color:blue;">삭제</span>';
+              	       	else 
+              	       		template += '<span class="rev" onclick="goDelReview('+review_id+','+'\''+fk_userid+'\''+','+'\'0\''+')" style="color:blue;">삭제</span>';
+                    }
+                    
+              template += '</div>'+
                 '</div>'+
             '</li>';
             	
             return template;
         }
+        
         
         function prevPageBar(page) {
         	var prevPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-left'></i></a></li>";
@@ -564,7 +602,6 @@
         	var nextPageBar = "<li class='pageBarStyle' style=''><a href='javascript:goReviewList(\""+Number(page)+"\")'><i class='fas fa-angle-right'></i></a></li>";
         	return nextPageBar;
         }
-        
         
         function makeCommentPageBar(page) {
     		
@@ -656,7 +693,7 @@
     	}// end of function makeCommentPageBar(currentShowPageNo) --------------------
     	
         
-    	function goDelReview(review_id, fk_userid){
+    	function goDelReview(review_id, fk_userid, date_id){
     		
     		var loginuserid = "${sessionScope.loginuser.userid}";
     		if(fk_userid != loginuserid) {
@@ -667,11 +704,25 @@
     		var bool = confirm("리뷰글을 정말로 삭제하시겠습니까?");
     		if(bool) {
     			
+    			/* var date_id = " ";
+    			
+    			// alert(date_id); // date_id or undefined
+    			if(date_id_s == undefined) {
+        			date_id = " ";
+    			}
+    			else {
+    				date_id = date_id_s;
+    			}
+    			
+    			alert(date_id); */
+    			
+    			 
     			$.ajax({
     				url:"<%= ctxPath%>/delReview.action",
     				type:"GET",
     				data:{"review_id":review_id,
-    					  "fk_userid":fk_userid},
+    					  "fk_userid":fk_userid,
+    					  "date_id":date_id},
     				dataType:"JSON",
     				success:function(json) {
     					
@@ -687,7 +738,7 @@
     				error: function(request, status, error){
     					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
     				}
-    			});	
+    			});
     			
     		}
     	}
@@ -712,10 +763,14 @@
 			$("#review_id").val(review_id);
     		$("#input-content").val(content);
     		
-    		
     		// 초기 별점셋팅
     		$(".re-starlist i").removeClass("staron");
-    		$(".re-starlist i").eq(star).prevAll("i").addClass("staron"); // eq(index=star) 인 star+1번째 별 전에 모두 on 시키기
+    		if(star == 5) {
+    			$(".re-starlist i").addClass("staron");
+    		}
+    		else {
+        		$(".re-starlist i").eq(star).prevAll("i").addClass("staron"); // eq(index=star) 인 star+1번째 별 전에 모두 on 시키기
+    		}
     		$("#re-star").val(star);
     		
     		// 별점 주기
@@ -939,10 +994,61 @@
 				}
 			});	   	
 		
-		 
+		}
+	
+		// 회차별, 좌석타입별 잔여좌석 구하기
+		function remainSeatList(date_id){
+			
+			$.ajax({
+				url:"<%= request.getContextPath()%>/remainSeatList.action",
+				type:"GET",
+				data:{"prod_id":"${pvo.prod_id}",
+					  "date_id":date_id},
+				dataType:"JSON",
+				success:function(json) {
+					
+					var html = "";
+					html += "<dl>";
+					
+					if(json.length > 0) {
+
+						$.each(json, function(index, item){
+							html += getSeatListTemplate(item.seattype_id, item.seat_type, item.seat_price, item.seat_color, item.remainseatCnt);
+						});
+						
+					}
+					else {
+						html += "잔여좌석 정보가 없습니다.";
+					}
+					
+					html += "</dl>"
+					$(".ticketing-seat-list").html(html);
+
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});	   	
+			
 		}
 		
-		
+		function getSeatListTemplate(seattype_id, seat_type, seat_price, seat_color, remainseatCnt) {
+	              
+			/* <c:forEach var="seattype" items="${seattypeList}">
+            <dt>${seattype.seat_type}석</dt>
+            <dd>
+                ${seattype.seat_price}<br>
+            <span>(잔여:17석)</span>
+            </dd>
+            </c:forEach> */
+			
+	        var template = '<dt>'+seat_type+'석'+'</dt>'+
+	        			   '<dd>'+seat_price+'원'+'<br/>'+ 
+		                   '<span>(잔여:'+remainseatCnt+'석)</span>'+
+		                   '</dd>';
+	            	
+	            return template;
+	        }
 
     </script>
 </head>
@@ -968,7 +1074,7 @@
                        <a href="#map" class="landing-place">
                            <i class="fas fa-map-marker-alt"></i>
                            ${pvo.map_name}
-                           <input type="text" value="${pvo.prod_id}" >
+                           <input type="hidden" value="${pvo.prod_id}" >
                        </a>
 
                    </div>
@@ -1114,17 +1220,17 @@
 
             <!--예매가능좌석-->
             <div class="col-12 col-md-5">
-                <h2 class="ticketing-title">예매 가능 좌석</h2>
+                <h2 class="ticketing-title">예매 가능 좌석<span class="ticketing-title-daytime" style="color: #ec7d2c;"></span></h2>
                 <div class="ticketing-seat">
                     <div class="ticketing-seat-list">
                         <dl>
-                        	<c:forEach var="seattype" items="${seattypeList}">
+                        	<%-- <c:forEach var="seattype" items="${seattypeList}">
                             <dt>${seattype.seat_type}석</dt>
                             <dd>
                                 ${seattype.seat_price}<br>
                             <span>(잔여:17석)</span>
                             </dd>
-                            </c:forEach>
+                            </c:forEach> --%>
                         </dl>
                     </div>
                 </div>
@@ -1366,6 +1472,7 @@
                             리뷰작성
                         </span>
                     </div>
+                    <!-- <div>전체 예매평</div> -->
                     <section class="modal hide">
                         <div class="modal-group">
                             <form name="reviewFrm" class="modal-form">
@@ -1378,7 +1485,18 @@
                                     </div>
                                     <div class="row datestar">
                                         <div class="table-title">관람일시</div>
-                                        <div class="table-content">관람 내역이 없습니다.</div>
+                                        <div class="table-content">
+                                        <c:if test="${not empty viewInfoList}">
+                                        	<select name="date_id">
+	                                        	<c:forEach var="viewInfo" items="${viewInfoList}">
+			                                        <option value="${viewInfo.date_id}">${viewInfo.date_showday}</option>
+	                                        	</c:forEach>
+                                        	</select>
+                                        </c:if>
+                                        <c:if test="${empty viewInfoList}">
+                                        		관람 내역이 없습니다.
+                                        </c:if>
+                                        </div>
                                     </div>
                                     <div class="row datestar">
                                         <div class="table-title">작성자명</div>

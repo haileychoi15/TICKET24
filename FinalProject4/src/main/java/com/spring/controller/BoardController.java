@@ -26,6 +26,7 @@ import com.spring.common.MyUtil;
 import com.spring.model.FaqVO;
 import com.spring.model.MemberVO;
 import com.spring.model.NoticeVO;
+import com.spring.model.ProdVO;
 import com.spring.model.QnaVO;
 import com.spring.service.InterBoardService;
 
@@ -341,7 +342,7 @@ public class BoardController {
 		//	mav.addObject("gobackURL", gobackURL);
 			mav.addObject("notivo", notivo); // 글 1개 boardvo 를 뷰단으로 넘겨준다. 
 			mav.setViewName("notice/noticeView.tiles1");
-			System.out.println(notivo.getContent()+" : content");
+		//	System.out.println(notivo.getContent()+" : content");
 		//	mav.addObject("gobackURL", gobackURL);
 		}
 
@@ -787,6 +788,8 @@ public class BoardController {
 		// 첨부파일이 없다면 그냥 원래대로 진행하면 된다. 
 		// === !!! 첨부파일이 있는지 없는지 알아오기 끝 !!! === //
 		
+		// System.out.println(notivo.getProd_id() +":prod_id");
+		
 		int n = 0;
 		
 		if( attach.isEmpty() ) {
@@ -1022,7 +1025,7 @@ public class BoardController {
 	
 	
 	// 공지 삭제하기
-	@RequestMapping(value = "/noticeDel.action", produces="text/plain;charset=UTF-8", method= {RequestMethod.POST})
+	@RequestMapping(value = "/noticeDel.action", produces="text/plain;charset=UTF-8", method= {RequestMethod.GET})
 	public ModelAndView noticeDel(HttpServletRequest request, ModelAndView mav) {
 		
 		HttpSession session = request.getSession();
@@ -1059,6 +1062,28 @@ public class BoardController {
 		mav.setViewName("msg");
 		
 		return mav; 
+	}
+	
+	
+	// 공연명으로 티켓오픈일자 검색 
+	@RequestMapping(value = "/ticketopenSearch.action", produces="text/plain;charset=UTF-8")
+	public ModelAndView ticketopenSearch(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		String userid = loginuser.getUserid();
+		
+		String prod_title = request.getParameter("prod_title");
+		
+		// 공연명으로 티켓오픈일자 검색 
+		List<ProdVO> ticketList = service.ticketopenSearchList(prod_title);
+		
+		mav.addObject("ticketList", ticketList);
+		mav.setViewName("popup/ticketopen.notiles");
+		
+		return mav;
+		
 	}
 
 	

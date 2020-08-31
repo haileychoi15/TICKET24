@@ -19,11 +19,24 @@ public class ReviewService implements InterReviewService {
 	// 리뷰등록하기
 	@Override
 	public int addReview(HashMap<String, String> paraMap) {
+		
+		// 리뷰시퀀스 채번하기
+		String seq = dao.selectReviewSeq();
+		paraMap.put("seq", seq);
+		
 		int n = dao.addReview(paraMap);
-		/*if(n == 1) { // 리뷰 등록 성공시 포인트 증가(트랜잭션)
-			paraMap.put("point", "100");
+		if(n == 1) { // 리뷰 등록 성공시 포인트 증가(트랜잭션)
+			/*if(paraMap.get("date_id") != "") {
+				paraMap.put("point", "150");
+				paraMap.put("pointcontent", "리뷰 예매평 포인트 적립");
+			}
+			else {
+				paraMap.put("point", "100");
+				paraMap.put("pointcontent", "리뷰 기대평 포인트 적립");
+			}*/
 			dao.pointAdd(paraMap);
-		}*/
+			dao.pointInsertReview(paraMap);
+		}
 		return n;
 	}
 
@@ -52,6 +65,10 @@ public class ReviewService implements InterReviewService {
 	@Override
 	public int delReview(HashMap<String, String> paraMap) {
 		int n = dao.delReview(paraMap);
+		if(n == 1) { // 리뷰 삭제 성공시 포인트 회수 및 포인트테이블 내용삭제 (트랜잭션)
+			dao.pointRemove(paraMap);
+			dao.pointDeleteReview(paraMap);
+		}
 		return n;
 	}
 

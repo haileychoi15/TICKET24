@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.spring.model.FaqVO;
 import com.spring.model.NoticeVO;
+import com.spring.model.ProdVO;
 import com.spring.model.QnaVO;
 
 public interface InterBoardService {
@@ -44,5 +45,7 @@ public interface InterBoardService {
 	int noticeDel(String notice_id); // 공지 삭제하기 
 
 	int noticeEdit(NoticeVO notivo); // 공지 수정하기
+
+	List<ProdVO> ticketopenSearchList(String prod_title); // 공연명으로 티켓오픈일자 검색 
 
 }

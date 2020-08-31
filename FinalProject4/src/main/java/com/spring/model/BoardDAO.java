@@ -166,5 +166,12 @@ public class BoardDAO implements InterBoardDAO {
 		int n = sqlsession.update("finalproject4.noticeEdit", notivo);
 		return n;
 	}
+
+	// 공연명으로 티켓오픈일자 검색 
+	@Override
+	public List<ProdVO> ticketopenSearchList(String prod_title) {
+		List<ProdVO> ticketopenSearchList = sqlsession.selectList("finalproject4.ticketopenSearchList", prod_title);
+		return ticketopenSearchList;
+	}
 	
 }

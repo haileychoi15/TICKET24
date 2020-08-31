@@ -1,5 +1,6 @@
 package com.spring.model;
 
+import java.util.Collection;
 
 public class ReviewVO {
 

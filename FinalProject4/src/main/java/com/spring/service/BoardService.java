@@ -11,6 +11,7 @@ import com.spring.mail.GoogleMail;
 import com.spring.model.FaqVO;
 import com.spring.model.InterBoardDAO;
 import com.spring.model.NoticeVO;
+import com.spring.model.ProdVO;
 import com.spring.model.QnaVO;
 
 @Service
@@ -173,6 +174,13 @@ public class BoardService implements InterBoardService {
 	public int noticeEdit(NoticeVO notivo) {
 		int n = dao.noticeEdit(notivo);
 		return n;
+	}
+
+	// 공연명으로 티켓오픈일자 검색 
+	@Override
+	public List<ProdVO> ticketopenSearchList(String prod_title) {
+		List<ProdVO> ticketopenSearchList = dao.ticketopenSearchList(prod_title);
+		return ticketopenSearchList;
 	}
 	
 }

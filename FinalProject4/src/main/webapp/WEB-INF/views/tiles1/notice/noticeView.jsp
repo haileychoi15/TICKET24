@@ -172,19 +172,24 @@
                 <div class="row product-group">
                     <div class="col-12 col-md-3">
                         <div class="ticket-open-image">
-                            <img src="http://tkfile.yes24.com/upload2/BoardNotice/202008/20200805/20200805-200.jpg" alt="${notivo.subject}">
+                        	<img src="resources/images/${notivo.prod_img}" alt="${notivo.subject}">
+                            <%-- <c:if test="notivo.prod_id == '0'">
+                        		<img src="http://tkfile.yes24.com/upload2/BoardNotice/202008/20200805/20200805-200.jpg" alt="${notivo.subject}">
+                        	</c:if> --%>
                         </div>
                     </div>
                     <div class="col-12 col-md-9">
                         <div class="ticket-open-group">
                             <strong class="ticket-open-title">
-                                2020 서울드럼페스티벌 티켓오픈 안내
+                                <!-- 2020 서울드럼페스티벌 티켓오픈 안내 -->
+                                ${notivo.prod_title}
                             </strong>
                             <div class="ticket-open-bar">
-                                <p>2020.08.10(월) 오후 3:00</p>
+                                <!-- <p>2020.08.10(월) 오후 3:00</p> -->
+                                <p>${notivo.ticketopenday}</p>
                             </div>
                             <div class="button-group">
-                                <a href="" role="button">상세보기</a>
+                                <a href="detail.action?seq=${notivo.prod_id}" role="button">상세보기</a>
                                 <button>티켓오픈 알림</button>
                             </div>
                         </div>

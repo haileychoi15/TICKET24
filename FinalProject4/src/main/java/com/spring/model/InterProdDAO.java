@@ -21,4 +21,8 @@ public interface InterProdDAO {
 
 	int existlike(HashMap<String, String> paraMap); // 같은 아이디의 같은 관심상품이 존재하는지 확인
 
+	List<HashMap<String, String>> viewInfoList(HashMap<String, String> paraMap); // 로그인한 회원의 해당 공연 관람일시와 공연코드 가져오기
+
+	List<HashMap<String, String>> remainSeatList(HashMap<String, String> paraMap); // 공연의 회차별, 좌석타입별 잔여좌석 구하기
+
 }

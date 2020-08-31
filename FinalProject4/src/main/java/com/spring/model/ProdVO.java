@@ -1,12 +1,12 @@
 package com.spring.model;
 
-public class ProdVO {
+public class ProdVO { 
 
    private String prod_id;             		// -- 공연정보코드 (시퀀스)
    private String fk_category_id;      		// -- 카테고리코드
    private String category_name;         	// -- 카테고리명
    private String fk_category_detail_id;	// -- 세부카테고리코드
-   private String prod_title;            	// -- 공연명
+   private String prod_title;            	// -- 공연명 
    private String prod_img;            		// -- 대표이미지
    private String prod_detail_img;          // -- 상세이미지
    private String date_start;            	// -- 공연시작날짜

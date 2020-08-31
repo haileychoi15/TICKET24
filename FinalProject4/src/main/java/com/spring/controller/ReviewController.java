@@ -30,6 +30,8 @@ public class ReviewController {
 	@RequestMapping(value="/addReview.action", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 	public String addReview(HttpServletRequest request, ReviewVO rvo) {	
 		
+	//	System.out.println("date_id : "+rvo.getDate_id());
+		
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("fk_userid", rvo.getFk_userid());
 		paraMap.put("name", rvo.getName());
@@ -37,7 +39,29 @@ public class ReviewController {
 		paraMap.put("star", rvo.getStar());
 		paraMap.put("parentProdId", rvo.getParentProdId());
 		
+		String date_id = rvo.getDate_id();
+		
+		// date_id 가 없을 때는(null) date_id 를 "" 로 변환
+		if(date_id == null || date_id.trim().isEmpty()) {
+			date_id = "";
+		}
+		paraMap.put("date_id", date_id);
+		
+		if(date_id != "") {
+			paraMap.put("point", "150");
+			paraMap.put("pointcontent", "리뷰 예매평 포인트 적립");
+		}
+		else {
+			paraMap.put("point", "100");
+			paraMap.put("pointcontent", "리뷰 기대평 포인트 적립");
+		}
+		
 		int n = service.addReview(paraMap);
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+
+		loginuser.setPoint(loginuser.getPoint()+Integer.parseInt(paraMap.get("point"))); // 세션에 저장된 로그인한 회원의 포인트 업데이트
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("n", n);
@@ -105,6 +129,8 @@ public class ReviewController {
 				jsonObj.put("star", rvo.getStar());
 				jsonObj.put("regDate", rvo.getRegDate());
 				jsonObj.put("content", rvo.getContent());
+				jsonObj.put("date_id", rvo.getDate_id());
+				jsonObj.put("date_showday", rvo.getDate_showday());
 				
 			//	System.out.println(rvo.getReview_id());
 			//	System.out.println(reviewLikeList.contains(rvo.getReview_id()));
@@ -155,7 +181,6 @@ public class ReviewController {
 		if(totalCount > 0) {
 			// 해당 상품(parentProdId) 에 해당하는 평점 알아오기
 			avgStar = service.getReviewAvgStar(paraMap);
-			System.out.println(avgStar);
 		}
 		
 		JSONObject jsonObj = new JSONObject();
@@ -176,7 +201,27 @@ public class ReviewController {
 		paraMap.put("fk_userid", rvo.getFk_userid());
 		paraMap.put("review_id", rvo.getReview_id());
 		
+		
+		String date_id = rvo.getDate_id();
+	//	System.out.println(date_id + " : date_id");
+		
+		// date_id 0 일때는 
+		if(!date_id.equals("0")) {
+			paraMap.put("point", "150");
+		}
+		else {
+			paraMap.put("point", "100");
+		}
+		
+		
+	//	int n = 1;
 		int n = service.delReview(paraMap);
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+
+		loginuser.setPoint(loginuser.getPoint()-Integer.parseInt(paraMap.get("point"))); // 세션에 저장된 로그인한 회원의 포인트 업데이트
+		
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("n", n);

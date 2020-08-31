@@ -70,6 +70,18 @@ public class ProdDAO implements InterProdDAO {
 		return n;
 	}
 
+	@Override
+	public List<HashMap<String, String>> viewInfoList(HashMap<String, String> paraMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<HashMap<String, String>> remainSeatList(HashMap<String, String> paraMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 }

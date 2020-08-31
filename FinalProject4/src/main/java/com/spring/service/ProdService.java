@@ -71,5 +71,19 @@ public class ProdService implements InterProdService {
 		return n;
 	}
 	
+	// 로그인한 회원의 해당 공연 관람일시와 공연코드 가져오기
+	@Override
+	public List<HashMap<String, String>> viewInfoList(HashMap<String, String> paraMap) {
+		List<HashMap<String, String>> viewInfoList = dao.viewInfoList(paraMap);
+		return viewInfoList;
+	}
+	
+	// 공연의 회차별, 좌석타입별 잔여좌석 구하기
+	@Override
+	public List<HashMap<String, String>> remainSeatList(HashMap<String, String> paraMap) {
+		List<HashMap<String, String>> remainSeatList = dao.remainSeatList(paraMap);
+		return remainSeatList;
+	}
+	
 	
 }
