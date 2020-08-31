@@ -66,6 +66,7 @@ tech | description
 ## Screenshots
 The following images are representative screenshots of TICKET24.
 
+### Desktop Version
 - Home Page
 <img width="1440" alt="ticket24-home" src="https://user-images.githubusercontent.com/60546778/91685209-a9856400-eb94-11ea-8947-b81c8242cd68.png">
 
@@ -80,7 +81,11 @@ The following images are representative screenshots of TICKET24.
 - Login Page
 <img width="1440" alt="ticket24-login" src="https://user-images.githubusercontent.com/60546778/91685357-14cf3600-eb95-11ea-88e0-760a75178ba7.png">
 
-
+### Mobile Version
+- Home Page
+- Detail Page
+- Notice Board Page
+- Login Page
 
 <br />
 
