@@ -68,7 +68,7 @@ The following images are representative screenshots of TICKET24.
 
 ### Desktop Version
 - Home Page
-<img width="1440" alt="ticket24-home" src="https://user-images.githubusercontent.com/60546778/91685209-a9856400-eb94-11ea-8947-b81c8242cd68.png">
+<img width="1440" alt="ticket24-home" src="https://user-images.githubusercontent.com/60546778/91707600-01cf5c80-ebbb-11ea-89cc-7e381bb864df.png">
 
 - Detail Page
 <img width="1440" alt="ticket24-detail" src="https://user-images.githubusercontent.com/60546778/91685802-5f9d7d80-eb96-11ea-834c-8a5d56fa4ec1.png">
