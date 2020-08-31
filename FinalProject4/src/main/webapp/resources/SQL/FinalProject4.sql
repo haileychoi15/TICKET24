@@ -57,13 +57,13 @@ nocycle
 nocache;
 
 insert into yes_show_category(category_id, category_name)
-values(1,'클래식');
+values(1,'콘서트');
 insert into yes_show_category(category_id, category_name)
-values(2,'콘서트');
+values(2,'뮤지컬');
 insert into yes_show_category(category_id, category_name)
-values(3,'뮤지컬');
+values(3,'연극');
 insert into yes_show_category(category_id, category_name)
-values(4,'연극');
+values(4,'클래식');
 insert into yes_show_category(category_id, category_name)
 values(5,'전시');
 insert into yes_show_category(category_id, category_name)
@@ -96,38 +96,38 @@ select *from yes_show_category_detail order by category_detail_id;
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
 values(seq_show_category_detail.nextval, 1, '전체보기');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 1, '클래식');
+values(seq_show_category_detail.nextval, 1, '국내뮤지션');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 1, '발레/무용');
+values(seq_show_category_detail.nextval, 1, '해외뮤지션');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 1, '국악');
+values(seq_show_category_detail.nextval, 1, '페스티벌');
 
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
 values(seq_show_category_detail.nextval, 2, '전체보기');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 2, '국내뮤지션');
+values(seq_show_category_detail.nextval, 2, '라이선스');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 2, '해외뮤지션');
+values(seq_show_category_detail.nextval, 2, '오리지널');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 2, '페스티벌');
+values(seq_show_category_detail.nextval, 2, '창작');
+insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
+values(seq_show_category_detail.nextval, 2, '넌버벌퍼포먼스');
 
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
 values(seq_show_category_detail.nextval, 3, '전체보기');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 3, '라이선스');
+values(seq_show_category_detail.nextval, 3, '대학로');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 3, '오리지널');
-insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 3, '창작');
-insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 3, '넌버벌퍼포먼스');
+values(seq_show_category_detail.nextval, 3, '기타지역');
 
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
 values(seq_show_category_detail.nextval, 4, '전체보기');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 4, '대학로');
+values(seq_show_category_detail.nextval, 4, '클래식');
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
-values(seq_show_category_detail.nextval, 4, '기타지역');
+values(seq_show_category_detail.nextval, 4, '발레/무용');
+insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
+values(seq_show_category_detail.nextval, 4, '국악');
 
 insert into yes_show_category_detail(category_detail_id, category_id, category_detail_name)
 values(seq_show_category_detail.nextval, 5, '전체보기');
@@ -1899,9 +1899,9 @@ nominvalue
 nocycle
 nocache;
 
-select *
+select to_char(date_showday-1, 'yyyy. mm. dd')
 from yes_show_date
-where prod_id = 1;
+where date_id = 1;
 
 
 insert into yes_show_date(date_id, prod_id, date_showday, date_showtime)
@@ -6511,7 +6511,6 @@ create table yes_point
 ,content      varchar2(200) not null  -- 포인트 적립 내용
 ,point        number(8)     not null  -- 적립되는 포인트
 ,fk_rev_date  date  default sysdate   -- 적립 날짜
-,fk_rev_id    number(10)    not null  -- 적립된 예매 코드
 ,constraint PK_point_id primary key(point_id)
 ,constraint FK_point_fk_userid foreign key(fk_userid) references yes_member(userid)
 --,constraint FK_point_rev_date foreign key(fk_rev_date) references yes_reserve(rev_date) 
@@ -6527,7 +6526,15 @@ nominvalue
 nocycle
 nocache;
 
-select * from yes_member;
+update yes_member
+set point = point - '0'
+where userid = 'guzi10';
+
+insert into yes_point(point_id, fk_userid, content, point, fk_rev_date) 
+values(seq_point.nextval, 'guzi10', '포인트 사용!', 100, sysdate)
+
+select * from yes_member
+where userid='leess2';
 
 select point_id, fk_userid, content, point, to_char(fk_rev_date, 'yyyy.mm.dd hh24:mi:ss') AS fk_rev_date, fk_rev_id 
 from yes_point 
@@ -6728,9 +6735,11 @@ nocache;
 
 select *
 from yes_coupon
-where fk_userid = 'guzi10';
+where fk_userid = 'leess2';
 
-
+select *
+from yes_coupon
+where fk_userid = 'leess2' and coupon_status = 1 and coupon_usedate is null
 
 --insert into yes_coupon(coupon_id, coupon_dc, coupon_status, coupon_newdate, coupon_usedate, coupon_olddate, coupon_name, coupon_condition, fk_userid, fk_prod_id) 
 --values('AB3C212C3D', 5000, 1, sysdate, null, sysdate +4, '[2020 캣츠 내한공연] 5천원 할인 쿠폰', default, 'guzi10', 1);
