@@ -67,6 +67,7 @@ tech | description
 The following images are representative screenshots of TICKET24.
 
 - Home Page
+![주석 2020-08-31 140200](https://user-images.githubusercontent.com/65706536/91685113-56abac80-eb94-11ea-8677-a2fd2f27d9cc.png)
 - Detail Page
 - Booking Page
 - My Account Page
