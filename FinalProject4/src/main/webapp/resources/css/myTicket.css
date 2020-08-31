@@ -319,7 +319,41 @@ em.pageLink {
     color: #ec7d2c;
 }
 
+tbody {
+	max-height: 377px;
+	overflow: auto;
+}
+
+tbody::-webkit-scrollbar {
+    width: 9px;
+}
+tbody::-webkit-scrollbar-thumb {
+    width: 9px;
+    background: #d5d5d5;
+}
+tbody::-webkit-scrollbar-track {
+    background: #eee;
+}
+
 /* 나의 리뷰 */
+#reviewContent {
+	width: 915px;
+	max-height: 377px;
+	overflow: auto;
+	margin: 0 auto;
+}
+
+#reviewContent::-webkit-scrollbar {
+    width: 9px;
+}
+#reviewContent::-webkit-scrollbar-thumb {
+    width: 9px;
+    background: #d5d5d5;
+}
+#reviewContent::-webkit-scrollbar-track {
+    background: #eee;
+}
+
 #reviewDiv {
     font-size: 13px;
     color: #666;
@@ -404,7 +438,6 @@ em.pageLink {
     background: #eee;
 }
 
-
 .revision {
   	display:inline-block;
     z-index: 100;
@@ -447,7 +480,8 @@ em.pageLink {
 }
 
 .revision-table {
-    width: 100%; 670px;
+    width: 100%; 
+    height: 670px;
     margin: 0 auto;
 }
 

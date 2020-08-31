@@ -15,17 +15,7 @@
     <script src="https://kit.fontawesome.com/c3eca5a54c.js" crossorigin="anonymous"></script>
     
     <script type="text/javascript" src="<%= request.getContextPath()%>/resources/js/jquery-3.3.1.min.js"></script>
-    
-    <script type="text/javascript">
-    
-    	$(document).ready(function(){
-    		
-    	});	
-    
-    	
-    	
-    </script>
-    
+        
 </head>
 <body>
     <div id="container">
@@ -71,12 +61,17 @@
                 </tr>
                 </thead>
                 <tbody>
+                	<c:if test="${empty pointList}">
+				        <tr align="center">
+				            <td colspan="4">포인트 내역이 존재하지 않습니다.</td>
+				        </tr>
+			        </c:if>
  					<c:forEach var="point" items="${pointList}" varStatus="status">
 						<tr>
-							<td>${point.fk_rev_date} </td>
-							<td class="left">${point.content}</td>
-							<td>${point.fk_rev_id }</td>
-							<td class="point"><fmt:formatNumber value="${point.point }" pattern="###,###" />원</td>
+							<td width="20%">${point.fk_rev_date} </td>
+							<td width="55%" class="left">${point.content}</td>
+							<td width="10%">${point.fk_rev_id}</td>
+							<td width="15%" class="point right"><fmt:formatNumber value="${point.point }" pattern="###,###" />원</td>
 						</tr>
 					</c:forEach>
                 </tbody>
@@ -96,13 +91,17 @@
                 </tr>
                 </thead>
                 <tbody>
-	                
+	                <c:if test="${empty couponList}">
+				        <tr align="center">
+				            <td colspan="4">보유 쿠폰이 없습니다.</td>
+				        </tr>
+			        </c:if>
 	                <c:forEach var="coupon" items="${couponList}" varStatus="status">
 						<tr>
-		                    <td class="left name">${coupon.coupon_name }</td>
-		                    <td class="point"><fmt:formatNumber value="${coupon.coupon_dc }" pattern="###,###" />원 할인</td>
-		                    <td>${coupon.coupon_condition }</td>
-		                    <td>${coupon.coupon_olddate} 까지</td>
+		                    <td width="40%" class="left name">${coupon.coupon_name }</td>
+		                    <td width="15%" class="point"><fmt:formatNumber value="${coupon.coupon_dc }" pattern="###,###" />원 할인</td>
+		                    <td width="25%">${coupon.coupon_condition }</td>
+		                    <td width="20%" class="blankRight">${coupon.coupon_olddate} 까지</td>
 		                </tr>
 					</c:forEach>
                 </tbody>
@@ -116,22 +115,27 @@
                 <thead>
                 <tr>
                     <th width="20%">카테고리</th>
-                    <th width="50%">제목</th>
-                    <th width="10%">등록일</th>
+                    <th width="40%">제목</th>
+                    <th width="20%">등록일</th>
                     <th width="20%">상태</th>
                 </tr>
                 </thead>
                 <tbody>
+	                <c:if test="${empty qnaList}">
+				        <tr align="center">
+				            <td colspan="4">등록된 나의 문의가 없습니다.</td>
+				        </tr>
+			        </c:if>
 	                <c:forEach var="qna" items="${qnaList}" varStatus="status">
 						<tr>
-							<td>${qna.qna_cate_name} </td>
-							<td class="left"><span onclick="modal(${status.index})">${qna.subject}</span></td>
-							<td>${qna.regDate }</td>
+							<td width="20%">${qna.qna_cate_name} </td>
+							<td width="40%" class="left"><span onclick="modal(${status.index})">${qna.subject}</span></td>
+							<td width="20%">${qna.regDate }</td>
 							<c:if test="${qna.adminans == '0' }">
-								<td class="point">답변대기</td>
+								<td width="20%" class="point">답변대기</td>
 							</c:if>
 							<c:if test="${qna.adminans == '1' }">
-								<td class="point">답변완료</td>
+								<td width="20%" class="point">답변완료</td>
 							</c:if>
 						</tr>
 					 </c:forEach>
