@@ -74,7 +74,7 @@ The following images are representative screenshots of TICKET24.
 <img width="1440" alt="ticket24-detail" src="https://user-images.githubusercontent.com/60546778/91685802-5f9d7d80-eb96-11ea-834c-8a5d56fa4ec1.png">
 
 - Booking Page
-![ticket24-seat](https://user-images.githubusercontent.com/60546778/91707803-5672d780-ebbb-11ea-97f4-447cac52d28c.png)
+<img width="842" alt="ticket24-booking" src="https://user-images.githubusercontent.com/60546778/91707803-5672d780-ebbb-11ea-97f4-447cac52d28c.png">
 
 - My Account Page
 
