@@ -16,7 +16,18 @@
     
     <script type="text/javascript" src="<%= request.getContextPath()%>/resources/js/jquery-3.3.1.min.js"></script>
     
-    <script type="text/javascript">
+    <script type="text/javascript">    
+
+	    window.onload = function () {
+	    	let star = document.getElementsByClassName('star');
+	    	let starCnt = document.getElementsByClassName('starCnt');
+	    	
+	    	for(let i=0; i<star.length; i++) {
+	    		for(let j=0; j<star[i].innerText; j++) {
+	    			starCnt[i].innerHTML += '<i class="reviewStar"></i>';
+	    		}
+	    	}
+	    }
     
     	function updateReview(review_id){    		
     		//console.log("review_id : ", review_id);
@@ -152,7 +163,9 @@
 	                <img src="resources/images/${review.prod_img }" alt="poster" height="110px" onclick="location.href='<%=ctxPath%>/detail.action?seq=${review.prod_id }'">
 	                <div class="review">
 	                    <h3>${review.prod_title }</h3>
-	                    <div class="date">${review.regDate }</div>
+	                    <span class="date">${review.regDate }&nbsp;</span>
+	                    <span class="star" style="display:none;">${review.star }</span>
+	                    <span class="starCnt"></span>
 	                    <div class="reviewText">${review.content }</div>
 	                    <div class="btnArea">
 	                    	<input type="hidden" name="review_id" value="${review.review_id }"/>
