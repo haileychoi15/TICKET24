@@ -87,7 +87,9 @@ Booking Page
 
 <br />
 
-My Account Page
+My Ticket Page
+
+<img width="1440" alt="ticket24-ticket" src="https://user-images.githubusercontent.com/60546778/91998634-73073f00-ed76-11ea-9e4c-e62c4ba95037.png">
 
 <br />
 
