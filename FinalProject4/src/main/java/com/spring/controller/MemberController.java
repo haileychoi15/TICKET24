@@ -901,6 +901,8 @@ public class MemberController {
 			List<HashMap<String,String>> myReviewList = service.myReviewList(loginuser.getUserid());	// 내 리뷰 내역
 			List<HashMap<String,String>> myLikeList = service.myLikeList(loginuser.getUserid());		// 선호 공연
 			
+			System.out.println(myReviewList.get(0).get("star") + "<<<<<<<<<<<<");
+			
 			mav.addObject("reserveCount", reserveCount);
 			mav.addObject("reviewCount", reviewCount);
 			mav.addObject("likeCount", likeCount);

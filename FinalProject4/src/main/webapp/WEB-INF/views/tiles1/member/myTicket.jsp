@@ -88,6 +88,11 @@
             </tr>
             </thead>
             <tbody>
+            <c:if test="${empty myReserveList}">
+			        <tr align="center">
+			            <td colspan="4">나의 예매 내역이 존재하지 않습니다.</td>
+			        </tr>
+		        </c:if>
 	            <c:forEach var="my" items="${myReserveList}" varStatus="status">
 	            	<tr>
 		                <td class="bookingDate">${my.rev_date}</td>
@@ -157,7 +162,10 @@
     <div id="reviewDiv">
         <div class="tableTitle">나의 리뷰</div>
 
-        <div id="content">
+        <div id="reviewContent">
+        	<c:if test="${empty myReviewList}">
+					<div class="reviewBox" style="text-align: center;">나의 리뷰가 존재하지 않습니다.</div>
+			</c:if>
         	<c:forEach varStatus="status" var="review" items="${myReviewList}">
 	            <div class="reviewBox">
 	                <img src="resources/images/${review.prod_img }" alt="poster" height="110px" onclick="location.href='<%=ctxPath%>/detail.action?seq=${review.prod_id }'">
@@ -182,6 +190,9 @@
         <div class="tableTitle">선호 공연</div>
 
         <div id="preferredArea">
+        <c:if test="${empty myLikeList}">
+		        	나의 선호 공연이 존재하지 않습니다.
+	        </c:if>
         	<c:forEach var="like" items="${myLikeList }" varStatus="status">
         		<div class="preferredItem">
         			<img src="resources/images/${like.prod_img }" alt="poster" style="width:170px" onclick="location.href='<%=ctxPath%>/detail.action?seq=${like.prod_id }'">
