@@ -108,5 +108,11 @@ public class MainDAO implements InterMainDAO {
 		return m;
 	}
 
+	@Override
+	public List<HashMap<String, String>> searchShowList(String showName) {
+		List<HashMap<String, String>> searchShowList = sqlsession.selectList("finalproject4.searchShowList", showName);
+		return searchShowList;
+	}
+
 
 }

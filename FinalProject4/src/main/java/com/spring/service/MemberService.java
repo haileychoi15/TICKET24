@@ -8,6 +8,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.common.AES256;
 import com.spring.model.MemberVO;
@@ -324,6 +327,40 @@ public class MemberService implements InterMemberService {
 	public String getPoint(String userid) {
 		String point = dao.getPoint(userid);
 		return point;
+	}
+
+
+
+	// 예매 상세
+	@Override
+	public HashMap<String, String> infoList(String rev_id, String userid) {
+		HashMap<String, String> infoList = dao.infoList(rev_id, userid);
+		return infoList;
+	}
+
+
+	// 좌석정보
+	@Override
+	public List<HashMap<String, String>> seatInfoList(String userid) {
+		List<HashMap<String, String>> seatInfoList = dao.seatInfoList(userid);
+		return seatInfoList;
+	}
+
+
+
+	// 예매 상세
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int bookingCancel(HashMap<String, String> paraMap) {
+		
+		int n = dao.bookingCancel(paraMap);
+		
+		if(n > 0) {
+			int x = dao.updateSeatStatus(paraMap);
+		}
+		
+		
+		return n;
 	}
 
 

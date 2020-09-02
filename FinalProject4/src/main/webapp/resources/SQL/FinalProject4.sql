@@ -188,9 +188,11 @@ update prod set prod_discount = '30' where prod_id = 5;
 alter table prod drop column prod_discount;
 
 ---prod 테이블 셀렉트
-select *
-from prod 
-order by fk_category_detail_id;
+select P.prod_title, P.prod_img, to_char(P.date_start, 'yyyy.mm.dd'), to_char(P.date_end, 'yyyy.mm.dd'), M.map_name
+from prod P join yes_show_map M
+on P.map_id = M.map_id
+where P.prod_title like '%썸%'
+order by P.prod_id;
 
 update prod set date_start = info_open_date + 7, date_end = info_close_date + 7;
 
@@ -6514,8 +6516,12 @@ create table yes_point
 ,constraint PK_point_id primary key(point_id)
 ,constraint FK_point_fk_userid foreign key(fk_userid) references yes_member(userid)
 --,constraint FK_point_rev_date foreign key(fk_rev_date) references yes_reserve(rev_date) 
---,constraint FK_point_rev_id foreign key(fk_rev_id) references yes_reserve(rev_id)
+,constraint FK_point_rev_id foreign key(fk_rev_id) references yes_reserve(rev_id)
 );
+
+select *
+from prod
+order by prod_id;
 
 drop sequence seq_point;
 create sequence seq_point

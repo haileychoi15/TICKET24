@@ -156,8 +156,8 @@
             </li>
         </ul>
         <div class="search-group">
-            <form action="#" method="GET" class="search-form">
-                <input type="text" placeholder="">
+            <form action="<%=ctxPath%>/search.action" method="GET" class="search-form">
+                <input type="text" placeholder="찾고 싶은 공연 제목을 입력해주세요..." name="showName">
                 <button type="submit" aria-label="Search"></button>
             </form>
             <button type="button" class="user-button" aria-label="User account">

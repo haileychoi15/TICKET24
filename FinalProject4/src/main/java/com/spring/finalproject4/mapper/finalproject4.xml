@@ -157,6 +157,22 @@
 		    ) V
 	</select>
 	
+	<!-- 공연 검색 목록 -->
+	<resultMap type="HashMap" id="searchShow">
+		<result property="prod_title" 	column="prod_title" javaType="String"/>
+		<result property="prod_img" 	column="prod_img" javaType="String"/>
+		<result property="date_start" 	column="date_start" javaType="String"/>
+		<result property="date_end" 	column="date_end" 	javaType="String"/>
+		<result property="map_name" 	column="map_name" 	javaType="String"/>
+	</resultMap>
+	<select id="searchShowList" parameterType="String" resultMap="searchShow">
+		select P.prod_title, P.prod_img, to_char(P.date_start, 'yyyy.mm.dd') as date_start, to_char(P.date_end, 'yyyy.mm.dd') as date_end, M.map_name
+		from prod P join yes_show_map M
+		on P.map_id = M.map_id
+		where P.prod_title like '%'||#{showName}||'%'
+		order by P.prod_id
+	</select>
+	
 	
 	<!-- === Pay(예매하기) 관련 === -->
 	<resultMap type="HashMap" id="resShowInfo">
@@ -1016,6 +1032,86 @@
 	
 
 	<!-- ### 상품의 상세정보 (detail, calendar, review)  ### -->
+	
+	   <!-- 예매 상세 내역 -->
+   <resultMap type="HashMap" id="infoListMap">
+      <result property="rev_date"    column="rev_date"       javaType="String"/>
+      <result property="prod_title"    column="prod_title"    javaType="String"/>
+      <result property="prod_id"       column="prod_id"       javaType="String"/>
+      <result property="prod_img"    column="prod_img"       javaType="String"/>
+      <result property="date_start"    column="date_start"    javaType="String"/>
+      <result property="date_end"    column="date_end"       javaType="String"/>
+      <result property="rev_id"       column="rev_id"       javaType="String"/>
+      <result property="rev_qnty"    column="rev_qnty"       javaType="String"/>
+      <result property="map_name"    column="map_name"       javaType="String"/>
+      <result property="date_showday" column="date_showday"    javaType="String"/>
+      <result property="cancel_day"    column="cancel_day"    javaType="String"/>
+      <result property="status"       column="status"       javaType="String"/>
+   </resultMap>
+   <select id="infoList" parameterType="HashMap" resultMap="infoListMap">
+      select to_char(R.rev_date, 'yyyy.mm.dd') AS rev_date
+             , P.prod_title AS prod_title
+             , P.prod_id AS prod_id
+             , P.prod_img AS prod_img
+             , to_char(P.date_start, 'yyyy,mm.dd') AS date_start
+             , to_char(P.date_end, 'yyyy,mm.dd') AS date_end 
+             , R.rev_id AS rev_id
+             , R.rev_qnty AS rev_qnty
+             , M.map_name AS map_name
+             , to_char(D.date_showday, 'yyyy.mm.dd') || '(' || to_char(D.date_showday, 'dy')   || ') ' || to_char(D.date_showday, 'hh24:mm') AS date_showday
+             , to_char(D.date_showday - 1, 'yyyy.mm.dd') || '(' || to_char(D.date_showday - 1, 'dy')   || ') ' || to_char(D.date_showday - 1, 'hh24:mm') AS cancel_day
+             , S.status AS status
+      from yes_reserve R join prod P
+      on R.prod_id = P.prod_id
+      join yes_show_map M
+      on P.map_id = M.map_id
+      join yes_show_date D
+      on R.date_id = D.date_id
+      join yes_rev_status S
+      on R.rev_id = S.rev_id
+      where R.user_id = #{userid} and R.rev_id = #{rev_id}
+   </select>
+   
+      
+   <!-- 좌석 정보 -->
+   <resultMap type="HashMap" id="seatInfoListMap">
+      <result property="seat_type"    column="seat_type"       javaType="String"/>
+      <result property="seat_price"    column="seat_price"    javaType="String"/>
+      <result property="seat_name"    column="seat_name"       javaType="String"/>
+      <result property="seat_status"    column="seat_status"    javaType="String"/>
+   </resultMap>
+   <select id="seatInfoList" parameterType="String" resultMap="seatInfoListMap">
+      select t.seat_type AS seat_type
+           , t.seat_price AS seat_price
+           , p.seat_name AS seat_name
+           , s.seat_status AS seat_status
+      from yes_seat_type t join yes_show_seat s
+      on t.seattype_id = s.seattype_id       
+      join yes_paySeat p
+      on p.date_id = s.date_id and p.seat_name = s.seat_name
+      where p.user_id = #{userid}
+   </select>
+   
+   
+   <update id="bookingCancel" parameterType="HashMap">
+      update yes_rev_status set status = 0, status_cng_date = sysdate where rev_id = #{rev_id}
+   </update>
+   
+   <update id="updateSeatStatus" parameterType="HashMap">
+      update yes_show_seat
+      set seat_status = 0
+      where seat_name in 
+                   ( select seat_name from yes_paySeat where user_id = #{userid})
+            and             
+            prod_id = 
+                   ( select prod_id from yes_reserve where rev_id = #{rev_id})
+            and 
+            date_id =
+                   ( select date_id from yes_reserve where rev_id = #{rev_id})
+   </update>
+   
+   
+   
 	<!-- 상품상세페이지로 이동 -->
 	<select id="prodDetail" parameterType="String" resultType="com.spring.model.ProdVO">
 		select prod_id, prod_img, prod_detail_img, prod_title, to_char(info_open_date, 'yyyy-mm-dd') as info_open_date, to_char(info_close_date, 'yyyy-mm-dd') as info_close_date, info_grade, info_run_time

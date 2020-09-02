@@ -1,6 +1,5 @@
 package com.spring.model;
 
-import java.util.Collection;
 
 public class ReviewVO {
 
@@ -14,11 +13,13 @@ public class ReviewVO {
 	private String fk_rev_status;	// 예매여부
 	private String fk_rev_date;		// 예매일자
 	private String status;       	// 글삭제여부
+	private String date_id;			// 관람일자번호
+	private String date_showday;	// 관람일자
 	
 	public ReviewVO() {}
 	
 	public ReviewVO(String review_id, String fk_userid, String name, String content, String star, String regDate,
-			String parentProdId, String fk_rev_status, String fk_rev_date, String status) {
+			String parentProdId, String fk_rev_status, String fk_rev_date, String status, String date_id, String date_showday) {
 		super();
 		this.review_id = review_id;
 		this.fk_userid = fk_userid;
@@ -30,6 +31,8 @@ public class ReviewVO {
 		this.fk_rev_status = fk_rev_status;
 		this.fk_rev_date = fk_rev_date;
 		this.status = status;
+		this.date_id = date_id;
+		this.date_showday = date_showday;
 	}
 
 	public String getReview_id() {
@@ -111,6 +114,23 @@ public class ReviewVO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public String getDate_id() {
+		return date_id;
+	}
+
+	public void setDate_id(String date_id) {
+		this.date_id = date_id;
+	}
+
+	public String getDate_showday() {
+		return date_showday;
+	}
+
+	public void setDate_showday(String date_showday) {
+		this.date_showday = date_showday;
+	}
+	
 	
 	
 }

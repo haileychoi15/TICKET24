@@ -267,6 +267,38 @@ public class MemberDAO implements InterMemberDAO {
 		String point = sqlsession.selectOne("finalproject4.getPoint", userid);
 		return point;
 	}
+
+	// 예매 상세
+	@Override
+	public HashMap<String, String> infoList(String rev_id, String userid) {
+		HashMap<String,String> paraMap = new HashMap<String,String>();
+		paraMap.put("rev_id", rev_id);
+		paraMap.put("userid", userid);
+		
+		HashMap<String, String> infoList = sqlsession.selectOne("finalproject4.infoList", paraMap);
+		return infoList;
+	}
+
+	// 좌석정보
+	@Override
+	public List<HashMap<String, String>> seatInfoList(String userid) {
+		List<HashMap<String, String>> seatInfoList = sqlsession.selectList("finalproject4.seatInfoList", userid);
+		return seatInfoList;
+	}
+
+	// 예매 취소
+	@Override
+	public int bookingCancel(HashMap<String, String> paraMap) {
+		int n = sqlsession.update("finalproject4.bookingCancel", paraMap);
+		return n;
+	}
+
+	// 예매 했던 좌석 취소
+	@Override
+	public int updateSeatStatus(HashMap<String, String> paraMap) {
+		int x = sqlsession.update("finalproject4.updateSeatStatus", paraMap);
+		return x;
+	}
 	
 	
 	

@@ -68,6 +68,15 @@ public interface InterMemberService {
 
 
 	String getPoint(String userid);
+
+
+	HashMap<String, String> infoList(String rev_id, String userid); // 예매 상세
+
+
+	List<HashMap<String, String>> seatInfoList(String userid);	// 좌석정보
+
+
+	int bookingCancel(HashMap<String, String> paraMap); // 예매 취소
 	
 
 

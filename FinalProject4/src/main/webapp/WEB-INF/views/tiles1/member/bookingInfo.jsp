@@ -1,48 +1,86 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<% String ctxPath = request.getContextPath(); %>    
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>예매 상세</title>
-    <link rel="stylesheet" type="text/css" href="bookingInfo.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bookingInfo.css">
     <script src="https://kit.fontawesome.com/c3eca5a54c.js" crossorigin="anonymous"></script>
+        
+    <script type="text/javascript" src="<%= request.getContextPath()%>/resources/js/jquery-3.3.1.min.js"></script>
+    
+    <script type="text/javascript">
+    
+    	$(document).ready(function(){
+    		
+    	});	
+    
+    	
+    	
+    </script>
+    
 </head>
 <body>
     <div id="container">
         <div id="showInfoBox">
-            <img src="https://cdnticket.melon.co.kr/resource/image/upload/product/2020/05/20200528104334ce28c4f9-534e-45c0-8f1a-e75a7e18abe3.jpg" alt="poster" height="250px">
+            <img src="resources/images/${infoList.prod_img }" alt="poster" height="250px">
             <div id="showInfo">
-                <div id="showName">뮤지컬 〈캣츠〉 40주년 내한공연－서울（Musical CATS）</div>
+                <div id="showName">${infoList.prod_title}</div>
                 <div id="showInfoText">
                     <dl>
                         <dt>예매번호</dt>
-                        <dd class="color">1234567</dd>
+                        <dd class="color">${infoList.rev_id }</dd>
                         <dt>공연장</dt>
-                        <dd>세종문화회관 대극장</dd>
+                        <dd>${infoList.map_name }</dd>
                     </dl>
                     <dl>
                         <dt>예매일시</dt>
-                        <dd>2020.08.20</dd>
+                        <dd>${infoList.rev_date }</dd>
                         <dt>예매자</dt>
-                        <dd>이호연</dd>
+                        <dd>${sessionScope.loginuser.name }</dd>
                     </dl>
                     <dl>
                         <dt>관람일시</dt>
-                        <dd>2020.08.15(화) 19:00</dd>
+                        <dd>${infoList.date_showday }</dd>
                         <dt>취소가능일</dt>
-                        <dd>2020.08.14 23:59까지</dd>
+                        <dd>${infoList.cancel_day }까지</dd>
                     </dl>
                     <dl>
                         <dt>매수</dt>
-                        <dd>1매</dd>
+                        <dd>${infoList.rev_qnty }매</dd>
                         <dt>상태</dt>
-                        <dd>예매완료</dd>
+                        <c:if test="${infoList.status == '1' }">
+							<dd>예매완료</dd>
+		                </c:if>
+		                <c:if test="${infoList.status == '0' }">
+							<dd>취소완료</dd>
+		                </c:if>
+		                <c:if test="${infoList.status == '2' }">
+							<dd>입금대기</dd>
+		                </c:if>
+                        
+                        
                     </dl>
                 </div>
             </div>
         </div>
+
+        <div class="title">티켓수령방법</div>
+        <table class="contentTbl">
+            <tr>
+                <td class="contentTd">수령방법</td>
+                <td class="contentTd2">배송 <a href="">배송 상세</a></td> <!-- css 추후 적용 -->
+                <!-- 또는 ///  현장수령 | 공연 당일 현장 교부처에서 예매번호 및 본인 확인 후 티켓을 수령하여 입장이 가능합니다. -->
+            </tr>
+        </table>
 
         <div class="title seat">좌석 정보</div>
         <div class="seat allSel"><input type="checkbox" id="all"><label for="all">전체 선택</label></div>
@@ -55,23 +93,25 @@
                     <td width="15%">구매</td>
                     <td width="15%">예매/취소</td>
                 </tr>
-                <tr class="tblContent">
-                    <td>A석</td>
-                    <td>2층 A열 19번</td>
-                    <td>일반(금토일)</td>
-                    <td>80,000원</td>
-                    <td><label for="cancel1">취소 가능</label><input type="checkbox" id="cancel1"></td>
-                </tr>
-                <tr class="tblContent">
-                    <td>A석</td>
-                    <td>2층 A열 19번</td>
-                    <td>일반(금토일)</td>
-                    <td>80,000원</td>
-                    <td><label for="cancel2">취소 가능</label><input type="checkbox" id="cancel2"></td>
-                </tr>
+                
+                <c:forEach var="seat" items="${seatInfoList}" varStatus="status">
+	                <tr class="tblContent">
+	                    <td>${seat.seat_type}석</td>
+	                    <td>${seat.seat_name }</td>
+	                    <td>일반(금토일)</td>
+	                    <td><fmt:formatNumber value="${seat.seat_price}" pattern="###,###" /> 원</td>
+	                    <c:if test="${seat.seat_status == '1'}">
+	                    	<td><label for="cancel1">취소 가능</label><input type="checkbox" id="cancel1"></td>
+	                    </c:if>
+	                    <c:if test="${seat.seat_status == '0'}">
+	                    	<td><label for="cancel1">취소 완료</label></td>
+	                    </c:if>
+	                </tr>
+                </c:forEach>
+
                 <tr class="cancelBtn">
                     <td colspan="4">
-                        <p id="cancelTime">2020년 08월 13일 17시 00분까지 예매취소가능</p>
+                        <p id="cancelTime">${infoList.cancel_day } 까지 예매취소가능</p>
                         <em>*예매일 이후 취소 시 예매 수수료는 환불되지 않습니다. (단, 예매 당일 밤 12시 이전 취소 시에는 취소수수료 없음)</em>
                     </td>
                     <td><button>예매취소 요청</button></td>
@@ -113,6 +153,31 @@
             </div>
         </div>
 
+        <div class="title">결제 내역</div>
+        <table class="contentTbl">
+            <tr>
+                <td class="contentTd">결제방법</td>
+                <td class="contentTd2"></td> <!-- 신용카드/무통장입금 -->
+            </tr>
+            <!-- 아래 부분은 카드결제시 안나오게 -->
+            <tr>
+                <td class="contentTd">입금마감시간</td>
+                <td class="contentTd2"></td>
+            </tr>
+            <tr>
+                <td class="contentTd">입금계좌</td>
+                <td class="contentTd2"></td>
+            </tr>
+            <tr>
+                <td class="contentTd">예금주명</td>
+                <td class="contentTd2"></td>
+            </tr>
+            <tr>
+                <td class="contentTd">입금상태</td>
+                <td class="contentTd2"></td>
+            </tr>
+        </table>
+
         <div class="title">유의사항</div>
         <div id="caution">
             <ul>
@@ -131,7 +196,7 @@
         </div>
 
         <div id="listBtn">
-            <button>목록</button>
+            <button onclick="location.href='<%=ctxPath%>/myTicket.action'">목록</button>
         </div>
     </div>
 </body>

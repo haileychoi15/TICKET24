@@ -69,17 +69,19 @@ public class ProdDAO implements InterProdDAO {
 		int n = sqlsession.selectOne("finalproject4.existlike", paraMap);
 		return n;
 	}
-
+	
+	// 로그인한 회원의 해당 공연 관람일시와 공연코드 가져오기
 	@Override
 	public List<HashMap<String, String>> viewInfoList(HashMap<String, String> paraMap) {
-		// TODO Auto-generated method stub
-		return null;
+		List<HashMap<String, String>> viewInfoList = sqlsession.selectList("finalproject4.viewInfoList", paraMap);
+		return viewInfoList;
 	}
-
+	
+	// 공연의 회차별, 좌석타입별 잔여좌석 구하기
 	@Override
 	public List<HashMap<String, String>> remainSeatList(HashMap<String, String> paraMap) {
-		// TODO Auto-generated method stub
-		return null;
+		List<HashMap<String, String>> remainSeatList = sqlsession.selectList("finalproject4.remainSeatList", paraMap);
+		return remainSeatList;
 	}
 
 	

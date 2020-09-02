@@ -37,4 +37,7 @@ public interface InterMainService {
 	// 쿠폰 발급하기
 	int getCoupon(HashMap<String, String> couponMap);
 
+	// 공연 검색 목록
+	List<HashMap<String, String>> searchShowList(String showName);
+
 }

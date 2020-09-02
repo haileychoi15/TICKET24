@@ -107,6 +107,13 @@ public class MainService implements InterMainService {
 		return m;
 	}
 
+	// 공연 검색 목록
+	@Override
+	public List<HashMap<String, String>> searchShowList(String showName) {
+		List<HashMap<String, String>> searchShowList = dao.searchShowList(showName);
+		return searchShowList;
+	}
+
 	
 
 }

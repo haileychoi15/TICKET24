@@ -211,7 +211,18 @@ public class MainController {
 	}
 	
 	
-	
+	// == 카테고리 검색 목록 == //
+	@RequestMapping(value="/search.action")
+	public ModelAndView searchPage(HttpServletRequest request, ModelAndView mav) {
+
+		String showName = request.getParameter("showName");
+		
+		List<HashMap<String, String>> searchShowList = service.searchShowList(showName);
+		
+		mav.addObject("searchShowList", searchShowList);
+		mav.setViewName("main/search.tiles1");
+		return mav;
+	}
 	
 	
 	

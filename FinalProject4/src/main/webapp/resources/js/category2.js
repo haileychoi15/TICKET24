@@ -125,10 +125,10 @@ function ajaxProduct(target) {
     let order = document.querySelector('.order-group button.selected').value;
     let untilCountNum = untilCount.innerText;
 
-    console.log('메인 카테고리 : ',category);
-    console.log('서브 카테고리 : ',subCategory);
-    console.log('정렬 순서 : ',order);
-    console.log('현재까지 상품 수 : ',untilCountNum);
+//    console.log('메인 카테고리 : ',category);
+//    console.log('서브 카테고리 : ',subCategory);
+//    console.log('정렬 순서 : ',order);
+//    console.log('현재까지 상품 수 : ',untilCountNum);
 
     let httpRequest = new XMLHttpRequest();
     makeRequest('/finalproject4/selectList.action', category, subCategory, order, untilCountNum); // ####

@@ -63,6 +63,14 @@ public interface InterMemberDAO {
 	int updateReviewEnd(HashMap<String, String> paraMap);	// 마이티켓에서 내 리뷰 수정
 	String getPoint(String userid);
 	
+	HashMap<String, String> infoList(String rev_id, String userid);	// 예매 상세
+	
+	
+	List<HashMap<String, String>> seatInfoList(String userid); // 좌석정보
+	
+	int bookingCancel(HashMap<String, String> paraMap); // 예매 취소
+	int updateSeatStatus(HashMap<String, String> paraMap); // 예매 했던 좌석 취소
+	
 	
 	
 	
