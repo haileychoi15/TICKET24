@@ -551,3 +551,16 @@ tbody::-webkit-scrollbar-track {
     border: 1px solid #ec7d2c;
 
 }
+
+.reviewStar::after {
+    content: " \f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 13px;
+    color: orange;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}

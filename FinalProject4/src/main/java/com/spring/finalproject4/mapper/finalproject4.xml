@@ -955,6 +955,7 @@
 		<result property="regDate" 		column="regDate" 	javaType="String"/>
 		<result property="content" 		column="content" 	javaType="String"/>
 		<result property="review_id" 	column="review_id" 	javaType="String"/>
+		<result property="star" 		column="star" 	javaType="String"/>		
 	</resultMap>
 	<!-- 내 리뷰 내역 -->
 	<select id="myReviewList" parameterType="String" resultMap="myReviewMap">
@@ -964,6 +965,7 @@
 		      , to_char(V.regDate, 'yyyy.mm.dd') as regDate
 		      , V.content  as content
 		      , V.review_id as review_id
+		      , V.star as star
 		from prod P, yes_review V
 		where P.prod_id = V.parentProdId  and V.status = 1 and fk_userid = #{userid}
 	</select>
