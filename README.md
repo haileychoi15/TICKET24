@@ -1,5 +1,5 @@
 # TICKET24 - ticket booking service
-TICKET24 is an online Performance Ticket Booking web with JavaScript(client-side) and Spring(server-side).
+TICKET24 is an online Performance Ticket Booking web with VanillaJS(client-side) and Spring(server-side).
 - Online Booking System
 - Responsive Web
 - Light Theme UI
